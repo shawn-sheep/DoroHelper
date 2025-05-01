@@ -1,5 +1,6 @@
 #Requires AutoHotkey >=v2.0
-#Include %A_ScriptDir%\lib\github.ahk
+#Include <github>
+#Include <FindText>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;操作间隔（单位：毫秒）
@@ -26,6 +27,23 @@ IsSimilarColor(targetColor, color) {
     if (distance < colorTolerance)
         return true
     return false
+}
+;坐标转换-点击
+UserClick(sX, sY, k) {
+    uX := Round(sX * k) ; 计算转换后的坐标
+    uY := Round(sY * k)
+    Send "{Click " uX " " uY "}" ; 点击转换后的坐标
+}
+;坐标转换-颜色
+UserCheckColor(sX, sY, sC, k) {
+    loop sX.Length {
+        uX := Round(sX[A_Index] * k)
+        uY := Round(sY[A_Index] * k)
+        uC := PixelGetColor(uX, uY)
+        if (!IsSimilarColor(uC, sC[A_Index]))
+            return 0
+    }
+    return 1
 }
 ;检查更新
 CheckForUpdateHandler(isManualCheck) {
@@ -72,23 +90,6 @@ CheckForUpdateHandler(isManualCheck) {
 }
 ClickOnCheckForUpdate(*) {
     CheckForUpdateHandler(true) ; 调用核心函数，标记为手动检查
-}
-;坐标转换-点击
-UserClick(sX, sY, k) {
-    uX := Round(sX * k)
-    uY := Round(sY * k)
-    Send "{Click " uX " " uY "}"
-}
-;坐标转换-颜色
-UserCheckColor(sX, sY, sC, k) {
-    loop sX.Length {
-        uX := Round(sX[A_Index] * k)
-        uY := Round(sY[A_Index] * k)
-        uC := PixelGetColor(uX, uY)
-        if (!IsSimilarColor(uC, sC[A_Index]))
-            return 0
-    }
-    return 1
 }
 ;判断自动按钮颜色
 isAutoOff(sX, sY, k) {
@@ -137,21 +138,15 @@ Login() {
     while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
         UserClick(stdTargetX, stdTargetY, scrRatio)
         Sleep sleepTime
-        if UserCheckColor([1973, 1969], [1368, 1432], ["0x00ADFB", "0x00ADFB"], scrRatio) {
-            UserClick(2127, 1400, scrRatio)
-            Sleep sleepTime
-        }
-        if UserCheckColor([1965, 1871], [1321, 1317], ["0x00A0EB", "0xF7F7F7"], scrRatio) {
-            UserClick(2191, 1350, scrRatio)
-            Sleep sleepTime
-        }
-        if UserCheckColor([1720, 2111], [1539, 1598], ["0x00AEFF", "0x00AEFF"], scrRatio) {
-            UserClick(1905, 1568, scrRatio)
+        ;点击蓝色的确认按钮（如果出现更新提示等消息）
+        Text:="|<确认>*192$51.zz1zyDy7s0s0TUzkz0601y3y7s0U0TkTkzksT3z3y7yC3kTwzkzlk00zzy7wC0073zkzU800kDy7s1X761zkz0AMMsDw7s1U07lzUT2A00yDw3sFU07lzUT2AMMyDs1sFX77kb2DWAEEy0kkwF007k663W800y0VsA1737k8D0U0wsy23w407W7UUTUXkw0wC7y6SDU7nlzsU"
+        if (ok:=FindText(&X, &Y, 1429-150000, 906-150000, 1429+150000, 906+150000, 0, 0, Text)){
+            FindText().Click(X, Y, "L")
             Sleep sleepTime
         }
         if A_Index > waitTolerance * 50 {
             MsgBox "登录失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -159,23 +154,20 @@ Login() {
 BackToHall() {
     stdTargetX := 333
     stdTargetY := 2041
-    UserClick(stdTargetX, stdTargetY, scrRatio)
+    Click(333, 2041, scrRatio)
     Sleep sleepTime
-    stdCkptX := [64]
-    stdCkptY := [470]
-    desiredColor := ["0xFAA72C"]
-    while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+    Text:="|<大厅>*161$39.znzzzzzwTzU00zXzw007wTzXzzzXzwTzs007WDz000w000007W00z0zwTXzs7zXwTz0zwTXzkXzbwTyADwzXzVlzbwTsS7szXy7sD7wT1zUty3sTy6DUTU" ;大厅底部的文本
+    while !(ok:=FindText(&X, &Y, 1294-150000, 1334-150000, 1294+150000, 1334+150000, 0.3, 0.3, Text)) {
         UserClick(stdTargetX, stdTargetY, scrRatio)
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
 ;1: 防御前哨基地奖励
 OutpostDefence() {
-    ; --- 函数开始 --- (移除了 Start: 标签)
     stdTargetX := 1092
     stdTargetY := 1795
     UserClick(stdTargetX, stdTargetY, scrRatio) ; 点击进入前哨基地
@@ -191,12 +183,12 @@ OutpostDefence() {
         loopCounter += 1
         if loopCounter > waitTolerance { ; 使用独立的计数器判断超时
             MsgBox "进入防御前哨失败！ (超时)"
-            ExitApp
+            Pause -1
         }
         if loopCounter > 10 { ; 尝试次数过多，可能卡住
             MsgBox "进入防御前哨尝试次数过多，退出。"
             ; 可以选择是否在退出前尝试返回大厅
-            ExitApp
+            Pause -1
         }
     }
     ; 点击 "一举歼灭" 按钮
@@ -215,11 +207,11 @@ OutpostDefence() {
         loopCounter += 1
         if loopCounter > waitTolerance {
             MsgBox "进入一举歼灭失败！ (超时)"
-            ExitApp
+            Pause -1
         }
         if loopCounter > 10 {
             MsgBox "进入一举歼灭尝试次数过多，退出。"
-            ExitApp
+            Pause -1
         }
     }
     ; 检查是否有免费扫荡次数 (按钮非灰色)
@@ -247,7 +239,7 @@ OutpostDefence() {
             loopCounter += 1
             if loopCounter > 10 { ; 设置扫荡确认的超时次数
                 MsgBox "扫荡确认超时，退出。"
-                ExitApp
+                Pause -1
             }
         }
     }
@@ -268,7 +260,7 @@ OutpostDefence() {
         popupLoopCounter += 1
         if popupLoopCounter > 10 { ; 设置一个合理的超时次数
             MsgBox("处理弹窗超时，退出。")
-            ExitApp
+            Pause -1
         }
     }
     ; 点击 "获得奖励" 按钮
@@ -292,7 +284,7 @@ OutpostDefence() {
         loopCounter += 1
         if loopCounter > waitTolerance { ; 使用全局超时容忍度
             MsgBox("前哨基地防御奖励领取后返回大厅异常！ (超时)")
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -328,7 +320,7 @@ CashShop() {
         }
         if A_Index > waitTolerance {
             MsgBox "进入付费商店失败！"
-            ExitApp
+            Pause -1
         }
     }
     Sleep sleepTime
@@ -368,7 +360,7 @@ CashShop() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入礼包页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [514]
@@ -404,7 +396,7 @@ CashShop() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入每日礼包页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 212
@@ -428,7 +420,7 @@ CashShop() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入每周礼包页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 212
@@ -452,7 +444,7 @@ CashShop() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入每月礼包页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 212
@@ -476,7 +468,7 @@ CashShop() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "退出付费商店失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -530,7 +522,7 @@ ShopFreeClaim() {
         loopCounter += 1
         if loopCounter > waitTolerance {
             MsgBox "普通商店免费领取：等待确认弹窗超时！"
-            ExitApp
+            Pause -1
         }
     }
     ; --- 点击确认按钮 ---
@@ -549,7 +541,7 @@ ShopFreeClaim() {
         loopCounter += 1
         if loopCounter > waitTolerance {
             MsgBox "普通商店免费领取：等待返回商店界面超时！"
-            ExitApp
+            Pause -1
         }
     }
     ; --- 单次免费领取完成 ---
@@ -571,7 +563,7 @@ FreeShop(numOfBook) {
         loopCounter += 1
         if loopCounter > waitTolerance {
             MsgBox "进入普通商店失败！"
-            ExitApp
+            Pause -1
         }
     }
     ; 检查第一次免费领取是否可用 (按钮非蓝色)
@@ -601,7 +593,7 @@ FreeShop(numOfBook) {
                 loopCounter += 1
                 if loopCounter > waitTolerance {
                     MsgBox "普通商店刷新：等待确认弹窗超时！"
-                    ExitApp
+                    Pause -1
                 }
             }
             ; 点击刷新确认按钮
@@ -620,7 +612,7 @@ FreeShop(numOfBook) {
                 loopCounter += 1
                 if loopCounter > waitTolerance {
                     MsgBox "普通商店刷新：确认后返回商店超时！"
-                    ExitApp
+                    Pause -1
                 }
             }
             Sleep 1000 ; 刷新后额外等待一下界面加载
@@ -640,7 +632,7 @@ FreeShop(numOfBook) {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "废铁商店进入异常！"
-            ExitApp
+            Pause -1
         }
     }
     if sleepTime < 1500
@@ -669,7 +661,7 @@ FreeShop(numOfBook) {
             Sleep sleepTime // 2
             if A_Index > waitTolerance {
                 MsgBox "竞技场商店进入异常！"
-                ExitApp
+                Pause -1
             }
         }
         if sleepTime < 1500
@@ -695,7 +687,7 @@ FreeShop(numOfBook) {
                 Sleep sleepTime // 2
                 if A_Index > waitTolerance {
                     MsgBox "第一本书购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
             stdTargetX := 2067
@@ -714,7 +706,7 @@ FreeShop(numOfBook) {
                 }
                 if A_Index > waitTolerance {
                     MsgBox "第一本书购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
         }
@@ -738,7 +730,7 @@ FreeShop(numOfBook) {
                 Sleep sleepTime // 2
                 if A_Index > waitTolerance {
                     MsgBox "第二本书购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
             stdTargetX := 2067
@@ -757,7 +749,7 @@ FreeShop(numOfBook) {
                 }
                 if A_Index > waitTolerance {
                     MsgBox "第二本书购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
         }
@@ -781,7 +773,7 @@ FreeShop(numOfBook) {
                 Sleep sleepTime // 2
                 if A_Index > waitTolerance {
                     MsgBox "第三本书购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
             stdTargetX := 2067
@@ -800,7 +792,7 @@ FreeShop(numOfBook) {
                 }
                 if A_Index > waitTolerance {
                     MsgBox "第三本书购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
         }
@@ -822,7 +814,7 @@ FreeShop(numOfBook) {
                 Sleep sleepTime // 2
                 if A_Index > waitTolerance {
                     MsgBox "公司武器熔炉购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
             stdTargetX := 2067
@@ -841,7 +833,7 @@ FreeShop(numOfBook) {
                 }
                 if A_Index > waitTolerance {
                     MsgBox "公司武器熔炉购买异常！"
-                    ExitApp
+                    Pause -1
                 }
             }
         }
@@ -858,7 +850,7 @@ FreeShop(numOfBook) {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "退出免费商店失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -877,7 +869,7 @@ Expedition() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入前哨基地失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1907, 1963, 1838, 2034]
@@ -887,7 +879,7 @@ Expedition() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入前哨基地失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;派遣公告栏
@@ -904,7 +896,7 @@ Expedition() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入派遣失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 2268
@@ -936,7 +928,7 @@ Expedition() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "全部派遣失败！"
-                ExitApp
+                Pause -1
             }
             if UserCheckColor([1779], [1778], ["0xCFCFCF"], scrRatio)
                 break
@@ -953,7 +945,7 @@ Expedition() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "全部派遣失败！"
-                ExitApp
+                Pause -1
             }
         }
     }
@@ -970,7 +962,7 @@ Expedition() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退出前哨基地失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -988,7 +980,7 @@ FriendPoint() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入好友界面失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [2104, 2197]
@@ -1001,7 +993,7 @@ FriendPoint() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入好友界面失败！"
-            ExitApp
+            Pause -1
         }
     }
     while UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
@@ -1009,7 +1001,7 @@ FriendPoint() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "赠送好友点数失败"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 333
@@ -1024,7 +1016,7 @@ FriendPoint() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退出好友界面失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -1042,7 +1034,7 @@ SimulationRoom() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1641]
@@ -1052,7 +1044,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;进入模拟室
@@ -1068,7 +1060,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入模拟室失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;开始模拟
@@ -1084,7 +1076,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入选关失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;选择5C
@@ -1114,7 +1106,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "开始模拟失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 1903
@@ -1127,7 +1119,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入buff选择页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1760]
@@ -1151,7 +1143,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入战斗准备页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;点击进入战斗
@@ -1190,7 +1182,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "模拟室结束异常！"
-            ExitApp
+            Pause -1
         }
     }
     if colorTolerance != 15 {
@@ -1222,7 +1214,7 @@ SimulationRoom() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -1242,7 +1234,7 @@ Arena() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1641]
@@ -1252,7 +1244,7 @@ Arena() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;收pjjc菜
@@ -1288,7 +1280,7 @@ RookieArena(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入竞技场失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1683]
@@ -1298,7 +1290,7 @@ RookieArena(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入竞技场失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;进入新人竞技场
@@ -1326,14 +1318,14 @@ RookieArena(times) {
                 Sleep sleepTime
                 if A_Index > waitTolerance {
                     MsgBox "退回大厅失败！"
-                    ExitApp
+                    Pause -1
                 }
             }
             return
         }
         if A_Index > waitTolerance {
             MsgBox "进入新人竞技场失败！"
-            ExitApp
+            Pause -1
         }
     }
     loop times {
@@ -1350,7 +1342,7 @@ RookieArena(times) {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "选择对手失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;点击进入战斗
@@ -1366,7 +1358,7 @@ RookieArena(times) {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "新人竞技场作战失败！"
-                ExitApp
+                Pause -1
             }
         }
     }
@@ -1383,13 +1375,123 @@ RookieArena(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
 ;特殊竞技场
 SpecialArena(times) {
-
+    ;进入竞技场
+    stdTargetX := 2208
+    stdTargetY := 1359
+    UserClick(stdTargetX, stdTargetY, scrRatio)
+    Sleep sleepTime
+    stdCkptX := [1641]
+    stdCkptY := [324]
+    desiredColor := ["0x01D4F6"]
+    while UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+        UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep sleepTime
+        if A_Index > waitTolerance {
+            MsgBox "进入竞技场失败！"
+            Pause -1
+        }
+    }
+    stdCkptX := [1683]
+    stdCkptY := [606]
+    desiredColor := ["0xF7FCFE"]
+    while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+        Sleep sleepTime
+        if A_Index > waitTolerance {
+            MsgBox "进入竞技场失败！"
+            Pause -1
+        }
+    }
+    ;进入特殊竞技场
+    stdTargetX := 1647
+    stdTargetY := 1164
+    UserClick(stdTargetX, stdTargetY, scrRatio)
+    Sleep sleepTime
+    stdCkptX := [784]
+    stdCkptY := [1201]
+    desiredColor := ["0xF8FCFE"]
+    while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+        UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep sleepTime
+        if A_Index > 5 {
+            ;退回大厅
+            stdTargetX := 333
+            stdTargetY := 2041
+            UserClick(stdTargetX, stdTargetY, scrRatio)
+            Sleep sleepTime
+            stdCkptX := [64]
+            stdCkptY := [470]
+            desiredColor := ["0xFAA72C"]
+            while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+                UserClick(stdTargetX, stdTargetY, scrRatio)
+                Sleep sleepTime
+                if A_Index > waitTolerance {
+                    MsgBox "退回大厅失败！"
+                    Pause -1
+                }
+            }
+            return
+        }
+        if A_Index > waitTolerance {
+            MsgBox "进入新人竞技场失败！"
+            Pause -1
+        }
+    }
+    loop times {
+        ;点击进入战斗
+        stdTargetX := 2371
+        stdTargetY := 1847
+        UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep sleepTime
+        stdCkptX := [2700]
+        stdCkptY := [1691]
+        desiredColor := ["0xF7FCFE"]
+        while UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+            UserClick(stdTargetX, stdTargetY, scrRatio)
+            Sleep sleepTime
+            if A_Index > waitTolerance {
+                MsgBox "选择对手失败！"
+                Pause -1
+            }
+        }
+        ;点击进入战斗
+        stdTargetX := 2123
+        stdTargetY := 1784
+        UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep sleepTime
+        stdCkptX := [2784]
+        stdCkptY := [1471]
+        desiredColor := ["0xF8FCFD"]
+        while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+            UserClick(stdTargetX, stdTargetY, scrRatio)
+            Sleep sleepTime
+            if A_Index > waitTolerance {
+                MsgBox "新人竞技场作战失败！"
+                Pause -1
+            }
+        }
+    }
+    ;退回大厅
+    stdTargetX := 333
+    stdTargetY := 2041
+    UserClick(stdTargetX, stdTargetY, scrRatio)
+    Sleep sleepTime
+    stdCkptX := [64]
+    stdCkptY := [470]
+    desiredColor := ["0xFAA72C"]
+    while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
+        UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep sleepTime
+        if A_Index > waitTolerance {
+            MsgBox "退回大厅失败！"
+            Pause -1
+        }
+    }
 }
 ;8: 对前n位nikke进行好感度咨询(可以通过收藏把想要咨询的nikke排到前面)
 NotAllCollection() {
@@ -1412,7 +1514,7 @@ LoveTalking(times) {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入妮姬列表失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1466, 1814]
@@ -1422,7 +1524,7 @@ LoveTalking(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入妮姬列表失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;进入咨询页面
@@ -1448,7 +1550,7 @@ LoveTalking(times) {
                 Sleep sleepTime
                 if A_Index > waitTolerance {
                     MsgBox "退回大厅失败！"
-                    ExitApp
+                    Pause -1
                 }
             }
             return
@@ -1457,7 +1559,7 @@ LoveTalking(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入咨询页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;点进第一个妮姬
@@ -1473,7 +1575,7 @@ LoveTalking(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入妮姬咨询页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     loop times {
@@ -1495,7 +1597,7 @@ LoveTalking(times) {
                 Sleep sleepTime
                 if A_Index > waitTolerance {
                     MsgBox "进入妮姬咨询页面失败！"
-                    ExitApp
+                    Pause -1
                 }
             }
             ;点击确定
@@ -1511,7 +1613,7 @@ LoveTalking(times) {
                 Sleep sleepTime
                 if A_Index > waitTolerance {
                     MsgBox "快速咨询失败！"
-                    ExitApp
+                    Pause -1
                 }
             }
         }
@@ -1533,7 +1635,7 @@ LoveTalking(times) {
                     Sleep sleepTime
                     if A_Index > waitTolerance {
                         MsgBox "咨询失败！"
-                        ExitApp
+                        Pause -1
                     }
                 }
                 ;点击确认
@@ -1549,7 +1651,7 @@ LoveTalking(times) {
                     Sleep sleepTime
                     if A_Index > waitTolerance {
                         MsgBox "咨询失败！"
-                        ExitApp
+                        Pause -1
                     }
                 }
                 stdCkptX := [1504]
@@ -1565,7 +1667,7 @@ LoveTalking(times) {
                     Sleep sleepTime // 2
                     if A_Index > waitTolerance * 2 {
                         MsgBox "咨询失败！"
-                        ExitApp
+                        Pause -1
                     }
                 }
             }
@@ -1588,7 +1690,7 @@ LoveTalking(times) {
                 break 2
             if A_Index > waitTolerance {
                 MsgBox "咨询失败！"
-                ExitApp
+                Pause -1
             }
         }
     }
@@ -1605,7 +1707,7 @@ LoveTalking(times) {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -1623,7 +1725,7 @@ FailTower() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1641]
@@ -1633,7 +1735,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;进入无限之塔
@@ -1649,7 +1751,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入无限之塔失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 1953
@@ -1664,7 +1766,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "选择作战失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 2242
@@ -1679,7 +1781,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入作战失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;按esc
@@ -1693,7 +1795,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "按esc失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;按放弃战斗
@@ -1707,7 +1809,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "放弃战斗失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;退回大厅
@@ -1723,7 +1825,7 @@ FailTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -1782,7 +1884,7 @@ CompanyTower() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1641]
@@ -1792,7 +1894,7 @@ CompanyTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;进入无限之塔
@@ -1808,7 +1910,7 @@ CompanyTower() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入无限之塔失败！"
-            ExitApp
+            Pause -1
         }
     }
     Sleep 1500
@@ -1833,7 +1935,7 @@ CompanyTower() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "进入企业塔失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;直到成功进入企业塔
@@ -1844,7 +1946,7 @@ CompanyTower() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "进入企业塔失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;进入关卡页面
@@ -1858,7 +1960,7 @@ CompanyTower() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "进入企业塔关卡页面失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;如果战斗次数已经用完
@@ -1898,7 +2000,7 @@ WaitForBattleEnd:
             Sleep sleepTime
             if A_Index > waitTolerance * 20 {
                 MsgBox "企业塔自动战斗失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;如果战斗失败或次数用完
@@ -1978,7 +2080,7 @@ WaitForBattleEnd:
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -1997,7 +2099,7 @@ Interception() {
         Sleep sleepTime // 2
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1641]
@@ -2007,7 +2109,7 @@ Interception() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入方舟失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;进入拦截战
@@ -2023,7 +2125,7 @@ Interception() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入拦截战失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 559
@@ -2066,7 +2168,7 @@ Interception() {
             desiredColor := ["0xFD000F"]
         default:
             MsgBox "BOSS选择错误！"
-            ExitApp
+            Pause -1
     }
     stdTargetX := 1556
     stdTargetY := 886
@@ -2075,7 +2177,7 @@ Interception() {
         Sleep 2000
         if A_Index > waitTolerance {
             MsgBox "选择BOSS失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;点击挑战按钮
@@ -2092,7 +2194,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "退回大厅失败！"
-                ExitApp
+                Pause -1
             }
         }
         return
@@ -2107,7 +2209,7 @@ Interception() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "点击挑战失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;选择编队
@@ -2139,7 +2241,7 @@ Interception() {
             stdCkptY := [1428]
         default:
             MsgBox "BOSS选择错误！"
-            ExitApp
+            Pause -1
     }
     desiredColor := ["0x02ADF5"]
     while !UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
@@ -2147,7 +2249,7 @@ Interception() {
         Sleep 1500
         if A_Index > waitTolerance {
             MsgBox "选择编队失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;如果不能快速战斗，就进入战斗
@@ -2165,7 +2267,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "进入战斗失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;退出结算页面
@@ -2179,7 +2281,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance * 20 {
                 MsgBox "自动战斗失败！"
-                ExitApp
+                Pause -1
             }
         }
         while UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
@@ -2187,7 +2289,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "退出结算页面失败！"
-                ExitApp
+                Pause -1
             }
         }
     }
@@ -2199,7 +2301,7 @@ Interception() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退出结算页面失败！"
-            ExitApp
+            Pause -1
         }
     }
     ;快速战斗
@@ -2216,7 +2318,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "快速战斗失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;退出结算页面
@@ -2229,7 +2331,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "快速战斗结算失败！"
-                ExitApp
+                Pause -1
             }
         }
         while UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) {
@@ -2237,7 +2339,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "退出结算页面失败！"
-                ExitApp
+                Pause -1
             }
         }
         ;检查是否退出
@@ -2248,7 +2350,7 @@ Interception() {
             Sleep sleepTime
             if A_Index > waitTolerance {
                 MsgBox "退出结算页面失败！"
-                ExitApp
+                Pause -1
             }
         }
         Sleep 1000
@@ -2271,7 +2373,7 @@ Interception() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退回大厅失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -2289,7 +2391,7 @@ Mail() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入邮箱失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [2085]
@@ -2312,7 +2414,7 @@ Mail() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退出邮箱失败！"
-            ExitApp
+            Pause -1
         }
     }
 }
@@ -2330,7 +2432,7 @@ Mission() {
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入任务失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdTargetX := 2286
@@ -2416,7 +2518,7 @@ OnePass() { ;执行一次通行证
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "进入通行证失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [1733]
@@ -2465,7 +2567,7 @@ OnePass() { ;执行一次通行证
         Sleep sleepTime
         if A_Index > waitTolerance {
             MsgBox "退出通行证失败！"
-            ExitApp
+            Pause -1
         }
     }
     stdCkptX := [3395]
@@ -2556,10 +2658,10 @@ ClickOnDoro(*) {
     } catch as err {
         title := "ahk_exe nikke.exe"
     }
-    numNikke := WinGetCount(title)
+    numNikke := WinGetCount(title) ;多开检测
     if numNikke = 0 {
         MsgBox "未检测到NIKKE主程序"
-        ExitApp
+        Pause -1
     }
     loop numNikke {
         nikkeID := WinGetIDLast(title)
@@ -2722,7 +2824,7 @@ global isBoughtTrash := 1         ; 检测废铁商店
 ;检测管理员身份
 if !A_IsAdmin {
     MsgBox "请以管理员身份运行Doro"
-    ExitApp
+    Pause -1
 }
 ;读取设置
 SetWorkingDir A_ScriptDir
@@ -2838,4 +2940,15 @@ doroGui.Show()
 }
 ^2:: {
     Pause -1
+}
+;调试指定函数
+^0:: {
+    ;添加基本的依赖
+    title := "ahk_exe nikke.exe"
+    nikkeID := WinGetIDLast(title)
+    WinGetClientPos , , &userScreenW, &userScreenH, nikkeID
+    global scrRatio
+    scrRatio := userScreenW / stdScreenW
+    ;下面写要调试的函数
+    BackToHall()
 }

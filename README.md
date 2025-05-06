@@ -8,6 +8,12 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持国际�
 
 </div>
 
+## 我们联合！
+
+- [功能类似的手机脚本](https://github.com/Zebartin/autoxjs-scripts)
+
+- [功能类似的模拟器脚本](https://github.com/takagisanmie/NIKKEAutoScript)
+
 ## 免责声明
 
 本项目仅供个人学习研究使用，严禁用于商业用途。除 Github 以外其他任何网站、社交平台中有关本项目的内容**均非本人发布**，若造成侵犯著作权、版权或违反网络安全法规等任何后果，均与本人无关。

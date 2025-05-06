@@ -3344,11 +3344,11 @@ Gui(cmd, arg1:="", args*)
     y:=nY+CutUp+(nH-CutUp-CutDown)//2
     s:=StrReplace(s, "Text.=", "Text:="), r:=StrSplit(Lang["s8"] "|||||||", "|")
     s:="`; #Include <FindText>`n"
-    . "`nt1:=A_TickCount, Text:=X:=Y:=`"`"`n" s
+    . "currentScale := A_ScreenDPI / 96"
+    . "`nt1:=A_TickCount, Text:=X:=Y:=`"`"" s
     . "`nif (ok:=FindText(&X, &Y, " x "-150000, "
-    . y "-150000, " x "+150000, " y "+150000, 0, 0, Text))"
-    . "`n{"
-    . "`n  `; FindText()." . "Click(" . "X, Y, `"L`")"
+    . y "-150000, " x "+150000, " y "+150000, 0.1, 0.1, Text,,,,,,, currentScale, currentScale)){"
+    . "`n     `; FindText()." . "Click(" . "X, Y, `"L`")"
     . "`n}`n"
     . "`n`; ok:=FindText(&X:=`"wait`", &Y:=3, 0,0,0,0,0,0,Text)  `; " r[7]
     . "`n`; ok:=FindText(&X:=`"wait0`", &Y:=-1, 0,0,0,0,0,0,Text)  `; " r[8]

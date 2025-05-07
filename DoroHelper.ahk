@@ -2346,7 +2346,7 @@ LoadSettings() {
 SaveSettings(*) {
     WriteSettings()
     MsgBox "设置已保存！"
-    AddLog("设置已保存！")
+    AddLog("设置已保存！", true)
 }
 ; 全局设置 Map 对象
 global g_settings := Map(
@@ -2534,15 +2534,14 @@ BtnClear.OnEvent("Click", (*) => LogBox.Value := "")
 if g_settings["Debug"] {
     DebugGui.Show()
 }
-AddLog(text) {
-    ; global LogBox
+AddLog(text, forceOutput := false) {  ; 默认参数设为false
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
         return
     }
     static lastText := ""  ; 静态变量保存上一条内容
     global LogBox
-    ; 如果内容与上一条相同则跳过
-    if (text = lastText)
+    ; 如果内容与上一条相同且不强制输出，则跳过
+    if (text = lastText && !forceOutput)
         return
     lastText := text  ; 保存当前内容供下次比较
     timestamp := FormatTime(, "HH:mm:ss")

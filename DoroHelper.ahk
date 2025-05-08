@@ -14,11 +14,32 @@ colorTolerance := 15
 currentVersion := "v1.0.0-beta.2"
 usr := "kyokakawaii"
 repo := "DoroHelper"
+MsgBox "目前可能只支持2k分辨率 100%缩放"
 ;初始化
-title := "ahk_exe nikke.exe"
-nikkeID := WinGetIDLast(title)
-WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
-scrRatio := NikkeW / stdScreenW
+Initialization() {
+    global scrRatio, nikkeID, NikkeX, NikkeY, NikkeW, NikkeH, NikkeWP, NikkeHP
+    ; 定义可能的关键词列表（考虑多语言或地区差异）
+    keywords := ["nikke.exe", "勝利女神：妮姬"]
+    ; 遍历所有窗口，匹配关键词
+    for hwnd in WinGetList() {
+        title := WinGetTitle(hwnd)
+        for keyword in keywords {
+            if InStr(title, keyword) {
+                nikkeID := WinGetIDLast(title)
+                WinActivate nikkeID
+                break
+            }
+        }
+    }
+    try {
+        WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
+        WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
+        scrRatio := NikkeW / stdScreenW
+    } catch Error {
+        MsgBox "未检测到NIKKE主程序"
+        Pause
+    }
+}
 ;颜色判断
 IsSimilarColor(targetColor, color) {
     tr := Format("{:d}", "0x" . substr(targetColor, 3, 2))
@@ -2204,83 +2225,66 @@ ClickOnHelp(*) {
 }
 ClickOnDoro(*) {
     WriteSettings()
-    title := "勝利女神：妮姬"
-    try {
-        WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, "勝利女神：妮姬"
-    } catch as err {
-        title := "ahk_exe nikke.exe"
+    Initialization()
+    Login() ;登陆到主界面
+    if g_settings["Shop"] {
+        if g_settings["CashShop"]
+            CashShop()
+        if g_settings["NormalShop"]
+            NormalShop()
+        if g_settings["ArenaShop"]
+            ArenaShop()
+        if g_settings["ScrapShop"]
+            ScrapShop()
+        BackToHall
     }
-    numNikke := WinGetCount(title) ;多开检测
-    if numNikke = 0 {
-        MsgBox "未检测到NIKKE主程序"
-        Pause
+    if g_settings["SimulationRoom"] {
+        SimulationRoom()
+        if g_settings["SimulationOverClock"] ;模拟室超频
+            SimulationOverClock()
+        BackToHall
     }
-    loop numNikke {
-        nikkeID := WinGetIDLast(title)
-        WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
-        global scrRatio
-        scrRatio := NikkeW / stdScreenW
-        WinActivate nikkeID
-        Login() ;登陆到主界面
-        if g_settings["Shop"] {
-            if g_settings["CashShop"]
-                CashShop()
-            if g_settings["NormalShop"]
-                NormalShop()
-            if g_settings["ArenaShop"]
-                ArenaShop()
-            if g_settings["ScrapShop"]
-                ScrapShop()
-            BackToHall
-        }
-        if g_settings["SimulationRoom"] {
-            SimulationRoom()
-            if g_settings["SimulationOverClock"] ;模拟室超频
-                SimulationOverClock()
-            BackToHall
-        }
-        if g_settings["Arena"] {
-            Arena()
-            if g_settings["RookieArena"] ;新人竞技场
-                RookieArena()
-            if g_settings["SpecialArena"] ;特殊竞技场
-                SpecialArena()
-            if g_settings["ChampionArena"] ;冠军竞技场
-                ChampionArena()
-            BackToHall
-        }
-        if g_settings["LoveTalking"]
-            LoveTalking(g_numeric_settings["NumOfLoveTalking"])
-        if g_settings["Tower"] {
-            if g_settings["CompanyTower"]
-                CompanyTower()
-            if g_settings["UniversalTower"]
-                UniversalTower()
-            BackToHall
-        }
-        if g_settings["Interception"]
-            Interception()
-        if g_settings["Award"] {
-            if g_settings["OutpostDefence"] ; 使用键名检查 Map
-                OutpostDefence()
-            if g_settings["RankingReward"] ;方舟排名奖励
-                RankingReward()
-            if g_settings["FriendPoint"]
-                FriendPoint()
-            if g_settings["Mail"]
-                Mail()
-            if g_settings["Mission"]
-                Mission()
-            if g_settings["Pass"]
-                Pass()
-            if g_settings["FreeRecruit"]
-                FreeRecruit()
-            if g_settings["RoadToVillain"]
-                RoadToVillain()
-            if g_settings["Cooperate"]
-                Cooperate()
-            BackToHall
-        }
+    if g_settings["Arena"] {
+        Arena()
+        if g_settings["RookieArena"] ;新人竞技场
+            RookieArena()
+        if g_settings["SpecialArena"] ;特殊竞技场
+            SpecialArena()
+        if g_settings["ChampionArena"] ;冠军竞技场
+            ChampionArena()
+        BackToHall
+    }
+    if g_settings["LoveTalking"]
+        LoveTalking(g_numeric_settings["NumOfLoveTalking"])
+    if g_settings["Tower"] {
+        if g_settings["CompanyTower"]
+            CompanyTower()
+        if g_settings["UniversalTower"]
+            UniversalTower()
+        BackToHall
+    }
+    if g_settings["Interception"]
+        Interception()
+    if g_settings["Award"] {
+        if g_settings["OutpostDefence"] ; 使用键名检查 Map
+            OutpostDefence()
+        if g_settings["RankingReward"] ;方舟排名奖励
+            RankingReward()
+        if g_settings["FriendPoint"]
+            FriendPoint()
+        if g_settings["Mail"]
+            Mail()
+        if g_settings["Mission"]
+            Mission()
+        if g_settings["Pass"]
+            Pass()
+        if g_settings["FreeRecruit"]
+            FreeRecruit()
+        if g_settings["RoadToVillain"]
+            RoadToVillain()
+        if g_settings["Cooperate"]
+            Cooperate()
+        BackToHall
     }
     MsgBox "Doro完成任务！"
     CalculateAndShowSpan()
@@ -2351,7 +2355,6 @@ SaveSettings(*) {
 }
 ; 全局设置 Map 对象
 global g_settings := Map(
-    "Debug", 1,                ; Debug模式开关
     "Award", 1,                ; 奖励领取总开关
     "OutpostDefence", 1,       ; 前哨基地收菜
     "CashShop", 1,             ; 付费商店
@@ -2450,19 +2453,17 @@ doroGui.SetFont("cred s12 ")
 doroGui.Add("Text", "R1", "紧急停止按ctrl + 1 暂停按ctrl + 2")
 doroGui.Add("Link", " R1", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
 doroGui.SetFont()
-doroGui.Add("Button", "R1 x+10", "帮助")
-.OnEvent("Click", ClickOnHelp)
-doroGui.Add("Button", "R1 x+10", "检查更新")
-.OnEvent("Click", ClickOnCheckForUpdate)
+doroGui.Add("Button", "R1 x+10", "帮助").OnEvent("Click", ClickOnHelp)
+doroGui.Add("Button", "R1 x+10", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
+BtnClear := doroGui.Add("Button", "R1 x+10", "清空日志").OnEvent("Click", (*) => LogBox.Value := "")
 Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
-Tab.Add(["设置", "任务", "商店", "战斗", "奖励"])
+Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
 Tab.UseTab("设置")
 doroGui.SetFont("cred s10 Bold")
 doroGui.Add("Text", , "除非你知道自己在做什么，否则不要修改")
 doroGui.SetFont()
 AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新(确保能连上github)", "R1.2")
 AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
-AddCheckboxSetting(doroGui, "Debug", "是否显示程序日志", "R1.2")
 doroGui.Add("Text", , "点击间隔(毫秒)")
 doroGui.Add("DropDownList", "Choose" SleepTimeToLabel(sleepTime), [750, 1000, 1250, 1500, 1750, 2000]).OnEvent("Change", ChangeOnSleepTime)
 doroGui.Add("Text", , "色差容忍度")
@@ -2518,23 +2519,13 @@ AddCheckboxSetting(doroGui, "Pass", "通行证收取", "R1.2")
 AddCheckboxSetting(doroGui, "FreeRecruit", "活动期间每日免费招募", "R1.2")
 AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
 AddCheckboxSetting(doroGui, "Cooperate", "协同作战摆烂", "R1.2")
-Tab.UseTab()
-doroGui.Add("Button", "Default w80 xm+100", "DORO!")
-.OnEvent("Click", ClickOnDoro)
-doroGui.Show()
-; 添加日志
-DebugGui := Gui()
-DebugGui.Title := "程序日志"
-DebugGui.Opt("+Resize") ; 允许窗口调整大小
-; 添加多行文本框（带垂直滚动条）
-LogBox := DebugGui.Add("Edit", "r20 w400 ReadOnly -Wrap +HScroll +VScroll")
+Tab.UseTab("日志")
+LogBox := doroGui.Add("Edit", "r20 w250 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ; 初始内容
-; 添加清空按钮
-BtnClear := DebugGui.Add("Button", "x+10", "清空日志")
-BtnClear.OnEvent("Click", (*) => LogBox.Value := "")
-if g_settings["Debug"] {
-    DebugGui.Show()
-}
+Tab.UseTab()
+doroGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDoro)
+doroGui.Show()
+;添加日志
 AddLog(text, forceOutput := false) {  ; 默认参数设为false
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
         return
@@ -2549,6 +2540,7 @@ AddLog(text, forceOutput := false) {  ; 默认参数设为false
     LogBox.Value .= timestamp " - " text "`r`n"
     SendMessage(0x0115, 7, 0, LogBox) ; 自动滚动到底部
 }
+;日志的时间戳转换
 TimeToSeconds(timeStr) {
     ; 期望 "HH:mm:ss" 格式
     parts := StrSplit(timeStr, ":")
@@ -2618,12 +2610,7 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
 ;调试指定函数
 ^0:: {
     ;添加基本的依赖
-    title := "ahk_exe nikke.exe"
-    nikkeID := WinGetIDLast(title)
-    WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
-    WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
+    Initialization()
     WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 2347 * currentScale, 1350 * currentScale, nikkeID
-    global scrRatio
-    scrRatio := NikkeW / stdScreenW
     ;下面写要调试的函数
 }

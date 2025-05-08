@@ -6,39 +6,49 @@ CoordMode "Mouse", "Client"
 ;操作间隔（单位：毫秒）
 sleepTime := 1500
 ;consts
-currentScale := A_ScreenDPI / 96 ;确定缩放比例
+currentVersion := "v1.0.0-beta.3"
+usr := "kyokakawaii"
+repo := "DoroHelper"
+currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例
 stdScreenW := 3840
 stdScreenH := 2160
 waitTolerance := 50
 colorTolerance := 15
-currentVersion := "v1.0.0-beta.2"
-usr := "kyokakawaii"
-repo := "DoroHelper"
-MsgBox "目前可能只支持2k分辨率 100%缩放"
+scrRatio := 1 ;图像相对于屏幕的比例
+nikkeID := ""
+NikkeX := 0
+NikkeY := 0
+NikkeW := 0
+NikkeH := 0
+NikkeWP := 0
+NikkeHP := 0
+MsgBox "目前可能只支持国际服 2k分辨率 100%缩放"
+MsgBox "以任何方式暂停后，请右下角Reload Script重启程序后再次运行"
 ;初始化
 Initialization() {
-    global scrRatio, nikkeID, NikkeX, NikkeY, NikkeW, NikkeH, NikkeWP, NikkeHP
-    ; 定义可能的关键词列表（考虑多语言或地区差异）
-    keywords := ["nikke.exe", "勝利女神：妮姬"]
-    ; 遍历所有窗口，匹配关键词
-    for hwnd in WinGetList() {
-        title := WinGetTitle(hwnd)
-        for keyword in keywords {
-            if InStr(title, keyword) {
-                nikkeID := WinGetIDLast(title)
-                WinActivate nikkeID
-                break
-            }
-        }
+    ; 设置窗口标题匹配模式为完全匹配
+    SetTitleMatchMode 3
+    targetExe := "nikke.exe"
+    if WinExist("ahk_exe " . targetExe) {
+        winID := WinExist("ahk_exe " . targetExe) ; 获取窗口ID
+        actualWinTitle := WinGetTitle(winID)      ; 获取实际窗口标题
+        AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
+        ; 你可以在这里添加其他操作，比如激活该窗口:
+        WinActivate(winID)
     }
-    try {
-        WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
-        WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
-        scrRatio := NikkeW / stdScreenW
-    } catch Error {
-        MsgBox "未检测到NIKKE主程序"
+    else {
+        ; 没有找到该进程的窗口
+        AddLog("没有找到进程为 '" . targetExe . "' 的窗口，初始化失败！")
         Pause
     }
+    nikkeID := winID
+    WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
+    WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
+    WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 2347 * currentScale, 1350 * currentScale, nikkeID ;窗口缩放居中
+    global scrRatio
+    scrRatio := NikkeW / stdScreenW
+    Sleep 500
+    AddLog("nikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n缩放比例是" round(scrRatio, 2))
 }
 ;颜色判断
 IsSimilarColor(targetColor, color) {
@@ -58,6 +68,7 @@ IsSimilarColor(targetColor, color) {
 UserClick(sX, sY, k) {
     uX := Round(sX * k) ; 计算转换后的坐标
     uY := Round(sY * k)
+    CoordMode "Mouse", "Client"
     Send "{Click " uX " " uY "}" ; 点击转换后的坐标
 }
 ;坐标转换-移动
@@ -160,11 +171,10 @@ CheckAutoBattle() {
 }
 ;点左下角的小房子的对应位置
 Confirm() {
-    AddLog("点击默认位置")
     stdTargetX := 333
     stdTargetY := 2041
     UserClick(stdTargetX, stdTargetY, scrRatio)
-    Sleep sleepTime
+    AddLog("点击默认位置(" stdTargetX * scrRatio "," stdTargetY * scrRatio ")")
 }
 GoBack() {
     AddLog("返回上级页面")
@@ -2224,8 +2234,8 @@ ClickOnHelp(*) {
     )"
 }
 ClickOnDoro(*) {
+    Initialization
     WriteSettings()
-    Initialization()
     Login() ;登陆到主界面
     if g_settings["Shop"] {
         if g_settings["CashShop"]
@@ -2611,6 +2621,22 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
 ^0:: {
     ;添加基本的依赖
     Initialization()
-    WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 2347 * currentScale, 1350 * currentScale, nikkeID
     ;下面写要调试的函数
+    stdTargetX := 333
+    stdTargetY := 2041
+    AddLog("当前比例：" scrRatio)
+    Sleep 500
+    UserClick(stdTargetX, stdTargetY, scrRatio)
+    Sleep 500
+    AddLog("点击转换后位置(" stdTargetX * scrRatio "," stdTargetY * scrRatio ")")
+    Sleep 500
+    CoordMode "Mouse", "Screen"  ; 坐标相对于整个屏幕
+    MouseGetPos &xpos, &ypos     ; 通过引用传递变量存储坐标
+    AddLog ("鼠标位置: (" xpos "," ypos ")")
+    Sleep 500
+    click stdTargetX, stdTargetY
+    Sleep 500
+    CoordMode "Mouse", "Screen"  ; 坐标相对于整个屏幕
+    MouseGetPos &xpos, &ypos     ; 通过引用传递变量存储坐标
+    AddLog ("点击转换前位置: (" xpos "," ypos ")")
 }

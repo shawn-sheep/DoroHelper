@@ -3030,8 +3030,9 @@ int __attribute__((__stdcall__)) PicFind(
                     . "`ntitle := `"ahk_exe nikke.exe`""
                     . "`nnikkeID := WinGetIDLast(title)"
                     . "`nWinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID"
+                    . "`nTrueRatio := A_ScreenDPI / 96 * NikkeW / 2347"
                     . "`nt1:=A_TickCount, Text:=X:=Y:=`"`"" s
-                    . "`nif (ok:=FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1, 0.1, Text,,,,,,, currentScale, currentScale)){"
+                    . "`nif (ok:=FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1*PicTolerance, 0.1*PicTolerance, Text,,,,,,, TrueRatio, TrueRatio)){"
                     . "`n     `; FindText()." . "Click(" . "X, Y, `"L`")"
                     . "`n}`n"
                     . "`n`; ok:=FindText(&X:=`"wait`", &Y:=3, 0,0,0,0,0,0,Text)  `; " r[7]

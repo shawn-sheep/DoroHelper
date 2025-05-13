@@ -10,9 +10,9 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持国际�
 
 ## 我们联合！
 
-- [功能类似的手机脚本](https://github.com/Zebartin/autoxjs-scripts)
+- 牢 N 写的功能类似的[手机脚本](https://github.com/Zebartin/autoxjs-scripts)
 
-- [功能类似的模拟器脚本](https://github.com/takagisanmie/NIKKEAutoScript)
+- 牢 D 功能类似的[模拟器脚本](https://github.com/takagisanmie/NIKKEAutoScript)
 
 ## 免责声明
 
@@ -74,7 +74,7 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
   - 尽可能地爬企业塔
   - 尽可能地爬通用塔
 
-- **其他奖励领取**
+- **常规奖励领取**
 
   - 前哨基地收菜
   - 进行派遣
@@ -83,6 +83,8 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
   - 邮箱收取
   - 任务收取
   - 通行证收取
+
+- **限时奖励领取**
   - 活动期间每日免费招募
   - 德雷克·反派之路
   - 协同作战摆烂
@@ -116,6 +118,18 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
 
 加入[DoroHelper 反馈群](https://qm.qq.com/q/f0Q1yr7vzi)(584275905)
 
+## 支持和鼓励
+
+知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下
+
+<table>
+  <tr>
+<img alt="支付宝收款码" src="./img/alipay.png" width="200" height="200" />
+<img alt="微信收款码" src="./img/weixin.png" width="200" height="200" />
+  </tr>
+</table>
+
 ## 借物表
 
 [Github.ahk-API-for-AHKv2](https://github.com/samfisherirl/Github.ahk-API-for-AHKv2)
+[FindText-for-AHKv2](https://www.autohotkey.com/boards/viewtopic.php?f=83&t=116471)

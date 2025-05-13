@@ -10,6 +10,16 @@ repo := "DoroHelper"
 global waitTolerance := 50
 ; MsgBox "请在运行前调整游戏窗口到合适尺寸"
 ; MsgBox "以任何方式暂停后，请右下角Reload Script重启程序后再次运行"
+msgbox "
+(
+beta8版本添加图片容忍度功能，可以通过调节此选项来一定程度上抵消图片缩放带来的问题，如果能正常运行，请不要修改此选项。同时，直至我买4K显示器前，将不再支持以下分辨率的适配和反馈：
+1、任何1080p分辨率
+2、非100%缩放的2K分辨率
+3、非100%缩放的4K分辨率
+4、多显示器、异形屏
+运行前先ctrl+3初始化，然后再ctrl+4按到画面不动为止。此时nikke应该是居中的。如果1080p下画面超出了屏幕，就改为全屏。如果4k下画面显得太小，请不要修改。
+之后的更新将以修复bug、添加新功能、提升运行速度为主
+)"
 global sleepTime := 1000  ; 声明并初始化全局变量
 ; 全局设置 Map 对象
 global g_settings := Map(
@@ -93,13 +103,13 @@ doroGui := Gui(, "Doro小帮手" currentVersion)
 doroGui.Opt("+Resize")
 doroGui.MarginY := Round(doroGui.MarginY * 0.9)
 doroGui.SetFont("cred s11 Bold")
-doroGui.Add("Text", "R1", "关闭：ctrl + 1 终止：ctrl + 2")
-doroGui.Add("Text", "R1", "初始化：ctrl + 3 调整窗口：ctrl + 4")
-doroGui.Add("Link", " R1", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
+doroGui.Add("Text", "R1", "关闭：ctrl + 1 终止：+ 2 调整窗口：+ 3")
+doroGui.Add("Link", " R1 xs", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
 doroGui.SetFont()
-doroGui.Add("Button", "R1 x+10", "帮助").OnEvent("Click", ClickOnHelp)
-doroGui.Add("Button", "R1 x+10", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
-BtnClear := doroGui.Add("Button", "R1 x+10", "清空日志").OnEvent("Click", (*) => LogBox.Value := "")
+doroGui.Add("Button", "R1 x+8", "赞助").OnEvent("Click", MsgSponsor)
+doroGui.Add("Button", "R1 x+8", "帮助").OnEvent("Click", ClickOnHelp)
+doroGui.Add("Button", "R1 x+8", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
+BtnClear := doroGui.Add("Button", "R1 x+8", "清空日志").OnEvent("Click", (*) => LogBox.Value := "")
 Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
 Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
 Tab.UseTab("设置")
@@ -240,8 +250,9 @@ ClickOnDoro(*) {
             SoloRaid()
         BackToHall
     }
-    MsgBox "Doro完成任务！"
     CalculateAndShowSpan()
+    MsgBox ("Doro完成任务！" outputText)
+    MsgSponsor
     if g_settings["OpenBlablalink"]
         OpenBlablalink
     if g_settings["SelfClosing"]
@@ -287,6 +298,7 @@ Initialization() {
     WinRatio := NikkeW / 2347 ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
     TrueRatio := currentScale * WinRatio
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n窗口缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
+    AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
 }
 /**
  * 添加一个与 g_settings Map 关联的复选框到指定的 GUI 对象.
@@ -325,6 +337,15 @@ ChangeNum(settingKey, GUICtrl, *) {
     global g_numeric_settings
     g_numeric_settings[settingKey] := GUICtrl.Value
 }
+MsgSponsor(*) {
+    myGui := Gui()
+    myGui.Title := "Make Doro Great Again"
+    myGui.Add("Picture", "w200 h200", "./img/alipay.png")
+    myGui.Add("Picture", "x+15 w200 h200", "./img/weixin.png")
+    MyGui.Add("Text", "xs Section w400 h50 Center Wrap", "知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    myGui.Add("Button", "xs+180 y+m w50 h20  ", "确定").OnEvent("Click", (*) => myGui.Destroy())
+    myGui.Show()
+}
 ClickOnHelp(*) {
     msgbox "
     (
@@ -336,7 +357,7 @@ ClickOnHelp(*) {
     万一Doro失控，请按Ctrl + 1组合键结束进程。
     ############################################# 
     要求：
-    - 【设定-画质-全屏幕模式 + 16:9的显示器比例】（推荐）   或    【16:9的窗口模式（窗口尽量拉大，否则像素识别可能出现误差）】
+    - 16:9的显示器比例
     - 设定-画质-开启光晕效果
     - 设定-画质-开启颜色分级
     - 游戏语言设置为简体中文
@@ -349,9 +370,7 @@ ClickOnHelp(*) {
     -游戏需要更新的时候请更新完再使用Doro。
     ############################################# 
     其他:
-    
     -检查是否发布了新版本。
-    -如果出现死循环，提高点击间隔可以解决80%的问题。
     -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
     
     )"
@@ -558,6 +577,7 @@ TimeToSeconds(timeStr) {
 }
 ; 读取日志框内容，根据 HH:mm:ss 时间戳推算跨度，输出到日志框
 CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
+    global outputText
     local logContent := LogBox.Value
     local lines := StrSplit(logContent, "`n")  ; 按换行符分割
     local timestamps := []
@@ -595,7 +615,6 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     outputText .= remainingSeconds " 秒"
     ; 添加到日志
     AddLog(outputText)
-    MsgBox outputText
 }
 OpenBlablalink() {
     Run("https://www.blablalink.com/")
@@ -1867,7 +1886,7 @@ RankingReward() {
     EnterToArk()
     AddLog("===排名奖励任务开始===")
     Text := "|<带红点的奖杯>*200$56.zzzzzzzyDzzzzzzzw0zzzzzzzwTXzzzzzzzDwTzzzzzzbzbzzzzzzvzwzzzzzzyzzDzzzzzzDznzzzzzznzwzzzzzzyzzDzzzzzzbznzzzzzztztz00000zDwTk0000DkyDw00003y07z00000zwDy000001zzz0000007zzXU0000tzzls0000TDzwy00007nzzDU0001wzzns0000TDzwy00007nzzDU0001wzzns0000TDzwS00007nzzbU0001tzzsw0000QTzz30000ADzzs000007zzz000003zzzy00003zzzzs0007zzzzz0003zzzzzs000zzzzzy000Tzzzzzk00Dzzzzzy007zzzzzzs07zzzzzzzU7zzzzzzzs1zzzzzzzz0Tzzzzzzzk7zzzzzzzw1zzzzzzzz0TzzzzzzzU7zzzzzzzs1zzzzzzzk03zzzzzy0001zzzzz0000DzzzU"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
         loop 2 {
@@ -2250,11 +2269,10 @@ SoloRaid() {
 }
 ^3:: {
     Initialization()
-}
-^4:: {
-    ; Initialization()
     ; WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 1920, 1080, nikkeID ;窗口缩放居中
     WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 2347, 1350, nikkeID ;我电脑的尺寸
+}
+^4:: {
 }
 ;调试指定函数
 ^0:: {

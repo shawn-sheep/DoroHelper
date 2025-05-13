@@ -138,7 +138,7 @@ AddCheckboxSetting(doroGui, "CashShop", "领取付费商店免费钻(进不了�
 doroGui.Add("Text", "R1.2 xs Section", "普通商店")
 AddCheckboxSetting(doroGui, "NormalShop", "每日白嫖2次", "R1.2 xs+15")
 AddCheckboxSetting(doroGui, "NormalShopDust", "用信用点买芯尘盒", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "NormalShopPackage", "购买公司武器熔炉", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "NormalShopPackage", "购买简介个性化礼包", "R1.2 xs+15")
 doroGui.Add("Text", " R1 xs", "竞技场商店")
 AddCheckboxSetting(doroGui, "BookFire", "燃烧", "R1.2 xs+15")
 AddCheckboxSetting(doroGui, "BookWater", "水冷", "R1.2 X+0.5")
@@ -854,22 +854,44 @@ NormalShop() {
         else {
             AddLog("没有可白嫖的东西")
         }
-        Text := "|<芯尘盒>*174$62.1UM00k00600wD00S003k0Tzw1ba03z0Tzzkxvk3zwDzzwSSy3zztzzyDbbnzzz3mw7lsyzzzUNq1sS77zzk0w0A7UUTzs07U00k07zy0RsE0S01zzVzDS07U0DzkTn7Vzzs7zy7w1sTzy3zzlz0D7zzUzzwxkTk1s0DzzDSDw0S03zzkbzkTzzvzzz1zs7zzyzzzk7w1zzzjzzy"
-        if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) and g_settings["NormalShopDust"] {
-            AddLog("点击芯尘盒")
-            FindText().Click(X, Y, "L")
-            Text := "|<信用点的图标>*169$29.000k0001s000Tk001vk007Xk00TDk03znk0DzDU0zyTU7zzz0Tzzz1zzzz7zzzwjzzxnDzzy6Dzzs0TzvU8zzy09zzk0DTr00DzQ00TxU00Te000Ts000RU000Q0000E004"
+        if g_settings["NormalShopDust"] {
+            Text := "|<芯尘盒>*174$62.1UM00k00600wD00S003k0Tzw1ba03z0Tzzkxvk3zwDzzwSSy3zztzzyDbbnzzz3mw7lsyzzzUNq1sS77zzk0w0A7UUTzs07U00k07zy0RsE0S01zzVzDS07U0DzkTn7Vzzs7zy7w1sTzy3zzlz0D7zzUzzwxkTk1s0DzzDSDw0S03zzkbzkTzzvzzz1zs7zzyzzzk7w1zzzjzzy"
             if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                    AddLog("点击购买")
-                    FindText().Click(X, Y, "L")
-                    Sleep sleepTime
+                AddLog("点击芯尘盒")
+                FindText().Click(X, Y, "L")
+                Text := "|<信用点的图标>*169$29.000k0001s000Tk001vk007Xk00TDk03znk0DzDU0zyTU7zzz0Tzzz1zzzz7zzzwjzzxnDzzy6Dzzs0TzvU8zzy09zzk0DTr00DzQ00TxU00Te000Ts000RU000Q0000E004"
+                if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                    Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
+                    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                        AddLog("购买芯尘盒")
+                        FindText().Click(X, Y, "L")
+                        Sleep sleepTime
+                        Text := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
+                        while !(ok2 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                            Confirm
+                        }
+                    }
+                }
+                else {
+                    AddLog("只使用信用点购买，跳过")
+                    Confirm
                 }
             }
-            else {
-                AddLog("只使用信用点购买，跳过")
-                Confirm
+        }
+        if g_settings["NormalShopPackage"] {
+            Text := "|<礼包>*179$37.6301k03Xk0s01ls0zzbyw0zzvzS0zzwzj0zyS3bUTzD3nk7zrXts1zvryw0Qxvzy0Dytzz07zwLrb3zy3XnVkDVltks1sszsTzwQDsDzwC3s1zwU"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(x, y, "L")
+                Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
+                if (ok1 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                    AddLog("购买简介个性化礼包")
+                    FindText().Click(x, y, "L")
+                    Sleep sleepTime
+                    Text := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
+                    while !(ok2 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                        Confirm
+                    }
+                }
             }
         }
         ;确认至百货商店页面

@@ -13,12 +13,12 @@ global waitTolerance := 50
 global sleepTime := 1000  ; 声明并初始化全局变量
 ; 全局设置 Map 对象
 global g_settings := Map(
-    "Award", 1,                ; 奖励领取总开关
-    "OutpostDefence", 1,       ; 前哨基地收菜
-    "CashShop", 1,             ; 付费商店
+    ;商店
     "Shop", 1,                 ; 商店总开关
+    "CashShop", 1,             ; 付费商店
     "NormalShop", 1,           ; 普通商店
     "NormalShopDust", 1,       ; 普通商店：芯尘盒
+    "NormalShopPackage", 0,    ; 普通商店：简介个性化礼包
     "ArenaShop", 1,            ; 竞技场商店
     "BookFire", 1,             ; 竞技场商店：燃烧手册
     "BookWater", 1,            ; 竞技场商店：水冷手册
@@ -32,31 +32,39 @@ global g_settings := Map(
     "ScrapShopGem", 1,         ; 废铁商店：珠宝
     "ScrapShopVoucher", 1,     ; 废铁商店：好感券
     "ScrapShopResources", 1,   ; 废铁商店：养成资源
-    "Expedition", 1,           ; 派遣
-    "FriendPoint", 1,          ; 好友点数
-    "Mail", 1,                 ; 邮箱
-    "Mission", 1,              ; 任务
-    "Pass", 1,                 ; 通行证
+    ; 模拟室
     "SimulationRoom", 1,       ; 模拟室
     "SimulationOverClock", 1,  ; 模拟室超频
+    ; 竞技场
     "Arena", 1,                ; 竞技场收菜
-    "RankingReward", 1,        ; 排名奖励
     "RookieArena", 1,          ; 新人竞技场
     "SpecialArena", 1,         ; 特殊竞技场
     "ChampionArena", 0,        ; 冠军竞技场
+    ; 咨询妮姬
     "LoveTalking", 1,          ; 咨询
-    "CompanyWeapon", 1,        ; 企业武器熔炉 (商店)
-    "Interception", 1,         ; 拦截战
+    ; 无限之塔
     "Tower", 1,                ; 无限之塔总开关
     "CompanyTower", 1,         ; 企业塔
     "UniversalTower", 0,       ; 通用塔
-    "LongTalk", 1,             ; 详细咨询 (若图鉴未满)
-    "AutoCheckUpdate", 0,      ; 自动检查更新
-    "SelfClosing", 1,          ; 完成后自动关闭程序
+    ; 异常拦截
+    "Interception", 1,         ; 拦截战
+    ; 奖励
+    "Award", 1,                ; 奖励领取总开关
+    "OutpostDefence", 1,       ; 前哨基地收菜
+    "Expedition", 1,           ; 派遣
+    "FriendPoint", 1,          ; 好友点数
+    "Mail", 1,                 ; 邮箱
+    "RankingReward", 1,        ; 排名奖励
+    "Mission", 1,              ; 任务
+    "Pass", 1,                 ; 通行证
     "FreeRecruit", 1,          ; 活动期间每日免费招募
     "RoadToVillain", 1,        ; 德雷克·反派之路
     "Cooperate", 1,            ; 协同作战
     "SoloRaid", 1,             ; 个人突击
+    ; 其他
+    "AutoCheckUpdate", 0,      ; 自动检查更新
+    "SelfClosing", 1,          ; 完成后自动关闭程序
+    "OpenBlablalink", 0,       ; 完成后打开Blablalink
 )
 ; 其他非简单开关的设置 Map 对象
 global g_numeric_settings := Map(
@@ -74,11 +82,171 @@ SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
 }
-catch as err {
+catch {
     WriteSettings()
 }
 if g_settings["AutoCheckUpdate"] {
     CheckForUpdateHandler(false) ; 调用核心函数，标记为非手动检查
+}
+;创建gui
+doroGui := Gui(, "Doro小帮手" currentVersion)
+doroGui.Opt("+Resize")
+doroGui.MarginY := Round(doroGui.MarginY * 0.9)
+doroGui.SetFont("cred s11 Bold")
+doroGui.Add("Text", "R1", "关闭：ctrl + 1 终止：ctrl + 2")
+doroGui.Add("Text", "R1", "初始化：ctrl + 3 调整窗口：ctrl + 4")
+doroGui.Add("Link", " R1", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
+doroGui.SetFont()
+doroGui.Add("Button", "R1 x+10", "帮助").OnEvent("Click", ClickOnHelp)
+doroGui.Add("Button", "R1 x+10", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
+BtnClear := doroGui.Add("Button", "R1 x+10", "清空日志").OnEvent("Click", (*) => LogBox.Value := "")
+Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
+Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
+Tab.UseTab("设置")
+doroGui.SetFont("cred s10 Bold")
+doroGui.Add("Text", , "除非你知道自己在做什么，否则不要修改")
+doroGui.SetFont()
+AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新(确保能连上github)", "R1.2")
+AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
+AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
+doroGui.Add("Text", , "点击间隔(毫秒)")
+doroGui.Add("DropDownList", "Choose" g_numeric_settings["sleepTime"], [750, 1000, 1250, 1500, 1750, 2000]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("sleepTime", CtrlObj))
+doroGui.Add("Text", , "识图宽容度(越大越容易识到图、识错图)")
+doroGui.Add("DropDownList", "Choose" g_numeric_settings["Tolerance"], [1, 2, 3]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("Tolerance", CtrlObj))
+doroGui.Add("Button", "R1", "保存当前设置").OnEvent("Click", SaveSettings)
+Tab.UseTab("任务")
+AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
+AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "R1.2")
+AddCheckboxSetting(doroGui, "Arena", "竞技场", "R1.2 Section")
+AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬", "R1.2 xs Section")
+AddCheckboxSetting(doroGui, "Tower", "无限之塔", "R1.2 xs")
+AddCheckboxSetting(doroGui, "Interception", "异常拦截", "R1.2 xs")
+AddCheckboxSetting(doroGui, "Award", "奖励收取", "R1.2 xs")
+Tab.UseTab("商店")
+doroGui.Add("Text", "R1.2 Section", "付费商店")
+AddCheckboxSetting(doroGui, "CashShop", "领取付费商店免费钻(进不了的别选)", "R1.2 xs+15")
+doroGui.Add("Text", "R1.2 xs Section", "普通商店")
+AddCheckboxSetting(doroGui, "NormalShop", "每日白嫖2次", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "NormalShopDust", "用信用点买芯尘盒", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "NormalShopPackage", "购买公司武器熔炉", "R1.2 xs+15")
+doroGui.Add("Text", " R1 xs", "竞技场商店")
+AddCheckboxSetting(doroGui, "BookFire", "燃烧", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "BookWater", "水冷", "R1.2 X+0.5")
+AddCheckboxSetting(doroGui, "BookWind", "风压", "R1.2 X+0.5")
+AddCheckboxSetting(doroGui, "BookElec", "电击", "R1.2 X+0.5")
+AddCheckboxSetting(doroGui, "BookIron", "铁甲", "R1.2 X+0.5")
+AddCheckboxSetting(doroGui, "BookBox", "购买代码手册宝箱", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "ArenaShopPackage", "购买简介个性化礼包", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "ArenaShopFurnace", "购买公司武器熔炉", "R1.2 xs+15")
+doroGui.Add("Text", "R1.2 xs Section", "废铁商店")
+AddCheckboxSetting(doroGui, "ScrapShopGem", "购买珠宝", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "ScrapShopVoucher", "购买全部好感券", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "ScrapShopResources", "购买全部养成资源", "R1.2 xs+15")
+Tab.UseTab("战斗")
+doroGui.Add("Text", "R1.2 Section", "竞技场")
+AddCheckboxSetting(doroGui, "RookieArena", "新人竞技场", "R1.2 XP+15 Y+M")
+AddCheckboxSetting(doroGui, "SpecialArena", "特殊竞技场", "R1.2 Y+M")
+AddCheckboxSetting(doroGui, "ChampionArena", "冠军竞技场(跟风竞猜)", "R1.2 Y+M")
+doroGui.Add("Text", "R1.2 xs Section", "异常拦截编队")
+doroGui.Add("DropDownList", "XP+15 Y+M Choose" InterceptionBossToLabel(), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
+doroGui.Add("Text", "R1.2 xs Section", "模拟室（打5C，普通关卡需要快速战斗）")
+AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频（默认使用上次的tag）", "R1.2 XP+15 Y+M")
+doroGui.Add("Text", "R1.2 xs Section", "无限之塔")
+AddCheckboxSetting(doroGui, "CompanyTower", "尽可能地爬企业塔", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "UniversalTower", "尽可能地爬通用塔", "R1.2 xs+15")
+Tab.UseTab("奖励")
+doroGui.Add("Text", "R1.2 Section", "常规奖励")
+AddCheckboxSetting(doroGui, "OutpostDefence", "领取前哨基地防御奖励+1次免费歼灭", "R1.2  Y+M  Section")
+AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
+AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
+AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
+AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2")
+AddCheckboxSetting(doroGui, "Mission", "任务收取", "R1.2")
+AddCheckboxSetting(doroGui, "Pass", "通行证收取", "R1.2")
+doroGui.Add("Text", "R1.2 Section", "限时奖励")
+AddCheckboxSetting(doroGui, "FreeRecruit", "活动期间每日免费招募", "R1.2")
+AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
+AddCheckboxSetting(doroGui, "Cooperate", "协同作战摆烂", "R1.2")
+AddCheckboxSetting(doroGui, "SoloRaid", "单人突击日常", "R1.2")
+Tab.UseTab("日志")
+LogBox := doroGui.Add("Edit", "r20 w270 ReadOnly")
+LogBox.Value := "日志开始...`r`n" ; 初始内容
+Tab.UseTab()
+doroGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDoro)
+doroGui.Show()
+; 点击运行
+ClickOnDoro(*) {
+    Initialization
+    WriteSettings()
+    Login() ;登陆到主界面
+    if g_settings["Shop"] {
+        if g_settings["CashShop"]
+            CashShop()
+        if g_settings["NormalShop"]
+            NormalShop()
+        if g_settings["ArenaShop"]
+            ArenaShop()
+        if g_settings["ScrapShop"]
+            ScrapShop()
+        BackToHall
+    }
+    if g_settings["SimulationRoom"] {
+        SimulationRoom()
+        if g_settings["SimulationOverClock"] ;模拟室超频
+            SimulationOverClock()
+        BackToHall
+    }
+    if g_settings["Arena"] {
+        Arena()
+        if g_settings["RookieArena"] ;新人竞技场
+            RookieArena()
+        if g_settings["SpecialArena"] ;特殊竞技场
+            SpecialArena()
+        if g_settings["ChampionArena"] ;冠军竞技场
+            ChampionArena()
+        BackToHall
+    }
+    if g_settings["LoveTalking"]
+        LoveTalking()
+    if g_settings["Tower"] {
+        if g_settings["CompanyTower"]
+            CompanyTower()
+        if g_settings["UniversalTower"]
+            UniversalTower()
+        BackToHall
+    }
+    if g_settings["Interception"]
+        Interception()
+    if g_settings["Award"] {
+        if g_settings["OutpostDefence"] ; 使用键名检查 Map
+            OutpostDefence()
+        if g_settings["FriendPoint"]
+            FriendPoint()
+        if g_settings["Mail"]
+            Mail()
+        if g_settings["RankingReward"] ;方舟排名奖励
+            RankingReward()
+        if g_settings["Mission"]
+            Mission()
+        if g_settings["Pass"]
+            Pass()
+        if g_settings["FreeRecruit"]
+            FreeRecruit()
+        if g_settings["RoadToVillain"]
+            RoadToVillain()
+        if g_settings["Cooperate"]
+            Cooperate()
+        if g_settings["SoloRaid"]
+            SoloRaid()
+        BackToHall
+    }
+    MsgBox "Doro完成任务！"
+    CalculateAndShowSpan()
+    if g_settings["OpenBlablalink"]
+        OpenBlablalink
+    if g_settings["SelfClosing"]
+        ExitApp
+    Pause
 }
 ;初始化
 Initialization() {
@@ -108,7 +276,7 @@ Initialization() {
     }
     else {
         ; 没有找到该进程的窗口
-        AddLog("没有找到进程为 '" . targetExe . "' 的窗口，初始化失败！")
+        MsgBox("没有找到进程为 '" . targetExe . "' 的窗口，初始化失败！")
         Pause
     }
     nikkeID := winID
@@ -118,7 +286,122 @@ Initialization() {
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
     WinRatio := NikkeW / 2347 ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
     TrueRatio := currentScale * WinRatio
-    AddLog("nikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n额定缩放比例是" scrRatio "`ndpi缩放比例是" currentScale "`n窗口缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio)
+    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n窗口缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
+}
+/**
+ * 添加一个与 g_settings Map 关联的复选框到指定的 GUI 对象.
+ * @param guiObj Gui - 要添加控件的 GUI 对象.
+ * @param settingKey String - 在 g_settings Map 中对应的键名.
+ * @param displayText String - 复选框旁边显示的文本标签.
+ * @param options String - (可选) AutoHotkey GUI 布局选项字符串 (例如 "R1.2 xs+15").
+ */
+AddCheckboxSetting(guiObj, settingKey, displayText, options := "") {
+    global g_settings ; 确保能访问全局 Map 和处理函数
+    ; 检查 settingKey 是否存在于 g_settings 中
+    if !g_settings.Has(settingKey) {
+        MsgBox("错误: Setting key '" settingKey "' 在 g_settings 中未定义!", "添加控件错误", "IconX")
+        return ; 或者抛出错误
+    }
+    ; 构建选项字符串，确保 Checked/空字符串 在选项之后，文本之前
+    initialState := IsCheckedToString(g_settings[settingKey])
+    fullOptions := options (options ? " " : "") initialState ; 如果有 options，加空格分隔
+    ; 添加复选框控件，并将 displayText 作为第三个参数
+    cbCtrl := guiObj.Add("Checkbox", fullOptions, displayText)
+    ; 绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey
+    cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl, eventInfo))
+    ; 返回创建的控件对象 (可选，如果需要进一步操作)
+    return cbCtrl
+}
+; 通用函数，用于切换 g_settings Map 中的设置值
+ToggleSetting(settingKey, guiCtrl, *) {
+    global g_settings
+    ; 切换值 (0 变 1, 1 变 0)
+    g_settings[settingKey] := 1 - g_settings[settingKey]
+    ; 可选: 如果需要，可以在这里添加日志记录
+    ; ToolTip("切换 " settingKey " 为 " g_settings[settingKey])
+}
+; 切换数字
+ChangeNum(settingKey, GUICtrl, *) {
+    global g_numeric_settings
+    g_numeric_settings[settingKey] := GUICtrl.Value
+}
+ClickOnHelp(*) {
+    msgbox "
+    (
+    #############################################
+    使用说明
+    对大多数老玩家来说Doro设置保持默认就好。
+    万一Doro失控，请按Ctrl + 1组合键结束进程。
+    万一Doro失控，请按Ctrl + 1组合键结束进程。
+    万一Doro失控，请按Ctrl + 1组合键结束进程。
+    ############################################# 
+    要求：
+    - 【设定-画质-全屏幕模式 + 16:9的显示器比例】（推荐）   或    【16:9的窗口模式（窗口尽量拉大，否则像素识别可能出现误差）】
+    - 设定-画质-开启光晕效果
+    - 设定-画质-开启颜色分级
+    - 游戏语言设置为简体中文
+    - 以**管理员身份**运行DoroHelper
+    - 不要开启windows HDR显示
+    ############################################# 
+    步骤：
+    -打开NIKKE启动器。点击启动。等右下角腾讯ACE反作弊系统扫完，NIKKE主程序中央SHIFT UP logo出现之后，再切出来点击“DORO!”按钮。如果你看到鼠标开始在左下角连点，那就代表启动成功了。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待Doro完成工作了。
+    -也可以在游戏处在大厅界面时（有看板娘的页面）切出来点击“DORO!”按钮启动程序。
+    -游戏需要更新的时候请更新完再使用Doro。
+    ############################################# 
+    其他:
+    
+    -检查是否发布了新版本。
+    -如果出现死循环，提高点击间隔可以解决80%的问题。
+    -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
+    
+    )"
+}
+SleepTimeToLabel(sleepTime) {
+    return String(sleepTime / 250 - 2)
+}
+IsCheckedToString(foo) {
+    if foo
+        return "Checked"
+    else
+        return ""
+}
+InterceptionBossToLabel() {
+    global g_numeric_settings
+    return String(g_numeric_settings["InterceptionBoss"])
+}
+WriteSettings(*) {
+    global g_settings, g_numeric_settings
+    ; 从 g_settings Map 写入开关设置
+    for key, value in g_settings {
+        IniWrite(value, "settings.ini", "Toggles", key)
+    }
+    for key, value in g_numeric_settings {
+        IniWrite(value, "settings.ini", "NumericSettings", key)
+    }
+}
+LoadSettings() {
+    global g_settings, g_numeric_settings
+    default_settings := g_settings.Clone()
+    ; 从 Map 加载开关设置
+    for key, defaultValue in default_settings {
+        readValue := IniRead("settings.ini", "Toggles", key, defaultValue)
+        g_settings[key] := readValue
+    }
+    default_numeric_settings := g_numeric_settings.Clone() ; 保留一份默认数值设置
+    for key, defaultValue in default_numeric_settings {
+        readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
+        ; 确保读取的值是数字，如果不是则使用默认值
+        if IsNumber(readValue) {
+            g_numeric_settings[key] := Integer(readValue) ; 转换为整数
+        } else {
+            g_numeric_settings[key] := defaultValue
+        }
+    }
+}
+SaveSettings(*) {
+    WriteSettings()
+    MsgBox "设置已保存！"
+    AddLog("设置已保存！", true)
 }
 ;颜色判断
 IsSimilarColor(targetColor, color) {
@@ -238,6 +521,85 @@ CheckAutoBattle() {
         autoBurstOn := true ; 设置标志位，表示已尝试开启或已开启
     }
 }
+;添加日志
+AddLog(text, forceOutput := false) {  ; 默认参数设为false
+    if (!IsObject(LogBox) || !LogBox.Hwnd) {
+        return
+    }
+    static lastText := ""  ; 静态变量保存上一条内容
+    global LogBox
+    ; 如果内容与上一条相同且不强制输出，则跳过
+    if (text = lastText && !forceOutput)
+        return
+    lastText := text  ; 保存当前内容供下次比较
+    timestamp := FormatTime(, "HH:mm:ss")
+    LogBox.Value .= timestamp " - " text "`r`n"
+    SendMessage(0x0115, 7, 0, LogBox) ; 自动滚动到底部
+}
+;日志的时间戳转换
+TimeToSeconds(timeStr) {
+    ; 期望 "HH:mm:ss" 格式
+    parts := StrSplit(timeStr, ":")
+    if (parts.Length != 3) {
+        return -1 ; 格式错误
+    }
+    ; 确保部分是数字
+    if (!IsInteger(parts[1]) || !IsInteger(parts[2]) || !IsInteger(parts[3])) {
+        return -1 ; 格式错误
+    }
+    hours := parts[1] + 0 ; 强制转换为数字
+    minutes := parts[2] + 0
+    seconds := parts[3] + 0
+    ; 简单的验证范围（不严格）
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
+        return -1 ; 无效时间
+    }
+    return hours * 3600 + minutes * 60 + seconds
+}
+; 读取日志框内容，根据 HH:mm:ss 时间戳推算跨度，输出到日志框
+CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
+    local logContent := LogBox.Value
+    local lines := StrSplit(logContent, "`n")  ; 按换行符分割
+    local timestamps := []
+    local match := ""
+    ; 提取所有时间戳（格式 HH:mm:ss）
+    for line in lines {
+        if (RegExMatch(line, "^\d{2}:\d{2}:\d{2}(?=\s*-\s*)", &match)) {
+            timestamps.Push(match[])
+        }
+    }
+    ; 直接取最早（第1个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
+    earliestTimeStr := timestamps[1]
+    latestTimeStr := timestamps[timestamps.Length]
+    ; 转换为秒数
+    earliestSeconds := TimeToSeconds(earliestTimeStr)
+    latestSeconds := TimeToSeconds(latestTimeStr)
+    ; 检查转换是否有效
+    if (earliestSeconds = -1 || latestSeconds = -1) {
+        AddLog("推算跨度失败：日志时间格式错误。")
+        return
+    }
+    ; 处理跨午夜情况（如 23:59:59 → 00:00:01）
+    if (latestSeconds < earliestSeconds) {
+        latestSeconds += 24 * 3600  ; 加上一天的秒数（86400）
+    }
+    ; 计算总时间差（秒）
+    spanSeconds := latestSeconds - earliestSeconds
+    spanMinutes := Floor(spanSeconds / 60)
+    remainingSeconds := Mod(spanSeconds, 60)
+    ; 格式化输出
+    outputText := "Doro已帮你节省时间: "
+    if (spanMinutes > 0) {
+        outputText .= spanMinutes " 分 "
+    }
+    outputText .= remainingSeconds " 秒"
+    ; 添加到日志
+    AddLog(outputText)
+    MsgBox outputText
+}
+OpenBlablalink() {
+    Run("https://www.blablalink.com/")
+}
 ;点左下角的小房子的对应位置的右边（不返回）
 Confirm() {
     stdTargetX := 474
@@ -246,6 +608,7 @@ Confirm() {
     AddLog("点击默认位置(" Round(stdTargetX * scrRatio) "," Round(stdTargetY * scrRatio) ")")
     Sleep 500
 }
+;按Esc
 GoBack() {
     AddLog("返回")
     Send "{Esc}"
@@ -338,6 +701,7 @@ BackToHall() {
         stdTargetX := 333
         stdTargetY := 2041
         UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep 500
     }
     if !WinActive(nikkeID) {
         MsgBox "窗口未聚焦，程序已终止"
@@ -472,7 +836,7 @@ NormalShop() {
             AddLog("没有可白嫖的东西")
         }
         Text := "|<芯尘盒>*174$62.1UM00k00600wD00S003k0Tzw1ba03z0Tzzkxvk3zwDzzwSSy3zztzzyDbbnzzz3mw7lsyzzzUNq1sS77zzk0w0A7UUTzs07U00k07zy0RsE0S01zzVzDS07U0DzkTn7Vzzs7zy7w1sTzy3zzlz0D7zzUzzwxkTk1s0DzzDSDw0S03zzkbzkTzzvzzz1zs7zzyzzzk7w1zzzjzzy"
-        if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) and g_settings["NormalShopDust"] {
             AddLog("点击芯尘盒")
             FindText().Click(X, Y, "L")
             Text := "|<信用点的图标>*169$29.000k0001s000Tk001vk007Xk00TDk03znk0DzDU0zyTU7zzz0Tzzz1zzzz7zzzwjzzxnDzzy6Dzzs0TzvU8zzy09zzk0DTr00DzQ00TxU00Te000Ts000RU000Q0000E004"
@@ -754,7 +1118,7 @@ SimulationRoom() {
     AddLog("===模拟室任务开始===")
     AddLog("查找模拟室入口")
     Text := "|<方舟中的模拟室>*121$58.zzzzzzzzjz727lrszsTwM0D6DXU00lU0wM6A0023070UMk00040Q01XXzkUU0k80D00D603lW1y00w80D6A7w67UU0w8wTU0C00303lw00M00Q2D7s0n0k1kM0Da7A603lU0w00EM07603k01lk0wM07i2D703V20M00AEA4Csl000lXsszni003jzzzzzzzzs"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("进入模拟室")
         FindText().Click(X, Y, "L")
         Sleep sleepTime
@@ -951,14 +1315,17 @@ RookieArena() {
     }
     AddLog("检测免费次数")
     Text免费 := "|<免费>*186$36.wTzy4Ls0zk01k0zz4FVkzk01103k03003k00U1Xk00XXXwQMnXXUQFk03k03k03s03z0zszXy8zslXwMtsXXksts671s1UC0bw3UzsU"
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
-        AddLog("有免费次数，尝试进入战斗")
-        FindText().Click(X, Y, "L")
-        Sleep sleepTime
+    while True {
+        while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
+            AddLog("有免费次数，尝试进入战斗")
+            FindText().Click(X, Y, "L")
+            Sleep sleepTime
+        }
+        else break
         Text := "|<ON>*185$32.z7zzyT0TjzXU1szsksC7y8zXUzWDwM7s7z60S1zlX3UTwMsMbz6D08zVXs27kszUk0SDwC0DXzXs7szzU"
-        if !(ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if !(ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Text := "|<OFF>*159$49.z7zk0TU0y0zU0700C07U0300671lzzXzyDsszzlzz7yATzszz7z601w03XzX00y01lzlXzz7zwzslzzXzyDsszzlzz3sQTzszzk0SDzwTzw0T7zyDzzUzXzz7zw"
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("有笨比没开自动战斗，帮忙开了！")
                 FindText().Click(X, Y, "L")
                 Sleep sleepTime
@@ -1127,44 +1494,12 @@ LoveTalking() {
         }
         Text := "|<向右的符号>*126$29.03zzy03zzy07zzy07zzy07zzw0Dzzw0Dzzw0Dzzs0Tzzs0Tzzs0Tzzk0zzzk0zzzk0zzzU1zzzU1zzzU1zzz03zzz03zzz03zzy03zzy07zzy07zzw07zzw0Dzzw0Dzzs0Dzzs0Tzzs0TzzU1zzz03zzw0Dzzs0zzzU1zzy07zzw0Tzzk0zzz03zzy07zzs0TzzU1zzz03zzw0Dzzk0zzzU1zzy07zzs0Tzzk0zzz03zzw0Dzzs0TzzU1zzy07zzw0Dzzk0zzz03zzy07zzs0Tzzs"
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
             AddLog("下一个妮姬")
+            FindText().Click(X, Y, "L")
+            Sleep 500
         }
     }
     AddLog("===妮姬咨询任务结束===")
-    BackToHall
-}
-; 通用塔
-UniversalTower() {
-    EnterToArk
-    AddLog("===通用塔任务开始===")
-    Text := "|<无限之塔>*125$79.zzzzzzzzDznlns00Q00Dz3zsU0Q00C007zkzwE0600703Xs01y807z7zYE1s00S32DzXzk80w00C1k7zVzsA0Tzw70s7U00A26Dzy7kk0k006N07zy7wEM4007A03zy7y007w1za05zy7z40Ty0zl0UTw7zXzzy0Ts0MDw7zkU1y4CQ2ADsDzk00y376T67kDzk8QS3U3DU1k3zMQCA3k3bUME007y077s1nsCQw07z03zzztzzzzkDzntk"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击无限之塔")
-        FindText().Click(X, Y, "L")
-        Sleep sleepTime
-    }
-    Text := "|<塔内的无限之塔>*194$63.000000000E3zwTzs1U37QTznzz0C0PzsD0PMszz3Dy0k3Pz7zwyzU60TTs0D7nszzvvb01kMzbzzPTs0Q3zT1s3Dy070PzkD0Nvs1k3003s3zD0Q0Tzkv3TNkD07zyCQv3i7k0slrXzMTxzzk7ysDn3nATw0zo"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击塔内的无限之塔")
-        FindText().Click(X, Y, "L")
-        Sleep sleepTime
-    }
-    Text := "|<STAGE>*83$39.0kCD0s041ls705kQ74scz7Usz77sw77ssz7Usz70sw76M877YsX10ssX4MD774MX7sssX4Mz770MX7sss34Ms7748300sll0M4TbSSL1U"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("已进入塔的内部")
-        stdTargetX := 1926
-        stdTargetY := 908
-        Sleep sleepTime
-        AddLog("点击最新关卡")
-        UserClick(stdTargetX, stdTargetY, scrRatio)
-        Sleep sleepTime
-        EnterToBattle
-        BattleSettlement
-        sleep 3000
-        RefuseSale
-    }
-    AddLog("===通用塔任务结束===")
     BackToHall
 }
 ; 企业塔
@@ -1235,13 +1570,46 @@ CompanyTower() {
     AddLog("===企业塔任务结束===")
     BackToHall
 }
+; 通用塔
+UniversalTower() {
+    EnterToArk
+    AddLog("===通用塔任务开始===")
+    Text := "|<无限之塔>*125$79.zzzzzzzzDznlns00Q00Dz3zsU0Q00C007zkzwE0600703Xs01y807z7zYE1s00S32DzXzk80w00C1k7zVzsA0Tzw70s7U00A26Dzy7kk0k006N07zy7wEM4007A03zy7y007w1za05zy7z40Ty0zl0UTw7zXzzy0Ts0MDw7zkU1y4CQ2ADsDzk00y376T67kDzk8QS3U3DU1k3zMQCA3k3bUME007y077s1nsCQw07z03zzztzzzzkDzntk"
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击无限之塔")
+        FindText().Click(X, Y, "L")
+        Sleep sleepTime
+    }
+    Text := "|<塔内的无限之塔>*194$63.000000000E3zwTzs1U37QTznzz0C0PzsD0PMszz3Dy0k3Pz7zwyzU60TTs0D7nszzvvb01kMzbzzPTs0Q3zT1s3Dy070PzkD0Nvs1k3003s3zD0Q0Tzkv3TNkD07zyCQv3i7k0slrXzMTxzzk7ysDn3nATw0zo"
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击塔内的无限之塔")
+        FindText().Click(X, Y, "L")
+        Sleep sleepTime
+    }
+    Text := "|<STAGE>*83$39.0kCD0s041ls705kQ74scz7Usz77sw77ssz7Usz70sw76M877YsX10ssX4MD774MX7sssX4Mz770MX7sss34Ms7748300sll0M4TbSSL1U"
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("已进入塔的内部")
+        stdTargetX := 1926
+        stdTargetY := 908
+        Sleep sleepTime
+        AddLog("点击最新关卡")
+        UserClick(stdTargetX, stdTargetY, scrRatio)
+        Sleep sleepTime
+        EnterToBattle
+        BattleSettlement
+        sleep 3000
+        RefuseSale
+    }
+    AddLog("===通用塔任务结束===")
+    BackToHall
+}
 ; 异常拦截
 Interception() {
     BackToHall
     EnterToArk
     AddLog("===异常拦截任务开始===")
     Text := "|<拦截战>*200$57.nnnzDDzbxyTSz0NbwzBnvbyDCzbxkD8ztszw7j0U1k00TXxyQ0C003wz0nzzxrbzbkSTzzYxzwzjlzzs1az3xo7zy4Qbk7Y3k3k3UywwCTzz0QDrrVnzzsXXyyySTzz0QTrrXnzztbXSQsSM0D0E3k20b01s0MSQH4"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
     }
@@ -1382,7 +1750,7 @@ OutpostDefence() {
         Sleep sleepTime
     }
     Text := "|<免费一举歼灭的红点>*194$67.000000000C0000000000zs000000000sD000000001k1k00000001kwQ00000000lz600000000lzlU0000000tzwk0000000Rzy80000000QzzbzzzzzzzyTzm00000003Dzt00000000nztU0000000Nzwk00000004TwM000000017wM00000000k0M00000000A0M000000001zs0000000007s0000000003k0000000001U0000000000k0000000000M0000000000A0E"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
         Text := "|<歼灭>*182$46.U3s7U000000S0008003s000kz0zzsTz3zXzzlzw0yDzz7zk3szwsSD0DXzlVsssU0y67XX001ssQQ40073Ulk1U0wS3D07szvk7zkzXzz0TzXyDzsEzwDszzVVzVzXzsC3wDyDz1w7UzszUDs27zXw1zk8zyDsTzkzztzrzzy"
@@ -1453,40 +1821,6 @@ Expedition() {
     AddLog("===派遣委托任务结束===")
     BackToHall
 }
-;排名奖励
-RankingReward() {
-    EnterToArk()
-    AddLog("===排名奖励任务开始===")
-    Text := "|<带红点的奖杯>*200$56.zzzzzzzyDzzzzzzzw0zzzzzzzwTXzzzzzzzDwTzzzzzzbzbzzzzzzvzwzzzzzzyzzDzzzzzzDznzzzzzznzwzzzzzzyzzDzzzzzzbznzzzzzztztz00000zDwTk0000DkyDw00003y07z00000zwDy000001zzz0000007zzXU0000tzzls0000TDzwy00007nzzDU0001wzzns0000TDzwy00007nzzDU0001wzzns0000TDzwS00007nzzbU0001tzzsw0000QTzz30000ADzzs000007zzz000003zzzy00003zzzzs0007zzzzz0003zzzzzs000zzzzzy000Tzzzzzk00Dzzzzzy007zzzzzzs07zzzzzzzU7zzzzzzzs1zzzzzzzz0Tzzzzzzzk7zzzzzzzw1zzzzzzzz0TzzzzzzzU7zzzzzzzs1zzzzzzzk03zzzzzy0001zzzzz0000DzzzU"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-        Sleep sleepTime
-        loop 2 {
-            Text := "|<红点>*200$19.0T00zs1kD0U1kVwMnz6HzlNzwtzyQzzCTzbDznnztdzsqTsn7ssk0sC1s3zk0DU8"
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("发现红点，尝试点击")
-                FindText().Click(X, Y, "L")
-                Sleep sleepTime
-                Text := "|<获得>*143$57.zXzDzzzzzzwDkzzlk03U000DwC0080000z1k01U0007kS7wA0001s7k01zXy7z1y00DwTlzstk01lby8zi67wC0Tl3zkk01s7yADwC00D0zlXz3s03U7w4TkTzzs0U00s3000X00070M007sE00s3U01y3w7z0TzVzUTUzxXvs7s3w7zwM0040T0TzX0001Xs3zwM00AQS4DzXlyDzXUkzwS7lzsMC3zXsSDz23sDwTXVy0UzUzXykDkADyDwTy1z3nztzXzkTU"
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                    Text := "|<排名>*143$35.lsXzVzXl7y0D72Ds0404700008A7kkQFs73lsXy4DX11y0z023w1s34TU00C8s00EkEM7slUUuDlXl7wTX7WDs04D4Tk08S8zU0TyFz7wU"
-                    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                        Confirm
-                    }
-                    GoBack
-                }
-            }
-            stdTargetX := 1858
-            stdTargetY := 615
-            UserMove(stdTargetX, stdTargetY, scrRatio)
-            Send "{WheelDown 30}"
-            Sleep sleepTime
-        }
-    }
-    AddLog("===排名奖励任务结束===")
-    BackToHall
-}
 ; 好友点数收取
 FriendPoint() {
     BackToHall
@@ -1526,6 +1860,41 @@ Mail() {
         FindText().Click(X, Y, "L")
     }
     AddLog("===邮箱任务结束===")
+    BackToHall
+}
+;排名奖励
+RankingReward() {
+    EnterToArk()
+    AddLog("===排名奖励任务开始===")
+    Text := "|<带红点的奖杯>*200$56.zzzzzzzyDzzzzzzzw0zzzzzzzwTXzzzzzzzDwTzzzzzzbzbzzzzzzvzwzzzzzzyzzDzzzzzzDznzzzzzznzwzzzzzzyzzDzzzzzzbznzzzzzztztz00000zDwTk0000DkyDw00003y07z00000zwDy000001zzz0000007zzXU0000tzzls0000TDzwy00007nzzDU0001wzzns0000TDzwy00007nzzDU0001wzzns0000TDzwS00007nzzbU0001tzzsw0000QTzz30000ADzzs000007zzz000003zzzy00003zzzzs0007zzzzz0003zzzzzs000zzzzzy000Tzzzzzk00Dzzzzzy007zzzzzzs07zzzzzzzU7zzzzzzzs1zzzzzzzz0Tzzzzzzzk7zzzzzzzw1zzzzzzzz0TzzzzzzzU7zzzzzzzs1zzzzzzzk03zzzzzy0001zzzzz0000DzzzU"
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+        Sleep sleepTime
+        loop 2 {
+            Text := "|<红点>*200$19.0T00zs1kD0U1kVwMnz6HzlNzwtzyQzzCTzbDznnztdzsqTsn7ssk0sC1s3zk0DU8"
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("发现红点，尝试点击")
+                FindText().Click(X, Y, "L")
+                Sleep sleepTime
+                Text := "|<获得>*143$57.zXzDzzzzzzwDkzzlk03U000DwC0080000z1k01U0007kS7wA0001s7k01zXy7z1y00DwTlzstk01lby8zi67wC0Tl3zkk01s7yADwC00D0zlXz3s03U7w4TkTzzs0U00s3000X00070M007sE00s3U01y3w7z0TzVzUTUzxXvs7s3w7zwM0040T0TzX0001Xs3zwM00AQS4DzXlyDzXUkzwS7lzsMC3zXsSDz23sDwTXVy0UzUzXykDkADyDwTy1z3nztzXzkTU"
+                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                    Text := "|<排名>*143$35.lsXzVzXl7y0D72Ds0404700008A7kkQFs73lsXy4DX11y0z023w1s34TU00C8s00EkEM7slUUuDlXl7wTX7WDs04D4Tk08S8zU0TyFz7wU"
+                    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+                        Confirm
+                    }
+                    GoBack
+                }
+            }
+            stdTargetX := 1858
+            stdTargetY := 615
+            UserMove(stdTargetX, stdTargetY, scrRatio)
+            Send "{WheelDown 30}"
+            Sleep sleepTime
+        }
+    }
+    else AddLog("没有可领取的奖励，跳过")
+    AddLog("===排名奖励任务结束===")
     BackToHall
 }
 ; 任务收取
@@ -1589,25 +1958,6 @@ Pass() {
             if UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) { ;如果转出红点
                 Sleep sleepTime
                 userClick(stdTargetX, stdTargetY, scrRatio) ;再转一下
-                Sleep sleepTime
-                OnePass()
-                break
-            }
-        }
-    }
-    if UserCheckColor(stdCkptX, stdCkptY1, desiredColor, scrRatio) {  ;检测是否偏移
-        global PassRound
-        PassRound := 0
-        while (PassRound < 2) {
-            userClick(stdTargetX, stdTargetY1, scrRatio) ;转一下
-            Sleep sleepTime
-            PassRound := PassRound + 1
-            stdCkptX := [3437]
-            stdCkptY := [438]
-            desiredColor := ["0xFE1809"] ;红点
-            if UserCheckColor(stdCkptX, stdCkptY, desiredColor, scrRatio) { ;如果转出红点
-                Sleep sleepTime
-                userClick(stdTargetX, stdTargetY1, scrRatio) ;再转一下
                 Sleep sleepTime
                 OnePass()
                 break
@@ -1693,13 +2043,13 @@ FreeRecruit() {
     BackToHall()
     AddLog("===每日免费招募开始===")
     Text每天免费 := "|<每天免费>*156$64.wzzzzzbzz9zU0s03w1z00S01U0DU7zmNnzzyTwQzk0601ztzU07Abs07zby00Q00t6S00QttwNna9s01nba3aE01z3z00Q03167wDw03s0DgNzUTz9zbAw03wMzsbSNnk07Xky6Qt0TztsTVUs20kTyDbzbDUMTsU"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         AddLog("进入招募页面")
         Sleep sleepTime
-        while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , 0, , , , , TrueRatio, TrueRatio)) {
             Text每日免费 := "|<每日免费>*122$73.szzs07z3zw00s01w01z07y00A00y00z03zU04TzzDwT3XzU0001zbyD007k0200Dnz7U01s00U07szXkkkw00MlXw01wQwS3W0E0y00y00C1l800D7wT007U04007byDk07s03a6Tnz7z0zwtll07tzXz2TyQss01w01z3DDA0w00y00y3X7UEDz1z00S3k30S3zVzbzDjw3Vzt"
-            if (ok := FindText(&X := "wait", &Y := 1.5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text每日免费, , 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text每日免费, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("进行招募")
                 FindText().Click(X, Y, "L")
                 Recruit()
@@ -1750,7 +2100,7 @@ RoadToVillain() {
             }
         }
         Text := "|<灰色的全部领取>*170$81.zrzzbzzxzzzzzzwTzwz0zDU707zzVzw0s7sy0s107lbz07Qy3xzbA0wSDwsvbrDjwvX67szrjRww0DUSw1zUytvD9wsw3rcDw7nDPzjjbaSNs07s0PDxxgwvnDwDz03Rw3hbaTNznzzzvbkBgw3sTyTzzzQznhbWT3w0Dw0vbyRgwlwTU1zU7QzrVba7Xznzwwv7kzDs0sTyTzjbNyDsz0C1znzwsvztyNzlX400DU7TzbbbzQwU"
-        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("点击全部领取")
             UserClick(1921, 1994, scrRatio)
             Sleep 200
@@ -1892,350 +2242,6 @@ SoloRaid() {
     AddLog("===单人突击任务结束===")
     BackToHall
 }
-; 通用函数，用于切换 g_settings Map 中的设置值
-ToggleSetting(settingKey, guiCtrl, *) {
-    global g_settings
-    ; 切换值 (0 变 1, 1 变 0)
-    g_settings[settingKey] := 1 - g_settings[settingKey]
-    ; 可选: 如果需要，可以在这里添加日志记录
-    ; ToolTip("切换 " settingKey " 为 " g_settings[settingKey])
-}
-; 切换数字
-ChangeNum(settingKey, GUICtrl, *) {
-    global g_numeric_settings
-    g_numeric_settings[settingKey] := GUICtrl.Value
-}
-ClickOnHelp(*) {
-    msgbox "
-    (
-    #############################################
-    使用说明
-    对大多数老玩家来说Doro设置保持默认就好。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    ############################################# 
-    要求：
-    - 【设定-画质-全屏幕模式 + 16:9的显示器比例】（推荐）   或    【16:9的窗口模式（窗口尽量拉大，否则像素识别可能出现误差）】
-    - 设定-画质-开启光晕效果
-    - 设定-画质-开启颜色分级
-    - 游戏语言设置为简体中文
-    - 以**管理员身份**运行DoroHelper
-    - 不要开启windows HDR显示
-    ############################################# 
-    步骤：
-    -打开NIKKE启动器。点击启动。等右下角腾讯ACE反作弊系统扫完，NIKKE主程序中央SHIFT UP logo出现之后，再切出来点击“DORO!”按钮。如果你看到鼠标开始在左下角连点，那就代表启动成功了。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待Doro完成工作了。
-    -也可以在游戏处在大厅界面时（有看板娘的页面）切出来点击“DORO!”按钮启动程序。
-    -游戏需要更新的时候请更新完再使用Doro。
-    ############################################# 
-    其他:
-    
-    -检查是否发布了新版本。
-    -如果出现死循环，提高点击间隔可以解决80%的问题。
-    -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
-    
-    )"
-}
-ClickOnDoro(*) {
-    Initialization
-    WriteSettings()
-    Login() ;登陆到主界面
-    if g_settings["Shop"] {
-        if g_settings["CashShop"]
-            CashShop()
-        if g_settings["NormalShop"]
-            NormalShop()
-        if g_settings["ArenaShop"]
-            ArenaShop()
-        if g_settings["ScrapShop"]
-            ScrapShop()
-        BackToHall
-    }
-    if g_settings["SimulationRoom"] {
-        SimulationRoom()
-        if g_settings["SimulationOverClock"] ;模拟室超频
-            SimulationOverClock()
-        BackToHall
-    }
-    if g_settings["Arena"] {
-        Arena()
-        if g_settings["RookieArena"] ;新人竞技场
-            RookieArena()
-        if g_settings["SpecialArena"] ;特殊竞技场
-            SpecialArena()
-        if g_settings["ChampionArena"] ;冠军竞技场
-            ChampionArena()
-        BackToHall
-    }
-    if g_settings["LoveTalking"]
-        LoveTalking()
-    if g_settings["Tower"] {
-        if g_settings["CompanyTower"]
-            CompanyTower()
-        if g_settings["UniversalTower"]
-            UniversalTower()
-        BackToHall
-    }
-    if g_settings["Interception"]
-        Interception()
-    if g_settings["Award"] {
-        if g_settings["OutpostDefence"] ; 使用键名检查 Map
-            OutpostDefence()
-        if g_settings["FriendPoint"]
-            FriendPoint()
-        if g_settings["Mail"]
-            Mail()
-        if g_settings["RankingReward"] ;方舟排名奖励
-            RankingReward()
-        if g_settings["Mission"]
-            Mission()
-        if g_settings["Pass"]
-            Pass()
-        if g_settings["FreeRecruit"]
-            FreeRecruit()
-        if g_settings["RoadToVillain"]
-            RoadToVillain()
-        if g_settings["Cooperate"]
-            Cooperate()
-        if g_settings["SoloRaid"]
-            SoloRaid()
-        BackToHall
-    }
-    MsgBox "Doro完成任务！"
-    CalculateAndShowSpan()
-    if g_settings["SelfClosing"]
-        ExitApp
-    Pause
-}
-SleepTimeToLabel(sleepTime) {
-    return String(sleepTime / 250 - 2)
-}
-IsCheckedToString(foo) {
-    if foo
-        return "Checked"
-    else
-        return ""
-}
-InterceptionBossToLabel() {
-    global g_numeric_settings
-    return String(g_numeric_settings["InterceptionBoss"])
-}
-WriteSettings(*) {
-    global g_settings, g_numeric_settings
-    ; 从 g_settings Map 写入开关设置
-    for key, value in g_settings {
-        IniWrite(value, "settings.ini", "Toggles", key)
-    }
-    for key, value in g_numeric_settings {
-        IniWrite(value, "settings.ini", "NumericSettings", key)
-    }
-}
-LoadSettings() {
-    global g_settings, g_numeric_settings
-    default_settings := g_settings.Clone()
-    ; 从 Map 加载开关设置
-    for key, defaultValue in default_settings {
-        readValue := IniRead("settings.ini", "Toggles", key, defaultValue)
-        g_settings[key] := readValue
-    }
-    default_numeric_settings := g_numeric_settings.Clone() ; 保留一份默认数值设置
-    for key, defaultValue in default_numeric_settings {
-        readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
-        ; 确保读取的值是数字，如果不是则使用默认值
-        if IsNumber(readValue) {
-            g_numeric_settings[key] := Integer(readValue) ; 转换为整数
-        } else {
-            g_numeric_settings[key] := defaultValue
-        }
-    }
-}
-SaveSettings(*) {
-    WriteSettings()
-    MsgBox "设置已保存！"
-    AddLog("设置已保存！", true)
-}
-/**
- * 添加一个与 g_settings Map 关联的复选框到指定的 GUI 对象.
- * @param guiObj Gui - 要添加控件的 GUI 对象.
- * @param settingKey String - 在 g_settings Map 中对应的键名.
- * @param displayText String - 复选框旁边显示的文本标签.
- * @param options String - (可选) AutoHotkey GUI 布局选项字符串 (例如 "R1.2 xs+15").
- */
-AddCheckboxSetting(guiObj, settingKey, displayText, options := "") {
-    global g_settings, ToggleSetting ; 确保能访问全局 Map 和处理函数
-    ; 检查 settingKey 是否存在于 g_settings 中
-    if !g_settings.Has(settingKey) {
-        MsgBox("错误: Setting key '" settingKey "' 在 g_settings 中未定义!", "添加控件错误", "IconX")
-        return ; 或者抛出错误
-    }
-    ; 构建选项字符串，确保 Checked/空字符串 在选项之后，文本之前
-    initialState := IsCheckedToString(g_settings[settingKey])
-    fullOptions := options (options ? " " : "") initialState ; 如果有 options，加空格分隔
-    ; 添加复选框控件，并将 displayText 作为第三个参数
-    cbCtrl := guiObj.Add("Checkbox", fullOptions, displayText)
-    ; 绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey
-    cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl, eventInfo))
-    ; 返回创建的控件对象 (可选，如果需要进一步操作)
-    return cbCtrl
-}
-;创建gui
-doroGui := Gui(, "Doro小帮手" currentVersion)
-doroGui.Opt("+Resize")
-doroGui.MarginY := Round(doroGui.MarginY * 0.9)
-doroGui.SetFont("cred s11 Bold")
-doroGui.Add("Text", "R1", "关闭：ctrl + 1 终止：ctrl + 2")
-doroGui.Add("Text", "R1", "初始化：ctrl + 3 调整窗口：ctrl + 4")
-doroGui.Add("Link", " R1", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
-doroGui.SetFont()
-doroGui.Add("Button", "R1 x+10", "帮助").OnEvent("Click", ClickOnHelp)
-doroGui.Add("Button", "R1 x+10", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
-BtnClear := doroGui.Add("Button", "R1 x+10", "清空日志").OnEvent("Click", (*) => LogBox.Value := "")
-Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
-Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
-Tab.UseTab("设置")
-doroGui.SetFont("cred s10 Bold")
-doroGui.Add("Text", , "除非你知道自己在做什么，否则不要修改")
-doroGui.SetFont()
-AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新(确保能连上github)", "R1.2")
-AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
-doroGui.Add("Text", , "点击间隔(毫秒)")
-doroGui.Add("DropDownList", "Choose" g_numeric_settings["sleepTime"], [750, 1000, 1250, 1500, 1750, 2000]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("sleepTime", CtrlObj))
-doroGui.Add("Text", , "识图宽容度(越大越容易识到图、识错图)")
-doroGui.Add("DropDownList", "Choose" g_numeric_settings["Tolerance"], [1, 2, 3]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("Tolerance", CtrlObj))
-doroGui.Add("Button", "R1", "保存当前设置").OnEvent("Click", SaveSettings)
-Tab.UseTab("任务")
-AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
-AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "R1.2")
-AddCheckboxSetting(doroGui, "Arena", "竞技场", "R1.2 Section")
-AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬", "R1.2 xs Section") ; 注意 Section 选项用法（保存此控件位置并定义一个新控件段）
-AddCheckboxSetting(doroGui, "Tower", "无限之塔", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Interception", "异常拦截", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Award", "奖励收取", "R1.2 xs")
-Tab.UseTab("商店")
-doroGui.Add("Text", "R1.2 Section", "付费商店")
-AddCheckboxSetting(doroGui, "CashShop", "领取付费商店免费钻(进不了商店的别选)", "R1.2 xs+15")
-doroGui.Add("Text", "R1.2 xs Section", "普通商店")
-AddCheckboxSetting(doroGui, "NormalShop", "每日白嫖2次", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "NormalShopDust", "用信用点买芯尘盒", "R1.2 xs+15")
-doroGui.Add("Text", " R1 xs", "竞技场商店")
-AddCheckboxSetting(doroGui, "BookFire", "燃烧", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "BookWater", "水冷", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookWind", "风压", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookElec", "电击", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookIron", "铁甲", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookBox", "购买代码手册宝箱", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "ArenaShopPackage", "购买简介个性化礼包", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "ArenaShopFurnace", "购买公司武器熔炉", "R1.2 xs+15")
-doroGui.Add("Text", "R1.2 xs Section", "废铁商店")
-AddCheckboxSetting(doroGui, "ScrapShopGem", "购买珠宝", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "ScrapShopVoucher", "购买全部好感券", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "ScrapShopResources", "购买全部养成资源", "R1.2 xs+15")
-Tab.UseTab("战斗")
-doroGui.Add("Text", "R1.2 Section", "竞技场")
-AddCheckboxSetting(doroGui, "RookieArena", "新人竞技场", "R1.2 XP+15 Y+M")
-AddCheckboxSetting(doroGui, "SpecialArena", "特殊竞技场", "R1.2 Y+M")
-AddCheckboxSetting(doroGui, "ChampionArena", "冠军竞技场(跟风竞猜)", "R1.2 Y+M")
-doroGui.Add("Text", "R1.2 xs Section", "异常拦截编队")
-doroGui.Add("DropDownList", "XP+15 Y+M Choose" InterceptionBossToLabel(), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
-doroGui.Add("Text", "R1.2 xs Section", "模拟室（打5C，普通关卡需要快速战斗）")
-AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频（默认使用上次的tag）", "R1.2 XP+15 Y+M")
-doroGui.Add("Text", "R1.2 xs Section", "无限之塔")
-AddCheckboxSetting(doroGui, "CompanyTower", "尽可能地爬企业塔", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "UniversalTower", "尽可能地爬通用塔", "R1.2 xs+15")
-Tab.UseTab("奖励")
-AddCheckboxSetting(doroGui, "OutpostDefence", "领取前哨基地防御奖励+1次免费歼灭", "R1.2 Section")
-AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
-AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Mission", "任务收取", "R1.2")
-AddCheckboxSetting(doroGui, "Pass", "通行证收取", "R1.2")
-AddCheckboxSetting(doroGui, "FreeRecruit", "活动期间每日免费招募", "R1.2")
-AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
-AddCheckboxSetting(doroGui, "Cooperate", "协同作战摆烂", "R1.2")
-AddCheckboxSetting(doroGui, "SoloRaid", "单人突击日常", "R1.2")
-Tab.UseTab("日志")
-LogBox := doroGui.Add("Edit", "r20 w270 ReadOnly")
-LogBox.Value := "日志开始...`r`n" ; 初始内容
-Tab.UseTab()
-doroGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDoro)
-doroGui.Show()
-;添加日志
-AddLog(text, forceOutput := false) {  ; 默认参数设为false
-    if (!IsObject(LogBox) || !LogBox.Hwnd) {
-        return
-    }
-    static lastText := ""  ; 静态变量保存上一条内容
-    global LogBox
-    ; 如果内容与上一条相同且不强制输出，则跳过
-    if (text = lastText && !forceOutput)
-        return
-    lastText := text  ; 保存当前内容供下次比较
-    timestamp := FormatTime(, "HH:mm:ss")
-    LogBox.Value .= timestamp " - " text "`r`n"
-    SendMessage(0x0115, 7, 0, LogBox) ; 自动滚动到底部
-}
-;日志的时间戳转换
-TimeToSeconds(timeStr) {
-    ; 期望 "HH:mm:ss" 格式
-    parts := StrSplit(timeStr, ":")
-    if (parts.Length != 3) {
-        return -1 ; 格式错误
-    }
-    ; 确保部分是数字
-    if (!IsInteger(parts[1]) || !IsInteger(parts[2]) || !IsInteger(parts[3])) {
-        return -1 ; 格式错误
-    }
-    hours := parts[1] + 0 ; 强制转换为数字
-    minutes := parts[2] + 0
-    seconds := parts[3] + 0
-    ; 简单的验证范围（不严格）
-    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-        return -1 ; 无效时间
-    }
-    return hours * 3600 + minutes * 60 + seconds
-}
-; 读取日志框内容，根据 HH:mm:ss 时间戳推算跨度，输出到日志框
-CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
-    local logContent := LogBox.Value
-    local lines := StrSplit(logContent, "`n")  ; 按换行符分割
-    local timestamps := []
-    local match := ""
-    ; 提取所有时间戳（格式 HH:mm:ss）
-    for line in lines {
-        if (RegExMatch(line, "^\d{2}:\d{2}:\d{2}(?=\s*-\s*)", &match)) {
-            timestamps.Push(match[])
-        }
-    }
-    ; 直接取最早（第1个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
-    earliestTimeStr := timestamps[1]
-    latestTimeStr := timestamps[timestamps.Length]
-    ; 转换为秒数
-    earliestSeconds := TimeToSeconds(earliestTimeStr)
-    latestSeconds := TimeToSeconds(latestTimeStr)
-    ; 检查转换是否有效
-    if (earliestSeconds = -1 || latestSeconds = -1) {
-        AddLog("推算跨度失败：日志时间格式错误。")
-        return
-    }
-    ; 处理跨午夜情况（如 23:59:59 → 00:00:01）
-    if (latestSeconds < earliestSeconds) {
-        latestSeconds += 24 * 3600  ; 加上一天的秒数（86400）
-    }
-    ; 计算总时间差（秒）
-    spanSeconds := latestSeconds - earliestSeconds
-    spanMinutes := Floor(spanSeconds / 60)
-    remainingSeconds := Mod(spanSeconds, 60)
-    ; 格式化输出
-    outputText := "Doro已帮你节省时间: "
-    if (spanMinutes > 0) {
-        outputText .= spanMinutes " 分 "
-    }
-    outputText .= remainingSeconds " 秒"
-    ; 添加到日志
-    AddLog(outputText)
-    MsgBox outputText
-}
 ^1:: {
     ExitApp
 }
@@ -2253,7 +2259,7 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
 ;调试指定函数
 ^0:: {
     ;添加基本的依赖
-    Initialization()
+    ; Initialization()
     ;下面写要调试的函数
-    ChampionArena()
+    OpenBlablalink
 }

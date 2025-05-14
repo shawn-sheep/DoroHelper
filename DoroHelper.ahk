@@ -251,8 +251,9 @@ ClickOnDoro(*) {
         BackToHall
     }
     CalculateAndShowSpan()
-    MsgBox ("Doro完成任务！" outputText)
-    MsgSponsor
+    Result := MsgBox("Doro完成任务！" outputText "可以支持一下Doro吗", , "YesNo")
+    if Result = "Yes"
+        MsgSponsor
     if g_settings["OpenBlablalink"]
         OpenBlablalink
     if g_settings["SelfClosing"]
@@ -608,7 +609,7 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     spanMinutes := Floor(spanSeconds / 60)
     remainingSeconds := Mod(spanSeconds, 60)
     ; 格式化输出
-    outputText := "Doro已帮你节省时间: "
+    outputText := "已帮你节省时间: "
     if (spanMinutes > 0) {
         outputText .= spanMinutes " 分 "
     }
@@ -1526,7 +1527,7 @@ LoveTalking() {
         }
         else {
             AddLog("图鉴未满，尝试普通咨询")
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text咨询, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text咨询, 0, 0, , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep sleepTime
                 Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
@@ -1571,7 +1572,7 @@ CompanyTower() {
     EnterToArk
     AddLog("===企业塔任务开始===")
     Text := "|<无限之塔>*125$79.zzzzzzzzDznlns00Q00Dz3zsU0Q00C007zkzwE0600703Xs01y807z7zYE1s00S32DzXzk80w00C1k7zVzsA0Tzw70s7U00A26Dzy7kk0k006N07zy7wEM4007A03zy7y007w1za05zy7z40Ty0zl0UTw7zXzzy0Ts0MDw7zkU1y4CQ2ADsDzk00y376T67kDzk8QS3U3DU1k3zMQCA3k3bUME007y077s1nsCQw07z03zzztzzzzkDzntk"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击无限之塔")
         FindText().Click(X, Y, "L")
         Sleep sleepTime
@@ -1935,6 +1936,7 @@ RankingReward() {
     AddLog("===排名奖励任务开始===")
     Text := "|<带红点的奖杯>*200$56.zzzzzzzyDzzzzzzzw0zzzzzzzwTXzzzzzzzDwTzzzzzzbzbzzzzzzvzwzzzzzzyzzDzzzzzzDznzzzzzznzwzzzzzzyzzDzzzzzzbznzzzzzztztz00000zDwTk0000DkyDw00003y07z00000zwDy000001zzz0000007zzXU0000tzzls0000TDzwy00007nzzDU0001wzzns0000TDzwy00007nzzDU0001wzzns0000TDzwS00007nzzbU0001tzzsw0000QTzz30000ADzzs000007zzz000003zzzy00003zzzzs0007zzzzz0003zzzzzs000zzzzzy000Tzzzzzk00Dzzzzzy007zzzzzzs07zzzzzzzU7zzzzzzzs1zzzzzzzz0Tzzzzzzzk7zzzzzzzw1zzzzzzzz0TzzzzzzzU7zzzzzzzs1zzzzzzzk03zzzzzy0001zzzzz0000DzzzU"
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        Sleep sleepTime
         FindText().Click(X, Y, "L")
         Sleep sleepTime
         loop 2 {
@@ -1946,6 +1948,7 @@ RankingReward() {
                 Text := "|<获得>*143$57.zXzDzzzzzzwDkzzlk03U000DwC0080000z1k01U0007kS7wA0001s7k01zXy7z1y00DwTlzstk01lby8zi67wC0Tl3zkk01s7yADwC00D0zlXz3s03U7w4TkTzzs0U00s3000X00070M007sE00s3U01y3w7z0TzVzUTUzxXvs7s3w7zwM0040T0TzX0001Xs3zwM00AQS4DzXlyDzXUkzwS7lzsMC3zXsSDz23sDwTXVy0UzUzXykDkADyDwTy1z3nztzXzkTU"
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(X, Y, "L")
+                    Sleep sleepTime
                     Text := "|<排名>*143$35.lsXzVzXl7y0D72Ds0404700008A7kkQFs73lsXy4DX11y0z023w1s34TU00C8s00EkEM7slUUuDlXl7wTX7WDs04D4Tk08S8zU0TyFz7wU"
                     while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
                         Confirm
@@ -2002,8 +2005,8 @@ Mission() {
         }
         Text := "|<灰色的领取>*157$40.wzzs0zzVU1U00y706000kD3wE024QDl200E070Ak0U0Q0l4lkFl74P7874QFU4UQ0s60GFk3UTX170C3yA4QEsDlkFk1Uw71S063kz1s007Xs3U20D677w0EysyTkXW"
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            UserClick(2283, 1980, scrRatio) ;点领取
-            Sleep 200
+            UserClick(2130, 1982, scrRatio) ;点领取
+            Sleep 500
         }
     }
     AddLog("===每日任务奖励领取结束===")
@@ -2052,6 +2055,7 @@ OnePass() {
             Sleep 200
         }
     }
+    BackToHall()
 }
 ; 免费招募
 FreeRecruit() {
@@ -2085,7 +2089,7 @@ RoadToVillain() {
     BackToHall()
     AddLog("===反派之路任务开始===")
     Text := "|<ROAD TO>*149$61.VzXyDXzUDXUD0T7UDk70HX7DfnbyTb9tbnYttzDbksntmQwzbns0twvCSTntw0wyMXDDtwy6STA1bbwyT3bbCQnbyTb9lk6T83zDk6wyDDaDzryD"
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
     }
@@ -2117,8 +2121,8 @@ RoadToVillain() {
         Text := "|<灰色的全部领取>*170$81.zrzzbzzxzzzzzzwTzwz0zDU707zzVzw0s7sy0s107lbz07Qy3xzbA0wSDwsvbrDjwvX67szrjRww0DUSw1zUytvD9wsw3rcDw7nDPzjjbaSNs07s0PDxxgwvnDwDz03Rw3hbaTNznzzzvbkBgw3sTyTzzzQznhbWT3w0Dw0vbyRgwlwTU1zU7QzrVba7Xznzwwv7kzDs0sTyTzjbNyDsz0C1znzwsvztyNzlX400DU7TzbbbzQwU"
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("点击全部领取")
-            UserClick(1792, 1989, scrRatio)
-            Sleep 200
+            UserClick(1662, 2013, scrRatio)
+            Sleep 500
         }
         Sleep sleepTime
     }
@@ -2275,5 +2279,5 @@ SoloRaid() {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    Pass()
+    RoadToVillain()
 }

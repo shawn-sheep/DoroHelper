@@ -253,7 +253,7 @@ ClickOnDoro(*) {
         BackToHall
     }
     CalculateAndShowSpan()
-    Result := MsgBox("Doro完成任务！" outputText "可以支持一下Doro吗", , "YesNo")
+    Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
     if Result = "Yes"
         MsgSponsor
     if g_settings["OpenBlablalink"]

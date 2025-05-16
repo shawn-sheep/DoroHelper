@@ -671,13 +671,10 @@ RefuseSale() {
 EnterToBattle() {
     AddLog("尝试进入战斗")
     Text := "|<进入战斗的进>*175$32.tzsS7wDy7Vz1zVsTkDsQ7y1w71zkE003yQ000zz000Dzs003zzsQ7zzy7Vy0zVsT0DsQ7k3U00A0k001wA000T30007ky3kTwDUw7z3sTVzkw7kTwD1w7z3UzVzkwTkTk3byDs0Dzzw000001k000Mz0006Tw001U"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-        AddLog("已点击进入战斗")
-        Sleep sleepTime
-        return True
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X + 50 * WinRatio, Y, "L")
+        AddLog("点击进入战斗")
     }
-    else return False
 }
 ;战斗结算
 BattleSettlement() {
@@ -1236,9 +1233,9 @@ SimulationRoom() {
     EnterToBattle
     BattleSettlement
     Text := "|<模拟结束的图标>*159$38.03zzzy01zzzzs0zzzzy0Dk00Dk3k001w0w000D0D0003k00000w00000D000003k0U000w0M000D0S0003kDU000w7zzU0D3zzs03nzzy00xzzzU0Dzzzs03zzzy00xzzzU0DDzzs03lzzy00wDzzU0D0y0003k7U000w0s000D020003k00000w00000D000003k3k000w0w000T0DU00Dk3zzzzw0Tzzzy03zzzz0000302"
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击模拟结束")
-        FindText().Click(X, Y, "L")
+        FindText().Click(X + 50 * WinRatio, Y, "L")
         Sleep sleepTime
     }
     Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"

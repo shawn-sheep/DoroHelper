@@ -1690,7 +1690,7 @@ Interception() {
         Sleep sleepTime
     }
     Text := "|<挑战>*200$53.tzzzzzzzznyATznzbzbyNzzbzCTDwnzzDzASStbDyTyQsMnCTw1wz086Mzs1ty0sAHzlznzbkM7zbz07DkkTzDk0yTtbzyTkTwznDzwzwzsDaDzsztnUSQ7w07nY3ss7s0DaMD1l7nyTUyQ3b7bwz1wtbDDDty7tzCTyTnwTnwQzwzbszbttttzDVrDXnnk0S3iSDXbU0s0MszUD7k3UVnz0yTnDXTzzzzzzzi"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
     }
@@ -2416,10 +2416,10 @@ Activity() {
         FindText().Click(X, Y - 100 * WinRatio, "L")
         Sleep sleepTime
         Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("困难未开放，可以继续")
             Text := "|<1.11>*240$47.zjzzzzzzyTzzyzzjszzztzyS1zzw3z0y3zzw7zVy7zzwDz3wDzzwTy7sTzzszwDkzzzlzsTVzzzXzkz3zzz7zVy7zzyDz3wDzzwTy7sTzzszwDkzizlzsTVz3zXzkz3y3z7zVy7w7yDz3wDsDwTy7sTzzszwDkzzzkzsC0zzy0zU83zzs7y1jTzziTvbU"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("刷11关")
                 FindText().Click(X, Y, "L")
                 Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"

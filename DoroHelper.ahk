@@ -1360,7 +1360,7 @@ SimulationOverClock() {
     }
     AddLog("===模拟室超频任务结束===")
 }
-; 新人竞技场收菜
+; 竞技场收菜
 Arena() {
     EnterToArk()
     AddLog("===竞技场收菜任务开始===")
@@ -1408,6 +1408,7 @@ RookieArena() {
         while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
             AddLog("有免费次数，尝试进入战斗")
             FindText().Click(X, Y, "L")
+            Sleep sleepTime
         }
         else break
         if skip = false {
@@ -1775,7 +1776,7 @@ OutpostDefence() {
     BackToHall
     AddLog("===前哨基地收菜任务开始===")
     Text := "|<前哨基地的图标>*130$37.7k00SAEw00SAS7U0SAP3s0SAQsT0SAQC7kSAQXUwSAQMQDyAQC73yAQ7VsTAQ1wC7wS0T3lyQ07ksDy01wT3y00DlkzU03sQ7s00y31y00TUsTU0RsC3w0QT3kz0QDkw7kQAw71wQADVsSQADsS3QACS7Uk"
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入前哨基地")
         FindText().Click(X, Y, "L")
         Sleep sleepTime
@@ -1885,7 +1886,7 @@ LoveTalking() {
     Text20 := "|<20/>*240$24.3000DkM3Tly3Tvz71vz71vb73zbD3rbC7rbCTXbCzvzQzvzQTtyQ00Qs000s000k000kU"
     Text10 := "|<0/10>*178$38.Dw1g3z7zUvVzvkwCQwDs773i1y1lkvUTUQQCs7s773i1y1nUvUTUQsCs7wDC3j3rzb0tzszlkCDwU"
     loop 10 {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text快速咨询, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("图鉴已满，尝试快速咨询")
@@ -1910,7 +1911,7 @@ LoveTalking() {
                     FindText().Click(X, Y, "L")
                     AddLog("已咨询" A_Index "次")
                 }
-                Sleep 3000
+                Sleep sleepTime
                 Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
                 while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
                     UserClick(1894, 1440, scrRatio) ;点击1号位默认位置
@@ -1979,7 +1980,7 @@ FriendPoint() {
     BackToHall
     AddLog("===好友点数任务开始===")
     Text := "|<好友>*200$33.rzzyzyy0zrzbzDU007tzbzayTwzxrrzbziyTw0NY0TXnByTsSQDrzPrlyzngyDryyDkyzbVwzrttXDszwT4"
-    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击好友")
         FindText().Click(X, Y, "L")
         Sleep sleepTime

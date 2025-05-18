@@ -83,6 +83,7 @@ global g_settings := Map(
     "AutoCheckUpdate", 0,      ; 自动检查更新
     "SelfClosing", 1,          ; 完成后自动关闭程序
     "OpenBlablalink", 0,       ; 完成后打开Blablalink
+    "StoryMode", 1,            ; 剧情模式
 )
 ; 其他非简单开关的设置 Map 对象
 global g_numeric_settings := Map(
@@ -198,6 +199,9 @@ doroGui.Show()
 ClickOnDoro(*) {
     Initialization
     WriteSettings()
+    ; 妙妙工具系列
+    if (g_settings["StoryMode"]) and (A_Username = 12042)
+        StoryMode()
     Login() ;登陆到主界面
     if g_settings["Shop"] {
         if g_settings["CashShop"]
@@ -634,6 +638,31 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     ; 添加到日志
     AddLog(outputText)
 }
+; 推剧情模式
+StoryMode() {
+    while True {
+        Text := "|<1的图标>*99$31.y000Ty0003y7zzkyDzzyCDzzzWDzzzt7zzzw7zzzz3zzzzVzzDzkzy3zsTy1zwDz0zy7zUTz3zwDzVzy7zkzz3zsTzVzwDzkzy7zsTz3zwDzVzy7zkzz3zsTzVzw7zzzwHzzzyMzzzyCDzzyDVzzwDs000Dy000zk"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+            Sleep 1000
+            Send "{1}"
+        }
+        Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , 1, TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep sleepTime
+            Text := "|<播放>*192$53.sTzlzlz3zks01zVy7zVk03z3wDz3U0Dy7sTy7W4D00Uzk308y0100U400w02010000s0Q031000wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000D00kky400Q0001w8O0s3U07sEw3s700DkVs7wC4ATX3sDsQ00y67UTks01wAC0TVk03sMM0T3V37VkU08700C001UES00SA47VUw00ysATXjzzzzzzzy"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 3000
+                Send "{LShift Down}"
+                Sleep 500
+                Send "{LShift Up}"
+                Click 0, 0, 0
+            }
+        }
+    }
+}
+; 浏览器打开Bla
 OpenBlablalink() {
     Run("https://www.blablalink.com/")
 }
@@ -2472,5 +2501,5 @@ Activity() {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    Cooperate()
+    StoryMode
 }

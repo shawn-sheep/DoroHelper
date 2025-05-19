@@ -84,7 +84,6 @@ global g_settings := Map(
     "AutoCheckUpdate", 0,      ; 自动检查更新
     "SelfClosing", 1,          ; 完成后自动关闭程序
     "OpenBlablalink", 0,       ; 完成后打开Blablalink
-    "StoryMode", 0,            ; 剧情模式
 )
 ; 其他非简单开关的设置 Map 对象
 global g_numeric_settings := Map(
@@ -142,7 +141,8 @@ AddCheckboxSetting(doroGui, "Tower", "无限之塔", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Interception", "异常拦截", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Award", "奖励收取", "R1.2 xs")
 doroGui.Add("Text", " R1 xs", "===妙妙工具===")
-AddCheckboxSetting(doroGui, "Shop", "剧情模式", "R1.2")
+doroGui.Add("Text", "R1.2 xs Section", "剧情模式")
+doroGui.Add("Button", " xp+50 yp-5", "←启动").OnEvent("Click", StoryMode)
 Tab.UseTab("商店")
 doroGui.Add("Text", "R1.2 Section", "===付费商店===")
 AddCheckboxSetting(doroGui, "CashShop", "领取付费商店免费钻(进不了的别选)", "R1.2 xs")
@@ -178,9 +178,9 @@ AddCheckboxSetting(doroGui, "UniversalTower", "尽可能地爬通用塔", "R1.2"
 Tab.UseTab("奖励")
 doroGui.Add("Text", "R1.2 Section", "===常规奖励===")
 AddCheckboxSetting(doroGui, "OutpostDefence", "领取前哨基地防御奖励+1次免费歼灭", "R1.2  Y+M  Section")
-AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2")
+AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
 AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬", "R1.2 xs Section")
-AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2")
+AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2 xs+15")
 AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
 ; AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2")
@@ -202,9 +202,6 @@ doroGui.Show()
 ClickOnDoro(*) {
     Initialization
     WriteSettings()
-    ; 妙妙工具系列
-    if g_settings["StoryMode"]
-        StoryMode()
     Login() ;登陆到主界面
     if g_settings["Shop"] {
         if g_settings["CashShop"]
@@ -646,37 +643,35 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     AddLog(outputText)
 }
 ; 剧情模式
-StoryMode() {
-    if A_Username = 12042 {
-        while True {
-            Text := "|<1的图标>*99$31.y000Ty0003y7zzkyDzzyCDzzzWDzzzt7zzzw7zzzz3zzzzVzzDzkzy3zsTy1zwDz0zy7zUTz3zwDzVzy7zkzz3zsTzVzwDzkzy7zsTz3zwDzVzy7zkzz3zsTzVzw7zzzwHzzzyMzzzyCDzzyDVzzwDs000Dy000zk"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
+StoryMode(*) {
+    Initialization
+    while True {
+        Text := "|<SKIP的图标>*10$39.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzztzDzzzz7szzzzsD1zzzz0s7zzzs30Tzzz000zzzs003zzz000Dzzs001zzz000zzzs10Dzzz0s7zzzsD1zzzz3szzzztzDzzzzzzzzzzzzzzzw"
+        while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+            Text1 := "|<1的图标>*99$31.y000Ty0003y7zzkyDzzyCDzzzWDzzzt7zzzw7zzzz3zzzzVzzDzkzy3zsTy1zwDz0zy7zUTz3zwDzVzy7zkzz3zsTzVzwDzkzy7zsTz3zwDzVzy7zkzz3zsTzVzw7zzzwHzzzyMzzzyCDzzyDVzzwDs000Dy000zk"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text1, , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 800
                 Send "{1}"
             }
-            Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , 1, TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep sleepTime
-                Text := "|<播放>*192$53.sTzlzlz3zks01zVy7zVk03z3wDz3U0Dy7sTy7W4D00Uzk308y0100U400w02010000s0Q031000wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000D00kky400Q0001w8O0s3U07sEw3s700DkVs7wC4ATX3sDsQ00y67UTks01wAC0TVk03sMM0T3V37VkU08700C001UES00SA47VUw00ysATXjzzzzzzzy"
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                    Sleep 3000
-                    Send "{LShift Down}"
-                    Sleep 500
-                    Send "{LShift Up}"
-                    Click 0, 0, 0
-                }
-            }
-            if !WinActive(nikkeID) {
-                MsgBox "窗口未聚焦，程序已终止"
-                Pause
-            }
         }
-    }
-    else {
-        AddLog("妙妙工具是牢知专属的！")
-        Pause
+        Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , 8, TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep sleepTime
+        }
+        Text := "|<播放>*192$53.sTzlzlz3zks01zVy7zVk03z3wDz3U0Dy7sTy7W4D00Uzk308y0100U400w02010000s0Q031000wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000D00kky400Q0001w8O0s3U07sEw3s700DkVs7wC4ATX3sDsQ00y67UTks01wAC0TVk03sMM0T3V37VkU08700C001UES00SA47VUw00ysATXjzzzzzzzy"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 3000
+            Send "{LShift Down}"
+            Sleep 500
+            Send "{LShift Up}"
+            Click 0, 0, 0
+        }
+        if !WinActive(nikkeID) {
+            MsgBox "窗口未聚焦，程序已终止"
+            Pause
+        }
     }
 }
 ; 浏览器打开Bla
@@ -832,8 +827,16 @@ EnterToArk() {
 ;登录
 Login() {
     AddLog("正在登录")
-    Text方舟 := "|<方舟的图标>*200$57.0000w00000003zzU000003zzzk00003zzzzU0000zzzzz0000Tzzzzz0007zzzzzw003zzxzzzk00zzw7bzz00Dzz0wDzw03zzk7UTzk0Tzs0w1zz07zz0Tk7zw1zzkDzUzzkDzy3zy3zz3zzUzzkTzsTzw7zz3zzbzzzzzsDzyTzzzzzzzznzzzzzzzzzDzxzzzzzztzzUzzzzzz7zy7zz1zzsTzkTzsTzy3zz1zy3zzUDzs7zUTzw0zzUDk7zz03zy0w1zzk0Dzs7UTzy00zzkw7zzU03zz7Vzzs00Dzzzzzy000zzzzzz0001zzzzzk0003zzzzs00007zzzw000007zzy0000007zw000U"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text方舟, , 0, , , , , TrueRatio, TrueRatio)) {
+    check := 0
+    while True {
+        Text := "|<方舟的图标>*200$57.0000w00000003zzU000003zzzk00003zzzzU0000zzzzz0000Tzzzzz0007zzzzzw003zzxzzzk00zzw7bzz00Dzz0wDzw03zzk7UTzk0Tzs0w1zz07zz0Tk7zw1zzkDzUzzkDzy3zy3zz3zzUzzkTzsTzw7zz3zzbzzzzzsDzyTzzzzzzzznzzzzzzzzzDzxzzzzzztzzUzzzzzz7zy7zz1zzsTzkTzsTzy3zz1zy3zzUDzs7zUTzw0zzUDk7zz03zy0w1zzk0Dzs7UTzy00zzkw7zzU03zz7Vzzs00Dzzzzzy000zzzzzz0001zzzzzk0003zzzzs00007zzzw000007zzy0000007zw000U"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
+        }
+        else check := 0
+        if (check = 3) {
+            break
+        }
         ;点击蓝色的确认按钮（如果出现更新提示等消息）
         Text := "|<确认>*192$51.zz1zyDy7s0s0TUzkz0601y3y7s0U0TkTkzksT3z3y7yC3kTwzkzlk00zzy7wC0073zkzU800kDy7s1X761zkz0AMMsDw7s1U07lzUT2A00yDw3sFU07lzUT2AMMyDs1sFX77kb2DWAEEy0kkwF007k663W800y0VsA1737k8D0U0wsy23w407W7UUTUXkw0wC7y6SDU7nlzsU"
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -1314,7 +1317,7 @@ SimulationRoom() {
     EnterToBattle
     BattleSettlement
     Text := "|<模拟结束的图标>*159$38.03zzzy01zzzzs0zzzzy0Dk00Dk3k001w0w000D0D0003k00000w00000D000003k0U000w0M000D0S0003kDU000w7zzU0D3zzs03nzzy00xzzzU0Dzzzs03zzzy00xzzzU0DDzzs03lzzy00wDzzU0D0y0003k7U000w0s000D020003k00000w00000D000003k3k000w0w000T0DU00Dk3zzzzw0Tzzzy03zzzz0000302"
-    while (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击模拟结束")
         FindText().Click(X + 50 * WinRatio, Y, "L")
         Sleep sleepTime
@@ -1451,7 +1454,7 @@ RookieArena() {
     skip := false
     Text免费 := "|<免费>*186$36.wTzy4Ls0zk01k0zz4FVkzk01103k03003k00U1Xk00XXXwQMnXXUQFk03k03k03s03z0zszXy8zslXwMtsXXksts671s1UC0bw3UzsU"
     while True {
-        while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
             AddLog("有免费次数，尝试进入战斗")
             FindText().Click(X, Y, "L")
             Sleep sleepTime
@@ -1474,7 +1477,6 @@ RookieArena() {
         }
         EnterToBattle
         BattleSettlement
-        Sleep sleepTime
     }
     AddLog("没有免费次数，尝试返回")
     Text := "|<新人竞技场>*111$93.lzXzVzzkzwTXyA0s10DwDy007XwTlU3007zVzs00wM0CA0M07zwDzlsz001lw7a8zzVzk00k00A31s17zwDy0030wT001001zVzk00QT3w00000Ds7zU0DV01lU0ss3z0zw01w00CC0004Ts3zXwC0XXll000Xy4Tw01sA8SC8014TVVzU0D3k7k2808XwC7w03wS0w0n00AT3kTslrXsD0QM8VXUz1w6AQQ0wT6ACAMDw61k3201zk1lvXXztkS0sMQDy8A"
@@ -1498,7 +1500,7 @@ SpecialArena() {
     skip := false
     Text免费 := "|<免费>*200$35.wTzy8zk3zU0707zsXASDy00EsTw01U03s00337k01DDDstWQQS3nA00y00w01y01z0zwznyNztnbknrnCD3bDUEsT0Q3k/z1szyE"
     while True {
-        while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text免费, , , , , , 3, TrueRatio, TrueRatio)) { ;3代表从下往上找
             AddLog("有免费次数，尝试进入战斗")
             FindText().Click(X, Y, "L")
             Sleep sleepTime
@@ -1521,7 +1523,6 @@ SpecialArena() {
         }
         EnterToBattle
         BattleSettlement
-        Sleep sleepTime
     }
     AddLog("没有免费次数，尝试返回")
     Text := "|<特殊竞技场>*113$93.tyDzz7zszyTnzDzz70Q18z007lwTtU30k1U07s00SC0DA0860C007ksDU01tw30SDkE0y73s00A3Us0060060030wTUED0U0k17k00SDXw00160C0MzU0DlU1kk0szXX00Q01y40DC0700A003U0D001ts0U00UA1w7Vs4ATC8020DVUDU0D1l3s180lXwQ1w01yD0y0F774TX07sFrlsDU4MstXsV0T6CSC0wDX77kQA8b0k3101bs0sy3Xr7kD0MMADyAD7kzzszDw7bjtzvXU"
@@ -1932,7 +1933,7 @@ LoveTalking() {
     Text20 := "|<20/>*240$24.3000DkM3Tly3Tvz71vz71vb73zbD3rbC7rbCTXbCzvzQzvzQTtyQ00Qs000s000k000kU"
     Text10 := "|<0/10>*178$38.Dw1g3z7zUvVzvkwCQwDs773i1y1lkvUTUQQCs7s773i1y1nUvUTUQsCs7wDC3j3rzb0tzszlkCDwU"
     loop 10 {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text快速咨询, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("图鉴已满，尝试快速咨询")
@@ -2519,5 +2520,5 @@ RoadToVillain() {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    StoryMode
+    Login()
 }

@@ -724,9 +724,11 @@ EnterToBattle() {
     AddLog("尝试进入战斗")
     Text := "|<进入战斗的进>*175$32.tzsS7wDy7Vz1zVsTkDsQ7y1w71zkE003yQ000zz000Dzs003zzsQ7zzy7Vy0zVsT0DsQ7k3U00A0k001wA000T30007ky3kTwDUw7z3sTVzkw7kTwD1w7z3UzVzkwTkTk3byDs0Dzzw000001k000Mz0006Tw001U"
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X + 100 * WinRatio, Y, "L")
         AddLog("点击进入战斗")
-        Sleep sleepTime
+        FindText().Click(X + 100 * WinRatio, Y, "L")
+        Sleep 500
+        FindText().Click(X + 100 * WinRatio, Y, "L")
+        Sleep 500
         FindText().Click(X + 100 * WinRatio, Y, "L")
     }
     else {
@@ -1327,6 +1329,10 @@ SimulationRoom() {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
     }
+    Text := "|<左上角的模拟室>*200$54.rn7vzvztzr03vbvk00nn7nUvlzs1zjVavnzw1U7VaPzzznbbnaPy03nXbvbvz7bXbbtbny77Vbblbnw031U7Vbnztz7wznbnztz7wTvUVzkTL03vVVw03rk7vb1ztzrnbnjAzszr7nXyRk00U"
+    while !(ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        Confirm
+    }
     AddLog("===模拟室任务结束===")
 }
 ; 模拟室超频
@@ -1334,14 +1340,15 @@ SimulationOverClock() {
     AddLog("===模拟室超频任务开始===")
     Text := "|<剩余奖励的0>*80$26.s001wTzyCDzzl600C3001lU00AE0014000F0004E3w141VUF0E84E421410UF0E84E66140z0F0004E0014000FU00AA0071U03WDzzllzzsy000S"
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("模拟室超频未完成")
         Text := "|<开始超频>*173$63.zzyD7ztzwzs01nszyA1a000CTBX0FY077DUF4Q6Abnttw2QXtk4k7DDU00M0E0000C40E7z02001UrrHUACE00A7zs41U27DDkk70aA0Eltz60kA1806DDs3a3UD34Xty0QkDzsw8zDXk6E0AC0jtyy0n01Xlo"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep sleepTime
         }
     }
     else {
-        AddLog("本次模拟室超频已完成！")
+        AddLog("模拟室超频已完成！")
         return
     }
     Text := "|<BIOS>*168$49.03wzVzk3U0yT0Dk0E0DD03k09z7b3kszUzXn7wQzy01tXz60D00wlzX01U0CMzls0Hz7ATszz1zlaDwTzUzsnXwQzkDstk0S7k00Qy0TU0U0STUTs0s"
@@ -1359,20 +1366,34 @@ SimulationOverClock() {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
     }
-    loop 6 {
+    final := false
+    while true {
         Text := "|<获得>*120$30.xvzzzU0D8000C8sstwM0duxcsVkT80XnSA100A80s0880llwDlVlz009UzBntYTAnkCDCHWTDD3U"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep sleepTime
         }
-        EnterToBattle
-        BattleSettlement
-        AddLog("模拟室超频第" A_Index "关已通关！")
-        Text := "|<连结等级>*179$51.Mk663jVjnzsrwzyByDzDzjzXKkDXwkzwSqzzTTXzbrvjtnwzyQzDzDTDznrNzvzwzyzyAQ8NbznxnVVzACMTyzzzzUr3TuTt3w1s3FU"
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("获取第" A_Index "次增益")
+        Text := "|<模拟通关>*103$63.rqzTzzzzzzyM1tbbQ0TDXm07AAkk3sswAHl1b71z2700A04yk3U0AM1l47w0C03V0DAUtUFz7w01s7640DszU0A0ssUF00001V67Y0A0130CA0wUFy3sE0t03YkDUDnUT8UM63sMSMEl8E0087UmD4TaHU1Xy4"
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            final := True
+            AddLog("挑战最后一关")
             FindText().Click(X, Y, "L")
             Sleep sleepTime
+        }
+        EnterToBattle
+        BattleSettlement
+        if final = True {
+            break
+        }
+        AddLog("模拟室超频第" A_Index "关已通关！")
+        Text := "|<Lv>*215$15.k0600k0K1bkAy1qk7q0wz3bwMU"
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("获取第" A_Index "次增益")
+            FindText().Click(X, Y, "L")
+            Sleep 500
+            FindText().Click(X, Y, "L")
+            Sleep 500
+            FindText().Click(X, Y, "L")
         }
         Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -1380,13 +1401,6 @@ SimulationOverClock() {
             Sleep sleepTime
         }
     }
-    Text := "|<模拟通关>*103$63.rqzTzzzzzzyM1tbbQ0TDXm07AAkk3sswAHl1b71z2700A04yk3U0AM1l47w0C03V0DAUtUFz7w01s7640DszU0A0ssUF00001V67Y0A0130CA0wUFy3sE0t03YkDUDnUT8UM63sMSMEl8E0087UmD4TaHU1Xy4"
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("挑战最后一关")
-        FindText().Click(X, Y, "L")
-    }
-    EnterToBattle
-    BattleSettlement
     Text := "|<模拟结束的图标>*159$38.03zzzy01zzzzs0zzzzy0Dk00Dk3k001w0w000D0D0003k00000w00000D000003k0U000w0M000D0S0003kDU000w7zzU0D3zzs03nzzy00xzzzU0Dzzzs03zzzy00xzzzU0DDzzs03lzzy00wDzzU0D0y0003k7U000w0s000D020003k00000w00000D000003k3k000w0w000T0DU00Dk3zzzzw0Tzzzy03zzzz0000302"
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
@@ -1397,10 +1411,14 @@ SimulationOverClock() {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
     }
-    Text := "|<连结等级>*179$51.Mk663jVjnzsrwzyByDzDzjzXKkDXwkzwSqzzTTXzbrvjtnwzyQzDzDTDznrNzvzwzyzyAQ8NbznxnVVzACMTyzzzzUr3TuTt3w1s3FU"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    Text := "|<Lv>*215$15.k0600k0K1bkAy1qk7q0wz3bwMU"
+    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("获取第" A_Index "次增益")
         FindText().Click(X, Y, "L")
-        Sleep sleepTime
+        Sleep 500
+        FindText().Click(X, Y, "L")
+        Sleep 500
+        FindText().Click(X, Y, "L")
     }
     Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -1477,7 +1495,10 @@ RookieArena() {
         }
         EnterToBattle
         BattleSettlement
-        ;如果左上角没有竞技场就一直点确认
+        Text := "|<左上角的感叹号>*200$22.zwzzw0Dz3wTszwT7ztszznbwzaznyHzzwDzzkzzz3zDwDwzkznz3zDwjwzaTnyQzzntzyTXzXzVsTzU7zznzs"
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+            Confirm
+        }
     }
     AddLog("没有免费次数，尝试返回")
     Text := "|<新人竞技场>*111$93.lzXzVzzkzwTXyA0s10DwDy007XwTlU3007zVzs00wM0CA0M07zwDzlsz001lw7a8zzVzk00k00A31s17zwDy0030wT001001zVzk00QT3w00000Ds7zU0DV01lU0ss3z0zw01w00CC0004Ts3zXwC0XXll000Xy4Tw01sA8SC8014TVVzU0D3k7k2808XwC7w03wS0w0n00AT3kTslrXsD0QM8VXUz1w6AQQ0wT6ACAMDw61k3201zk1lvXXztkS0sMQDy8A"
@@ -1507,8 +1528,8 @@ SpecialArena() {
             Sleep sleepTime
         }
         else break
-        Text := "|<ON>*185$32.z7zzyT0TjzXU1szsksC7y8zXUzWDwM7s7z60S1zlX3UTwMsMbz6D08zVXs27kszUk0SDwC0DXzXs7szzU"
         if skip = false {
+            Text := "|<ON>*185$32.z7zzyT0TjzXU1szsksC7y8zXUzWDwM7s7z60S1zlX3UTwMsMbz6D08zVXs27kszUk0SDwC0DXzXs7szzU"
             if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("快速战斗已开启")
                 skip := true
@@ -1524,6 +1545,10 @@ SpecialArena() {
         }
         EnterToBattle
         BattleSettlement
+        Text := "|<左上角的感叹号>*200$22.zwzzw0Dz3wTszwT7ztszznbwzaznyHzzwDzzkzzz3zDwDwzkznz3zDwjwzaTnyQzzntzyTXzXzVsTzU7zznzs"
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+            Confirm
+        }
     }
     AddLog("没有免费次数，尝试返回")
     Text := "|<特殊竞技场>*113$93.tyDzz7zszyTnzDzz70Q18z007lwTtU30k1U07s00SC0DA0860C007ksDU01tw30SDkE0y73s00A3Us0060060030wTUED0U0k17k00SDXw00160C0MzU0DlU1kk0szXX00Q01y40DC0700A003U0D001ts0U00UA1w7Vs4ATC8020DVUDU0D1l3s180lXwQ1w01yD0y0F774TX07sFrlsDU4MstXsV0T6CSC0wDX77kQA8b0k3101bs0sy3Xr7kD0MMADyAD7kzzszDw7bjtzvXU"
@@ -2521,5 +2546,5 @@ RoadToVillain() {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    Login()
+    EnterToBattle()
 }

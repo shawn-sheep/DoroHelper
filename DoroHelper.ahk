@@ -20,7 +20,7 @@ if A_Username != 12042 {
 4、多显示器、异形屏
 模拟室需要能快速战斗、拦截战需要能打异常拦截
 运行前将游戏尺寸比例设置成16：9，然后ctrl+3按到画面不动为止，此时nikke应该是居中的
-反馈任何问题前请尽可能附带：
+反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时请尽可能附带：
 1、电脑的配置（包括显示器分辨率、缩放比例、HDR是否开启、是否双显示器等）
 2、软件中对应操作的日志
 3、对应操作的全程录屏
@@ -1477,6 +1477,7 @@ RookieArena() {
         }
         EnterToBattle
         BattleSettlement
+        ;如果左上角没有竞技场就一直点确认
     }
     AddLog("没有免费次数，尝试返回")
     Text := "|<新人竞技场>*111$93.lzXzVzzkzwTXyA0s10DwDy007XwTlU3007zVzs00wM0CA0M07zwDzlsz001lw7a8zzVzk00k00A31s17zwDy0030wT001001zVzk00QT3w00000Ds7zU0DV01lU0ss3z0zw01w00CC0004Ts3zXwC0XXll000Xy4Tw01sA8SC8014TVVzU0D3k7k2808XwC7w03wS0w0n00AT3kTslrXsD0QM8VXUz1w6AQQ0wT6ACAMDw61k3201zk1lvXXztkS0sMQDy8A"

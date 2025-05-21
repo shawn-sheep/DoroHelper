@@ -18,13 +18,19 @@ if A_Username != 12042 {
 2、非100%缩放的2K分辨率
 3、非100%缩放的4K分辨率
 4、多显示器、异形屏
+不支持国服、港澳台服、多开
 模拟室需要能快速战斗、拦截战需要能打异常拦截
-运行前将游戏尺寸比例设置成16：9，然后ctrl+3按到画面不动为止，此时nikke应该是居中的
-反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时请尽可能附带：
-1、电脑的配置（包括显示器分辨率、缩放比例、HDR是否开启、是否双显示器等）
+运行前将游戏尺寸比例设置成16：9，确认关闭HDR，使用单显示器。
+然后ctrl+3按到画面不动为止，此时nikke应该是居中的
+)"
+}
+if A_Username != 12042 {
+    msgbox "
+(
+反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏。
+除录屏外需尽可能附带以下信息，信息越多，修复的可能性越高
+1、电脑的配置（包括显示器分辨率、缩放比例等）
 2、软件中对应操作的日志
-3、对应操作的全程录屏
-4、详细说明遇到的问题（比如哪一步鼠标卡在了哪里）
 如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。
 )"
 }
@@ -122,17 +128,15 @@ BtnClear := doroGui.Add("Button", "R1 x+8", "清空日志").OnEvent("Click", (*)
 Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
 Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
 Tab.UseTab("设置")
-doroGui.SetFont("cred s10 Bold")
-doroGui.Add("Text", , "除非你知道自己在做什么，否则不要修改")
-doroGui.SetFont()
 AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新(确保能连上github)", "R1.2")
 AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
 AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
-doroGui.Add("Text", , "点击间隔(毫秒)")
-doroGui.Add("DropDownList", "Choose" g_numeric_settings["sleepTime"], [750, 1000, 1250, 1500, 1750, 2000]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("sleepTime", CtrlObj))
 doroGui.Add("Text", , "识图宽容度(越大越容易识到图、识错图)")
 doroGui.Add("DropDownList", "Choose" g_numeric_settings["Tolerance"], [1, 2, 3]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("Tolerance", CtrlObj))
 doroGui.Add("Button", "R1", "保存当前设置").OnEvent("Click", SaveSettings)
+doroGui.Add("Text", " R1 ", "===妙妙工具===")
+doroGui.Add("Text", "R1.2 Section", "剧情模式")
+doroGui.Add("Button", " xp+50 yp-5", "←启动").OnEvent("Click", StoryMode)
 Tab.UseTab("任务")
 AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
 AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "R1.2")
@@ -140,9 +144,6 @@ AddCheckboxSetting(doroGui, "Arena", "竞技场", "R1.2 Section")
 AddCheckboxSetting(doroGui, "Tower", "无限之塔", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Interception", "异常拦截", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Award", "奖励收取", "R1.2 xs")
-doroGui.Add("Text", " R1 xs", "===妙妙工具===")
-doroGui.Add("Text", "R1.2 xs Section", "剧情模式")
-doroGui.Add("Button", " xp+50 yp-5", "←启动").OnEvent("Click", StoryMode)
 Tab.UseTab("商店")
 doroGui.Add("Text", "R1.2 Section", "===付费商店===")
 AddCheckboxSetting(doroGui, "CashShop", "领取付费商店免费钻(进不了的别选)", "R1.2 xs")
@@ -271,7 +272,7 @@ ClickOnDoro(*) {
     if Result = "Yes"
         MsgSponsor
     if g_settings["OpenBlablalink"]
-        OpenBlablalink
+        Run("https://www.blablalink.com/")
     if g_settings["SelfClosing"]
         if InStr(currentVersion, "beta") {
             MsgBox ("测试版本禁用自动关闭！")
@@ -673,10 +674,6 @@ StoryMode(*) {
             Pause
         }
     }
-}
-; 浏览器打开Bla
-OpenBlablalink() {
-    Run("https://www.blablalink.com/")
 }
 ;点左下角的小房子的对应位置的右边（不返回）
 Confirm() {

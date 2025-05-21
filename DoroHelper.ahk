@@ -1498,9 +1498,10 @@ RookieArena() {
         }
     }
     AddLog("没有免费次数，尝试返回")
-    Text := "|<新人竞技场>*111$93.lzXzVzzkzwTXyA0s10DwDy007XwTlU3007zVzs00wM0CA0M07zwDzlsz001lw7a8zzVzk00k00A31s17zwDy0030wT001001zVzk00QT3w00000Ds7zU0DV01lU0ss3z0zw01w00CC0004Ts3zXwC0XXll000Xy4Tw01sA8SC8014TVVzU0D3k7k2808XwC7w03wS0w0n00AT3kTslrXsD0QM8VXUz1w6AQQ0wT6ACAMDw61k3201zk1lvXXztkS0sMQDy8A"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    Text := "|<左上角的竞技场>*200$54.zbztzTxzzU07tyTxk1U07tyDxs3wyzkk1xz7wwTUSDkyD003lzTkMTzzztyTss0s0Dtk1xs0k0Dsk1xwmnzDUnnxxalzDVtnxtik0Dtsbw3iyMztw7s7AyNztwDkyQwtvts7nywVw3XVVzwlbw7XrtzxlU"
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
+        Sleep sleepTime
     }
     AddLog("已返回竞技场页面")
     AddLog("===新人竞技场任务结束===")
@@ -1510,7 +1511,7 @@ SpecialArena() {
     AddLog("===特殊竞技场任务开始===")
     AddLog("查找特殊竞技场")
     Text := "|<特殊竞技场>*93$91.tyDzzDzlzsyDszzws1U07s00wT7wM0kQ0E03w00SA0CA0M60AC0DVkw0077kQ1sy207UkS0031kS0010030010wT0ED000U2DU00kyDU004k0l13w01wM0QM0CTsl00C00y00CC0600000700Q0077000040U7U0C137X00003kk7k071l3k000lXss3s03sw3k20QslwE0z0CwS3k34CSMsEUD36CC0sD6CDUMMF41U4406z07bsQSsy3k2633zW3nwDzwT7y77jtzv3U"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击特殊竞技场")
         FindText().Click(X, Y, "L")
         Sleep sleepTime
@@ -1548,9 +1549,10 @@ SpecialArena() {
         }
     }
     AddLog("没有免费次数，尝试返回")
-    Text := "|<特殊竞技场>*113$93.tyDzz7zszyTnzDzz70Q18z007lwTtU30k1U07s00SC0DA0860C007ksDU01tw30SDkE0y73s00A3Us0060060030wTUED0U0k17k00SDXw00160C0MzU0DlU1kk0szXX00Q01y40DC0700A003U0D001ts0U00UA1w7Vs4ATC8020DVUDU0D1l3s180lXwQ1w01yD0y0F774TX07sFrlsDU4MstXsV0T6CSC0wDX77kQA8b0k3101bs0sy3Xr7kD0MMADyAD7kzzszDw7bjtzvXU"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    Text := "|<左上角的竞技场>*200$54.zbztzTxzzU07tyTxk1U07tyDxs3wyzkk1xz7wwTUSDkyD003lzTkMTzzztyTss0s0Dtk1xs0k0Dsk1xwmnzDUnnxxalzDVtnxtik0Dtsbw3iyMztw7s7AyNztwDkyQwtvts7nywVw3XVVzwlbw7XrtzxlU"
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
+        Sleep sleepTime
     }
     AddLog("已返回竞技场页面")
     AddLog("===特殊竞技场任务结束===")

@@ -2271,35 +2271,44 @@ Activity() {
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y - 100 * WinRatio, "L")
         Sleep sleepTime
-        Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
+        ; Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
+        ; if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+        ;     AddLog("困难未开放，可以继续")
+        ; }
+        UserClick(1662, 2013, scrRatio)
+        Sleep sleepTime
+        UserClick(1662, 2013, scrRatio)
+        Sleep sleepTime
+        UserClick(1662, 2013, scrRatio)
+        Sleep sleepTime
+        Text := "|<1.11>*200$58.zzzzzzjzzzzjzzzyzzzzwzzzznzzjzXzzzyDzwzsDzzzUzz3s0zzzk3z0Ds3zzzUDz0zkDzzz0zy3z0zzzw3zsDy3zzzsDzUzsDzzzUzz3zUzzzy3zwDy3zzzsDzkzsDzzzUzz3zUzzzy3zwDy3zzzsDzkzsDzzzUzz3zUzzzy3zwDy3z0zsDzkzsDw3zUzz3zUzkDy3zwDy3y0TsDzkzsDw3zUzz3zUzkDy3zwDy3zSzsDzkTs7zzzUTy0w07zzs0TU0U1zzz07w0C0Dzzs0zU3nXzzzi7yQTTDzzxyzvtxzzzzzzzjzs"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("困难未开放，可以继续")
-            Text := "|<1.11>*240$47.zjzzzzzzyTzzyzzjszzztzyS1zzw3z0y3zzw7zVy7zzwDz3wDzzwTy7sTzzszwDkzzzlzsTVzzzXzkz3zzz7zVy7zzyDz3wDzzwTy7sTzzszwDkzizlzsTVz3zXzkz3y3z7zVy7w7yDz3wDsDwTy7sTzzszwDkzzzkzsC0zzy0zU83zzs7y1jTzziTvbU"
+            AddLog("刷11关")
+            FindText().Click(X, Y, "L")
+            Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
             if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("刷11关")
+                AddLog("快速战斗已激活")
                 FindText().Click(X, Y, "L")
-                Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                    AddLog("快速战斗已激活")
+                Text := "|<MAX>*130$23.66CMAAQYMMt8klkFV1lX2HX64b649CA2GQM4Ysk91lUG399UWGH3YZa73XBiLM"
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.15 * PicTolerance, 0.15 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                    AddLog("进行多倍率快速战斗")
                     FindText().Click(X, Y, "L")
-                    Text := "|<MAX>*130$23.66CMAAQYMMt8klkFV1lX2HX64b649CA2GQM4Ysk91lUG399UWGH3YZa73XBiLM"
-                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.15 * PicTolerance, 0.15 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                        AddLog("进行多倍率快速战斗")
-                        FindText().Click(X, Y, "L")
-                        Sleep sleepTime
-                    }
-                    Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"
-                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-                        FindText().Click(X, Y, "L")
-                    }
-                    AddLog("完成活动关卡")
+                    Sleep sleepTime
                 }
-                else {
-                    EnterToBattle
-                    BattleSettlement
-                    AddLog("完成活动关卡")
+                Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
                 }
+                AddLog("完成活动关卡")
             }
+            else {
+                EnterToBattle
+                BattleSettlement
+                AddLog("完成活动关卡")
+            }
+        }
+        else {
+            AddLog("未找到第11关，退出")
         }
     }
     Text := "|<剧情活动>*200$73.zzvvyTzztzzrk3xxk0wS0y1vs1ayM0zC1z0xwynT7XzztzzwS0Ni00Dzwzzw10Ar3wzzwDzy0aSPX01lk0M1bH7Blzzwz3w1nc0ayw0zznzbtolnTQ0TztzrwsttjiTjzU3viQ04rr07xk1tnQ03vvXnwvww1C1txxk1wxyQ072wyys0ySTDDXX0QTQzST07zn3aSTiSDzU3zzX"
@@ -2484,7 +2493,7 @@ SoloRaid() {
 RoadToVillain() {
     BackToHall()
     AddLog("===反派之路任务开始===")
-    Text := "|<ROAD TO>*149$61.VzXyDXzUDXUD0T7UDk70HX7DfnbyTb9tbnYttzDbksntmQwzbns0twvCSTntw0wyMXDDtwy6STA1bbwyT3bbCQnbyTb9lk6T83zDk6wyDDaDzryD"
+    Text := "|<ROAD>*200$29.zzzznzzzy3zzwtbztlnCDbVaEC73BaNA6HQaPAYtAqN9WPgWOAq11kNw270XNYSN6bzxm9DznY5zy7AzzwCTzzzU"
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep sleepTime
@@ -2549,5 +2558,5 @@ RoadToVillain() {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    EnterToBattle()
+    RoadToVillain()
 }

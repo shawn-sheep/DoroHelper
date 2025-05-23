@@ -54,7 +54,7 @@ global g_settings := Map(
     "ArenaShopFurnace", 1,     ; 竞技场商店：公司武器熔炉
     "ScrapShop", 1,            ; 废铁商店
     "ScrapShopGem", 1,         ; 废铁商店：珠宝
-    "ScrapShopVoucher", 1,     ; 废铁商店：好感券
+    "ScrapShopVoucher", 0,     ; 废铁商店：好感券
     "ScrapShopResources", 1,   ; 废铁商店：养成资源
     ; 模拟室
     "SimulationRoom", 1,       ; 模拟室
@@ -63,14 +63,15 @@ global g_settings := Map(
     "Arena", 1,                ; 竞技场收菜
     "RookieArena", 1,          ; 新人竞技场
     "SpecialArena", 1,         ; 特殊竞技场
-    "ChampionArena", 0,        ; 冠军竞技场
+    "ChampionArena", 1,        ; 冠军竞技场
     ; 无限之塔
     "Tower", 1,                ; 无限之塔总开关
     "CompanyTower", 1,         ; 企业塔
     "UniversalTower", 0,       ; 通用塔
     ; 异常拦截
     "Interception", 1,         ; 拦截战
-    ; 奖励
+    "InterceptionShot", 01,    ; 拦截截图
+    ; 常规奖励
     "Award", 1,                ; 奖励领取总开关
     "OutpostDefence", 1,       ; 前哨基地收菜
     "Expedition", 1,           ; 派遣
@@ -81,6 +82,7 @@ global g_settings := Map(
     "RankingReward", 1,        ; 排名奖励
     "Mission", 1,              ; 任务
     "Pass", 1,                 ; 通行证
+    ; 限时奖励
     "FreeRecruit", 1,          ; 活动期间每日免费招募
     "RoadToVillain", 1,        ; 德雷克·反派之路
     "Cooperate", 1,            ; 协同作战
@@ -88,8 +90,8 @@ global g_settings := Map(
     "Activity", 0,             ; 小活动
     ; 其他
     "AutoCheckUpdate", 0,      ; 自动检查更新
-    "SelfClosing", 1,          ; 完成后自动关闭程序
-    "OpenBlablalink", 0,       ; 完成后打开Blablalink
+    "SelfClosing", 0,          ; 完成后自动关闭程序
+    "OpenBlablalink", 1,       ; 完成后打开Blablalink
 )
 ; 其他非简单开关的设置 Map 对象
 global g_numeric_settings := Map(
@@ -171,6 +173,7 @@ AddCheckboxSetting(doroGui, "SpecialArena", "特殊竞技场", "R1.2")
 AddCheckboxSetting(doroGui, "ChampionArena", "冠军竞技场(跟风竞猜)", "R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===异常拦截编队===")
 doroGui.Add("DropDownList", "Choose" InterceptionBossToLabel(), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
+AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+3 R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===模拟室===")
 AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频（默认使用上次的tag）", "R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===无限之塔===")
@@ -401,9 +404,6 @@ ClickOnHelp(*) {
     -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
     
     )"
-}
-SleepTimeToLabel(sleepTime) {
-    return String(sleepTime / 250 - 2)
 }
 IsCheckedToString(foo) {
     if foo
@@ -738,7 +738,11 @@ EnterToBattle() {
     }
 }
 ;战斗结算
-BattleSettlement() {
+BattleSettlement(Screenshot := false) {
+    global NikkeX
+    global NikkeY
+    global NikkeW
+    global NikkeH
     if (BattleActive = 0) {
         return
     }
@@ -753,9 +757,13 @@ BattleSettlement() {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , , , , , , TrueRatio, TrueRatio)) or (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextR, , , , , , , TrueRatio, TrueRatio)) {
             check := check + 1
             ; AddLog("已命中" check "次")
-            ;需要连续三次命中
+            ;需要连续三次命中代表战斗结束
             if (check = 3) {
-                ;看到TAB的标志代表战斗结束了，看看怎么个事
+                ;是否需要截图
+                if Screenshot {
+                    TimeString := FormatTime(, "yyyyMMdd_HHmmss")
+                    FindText().SavePic(A_ScriptDir "\Screenshots\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
+                }
                 Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
                 Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
                 ; 有编队代表输了，点Esc
@@ -1817,7 +1825,6 @@ Interception() {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text快速战斗, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("已激活快速战斗")
             FindText().Click(X, Y, "L")
-            Sleep sleepTime
         }
         else if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text进入战斗, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("未激活快速战斗，尝试普通战斗")
@@ -1837,8 +1844,11 @@ Interception() {
                 FindText().Click(X, Y, "L")
                 AddLog("跳过动画")
             }
-            BattleSettlement
         }
+        if g_settings["InterceptionShot"] {
+            BattleSettlement(true)
+        }
+        else BattleSettlement
         Text := "|<异常个体拦截战>*200$94.07nRznzDTrhwBjjdzS03y7xszSrtrySk1vzjnDa0sEC03svDzc2wyCSDrzw8zj0zjbjbStszTzrryws1z0zxzb1wzy1/VvzzzDzrzRPX0tCS3WSz07zTxhjTzUtvy00wWDxzk2RzzHjjxjjrQzrzSDrzxAqvZyzQbzTxxzM1k0s48"
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
@@ -2558,5 +2568,5 @@ RoadToVillain() {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    RoadToVillain()
+    BattleSettlement(true)
 }

@@ -5,7 +5,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;consts
 currentVersion := "v1.0.0-beta"
-usr := "kyokakawaii"
+usr := "1204244136"
 repo := "DoroHelper"
 global waitTolerance := 50
 ; MsgBox "请在运行前调整游戏窗口到合适尺寸"

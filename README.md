@@ -4,7 +4,7 @@
 
 # DoroHelper
 
-PC 端日常任务清理助手。一键清理多项日常事务。支持国际服和港澳台服客户端。
+PC 端日常任务清理助手。一键清理多项日常事务。支持除国服外的所有客户端。
 
 </div>
 
@@ -13,6 +13,12 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持国际�
 - 牢 N 写的功能类似的[手机脚本](https://github.com/Zebartin/autoxjs-scripts)
 
 - 牢 D 功能类似的[模拟器脚本](https://github.com/takagisanmie/NIKKEAutoScript)
+
+## 新版本注意
+
+下方的功能介绍均针对最新版本，老版本的对应功能请查看[legacy-v0.1.22](https://github.com/1204244136/DoroHelper/tree/legacy-v0.1.22)分支处的自述文件。
+
+最新版本尚在测试，最新测试版请于[DoroHelper 反馈群](https://qm.qq.com/q/f0Q1yr7vzi)(584275905)下载
 
 ## 免责声明
 
@@ -24,13 +30,13 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持国际�
 
 ## 使用
 
-### 运行 ahk 文件（推荐）
+### 运行仓库内的 ahk 文件（推荐）
 
 1. 将整个项目文件下载到本地并解压（右上角绿色 code 按钮-Download ZIP）
 1. 下载并安装[AutoHotkey V2.0](https://www.autohotkey.com/download/ahk-v2.exe)
 1. 以管理员身份运行 DoroHelper.ahk
 
-### 运行 exe 文件
+### 运行发行版的 exe 文件
 
 1. 下载右边的 release 文件
 1. 以管理员身份运行 DoroHelper.exe
@@ -124,7 +130,7 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
 
 ## 支持和鼓励
 
-知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下
+知一一：前任作者[牢 H](https://github.com/kyokakawaii) 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下
 
 <table>
   <tr>

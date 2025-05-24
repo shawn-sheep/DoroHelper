@@ -329,6 +329,10 @@ Initialization() {
     TrueRatio := currentScale * WinRatio
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n窗口缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
+    if A_ScreenWidth < 2347 {
+        MsgBox ("屏幕尺寸过小，请使用更高分辨率的屏幕")
+        Pause
+    }
 }
 /**
  * 添加一个与 g_settings Map 关联的复选框到指定的 GUI 对象.

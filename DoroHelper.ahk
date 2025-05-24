@@ -758,9 +758,10 @@ BattleSettlement(Screenshot := false) {
     AddLog("等待战斗结算")
     TextTAB := "|<TAB的图标>*149$32.0Tzzzk3zzzw0zzzz0Dzzzk3zzzw0zzzz0Dzzzk3zzzw0w0zz0D0Dzk3k3zw0w0zz0D0Dzk3k3zw0w0y00D0D003k3k00w0w00D0D003k3k00w0w00D0D003k3k00w0w00D0D003k3k00w0w00D0D0Dzzzzzzzzzzzzzzzzzzzzw000000000000000000000U"
     TextR := "|<R的图标>*147$41.zzk07zzzy003zzzk001zzy0000zzs1zw0xzUDzy0ny1zzz03s7zzz07UTzzz0D1zzzz0Q7zzzw0sTzzzk1UzyTz033zwTzy27zsTzzsDzkTzzkzzUDzzVzz0Dzz3zy0Dzy7zw07zwDzs07zsTzk0TzkzzU1zzVzz07zz3zy0TzU3zw3zy27zsDzw4DzkzzsMDzbzzUsDzTzz3kTzzzw7kTzzzkTkTzzz1zUTzzw3zUDzzUDzUDzy0zzU3zU3zzk000Tzzk001zzzs00Dzzzy01zzk"
+    Text点击 := "|<点击>*100$37.zlzzwTzszzyDzw0Dz7zy07U03z7zk01zXzzszk01zwTs00w00ATwQ006DyD0033y7zlzU03ssss03wQQTzzyCCAH4T776MX7U02ANXk00CAMs00U"
     check := 0
     while true {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , , , , , , TrueRatio, TrueRatio)) or (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextR, , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) or (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextR, , 0, , , , , TrueRatio, TrueRatio)) or (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, , 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
             ; AddLog("已命中" check "次")
             ;需要连续三次命中代表战斗结束
@@ -773,14 +774,14 @@ BattleSettlement(Screenshot := false) {
                 Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
                 Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
                 ; 有编队代表输了，点Esc
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , , , , , , TrueRatio, TrueRatio)) {
+                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , 0, , , , , TrueRatio, TrueRatio)) {
                     AddLog("战斗失败！尝试返回")
                     GoBack
                     Sleep sleepTime
                     return False
                 }
                 ; 如果有下一关，就点下一关（爬塔的情况）
-                else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , , , , , , TrueRatio, TrueRatio)) {
+                else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , 0, , , , , TrueRatio, TrueRatio)) {
                     AddLog("战斗成功！尝试进入下一关")
                     FindText().Click(X, Y, "L")
                     Victory := Victory + 1

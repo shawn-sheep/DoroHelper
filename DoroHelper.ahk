@@ -273,13 +273,13 @@ ClickOnDoro(*) {
     Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
     if Result = "Yes"
         MsgSponsor
-    if g_settings["SelfClosing"]
+    if g_settings["SelfClosing"] {
         if InStr(currentVersion, "beta") {
             MsgBox ("测试版本禁用自动关闭！")
             Pause
         }
-    ExitApp
-    Pause
+        ExitApp
+    }
 }
 ;初始化
 Initialization() {

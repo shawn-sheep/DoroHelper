@@ -2392,7 +2392,7 @@ Cooperate() {
     stdTargetY := 257
     UserMove(stdTargetX, stdTargetY, scrRatio)
     Text := "|<COOP的P>*40$40.00000Q000001U00000A000001U00000A000001U00000A000001U00000A000003U000Dzw00E0zzU0303zw00Q0C0003k0s000T03U003w0C000Tk0s003z03U00Tw0C003zk0s00Tz03U03zw0Dzzzzk0zzzzz03zzzzw0Dzzzzk0zzzzz03zzzzw0Dzzzzk0zzzzz03zzzzw0Dzzzzk0zzzzz03zzzzw0Dzzzzs"
-    loop 20 {
+    while true {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Sleep sleepTime
             FindText().Click(X, Y, "L")
@@ -2403,7 +2403,7 @@ Cooperate() {
             Send "{WheelDown 7}"
             Sleep sleepTime
         }
-        if (A_Index > 20) {
+        if (A_Index > 15) {
             AddLog("未能找到协同作战")
             return
         }

@@ -1540,12 +1540,15 @@ RookieArena() {
         }
     }
     AddLog("没有免费次数，尝试返回")
-    Text := "|<左上角的竞技场>*200$54.zbztzTxzzU07tyTxk1U07tyDxs3wyzkk1xz7wwTUSDkyD003lzTkMTzzztyTss0s0Dtk1xs0k0Dsk1xwmnzDUnnxxalzDVtnxtik0Dtsbw3iyMztw7s7AyNztwDkyQwtvts7nywVw3XVVzwlbw7XrtzxlU"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        GoBack
-        Sleep sleepTime
+    GoBack
+    Text := "|<新人竞技场>*92$92.wznzlzzszwTXyTzy7UDwTy00D7sz60C007z7zU03lk1tU3U0Tzlzy43s00CQ0wF7zwTz0kw0021kz4Fzy7z0010QDUEDU00zUzk00QD3s00000DsDz00T607303Vk3y3zk07k00tk0U0Fz0Tw01k00QS0804Tk3z00Q1677420F7sEzk071k3s18U4FwC7w01wS0w0W804S3kzkXj7US0FUE371w3sMtlk3VwMUElUzUE60EE09w0ACAMTyA3U4463z67bz7jzr3y3XbtzvXU"
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("已返回竞技场页面")
     }
-    AddLog("已返回竞技场页面")
+    else {
+        MsgBox("返回时出现异常！")
+        pause
+    }
     AddLog("===新人竞技场任务结束===")
 }
 ;特殊竞技场
@@ -1591,12 +1594,15 @@ SpecialArena() {
         }
     }
     AddLog("没有免费次数，尝试返回")
-    Text := "|<左上角的竞技场>*200$54.zbztzTxzzU07tyTxk1U07tyDxs3wyzkk1xz7wwTUSDkyD003lzTkMTzzztyTss0s0Dtk1xs0k0Dsk1xwmnzDUnnxxalzDVtnxtik0Dtsbw3iyMztw7s7AyNztwDkyQwtvts7nywVw3XVVzwlbw7XrtzxlU"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        GoBack
-        Sleep sleepTime
+    GoBack
+    Text := "|<新人竞技场>*92$92.wznzlzzszwTXyTzy7UDwTy00D7sz60C007z7zU03lk1tU3U0Tzlzy43s00CQ0wF7zwTz0kw0021kz4Fzy7z0010QDUEDU00zUzk00QD3s00000DsDz00T607303Vk3y3zk07k00tk0U0Fz0Tw01k00QS0804Tk3z00Q1677420F7sEzk071k3s18U4FwC7w01wS0w0W804S3kzkXj7US0FUE371w3sMtlk3VwMUElUzUE60EE09w0ACAMTyA3U4463z67bz7jzr3y3XbtzvXU"
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("已返回竞技场页面")
     }
-    AddLog("已返回竞技场页面")
+    else {
+        MsgBox("返回时出现异常！")
+        pause
+    }
     AddLog("===特殊竞技场任务结束===")
 }
 ;冠军竞技场

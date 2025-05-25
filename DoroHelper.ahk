@@ -7,7 +7,6 @@ CoordMode "Mouse", "Client"
 currentVersion := "v1.0.0-beta"
 usr := "1204244136"
 repo := "DoroHelper"
-global waitTolerance := 50
 ; MsgBox "请在运行前调整游戏窗口到合适尺寸"
 ; MsgBox "以任何方式暂停后，请右下角Reload Script重启程序后再次运行"
 if A_Username != 12042 {
@@ -20,13 +19,9 @@ if A_Username != 12042 {
 4、多显示器、异形屏
 不支持国服、港澳台服、多开
 模拟室需要能快速战斗、拦截战需要能打异常拦截
-运行前将游戏尺寸比例设置成16：9，确认关闭HDR，使用单显示器。
-然后ctrl+3按到画面不动为止，此时nikke应该是居中的
-)"
-}
-if A_Username != 12042 {
-    msgbox "
-(
+运行前将游戏尺寸比例设置成16：9，确认关闭HDR，将分辨率缩放设置为100%，使用单显示器。
+然后ctrl+3按到画面不动为止，此时nikke应该是居中的，图片缩放应该是1
+===========================
 反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏。
 除录屏外需尽可能附带以下信息，信息越多，修复的可能性越高
 1、电脑的配置（包括显示器分辨率、缩放比例等）
@@ -175,6 +170,7 @@ doroGui.Add("Text", "R1.2 xs Section", "===异常拦截编队===")
 doroGui.Add("DropDownList", "Choose" InterceptionBossToLabel(), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
 AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+3 R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===模拟室===")
+doroGui.Add("Text", "R1.2 xs Section", "普通模拟室（需解锁快速模拟）")
 AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频（默认使用上次的tag）", "R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===无限之塔===")
 AddCheckboxSetting(doroGui, "CompanyTower", "尽可能地爬企业塔", "R1.2")
@@ -183,7 +179,7 @@ Tab.UseTab("奖励")
 doroGui.Add("Text", "R1.2 Section", "===常规奖励===")
 AddCheckboxSetting(doroGui, "OutpostDefence", "领取前哨基地防御奖励+1次免费歼灭", "R1.2  Y+M  Section")
 AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬", "R1.2 xs Section")
+AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬（通过收藏可调整优先级）", "R1.2 xs Section")
 AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2 xs+15")
 AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
@@ -330,7 +326,11 @@ Initialization() {
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n窗口缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if A_ScreenWidth < 2347 {
-        MsgBox ("屏幕尺寸过小，请使用更高分辨率的屏幕")
+        MsgBox ("屏幕尺寸过小，请更换显示器！")
+        Pause
+    }
+    if A_ScreenDPI != 96 {
+        MsgBox ("缩放比例不为100%，请更改！")
         Pause
     }
 }
@@ -1752,7 +1752,7 @@ Interception() {
         Sleep sleepTime
     }
     Text := "|<异常个体拦截战>*200$94.07nRznzDTrhwBjjdzS03y7xszSrtrySk1vzjnDa0sEC03svDzc2wyCSDrzw8zj0zjbjbStszTzrryws1z0zxzb1wzy1/VvzzzDzrzRPX0tCS3WSz07zTxhjTzUtvy00wWDxzk2RzzHjjxjjrQzrzSDrzxAqvZyzQbzTxxzM1k0s48"
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm
         if A_Index > 20 {
             MsgBox("异常个体拦截战未解锁！本脚本不支持普通拦截！")
@@ -2442,7 +2442,7 @@ Cooperate() {
                 Sleep sleepTime
                 break
             }
-            if A_Index > waitTolerance {
+            if A_Index > 50 {
                 MsgBox "进入作战失败！"
                 Pause
             }

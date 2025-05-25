@@ -323,8 +323,8 @@ Initialization() {
     currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
     WinRatio := NikkeW / 2347 ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
-    TrueRatio := currentScale * WinRatio
-    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n窗口缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
+    TrueRatio := Round(currentScale * WinRatio, 1)
+    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if A_ScreenWidth < 2347 {
         MsgBox ("屏幕尺寸过小，请更换显示器！")

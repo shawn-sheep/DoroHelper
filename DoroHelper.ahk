@@ -763,25 +763,30 @@ BattleSettlement(Screenshot := false) {
     check := 0
     CheckAutoBattle
     AddLog("等待战斗结算")
-    TextTAB := "|<TAB的图标>*149$32.0Tzzzk3zzzw0zzzz0Dzzzk3zzzw0zzzz0Dzzzk3zzzw0w0zz0D0Dzk3k3zw0w0zz0D0Dzk3k3zw0w0y00D0D003k3k00w0w00D0D003k3k00w0w00D0D003k3k00w0w00D0D003k3k00w0w00D0D0Dzzzzzzzzzzzzzzzzzzzzw000000000000000000000U"
+    ;无限塔胜利或失败会出现该图标
+    TextTAB := "|<TAB的图标>*200$30.0Tzzz0Tzzz0Tzzz0Tzzz0Tzzz0Tzzz0Tzzz0T0Tz0T0Tz0T0Tz0T0Tz0T0Tz0T0Tz0T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S0zzzy0zzzzzzzzzzzzzzzzzzzz0000000000U0000U"
+    ;竞技场快速战斗会出现该图标
     TextR := "|<R的图标>*147$41.zzk07zzzy003zzzk001zzy0000zzs1zw0xzUDzy0ny1zzz03s7zzz07UTzzz0D1zzzz0Q7zzzw0sTzzzk1UzyTz033zwTzy27zsTzzsDzkTzzkzzUDzzVzz0Dzz3zy0Dzy7zw07zwDzs07zsTzk0TzkzzU1zzVzz07zz3zy0TzU3zw3zy27zsDzw4DzkzzsMDzbzzUsDzTzz3kTzzzw7kTzzzkTkTzzz1zUTzzw3zUDzzUDzUDzy0zzU3zU3zzk000Tzzk001zzzs00Dzzzy01zzk"
+    ;拦截扫荡会出现该图标
     Text点击 := "|<点击>*100$37.zlzzwTzszzyDzw0Dz7zy07U03z7zk01zXzzszk01zwTs00w00ATwQ006DyD0033y7zlzU03ssss03wQQTzzyCCAH4T776MX7U02ANXk00CAMs00U"
     while true {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
-            ; AddLog("已命中" check "次")
-            ;需要连续三次命中代表战斗结束
+            ; AddLog("TAB已命中，共" check "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
+            ; AddLog("R已命中，共" check "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
+            ; AddLog("点击已命中，共" check "次")
         }
         else {
-            ; AddLog("未命中，重新计数")
+            ; AddLog("均未命中，重新计数")
             check := 0
         }
+        ;需要连续三次命中代表战斗结束
         if (check = 3) {
             ;是否需要截图
             if Screenshot {

@@ -816,7 +816,7 @@ BattleSettlement(Screenshot := false) {
         }
         Text上 := "|<红圈的上边缘>*200$66.zzzzzWTzzzzzzzz0207zzzzzzk0200Tzzzzw80200VzzzzU80200UDzzy083zy0U3zzs03zzzw00zzU0Tzzzzk0DyU3zzzzzy0/wkDzzzzzzUFkFzzzzzzzwEU/zzzzzzzyU0DzzzzzzzzUU"
         Text下 := "|<红圈的下边缘>*210$71.0DzzzzzzzzzlUDzzzzzzzzy3U7zzzzzzzzs7UDzzzzzzzzkjkXzzzzzzzsVzl1zzzzzzz1bzw0Tzzzzzs1Tzw07zzzzy03zzw02zzzzE0Tzzz087zz0U3zzzzUE04010TzzzzsU08037zzzzzz00E03zzzzzzzk0U1zzzzzzzzzxTzzzzw"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text上, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text上, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("检测到红圈，尝试打红圈")
             loop 20 {
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text上, , 0, , , , 1, TrueRatio, TrueRatio)) {

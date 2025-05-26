@@ -334,6 +334,9 @@ Initialization() {
         MsgBox ("缩放比例不为100%，请更改！")
         Pause
     }
+    if Round(WinRatio) != 1 {
+        MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
+    }
 }
 /**
  * 添加一个与 g_settings Map 关联的复选框到指定的 GUI 对象.

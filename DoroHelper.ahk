@@ -755,61 +755,69 @@ BattleSettlement(Screenshot := false) {
     global NikkeY
     global NikkeW
     global NikkeH
+    ; 如果没战斗次数就跳过
     if (BattleActive = 0) {
         return
     }
     Victory := 0
+    check := 0
     CheckAutoBattle
     AddLog("等待战斗结算")
     TextTAB := "|<TAB的图标>*149$32.0Tzzzk3zzzw0zzzz0Dzzzk3zzzw0zzzz0Dzzzk3zzzw0w0zz0D0Dzk3k3zw0w0zz0D0Dzk3k3zw0w0y00D0D003k3k00w0w00D0D003k3k00w0w00D0D003k3k00w0w00D0D003k3k00w0w00D0D0Dzzzzzzzzzzzzzzzzzzzzw000000000000000000000U"
     TextR := "|<R的图标>*147$41.zzk07zzzy003zzzk001zzy0000zzs1zw0xzUDzy0ny1zzz03s7zzz07UTzzz0D1zzzz0Q7zzzw0sTzzzk1UzyTz033zwTzy27zsTzzsDzkTzzkzzUDzzVzz0Dzz3zy0Dzy7zw07zwDzs07zsTzk0TzkzzU1zzVzz07zz3zy0TzU3zw3zy27zsDzw4DzkzzsMDzbzzUsDzTzz3kTzzzw7kTzzzkTkTzzz1zUTzzw3zUDzzUDzUDzy0zzU3zU3zzk000Tzzk001zzzs00Dzzzy01zzk"
     Text点击 := "|<点击>*100$37.zlzzwTzszzyDzw0Dz7zy07U03z7zk01zXzzszk01zwTs00w00ATwQ006DyD0033y7zlzU03ssss03wQQTzzyCCAH4T776MX7U02ANXk00CAMs00U"
-    check := 0
     while true {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) or (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextR, , 0, , , , , TrueRatio, TrueRatio)) or (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
             ; AddLog("已命中" check "次")
             ;需要连续三次命中代表战斗结束
-            if (check = 3) {
-                ;是否需要截图
-                if Screenshot {
-                    TimeString := FormatTime(, "yyyyMMdd_HHmmss")
-                    FindText().SavePic(A_ScriptDir "\Screenshots\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
-                }
-                Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
-                Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
-                ; 有编队代表输了，点Esc
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , 0, , , , , TrueRatio, TrueRatio)) {
-                    AddLog("战斗失败！尝试返回")
-                    GoBack
-                    Sleep sleepTime
-                    return False
-                }
-                ; 如果有下一关，就点下一关（爬塔的情况）
-                else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , 0, , , , , TrueRatio, TrueRatio)) {
-                    AddLog("战斗成功！尝试进入下一关")
-                    FindText().Click(X, Y, "L")
-                    Victory := Victory + 1
-                    if Victory > 1 {
-                        AddLog("共胜利" Victory "次")
-                    }
-                }
-                ; 没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
-                else {
-                    AddLog("战斗结束！")
-                    GoBack
-                    Sleep sleepTime
-                    return True
-                }
-            }
+        }
+        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
+        }
+        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
         }
         else {
             ; AddLog("未命中，重新计数")
             check := 0
         }
+        if (check = 3) {
+            ;是否需要截图
+            if Screenshot {
+                TimeString := FormatTime(, "yyyyMMdd_HHmmss")
+                FindText().SavePic(A_ScriptDir "\Screenshots\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
+            }
+            Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
+            Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
+            ; 有编队代表输了，点Esc
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("战斗失败！尝试返回")
+                GoBack
+                Sleep sleepTime
+                return False
+            }
+            ; 如果有下一关，就点下一关（爬塔的情况）
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("战斗成功！尝试进入下一关")
+                FindText().Click(X, Y, "L")
+                Victory := Victory + 1
+                if Victory > 1 {
+                    AddLog("共胜利" Victory "次")
+                }
+            }
+            ; 没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
+            else {
+                AddLog("战斗结束！")
+                GoBack
+                Sleep sleepTime
+                return True
+            }
+        }
         Text上 := "|<红圈的上边缘>*200$66.zzzzzWTzzzzzzzz0207zzzzzzk0200Tzzzzw80200VzzzzU80200UDzzy083zy0U3zzs03zzzw00zzU0Tzzzzk0DyU3zzzzzy0/wkDzzzzzzUFkFzzzzzzzwEU/zzzzzzzyU0DzzzzzzzzUU"
         Text下 := "|<红圈的下边缘>*210$71.0DzzzzzzzzzlUDzzzzzzzzy3U7zzzzzzzzs7UDzzzzzzzzkjkXzzzzzzzsVzl1zzzzzzz1bzw0Tzzzzzs1Tzw07zzzzy03zzw02zzzzE0Tzzz087zz0U3zzzzUE04010TzzzzsU08037zzzzzz00E03zzzzzzzk0U1zzzzzzzzzxTzzzzw"
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text上, , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("检测到红圈，尝试打红圈")
             loop 20 {
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text上, , 0, , , , 1, TrueRatio, TrueRatio)) {
                     FindText().Click(X, Y + 30 * WinRatio, 0)
@@ -829,7 +837,7 @@ BattleSettlement(Screenshot := false) {
 }
 ;返回大厅
 BackToHall() {
-    AddLog("尝试返回大厅")
+    AddLog("返回大厅")
     Text方舟 := "|<方舟的图标>*200$57.0000w00000003zzU000003zzzk00003zzzzU0000zzzzz0000Tzzzzz0007zzzzzw003zzxzzzk00zzw7bzz00Dzz0wDzw03zzk7UTzk0Tzs0w1zz07zz0Tk7zw1zzkDzUzzkDzy3zy3zz3zzUzzkTzsTzw7zz3zzbzzzzzsDzyTzzzzzzzznzzzzzzzzzDzxzzzzzztzzUzzzzzz7zy7zz1zzsTzkTzsTzy3zz1zy3zzUDzs7zUTzw0zzUDk7zz03zy0w1zzk0Dzs7UTzy00zzkw7zzU03zz7Vzzs00Dzzzzzy000zzzzzz0001zzzzzk0003zzzzs00007zzzw000007zzy0000007zw000U"
     while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text方舟, , 0, , , , , TrueRatio, TrueRatio)) { ;如果没有找到大厅的文本，就一直点击左下角的小房子
         UserClick(333, 2041, scrRatio)
@@ -954,7 +962,7 @@ NormalShop() {
     BackToHall
     AddLog("===普通商店任务开始===")
     Text := "|<商店的商>*200$29.zzlzzzy1zzzw004000000000U000z00z1zz1y7zy3sDzy700w0001k0003U0AC71ssAC3Vk0Q47s0s0Tk1k0013UU0771U0CC33sQQ67UssA01lkM033kkzy7VXzUD3zz1y7zzzwTzzzk"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击商店图标")
         FindText().Click(X, Y, "L")
         Sleep sleepTime

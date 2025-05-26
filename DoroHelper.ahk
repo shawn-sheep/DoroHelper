@@ -201,6 +201,7 @@ doroGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDor
 doroGui.Show()
 ; 点击运行
 ClickOnDoro(*) {
+    LogBox.Value := ""
     Initialization
     WriteSettings()
     Login() ;登陆到主界面

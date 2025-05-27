@@ -1776,10 +1776,11 @@ Interception() {
     EnterToArk
     AddLog("===异常拦截任务开始===")
     Text := "|<拦截战>*200$57.nnnzDDzbxyTSz0NbwzBnvbyDCzbxkD8ztszw7j0U1k00TXxyQ0C003wz0nzzxrbzbkSTzzYxzwzjlzzs1az3xo7zy4Qbk7Y3k3k3UywwCTzz0QDrrVnzzsXXyyySTzz0QTrrXnzztbXSQsSM0D0E3k20b01s0MSQH4"
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
+    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y - 50 * TrueRatio, "L")
         Sleep sleepTime
     }
+    Confirm
     Text := "|<异常个体拦截战>*200$94.07nRznzDTrhwBjjdzS03y7xszSrtrySk1vzjnDa0sEC03svDzc2wyCSDrzw8zj0zjbjbStszTzrryws1z0zxzb1wzy1/VvzzzDzrzRPX0tCS3WSz07zTxhjTzUtvy00wWDxzk2RzzHjjxjjrQzrzSDrzxAqvZyzQbzTxxzM1k0s48"
     while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm

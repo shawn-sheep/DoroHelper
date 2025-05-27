@@ -872,9 +872,9 @@ EnterToArk() {
         Sleep sleepTime
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text大厅, , , , , , , TrueRatio, TrueRatio)) { ;查找并点击大厅的方舟按钮
             FindText().Click(X, Y, "L") ;找得到就尝试进入
-            Sleep sleepTime
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text方舟, , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text方舟, , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("已进入方舟")
+                Sleep sleepTime
                 break
             }
         }

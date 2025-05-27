@@ -1642,11 +1642,16 @@ ChampionArena() {
         Sleep sleepTime
     }
     Text := "|<晋级赛内部的应援>*100$41.0D00kzy0S01Xzzzzy33yrzzwD6NzzzszCnQ001yTzsC71tzzzQC1VzzyMQ31s7Qts7DzyRnUTzzwvb3zDytzw7wTzlps7UzzX3U73xy07067vg0S0ATzTzzkttyzzzXrzzDzz7aSy"
-    if (ok := FindText(&X := "wait", &Y := 10, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-        Sleep 3000
+    while true {
+        if !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            Confirm
+        }
+        else {
+            FindText().Click(X, Y, "L")
+            Sleep 3000
+            break
+        }
     }
-    Text := "|<选择的图标>*180$22.z03zs03y007k00D000M00V007000y087s3kz0Dbs0zz00zs03z007s0U7060M0Q003s00Tk03zU0TzkDy"
     if UserCheckColor([1926], [1020], ["0xF2762B"], scrRatio) {
         AddLog("左边支持的人多")
         UserClick(1631, 1104, scrRatio)

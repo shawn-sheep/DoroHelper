@@ -1,0 +1,52 @@
+name: 错误报告 | Bug Report
+description: 操作异常、卡死等
+labels: ["bug"]
+body:
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 在提问之前...
+      description: |
+        请确认自己完成了要求之后再进行勾选
+      options:
+        - label: 我使用的是版本号1开头的新版本，而不是版本号0开头的（如0.1.22）的老版本
+          required: true
+        - label: 在更新至最新版本后，我仍可以复现该问题
+          required: true
+        - label: 我理解 Issue 是用于反馈和解决问题的，而非吐槽评论区，将尽可能提供更多信息帮助问题解决
+          required: true
+        - label: 我填写了简短且清晰明确的标题，以便开发者在翻阅 Issue 列表时能快速确定大致问题。而不是“一个建议”“卡住了”等
+          required: true
+        - label: 我已检查了置顶议题（Pinned Issue）（公告）、活跃议题（Open Issue）、已关闭议题（Closed Issue），确认我的问题未被解决
+          required: true
+  - type: textarea
+    id: describe
+    attributes:
+      label: 问题描述
+      description: 描述问题时请尽可能详细
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 录屏
+      description: |
+        对应问题的录屏，不需要整个程序的全程录屏
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: |
+        请复制DoroHelper中自带的日志
+    validations:
+      required: false
+  - type: textarea
+    id: others
+    attributes:
+      label: 还有别的吗？
+      description: |
+        任何能让我们对你所遇到的问题有更多了解的东西
+    validations:
+      required: false

@@ -2115,15 +2115,11 @@ Appreciation() {
             FindText().Click(X, Y, "L")
         }
         Text领取 := "|<领取>*200$40.wzzzzzzVU1U1zy706000kD3wEU24QTl608E070Qs0U0Q1n4lkFl74P7976QFUAYQ1s60GFk7UzX970S3yA4QMwDtkFl1ls716063Uz1s0E7Xs3V60D767yMsyswTtbrzrzzbzs"
-        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text领取, , , , , , , TrueRatio, TrueRatio)) {
-            Text播放 := "|<播放>*200$52.kzzXznyDz3U07y7sTwC00TsTVzks03zly7z3l27U0MTk328y01000A01s04000003kTk0AA00DVy33ks00y7sAD3s0Ds00kwC00TU037k0MUS004S03X3sEU1k000TV3k70s01y4D0w3U07skw3wC4ATX3sTks01wADUz3U07kkw1wC00T7303ksElsQ8043U07000k0S00SA67VVs01xktzi"
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text领取, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("播放下一个片段")
-            while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text播放, , , , , , , TrueRatio, TrueRatio)) {
-                Send "{]}" ;尝试跳过
-            }
-            else FindText().Click(X, Y, "L")
+            Send "{]}" ;尝试跳过
         }
-        else FindText().Click(X, Y, "L")
+        FindText().Click(X, Y, "L")
         AddLog("领取奖励")
         GoBack
         Sleep g_numeric_settings["SleepTime"]

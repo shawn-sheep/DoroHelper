@@ -886,22 +886,24 @@ Login() {
     check := 0
     while True {
         Text := "|<方舟的图标>*200$57.0000w00000003zzU000003zzzk00003zzzzU0000zzzzz0000Tzzzzz0007zzzzzw003zzxzzzk00zzw7bzz00Dzz0wDzw03zzk7UTzk0Tzs0w1zz07zz0Tk7zw1zzkDzUzzkDzy3zy3zz3zzUzzkTzsTzw7zz3zzbzzzzzsDzyTzzzzzzzznzzzzzzzzzDzxzzzzzztzzUzzzzzz7zy7zz1zzsTzkTzsTzy3zz1zy3zzUDzs7zUTzw0zzUDk7zz03zy0w1zzk0Dzs7UTzy00zzkw7zzU03zz7Vzzs00Dzzzzzy000zzzzzz0001zzzzzk0003zzzzs00007zzzw000007zzy0000007zw000U"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            check := check + 1
-        }
-        else check := 0
         if (check = 3) {
+            Sleep 500
             break
         }
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
+            continue
+        }
+        else check := 0
         ;点击蓝色的确认按钮（如果出现更新提示等消息）
         Text := "|<确认>*192$51.zz1zyDy7s0s0TUzkz0601y3y7s0U0TkTkzksT3z3y7yC3kTwzkzlk00zzy7wC0073zkzU800kDy7s1X761zkz0AMMsDw7s1U07lzUT2A00yDw3sFU07lzUT2AMMyDs1sFX77kb2DWAEEy0kkwF007k663W800y0VsA1737k8D0U0wsy23w407W7UUTUXkw0wC7y6SDU7nlzsU"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("发现更新，尝试点击")
             FindText().Click(X, Y, "L")
             Sleep g_numeric_settings["SleepTime"]
         }
         Text := "|<一周内不再提示的空框>*200$28.7zzzVzzzz7zzzyzzzzzk003z000Dw000zk003z000Dw000zk003z000Dw000zk003z000Dw000zk003z000Dw000zk003z000Dw000zk003z000DzzzzxzzzzXzzzwU"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("发现公告，尝试勾选一周内不再提示后关闭")
             FindText().Click(X, Y, "L")
             Sleep g_numeric_settings["SleepTime"]
@@ -911,8 +913,8 @@ Login() {
                 Sleep g_numeric_settings["SleepTime"]
             }
         }
-        Text := "|<领取>*196$38.lk0k1zsQ0A0023U70000SDsX01U0S0lk803UAM1kks3WCQ0C8sU103UC0000s3UE40C0w7l03WD1sk0sVkkA2A0AA7sT021Vw3k30AA4Ts0XW3Xy0QU"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        Text := "|<全部>*200$39.zrzzbzzwTzsy0z1zw0k7k7z028wQDs0na7kzb6N1z0wNn8Dw7nCF001s0ED00z02NzXzzznbwTzzyQw0Ds0nb00z06QzVzssl7yTzDa0zXzssnM00706TU01s0nzzzzjrzU"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep g_numeric_settings["SleepTime"]
         }

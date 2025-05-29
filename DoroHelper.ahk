@@ -2308,16 +2308,18 @@ Activity() {
         FindText().Click(X, Y + 100 * TrueRatio, "L")
         Sleep g_numeric_settings["SleepTime"]
     }
-    loop 4 {
+    Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
         Confirm
+        Send "{]}"
     }
     AddLog("===剧情活动任务开始===")
     AddLog("尝试完成挑战任务")
-    Text := "|<挑战>*200$40.vzzzzzzDaTyTawyNztyNndazbto2aHy1bk8NDtyTnlVzbs3DaTyS3wyNztzDktbz7wq7a7k3mEsNDDD9n1aQywDBaTnvtwytzDjbnnbQwwPCCNk3Vglsb08kXDkxyza"
+    Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 3000
-        Text红 := "|<红色的关卡的循环图标>B20000-323232$33.0400000s00007k0000z000zzy3zzzzwTzzzz3zzzzUTzs7k01z0w00Ds6001z0000Ds0001z0000Ds0001z0000Ds0061z003kDs00y1zzkTzzzyDzzzzlzzzzy3zzs007k0000C00000k0U"
+        Text红 := "|<红色的关卡的循环图标>ED0000-323232$33.0600000w00007s007zzkTzzzz3zzzzsTzzzw3zz0y007s7U00z0k007s0000z00007s0000z00007s0000z000E7s00C0z007k7zw3zzzzkzzzzyDzzzzkTzz000y00003k0000604"
         Text黄 := "|<黄色的关卡的循环图标>FAA71A-323232$33.0600000w00007s007zzkTzzzz3zzzzsTzzzw3zz0y007s7U00z0k007s0000z00007s0000z00007s0000z000E7s00C0z007k7zw3zzzzUzzzzwDzzzzkTzz000y00001k0000604"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text红, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
@@ -2349,7 +2351,7 @@ Activity() {
     while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
     }
-    Text := "|<奖励>*120$32.tlz0NmM1U2Q00M3bU3C0E8Q3U0071s7081y1tC1zU4HwTs14006GH001YYnsDs8As0y220C1000DkE0VU"
+    Text := "|<加成>*200$32.nzzzawzzztbDYw00UPjDbwqvntzRiwyNrPj0qxqvnBDRiwn7rPjAltqvrAyxixbCiMCTdbCvbr6"
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y - 100 * TrueRatio, "L")
         Sleep g_numeric_settings["SleepTime"]
@@ -2390,7 +2392,7 @@ Activity() {
             }
         }
         else {
-            AddLog("未找到第11关，退出")
+            AddLog("未找到第11关")
         }
     }
     Text := "|<剧情活动>*200$73.zzvvyTzztzzrk3xxk0wS0y1vs1ayM0zC1z0xwynT7XzztzzwS0Ni00Dzwzzw10Ar3wzzwDzy0aSPX01lk0M1bH7Blzzwz3w1nc0ayw0zznzbtolnTQ0TztzrwsttjiTjzU3viQ04rr07xk1tnQ03vvXnwvww1C1txxk1wxyQ072wyys0ySTDDXX0QTQzST07zn3aSTiSDzU3zzX"

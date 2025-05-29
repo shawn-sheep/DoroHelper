@@ -65,7 +65,7 @@ global g_settings := Map(
     "UniversalTower", 0,       ; 通用塔
     ; 异常拦截
     "Interception", 1,         ; 拦截战
-    "InterceptionShot", 01,    ; 拦截截图
+    "InterceptionShot", 0,    ; 拦截截图
     ; 常规奖励
     "Award", 1,                ; 奖励领取总开关
     "OutpostDefence", 1,       ; 前哨基地收菜

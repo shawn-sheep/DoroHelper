@@ -2473,7 +2473,7 @@ Cooperate() {
     while true {
         ;一直找开始匹配
         Text匹配 := "|<匹配>*200$51.0000s0400000700U00001z4zz0yC7zs7zs7lkzw0Dz0yC7z00zs7Vkzs07z0wD7z48zs7Xszsd600wT7z5ck07Xstsh600sT771Uls37sssA6DsEz273slz0Ds1sz6Ds1z0D00lz2Tzzs04Dszzzz3kVw3zzzsz4DU000D00lw0000s0600000700k0U"
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text匹配, , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text匹配, , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep g_numeric_settings["SleepTime"]
             Text := "|<通知>**50$48.0DzyTU00TA07MUTytw03Mzzzkw07MzU3sT4Ck0U3QS0Sk0U3Cz0TU3XX7s03WDXX0803nAXXzslny7XXUM03U0XXUM03U0XXUMlnU0XXwM03yDXXAM0366XX4MEX63XX4MlXA1XXAMl3A1XXsMt7sM03k3zzksU3V001UxU3nk01ljXXqy07v0zzU"

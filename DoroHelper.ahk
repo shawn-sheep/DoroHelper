@@ -3,10 +3,12 @@
 #Include <FindText>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
-;consts
+;region 设置常量
 currentVersion := "v1.0.0-beta.1"
 usr := "1204244136"
 repo := "DoroHelper"
+;endregion 设置常量
+;region 运行前提示
 if A_Username != 12042 {
     msgbox "
 (
@@ -27,76 +29,74 @@ if A_Username != 12042 {
 如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。
 )"
 }
-; 全局设置 Map 对象
+;endregion 运行前提示
+;region 设置变量
+;tag 简单开关
 global g_settings := Map(
     ;商店
-    "Shop", 1,                 ; 商店总开关
-    "CashShop", 1,             ; 付费商店
-    "NormalShop", 1,           ; 普通商店
-    "NormalShopDust", 1,       ; 普通商店：芯尘盒
-    "NormalShopPackage", 0,    ; 普通商店：简介个性化礼包
-    "ArenaShop", 1,            ; 竞技场商店
-    "BookFire", 1,             ; 竞技场商店：燃烧手册
-    "BookWater", 1,            ; 竞技场商店：水冷手册
-    "BookWind", 1,             ; 竞技场商店：风压手册
-    "BookElec", 1,             ; 竞技场商店：电击手册
-    "BookIron", 1,             ; 竞技场商店：铁甲手册
-    "BookBox", 1,              ; 竞技场商店：手册宝箱
-    "ArenaShopPackage", 1,     ; 竞技场商店：简介个性化礼包
-    "ArenaShopFurnace", 1,     ; 竞技场商店：公司武器熔炉
-    "ScrapShop", 1,            ; 废铁商店
-    "ScrapShopGem", 1,         ; 废铁商店：珠宝
-    "ScrapShopVoucher", 0,     ; 废铁商店：好感券
-    "ScrapShopResources", 1,   ; 废铁商店：养成资源
-    ; 模拟室
-    "SimulationRoom", 1,       ; 模拟室
-    "SimulationOverClock", 1,  ; 模拟室超频
-    ; 竞技场
-    "Arena", 1,                ; 竞技场收菜
-    "RookieArena", 1,          ; 新人竞技场
-    "SpecialArena", 1,         ; 特殊竞技场
-    "ChampionArena", 1,        ; 冠军竞技场
-    ; 无限之塔
-    "Tower", 1,                ; 无限之塔总开关
-    "CompanyTower", 1,         ; 企业塔
-    "UniversalTower", 0,       ; 通用塔
-    ; 异常拦截
-    "Interception", 1,         ; 拦截战
-    "InterceptionShot", 0,    ; 拦截截图
-    ; 常规奖励
-    "Award", 1,                ; 奖励领取总开关
-    "OutpostDefence", 1,       ; 前哨基地收菜
-    "Expedition", 1,           ; 派遣
-    "LoveTalking", 1,          ; 咨询
-    "Appreciation", 1,         ; 花絮鉴赏
-    "FriendPoint", 1,          ; 好友点数
-    "Mail", 1,                 ; 邮箱
-    "RankingReward", 1,        ; 排名奖励
-    "Mission", 1,              ; 任务
-    "Pass", 1,                 ; 通行证
-    ; 限时奖励
-    "FreeRecruit", 1,          ; 活动期间每日免费招募
-    "RoadToVillain", 1,        ; 德雷克·反派之路
-    "Cooperate", 1,            ; 协同作战
-    "SoloRaid", 1,             ; 个人突击
-    "Activity", 0,             ; 小活动
-    ; 其他
-    "AutoCheckUpdate", 0,      ; 自动检查更新
-    "SelfClosing", 0,          ; 完成后自动关闭程序
-    "OpenBlablalink", 1,       ; 完成后打开Blablalink
+    "Shop", 1,                 ;商店总开关
+    "CashShop", 1,             ;付费商店
+    "NormalShop", 1,           ;普通商店
+    "NormalShopDust", 1,       ;普通商店：芯尘盒
+    "NormalShopPackage", 0,    ;普通商店：简介个性化礼包
+    "ArenaShop", 1,            ;竞技场商店
+    "BookFire", 1,             ;竞技场商店：燃烧手册
+    "BookWater", 1,            ;竞技场商店：水冷手册
+    "BookWind", 1,             ;竞技场商店：风压手册
+    "BookElec", 1,             ;竞技场商店：电击手册
+    "BookIron", 1,             ;竞技场商店：铁甲手册
+    "BookBox", 1,              ;竞技场商店：手册宝箱
+    "ArenaShopPackage", 1,     ;竞技场商店：简介个性化礼包
+    "ArenaShopFurnace", 1,     ;竞技场商店：公司武器熔炉
+    "ScrapShop", 1,            ;废铁商店
+    "ScrapShopGem", 1,         ;废铁商店：珠宝
+    "ScrapShopVoucher", 0,     ;废铁商店：好感券
+    "ScrapShopResources", 1,   ;废铁商店：养成资源
+    ;模拟室
+    "SimulationRoom", 1,       ;模拟室
+    "SimulationOverClock", 1,  ;模拟室超频
+    ;竞技场
+    "Arena", 1,                ;竞技场收菜
+    "RookieArena", 1,          ;新人竞技场
+    "SpecialArena", 1,         ;特殊竞技场
+    "ChampionArena", 1,        ;冠军竞技场
+    ;无限之塔
+    "Tower", 1,                ;无限之塔总开关
+    "CompanyTower", 1,         ;企业塔
+    "UniversalTower", 0,       ;通用塔
+    ;异常拦截
+    "Interception", 1,         ;拦截战
+    "InterceptionShot", 0,    ;拦截截图
+    ;常规奖励
+    "Award", 1,                ;奖励领取总开关
+    "OutpostDefence", 1,       ;前哨基地收菜
+    "Expedition", 1,           ;派遣
+    "LoveTalking", 1,          ;咨询
+    "Appreciation", 1,         ;花絮鉴赏
+    "FriendPoint", 1,          ;好友点数
+    "Mail", 1,                 ;邮箱
+    "RankingReward", 1,        ;排名奖励
+    "Mission", 1,              ;任务
+    "Pass", 1,                 ;通行证
+    ;限时奖励
+    "FreeRecruit", 1,          ;活动期间每日免费招募
+    "RoadToVillain", 1,        ;德雷克·反派之路
+    "Cooperate", 1,            ;协同作战
+    "SoloRaid", 1,             ;个人突击
+    "Activity", 0,             ;小活动
+    ;其他
+    "AutoCheckUpdate", 0,      ;自动检查更新
+    "SelfClosing", 0,          ;完成后自动关闭程序
+    "OpenBlablalink", 1,       ;完成后打开Blablalink
 )
-; 其他非简单开关的设置 Map 对象
+;tag 其他非简单开关
 global g_numeric_settings := Map(
-    "SleepTime", 1000,            ; 默认等待时间
-    "InterceptionBoss", 1,        ; 拦截战BOSS选择
-    "Tolerance", 1                ; 宽容度
+    "SleepTime", 1000,            ;默认等待时间
+    "InterceptionBoss", 1,        ;拦截战BOSS选择
+    "Tolerance", 1                ;宽容度
 )
-;检测管理员身份
-if !A_IsAdmin {
-    MsgBox "请以管理员身份运行Doro"
-    ExitApp
-}
-;读取设置
+;endregion 设置变量
+;region 读取设置
 SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
@@ -105,9 +105,10 @@ catch {
     WriteSettings()
 }
 if g_settings["AutoCheckUpdate"] {
-    CheckForUpdateHandler(false) ; 调用核心函数，标记为非手动检查
+    CheckForUpdateHandler(false) ;调用核心函数，标记为非手动检查
 }
-;创建gui
+;endregion 读取设置
+;region 创建gui
 doroGui := Gui(, "Doro小帮手" currentVersion)
 doroGui.Opt("+Resize")
 doroGui.MarginY := Round(doroGui.MarginY * 0.9)
@@ -165,7 +166,7 @@ AddCheckboxSetting(doroGui, "RookieArena", "新人竞技场", "R1.2")
 AddCheckboxSetting(doroGui, "SpecialArena", "特殊竞技场", "R1.2")
 AddCheckboxSetting(doroGui, "ChampionArena", "冠军竞技场(跟风竞猜)", "R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===异常拦截编队===")
-doroGui.Add("DropDownList", "Choose" InterceptionBossToLabel(), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
+doroGui.Add("DropDownList", "Choose" String(g_numeric_settings["InterceptionBoss"]), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
 AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+3 R1.2")
 doroGui.Add("Text", "R1.2 xs Section", "===模拟室===")
 doroGui.Add("Text", "R1.2 xs Section", "普通模拟室（需解锁快速模拟）")
@@ -181,7 +182,7 @@ AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬（通过收藏可调整
 AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2 xs+15")
 AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
 AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
-; AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2")
+;AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2")
 AddCheckboxSetting(doroGui, "Mission", "任务收取", "R1.2")
 AddCheckboxSetting(doroGui, "Pass", "通行证收取", "R1.2")
 AddCheckboxSetting(doroGui, "Activity", "小活动(需刷到11关)", "R1.2")
@@ -192,11 +193,12 @@ AddCheckboxSetting(doroGui, "SoloRaid", "单人突击日常", "R1.2")
 AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
 Tab.UseTab("日志")
 LogBox := doroGui.Add("Edit", "r20 w270 ReadOnly")
-LogBox.Value := "日志开始...`r`n" ; 初始内容
+LogBox.Value := "日志开始...`r`n" ;初始内容
 Tab.UseTab()
 doroGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDoro)
 doroGui.Show()
-; 点击运行
+;endregion 创建gui
+;region 点击运行
 ClickOnDoro(*) {
     LogBox.Value := ""
     Initialization
@@ -239,7 +241,7 @@ ClickOnDoro(*) {
     if g_settings["Interception"]
         Interception()
     if g_settings["Award"] {
-        if g_settings["OutpostDefence"] ; 使用键名检查 Map
+        if g_settings["OutpostDefence"] ;使用键名检查 Map
             OutpostDefence()
         if g_settings["LoveTalking"]
             LoveTalking()
@@ -247,8 +249,8 @@ ClickOnDoro(*) {
             FriendPoint()
         if g_settings["Mail"]
             Mail()
-        ; if g_settings["RankingReward"] ;方舟排名奖励
-        ;     RankingReward()
+        ;if g_settings["RankingReward"] ;方舟排名奖励
+        ;    RankingReward()
         if g_settings["Mission"]
             Mission()
         if g_settings["Pass"]
@@ -279,8 +281,14 @@ ClickOnDoro(*) {
         ExitApp
     }
 }
-;初始化
+;endregion 点击运行
+;region 初始化
 Initialization() {
+    ;检测管理员身份
+    if !A_IsAdmin {
+        MsgBox "请以管理员身份运行Doro"
+        ExitApp
+    }
     global BattleActive := 1
     global stdScreenW := 3840
     global stdScreenH := 2160
@@ -296,22 +304,22 @@ Initialization() {
     global WinRatio := 1
     global TrueRatio := 1
     global PicTolerance := g_numeric_settings["Tolerance"]
-    ; 设置窗口标题匹配模式为完全匹配
+    ;设置窗口标题匹配模式为完全匹配
     SetTitleMatchMode 3
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {
-        winID := WinExist("ahk_exe " . targetExe) ; 获取窗口ID
-        actualWinTitle := WinGetTitle(winID)      ; 获取实际窗口标题
+        winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
+        actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
         AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
         if actualWinTitle = "胜利女神：新的希望" {
             MsgBox ("不支持国服，自动关闭！")
             ExitApp
         }
-        ; 激活该窗口
+        ;激活该窗口
         WinActivate(winID)
     }
     else {
-        ; 没有找到该进程的窗口
+        ;没有找到该进程的窗口
         MsgBox("没有找到进程为 '" . targetExe . "' 的窗口，初始化失败！")
         Pause
     }
@@ -336,6 +344,51 @@ Initialization() {
         MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
     }
 }
+;endregion 初始化
+;region UI辅助函数
+;tag 写入数据
+WriteSettings(*) {
+    global g_settings, g_numeric_settings
+    ;从 g_settings Map 写入开关设置
+    for key, value in g_settings {
+        IniWrite(value, "settings.ini", "Toggles", key)
+    }
+    for key, value in g_numeric_settings {
+        IniWrite(value, "settings.ini", "NumericSettings", key)
+    }
+}
+;tag 读入数据
+LoadSettings() {
+    global g_settings, g_numeric_settings
+    default_settings := g_settings.Clone()
+    ;从 Map 加载开关设置
+    for key, defaultValue in default_settings {
+        readValue := IniRead("settings.ini", "Toggles", key, defaultValue)
+        g_settings[key] := readValue
+    }
+    default_numeric_settings := g_numeric_settings.Clone() ;保留一份默认数值设置
+    for key, defaultValue in default_numeric_settings {
+        readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
+        ;确保读取的值是数字，如果不是则使用默认值
+        if IsNumber(readValue) {
+            g_numeric_settings[key] := Integer(readValue) ;转换为整数
+        } else {
+            g_numeric_settings[key] := defaultValue
+        }
+    }
+}
+;tag 保存数据
+SaveSettings(*) {
+    WriteSettings()
+    MsgBox "设置已保存！"
+    AddLog("设置已保存！", true)
+}
+IsCheckedToString(foo) {
+    if foo
+        return "Checked"
+    else
+        return ""
+}
 /**
  * 添加一个与 g_settings Map 关联的复选框到指定的 GUI 对象.
  * @param guiObj Gui - 要添加控件的 GUI 对象.
@@ -344,35 +397,37 @@ Initialization() {
  * @param options String - (可选) AutoHotkey GUI 布局选项字符串 (例如 "R1.2 xs+15").
  */
 AddCheckboxSetting(guiObj, settingKey, displayText, options := "") {
-    global g_settings ; 确保能访问全局 Map 和处理函数
-    ; 检查 settingKey 是否存在于 g_settings 中
+    global g_settings ;确保能访问全局 Map 和处理函数
+    ;检查 settingKey 是否存在于 g_settings 中
     if !g_settings.Has(settingKey) {
         MsgBox("错误: Setting key '" settingKey "' 在 g_settings 中未定义!", "添加控件错误", "IconX")
-        return ; 或者抛出错误
+        return ;或者抛出错误
     }
-    ; 构建选项字符串，确保 Checked/空字符串 在选项之后，文本之前
+    ;构建选项字符串，确保 Checked/空字符串 在选项之后，文本之前
     initialState := IsCheckedToString(g_settings[settingKey])
-    fullOptions := options (options ? " " : "") initialState ; 如果有 options，加空格分隔
-    ; 添加复选框控件，并将 displayText 作为第三个参数
+    fullOptions := options (options ? " " : "") initialState ;如果有 options，加空格分隔
+    ;添加复选框控件，并将 displayText 作为第三个参数
     cbCtrl := guiObj.Add("Checkbox", fullOptions, displayText)
-    ; 绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey
+    ;绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey
     cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl, eventInfo))
-    ; 返回创建的控件对象 (可选，如果需要进一步操作)
+    ;返回创建的控件对象 (可选，如果需要进一步操作)
     return cbCtrl
 }
-; 通用函数，用于切换 g_settings Map 中的设置值
+;通用函数，用于切换 g_settings Map 中的设置值
 ToggleSetting(settingKey, guiCtrl, *) {
     global g_settings
-    ; 切换值 (0 变 1, 1 变 0)
+    ;切换值 (0 变 1, 1 变 0)
     g_settings[settingKey] := 1 - g_settings[settingKey]
-    ; 可选: 如果需要，可以在这里添加日志记录
-    ; ToolTip("切换 " settingKey " 为 " g_settings[settingKey])
+    ;可选: 如果需要，可以在这里添加日志记录
+    ;ToolTip("切换 " settingKey " 为 " g_settings[settingKey])
 }
-; 切换数字
+;切换数字
 ChangeNum(settingKey, GUICtrl, *) {
     global g_numeric_settings
     g_numeric_settings[settingKey] := GUICtrl.Value
 }
+;endregion UI辅助函数
+;region 消息函数合集
 MsgSponsor(*) {
     myGui := Gui()
     myGui.Title := "Make Doro Great Again"
@@ -411,51 +466,83 @@ ClickOnHelp(*) {
     
     )"
 }
-IsCheckedToString(foo) {
-    if foo
-        return "Checked"
-    else
-        return ""
-}
-InterceptionBossToLabel() {
-    global g_numeric_settings
-    return String(g_numeric_settings["InterceptionBoss"])
-}
-WriteSettings(*) {
-    global g_settings, g_numeric_settings
-    ; 从 g_settings Map 写入开关设置
-    for key, value in g_settings {
-        IniWrite(value, "settings.ini", "Toggles", key)
-    }
-    for key, value in g_numeric_settings {
-        IniWrite(value, "settings.ini", "NumericSettings", key)
-    }
-}
-LoadSettings() {
-    global g_settings, g_numeric_settings
-    default_settings := g_settings.Clone()
-    ; 从 Map 加载开关设置
-    for key, defaultValue in default_settings {
-        readValue := IniRead("settings.ini", "Toggles", key, defaultValue)
-        g_settings[key] := readValue
-    }
-    default_numeric_settings := g_numeric_settings.Clone() ; 保留一份默认数值设置
-    for key, defaultValue in default_numeric_settings {
-        readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
-        ; 确保读取的值是数字，如果不是则使用默认值
-        if IsNumber(readValue) {
-            g_numeric_settings[key] := Integer(readValue) ; 转换为整数
+;endregion 消息函数合集
+;region 软件更新
+;tag 检查更新
+CheckForUpdateHandler(isManualCheck) {
+    global currentVersion, usr, repo ;确保能访问全局变量
+    try {
+        latestObj := Github.latest(usr, repo)
+        if (currentVersion != latestObj.version) {
+            userResponse := MsgBox( ;发现新版本
+                "DoroHelper存在更新版本:`n"
+                "`nVersion: " latestObj.version
+                "`nNotes:`n"
+                . latestObj.change_notes
+                "`n`n是否下载?", , "36") ;0x24 = Yes/No + Question Icon
+            if (userResponse = "Yes") {
+                ;用户选择下载
+                downloadTempName := "DoroDownload.exe" ;临时文件名
+                finalName := "DoroHelper-" latestObj.version ".exe"
+                try {
+                    Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
+                    ;下载成功后重命名
+                    FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1) ;1 = overwrite
+                    MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
+                    ExitApp ;下载完成后退出当前脚本
+                } catch as downloadError {
+                    MsgBox("下载失败，请检查网络。`n(" downloadError.Message ")", "下载错误", "IconX")
+                    ;删除临时文件
+                    if FileExist(A_ScriptDir "\" downloadTempName)
+                        FileDelete(A_ScriptDir "\" downloadTempName)
+                }
+            }
+            ;else 用户选择不下载，什么也不做
         } else {
-            g_numeric_settings[key] := defaultValue
+            ;没有新版本
+            if (isManualCheck) { ;只有手动检查时才提示
+                MsgBox("当前Doro已是最新版本。", "检查更新")
+            }
+        }
+    } catch as githubError {
+        ;只有手动检查时才提示连接错误，自动检查时静默失败
+        if (isManualCheck) {
+            MsgBox("检查更新失败，无法连接到Github或仓库信息错误。`n(" githubError.Message ")", "检查更新错误", "IconX")
         }
     }
 }
-SaveSettings(*) {
-    WriteSettings()
-    MsgBox "设置已保存！"
-    AddLog("设置已保存！", true)
+;tag 点击检查更新
+ClickOnCheckForUpdate(*) {
+    if InStr(currentVersion, "beta") {
+        MsgBox ("测试版本禁用更新！")
+        MsgBox ("请加群584275905")
+        Pause
+    }
+    CheckForUpdateHandler(true) ;调用核心函数，标记为手动检查
 }
-;颜色判断
+;endregion 软件更新
+;region 坐标辅助函数
+;tag 点击
+UserClick(sX, sY, k) {
+    uX := Round(sX * k) ;计算转换后的坐标
+    uY := Round(sY * k)
+    CoordMode "Mouse", "Client"
+    Send "{Click " uX " " uY "}" ;点击转换后的坐标
+}
+;tag 按住
+UserPress(sX, sY, k) {
+    uX := Round(sX * k) ;计算转换后的坐标
+    uY := Round(sY * k)
+    CoordMode "Mouse", "Client"
+    Send "{Click " uX " " uY "}" ;点击转换后的坐标
+}
+;tag 移动
+UserMove(sX, sY, k) {
+    uX := Round(sX * k) ;计算转换后的坐标
+    uY := Round(sY * k)
+    Send "{Click " uX " " uY " " 0 "}" ;点击转换后的坐标
+}
+;tag 颜色判断
 IsSimilarColor(targetColor, color) {
     tr := Format("{:d}", "0x" . substr(targetColor, 3, 2))
     tg := Format("{:d}", "0x" . substr(targetColor, 5, 2))
@@ -468,27 +555,7 @@ IsSimilarColor(targetColor, color) {
         return true
     return false
 }
-;坐标转换-点击
-UserClick(sX, sY, k) {
-    uX := Round(sX * k) ; 计算转换后的坐标
-    uY := Round(sY * k)
-    CoordMode "Mouse", "Client"
-    Send "{Click " uX " " uY "}" ; 点击转换后的坐标
-}
-;坐标转换-按住
-UserPress(sX, sY, k) {
-    uX := Round(sX * k) ; 计算转换后的坐标
-    uY := Round(sY * k)
-    CoordMode "Mouse", "Client"
-    Send "{Click " uX " " uY "}" ; 点击转换后的坐标
-}
-;坐标转换-移动
-UserMove(sX, sY, k) {
-    uX := Round(sX * k) ; 计算转换后的坐标
-    uY := Round(sY * k)
-    Send "{Click " uX " " uY " " 0 "}" ; 点击转换后的坐标
-}
-;坐标转换-颜色
+;tag 颜色
 UserCheckColor(sX, sY, sC, k) {
     loop sX.Length {
         uX := Round(sX[A_Index] * k)
@@ -499,213 +566,99 @@ UserCheckColor(sX, sY, sC, k) {
     }
     return 1
 }
-;检查更新
-CheckForUpdateHandler(isManualCheck) {
-    global currentVersion, usr, repo ; 确保能访问全局变量
-    try {
-        latestObj := Github.latest(usr, repo)
-        if (currentVersion != latestObj.version) {
-            userResponse := MsgBox( ; 发现新版本
-                "DoroHelper存在更新版本:`n"
-                "`nVersion: " latestObj.version
-                "`nNotes:`n"
-                . latestObj.change_notes
-                "`n`n是否下载?", , "36") ; 0x24 = Yes/No + Question Icon
-            if (userResponse = "Yes") {
-                ; 用户选择下载
-                downloadTempName := "DoroDownload.exe" ; 临时文件名
-                finalName := "DoroHelper-" latestObj.version ".exe"
-                try {
-                    Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
-                    ; 下载成功后重命名
-                    FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1) ; 1 = overwrite
-                    MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
-                    ExitApp ; 下载完成后退出当前脚本
-                } catch as downloadError {
-                    MsgBox("下载失败，请检查网络。`n(" downloadError.Message ")", "下载错误", "IconX")
-                    ; 删除临时文件
-                    if FileExist(A_ScriptDir "\" downloadTempName)
-                        FileDelete(A_ScriptDir "\" downloadTempName)
-                }
-            }
-            ; else 用户选择不下载，什么也不做
-        } else {
-            ; 没有新版本
-            if (isManualCheck) { ; 只有手动检查时才提示
-                MsgBox("当前Doro已是最新版本。", "检查更新")
-            }
-        }
-    } catch as githubError {
-        ; 只有手动检查时才提示连接错误，自动检查时静默失败
-        if (isManualCheck) {
-            MsgBox("检查更新失败，无法连接到Github或仓库信息错误。`n(" githubError.Message ")", "检查更新错误", "IconX")
-        }
-    }
-}
-ClickOnCheckForUpdate(*) {
-    if InStr(currentVersion, "beta") {
-        MsgBox ("测试版本禁用更新！")
-        MsgBox ("请加群584275905")
-        Pause
-    }
-    CheckForUpdateHandler(true) ; 调用核心函数，标记为手动检查
-}
-;判断自动按钮颜色
-isAutoOff(sX, sY, k) {
-    uX := Round(sX * k)
-    uY := Round(sY * k)
-    uC := PixelGetColor(uX, uY)
-    r := Format("{:d}", "0x" . substr(uC, 3, 2))
-    g := Format("{:d}", "0x" . substr(uC, 5, 2))
-    b := Format("{:d}", "0x" . substr(uC, 7, 2))
-    if Abs(r - g) < 10 && Abs(r - b) < 10 && Abs(g - b) < 10
-        return true
-    return false
-}
-;检查自动瞄准和自动爆裂按钮颜色
-CheckAutoBattle() {
-    static autoBurstOn := false
-    static autoAimOn := false
-    ; 检查并开启自动瞄准
-    if !autoAimOn && UserCheckColor([216], [160], ["0xFFFFFF"], scrRatio) {
-        ; 如果自动瞄准按钮是灰色/关闭状态
-        if isAutoOff(60, 57, scrRatio) {
-            UserClick(60, 71, scrRatio) ; 点击开启自动瞄准
-            Sleep g_numeric_settings["SleepTime"]
-        }
-        autoAimOn := true ; 设置标志位，表示已尝试开启或已开启
-    }
-    ; 检查并开启自动爆裂
-    if !autoBurstOn && UserCheckColor([216], [160], ["0xFFFFFF"], scrRatio) { ; 假设检查点与 Auto Aim 相同
-        ; 如果自动爆裂按钮是灰色/关闭状态
-        if isAutoOff(202, 66, scrRatio) {
-            Send "{Tab}" ; 发送 Tab 键尝试开启自动爆裂
-            Sleep g_numeric_settings["SleepTime"]
-        }
-        autoBurstOn := true ; 设置标志位，表示已尝试开启或已开启
-    }
-}
-;添加日志
-AddLog(text, forceOutput := false) {  ; 默认参数设为false
+;endregion 坐标辅助函数
+;region 日志辅助函数
+;tag 添加日志
+AddLog(text, forceOutput := false) {  ;默认参数设为false
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
         return
     }
-    static lastText := ""  ; 静态变量保存上一条内容
+    static lastText := ""  ;静态变量保存上一条内容
     global LogBox
-    ; 如果内容与上一条相同且不强制输出，则跳过
+    ;如果内容与上一条相同且不强制输出，则跳过
     if (text = lastText && !forceOutput)
         return
-    lastText := text  ; 保存当前内容供下次比较
+    lastText := text  ;保存当前内容供下次比较
     timestamp := FormatTime(, "HH:mm:ss")
     LogBox.Value .= timestamp " - " text "`r`n"
-    SendMessage(0x0115, 7, 0, LogBox) ; 自动滚动到底部
+    SendMessage(0x0115, 7, 0, LogBox) ;自动滚动到底部
 }
-;日志的时间戳转换
+;tag 日志的时间戳转换
 TimeToSeconds(timeStr) {
-    ; 期望 "HH:mm:ss" 格式
+    ;期望 "HH:mm:ss" 格式
     parts := StrSplit(timeStr, ":")
     if (parts.Length != 3) {
-        return -1 ; 格式错误
+        return -1 ;格式错误
     }
-    ; 确保部分是数字
+    ;确保部分是数字
     if (!IsInteger(parts[1]) || !IsInteger(parts[2]) || !IsInteger(parts[3])) {
-        return -1 ; 格式错误
+        return -1 ;格式错误
     }
-    hours := parts[1] + 0 ; 强制转换为数字
+    hours := parts[1] + 0 ;强制转换为数字
     minutes := parts[2] + 0
     seconds := parts[3] + 0
-    ; 简单的验证范围（不严格）
+    ;简单的验证范围（不严格）
     if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-        return -1 ; 无效时间
+        return -1 ;无效时间
     }
     return hours * 3600 + minutes * 60 + seconds
 }
-; 读取日志框内容，根据 HH:mm:ss 时间戳推算跨度，输出到日志框
+;tag 读取日志框内容 根据 HH:mm:ss 时间戳推算跨度，输出到日志框
 CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     global outputText
     local logContent := LogBox.Value
-    local lines := StrSplit(logContent, "`n")  ; 按换行符分割
+    local lines := StrSplit(logContent, "`n")  ;按换行符分割
     local timestamps := []
     local match := ""
-    ; 提取所有时间戳（格式 HH:mm:ss）
+    ;提取所有时间戳（格式 HH:mm:ss）
     for line in lines {
         if (RegExMatch(line, "^\d{2}:\d{2}:\d{2}(?=\s*-\s*)", &match)) {
             timestamps.Push(match[])
         }
     }
-    ; 直接取最早（正式运行时的第5个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
+    ;直接取最早（正式运行时的第5个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
     earliestTimeStr := timestamps[5]
     latestTimeStr := timestamps[timestamps.Length]
-    ; 转换为秒数
+    ;转换为秒数
     earliestSeconds := TimeToSeconds(earliestTimeStr)
     latestSeconds := TimeToSeconds(latestTimeStr)
-    ; 检查转换是否有效
+    ;检查转换是否有效
     if (earliestSeconds = -1 || latestSeconds = -1) {
         AddLog("推算跨度失败：日志时间格式错误。")
         return
     }
-    ; 处理跨午夜情况（如 23:59:59 → 00:00:01）
+    ;处理跨午夜情况（如 23:59:59 → 00:00:01）
     if (latestSeconds < earliestSeconds) {
-        latestSeconds += 24 * 3600  ; 加上一天的秒数（86400）
+        latestSeconds += 24 * 3600  ;加上一天的秒数（86400）
     }
-    ; 计算总时间差（秒）
+    ;计算总时间差（秒）
     spanSeconds := latestSeconds - earliestSeconds
     spanMinutes := Floor(spanSeconds / 60)
     remainingSeconds := Mod(spanSeconds, 60)
-    ; 格式化输出
+    ;格式化输出
     outputText := "已帮你节省时间: "
     if (spanMinutes > 0) {
         outputText .= spanMinutes " 分 "
     }
     outputText .= remainingSeconds " 秒"
-    ; 添加到日志
+    ;添加到日志
     AddLog(outputText)
 }
-; 剧情模式
-StoryMode(*) {
-    Initialization
-    while True {
-        Text := "|<SKIP的图标>*10$39.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzztzDzzzz7szzzzsD1zzzz0s7zzzs30Tzzz000zzzs003zzz000Dzzs001zzz000zzzs10Dzzz0s7zzzsD1zzzz3szzzztzDzzzzzzzzzzzzzzzw"
-        while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            Text1 := "|<1的图标>*99$31.y000Ty0003y7zzkyDzzyCDzzzWDzzzt7zzzw7zzzz3zzzzVzzDzkzy3zsTy1zwDz0zy7zUTz3zwDzVzy7zkzz3zsTzVzwDzkzy7zsTz3zwDzVzy7zkzz3zsTzVzw7zzzwHzzzyMzzzyCDzzyDVzzwDs000Dy000zk"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text1, , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 800
-                Send "{1}"
-            }
-        }
-        Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , 8, TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
-        }
-        Text := "|<播放>*192$53.sTzlzlz3zks01zVy7zVk03z3wDz3U0Dy7sTy7W4D00Uzk308y0100U400w02010000s0Q031000wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000D00kky400Q0001w8O0s3U07sEw3s700DkVs7wC4ATX3sDsQ00y67UTks01wAC0TVk03sMM0T3V37VkU08700C001UES00SA47VUw00ysATXjzzzzzzzy"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep 3000
-            Send "{LShift Down}"
-            Sleep 500
-            Send "{LShift Up}"
-            Click 0, 0, 0
-        }
-        if !WinActive(nikkeID) {
-            MsgBox "窗口未聚焦，程序已终止"
-            Pause
-        }
-    }
-}
-;点左下角的小房子的对应位置的右边（不返回）
+;endregion 日志辅助函数
+;region 流程辅助函数
+;tag 点左下角的小房子的对应位置的右边（不返回）
 Confirm() {
     UserClick(474, 2028, scrRatio)
-    ; AddLog("点击默认位置(" Round(stdTargetX * scrRatio) "," Round(stdTargetY * scrRatio) ")")
+    ;AddLog("点击默认位置(" Round(stdTargetX * scrRatio) "," Round(stdTargetY * scrRatio) ")")
     Sleep 500
 }
-;按Esc
+;tag 按Esc
 GoBack() {
     AddLog("返回")
     Send "{Esc}"
     Sleep g_numeric_settings["SleepTime"]
 }
-;结算招募
+;tag 结算招募
 Recruit() {
     AddLog("结算招募")
     Text := "|<SKIP>*119$57.k1z7wT7k0w07kz1kw0100S7kS7U0003ky7kw003sS7Vy7Vy0T3ksTkwDk3zy63y7Vy0TzkkzkwDk07y47y7Vy00Dk0zkw00k0S03y7U07U3k0Tkw01zsS11y7U0Tz3kQDkwDz3sS7Uy7VzsT3ky7kwDz00S7kS7Vzs03kz3kwDz00S7wC7Vzy07kzVkwDzU"
@@ -720,7 +673,7 @@ Recruit() {
         Sleep g_numeric_settings["SleepTime"]
     }
 }
-; 点掉推销
+;tag 点掉推销
 RefuseSale() {
     AddLog("尝试关闭可能的推销页面")
     loop 5 {
@@ -733,7 +686,7 @@ RefuseSale() {
     }
     Sleep g_numeric_settings["SleepTime"]
 }
-; 进入战斗
+;tag 进入战斗
 EnterToBattle() {
     global BattleActive := 1
     AddLog("尝试进入战斗")
@@ -751,13 +704,48 @@ EnterToBattle() {
         AddLog("无战斗次数")
     }
 }
-;战斗结算
+;tag 判断自动按钮颜色
+isAutoOff(sX, sY, k) {
+    uX := Round(sX * k)
+    uY := Round(sY * k)
+    uC := PixelGetColor(uX, uY)
+    r := Format("{:d}", "0x" . substr(uC, 3, 2))
+    g := Format("{:d}", "0x" . substr(uC, 5, 2))
+    b := Format("{:d}", "0x" . substr(uC, 7, 2))
+    if Abs(r - g) < 10 && Abs(r - b) < 10 && Abs(g - b) < 10
+        return true
+    return false
+}
+;tag 检查自动瞄准和自动爆裂按钮颜色
+CheckAutoBattle() {
+    static autoBurstOn := false
+    static autoAimOn := false
+    ;检查并开启自动瞄准
+    if !autoAimOn && UserCheckColor([216], [160], ["0xFFFFFF"], scrRatio) {
+        ;如果自动瞄准按钮是灰色/关闭状态
+        if isAutoOff(60, 57, scrRatio) {
+            UserClick(60, 71, scrRatio) ;点击开启自动瞄准
+            Sleep g_numeric_settings["SleepTime"]
+        }
+        autoAimOn := true ;设置标志位，表示已尝试开启或已开启
+    }
+    ;检查并开启自动爆裂
+    if !autoBurstOn && UserCheckColor([216], [160], ["0xFFFFFF"], scrRatio) { ;假设检查点与 Auto Aim 相同
+        ;如果自动爆裂按钮是灰色/关闭状态
+        if isAutoOff(202, 66, scrRatio) {
+            Send "{Tab}" ;发送 Tab 键尝试开启自动爆裂
+            Sleep g_numeric_settings["SleepTime"]
+        }
+        autoBurstOn := true ;设置标志位，表示已尝试开启或已开启
+    }
+}
+;tag 战斗结算
 BattleSettlement(Screenshot := false) {
     global NikkeX
     global NikkeY
     global NikkeW
     global NikkeH
-    ; 如果没战斗次数就跳过
+    ;如果没战斗次数就跳过
     if (BattleActive = 0) {
         return
     }
@@ -774,18 +762,18 @@ BattleSettlement(Screenshot := false) {
     while true {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
-            ; AddLog("TAB已命中，共" check "次")
+            ;AddLog("TAB已命中，共" check "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
-            ; AddLog("R已命中，共" check "次")
+            ;AddLog("R已命中，共" check "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
-            ; AddLog("点击已命中，共" check "次")
+            ;AddLog("点击已命中，共" check "次")
         }
         else {
-            ; AddLog("均未命中，重新计数")
+            ;AddLog("均未命中，重新计数")
             check := 0
         }
         ;需要连续三次命中代表战斗结束
@@ -797,14 +785,14 @@ BattleSettlement(Screenshot := false) {
             }
             Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
             Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
-            ; 有编队代表输了，点Esc
+            ;有编队代表输了，点Esc
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("战斗失败！尝试返回")
                 GoBack
                 Sleep g_numeric_settings["SleepTime"]
                 return False
             }
-            ; 如果有下一关，就点下一关（爬塔的情况）
+            ;如果有下一关，就点下一关（爬塔的情况）
             else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("战斗成功！尝试进入下一关")
                 FindText().Click(X, Y, "L")
@@ -813,7 +801,7 @@ BattleSettlement(Screenshot := false) {
                     AddLog("共胜利" Victory "次")
                 }
             }
-            ; 没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
+            ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
             else {
                 AddLog("战斗结束！")
                 GoBack
@@ -842,7 +830,7 @@ BattleSettlement(Screenshot := false) {
         }
     }
 }
-;返回大厅
+;tag 返回大厅
 BackToHall() {
     AddLog("返回大厅")
     Text方舟 := "|<方舟的图标>*200$57.0000w00000003zzU000003zzzk00003zzzzU0000zzzzz0000Tzzzzz0007zzzzzw003zzxzzzk00zzw7bzz00Dzz0wDzw03zzk7UTzk0Tzs0w1zz07zz0Tk7zw1zzkDzUzzkDzy3zy3zz3zzUzzkTzsTzw7zz3zzbzzzzzsDzyTzzzzzzzznzzzzzzzzzDzxzzzzzztzzUzzzzzz7zy7zz1zzsTzkTzsTzy3zz1zy3zzUDzs7zUTzw0zzUDk7zz03zy0w1zzk0Dzs7UTzy00zzkw7zzU03zz7Vzzs00Dzzzzzy000zzzzzz0001zzzzzk0003zzzzs00007zzzw000007zzy0000007zw000U"
@@ -861,7 +849,7 @@ BackToHall() {
     }
     Sleep g_numeric_settings["SleepTime"]
 }
-;进入方舟
+;tag 进入方舟
 EnterToArk() {
     AddLog("尝试进入方舟")
     Text方舟 := "|<方舟内部左上角的文本>*111$36.zXzzVzzXzzVzz1zs03001s03001s33sDzsVXwTzslXw07st3w07U00w07U00sT7kX3sz7sXXkz7kVXkz7llXVy7VzX3UDXy37kDXy7zszzzDU" ;判断方舟内部左上角的文本是否存在
@@ -876,11 +864,11 @@ EnterToArk() {
                 break
             }
         }
-        else BackToHall() ; 找不到就先返回大厅
+        else BackToHall() ;找不到就先返回大厅
     }
     Sleep g_numeric_settings["SleepTime"]
 }
-;登录
+;tag 登录
 Login() {
     AddLog("正在登录")
     check := 0
@@ -922,7 +910,9 @@ Login() {
     }
     AddLog("已处于大厅页面，登录成功")
 }
-; 付费商店每日每周免费钻
+;endregion 流程辅助函数
+;region 商店
+;tag 付费商店每日每周免费钻
 CashShop() {
     BackToHall
     AddLog("===付费商店任务开始===")
@@ -966,7 +956,7 @@ CashShop() {
     AddLog("===付费商店任务结束===")
     BackToHall
 }
-;普通商店
+;tag 普通商店
 NormalShop() {
     BackToHall
     AddLog("===普通商店任务开始===")
@@ -1076,7 +1066,7 @@ NormalShop() {
     }
     AddLog("===普通商店任务结束===")
 }
-; 竞技场商店
+;tag 竞技场商店
 ArenaShop() {
     AddLog("===竞技场商店任务开始===")
     Text := "|<竞技场商店的图标>*127$42.zzs0DzzzzU03zzzz001zzzy1y1zzzw7z0zzzsTTUzzzswDUzzzkwDUlzylwDUwTsVsDVz7lXsD1zXXXsS3zl7XsE7zt7XU0TzsD301zzsD3U0Tzs73kkTzsb3ksDzlXXks7zntXkw7wrxVUw3szzVUy1kzzk1z01zzk1z03zzw1zU7zzy3zsTzU"
@@ -1209,7 +1199,7 @@ ArenaShop() {
     }
     AddLog("===竞技场商店任务结束===")
 }
-; 废铁商店
+;tag 废铁商店
 ScrapShop() {
     AddLog("===废铁商店任务开始===")
     Text := "|<废铁商店的图标>*160$40.zw000zzzU001zzy0003zzk000Dzz3zzkTzsDzzVzz1zzy3zw7zzwDzUy7zkTy7s7zVzkTU7y3z3z07w7sDz0TsT1zz1zUwDzy7z3UzsTzw67zUTzsETy0TzU1zw0Tz27zw1zs8Dzw7z1kzzsTw71zVzzUy7y1zy7sDs1zkTkTk1z3zVzk7sDy3zkT1zwDzVwDzkTzzUzzVzzy7zy3zzkTzw0003zzs000DzzU001zzz000DzU"
@@ -1223,7 +1213,7 @@ ScrapShop() {
             FindText().Click(X, Y, "L")
             Sleep g_numeric_settings["SleepTime"]
         }
-        ; 珠宝领了就默认整个任务做完了
+        ;珠宝领了就默认整个任务做完了
         else {
             AddLog("已执行，跳过")
             AddLog("===废铁商店任务结束===")
@@ -1308,7 +1298,9 @@ ScrapShop() {
     }
     AddLog("===废铁商店任务结束===")
 }
-; 模拟室
+;endregion 商店
+;region 模拟室
+;tag 模拟室
 SimulationRoom() {
     EnterToArk
     AddLog("===模拟室任务开始===")
@@ -1391,7 +1383,7 @@ SimulationRoom() {
     }
     AddLog("===模拟室任务结束===")
 }
-; 模拟室超频
+;tag 模拟室超频
 SimulationOverClock() {
     AddLog("===模拟室超频任务开始===")
     Text := "|<剩余奖励的0>*80$26.s001wTzyCDzzl600C3001lU00AE0014000F0004E3w141VUF0E84E421410UF0E84E66140z0F0004E0014000FU00AA0071U03WDzzllzzsy000S"
@@ -1483,7 +1475,9 @@ SimulationOverClock() {
     }
     AddLog("===模拟室超频任务结束===")
 }
-; 竞技场收菜
+;endregion 模拟室
+;region 竞技场
+;tag 竞技场收菜
 Arena() {
     EnterToArk()
     AddLog("===竞技场收菜任务开始===")
@@ -1523,7 +1517,7 @@ Arena() {
         }
     }
 }
-; 新人竞技场
+;tag 新人竞技场
 RookieArena() {
     AddLog("===新人竞技场任务开始===")
     AddLog("查找新人竞技场")
@@ -1578,7 +1572,7 @@ RookieArena() {
     }
     AddLog("===新人竞技场任务结束===")
 }
-;特殊竞技场
+;tag 特殊竞技场
 SpecialArena() {
     AddLog("===特殊竞技场任务开始===")
     AddLog("查找特殊竞技场")
@@ -1633,7 +1627,7 @@ SpecialArena() {
     }
     AddLog("===特殊竞技场任务结束===")
 }
-;冠军竞技场
+;tag 冠军竞技场
 ChampionArena() {
     AddLog("===冠军竞技场任务开始===")
     AddLog("查找冠军竞技场")
@@ -1680,7 +1674,9 @@ ChampionArena() {
     AddLog("===冠军竞技场任务结束===")
     BackToHall
 }
-; 企业塔
+;endregion 竞技场
+;region 无限之塔
+;tag 企业塔
 CompanyTower() {
     EnterToArk
     AddLog("===企业塔任务开始===")
@@ -1690,7 +1686,7 @@ CompanyTower() {
         FindText().Click(X, Y, "L")
         Sleep g_numeric_settings["SleepTime"]
     }
-    ; 只要有一座塔是0/3就当作任务执行过了
+    ;只要有一座塔是0/3就当作任务执行过了
     Text := "|<塔的外部0/3>*121$23.szi7UyM28wn4tty9lbw3XDV76T3CBzWQnzYtbj83C0MCS1ztzzznzzzbzw"
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("今日企业塔已打过，返回")
@@ -1748,7 +1744,7 @@ CompanyTower() {
     AddLog("===企业塔任务结束===")
     BackToHall
 }
-; 通用塔
+;tag 通用塔
 UniversalTower() {
     EnterToArk
     AddLog("===通用塔任务开始===")
@@ -1781,7 +1777,9 @@ UniversalTower() {
     AddLog("===通用塔任务结束===")
     BackToHall
 }
-; 异常拦截
+;endregion 无限之塔
+;region 拦截战
+;tag 异常拦截
 Interception() {
     BackToHall
     EnterToArk
@@ -1931,7 +1929,9 @@ Interception() {
     AddLog("===异常拦截任务结束===")
     BackToHall
 }
-; 前哨基地收菜
+;endregion 拦截战
+;region 前哨基地
+;tag 前哨基地收菜
 OutpostDefence() {
     BackToHall
     AddLog("===前哨基地收菜任务开始===")
@@ -1987,7 +1987,7 @@ OutpostDefence() {
         Expedition()
     BackToHall()
 }
-; 派遣
+;tag 派遣
 Expedition() {
     AddLog("===派遣委托任务开始===")
     AddLog("查找派遣公告栏")
@@ -2023,7 +2023,9 @@ Expedition() {
     AddLog("===派遣委托任务结束===")
     BackToHall
 }
-; 好感度咨询
+;endregion 前哨基地
+;region 咨询
+;tag 好感度咨询
 LoveTalking() {
     BackToHall
     UserClick(1497, 1994, scrRatio) ;点击妮姬图标位置（识图很困难）
@@ -2105,7 +2107,7 @@ LoveTalking() {
     AddLog("===妮姬咨询任务结束===")
     BackToHall
 }
-; 花絮鉴赏
+;tag 花絮鉴赏
 Appreciation() {
     AddLog("===花絮鉴赏任务开始===")
     Text := "|<花絮鉴赏会的N>*184$44.000000000000000000Dy00000zzz0000k00M000M00300087xU8004DzzV002Dzzy8017zzzl00lzzzwE08zzzzU02DzzzsU1bxzsy80NzDyDm0CTlzXwk7bw7szDztz0yDnzyTk7XwzzbwsMzDztzD2DnzyTns3wzzbwz0zDztzDwDnzyTnzXwzzbwzwy/zxzDzzWzzDzzzsjzlzzzwPzyTzzz4zzXzzzWDzwDzzV3zzVzzUUzzy000EDzzw00M3zzzzzw0zzzzzs0Dzzzzk02"
@@ -2131,7 +2133,8 @@ Appreciation() {
     else AddLog("花絮鉴赏任务已完成")
     AddLog("===花絮鉴赏任务结束===")
 }
-; 好友点数收取
+;endregion 咨询
+;region 好友点数收取
 FriendPoint() {
     BackToHall
     AddLog("===好友点数任务开始===")
@@ -2149,7 +2152,8 @@ FriendPoint() {
     AddLog("===好友点数任务结束===")
     BackToHall
 }
-; 邮箱收取
+;endregion 好友点数收取
+;region 邮箱收取
 Mail() {
     BackToHall
     AddLog("===邮箱任务开始===")
@@ -2172,7 +2176,9 @@ Mail() {
     AddLog("===邮箱任务结束===")
     BackToHall
 }
-;排名奖励（停用）
+;endregion 邮箱收取
+;region 方舟排名奖励
+;tag 排名奖励（停用）
 RankingReward() {
     EnterToArk()
     AddLog("===排名奖励任务开始===")
@@ -2209,7 +2215,8 @@ RankingReward() {
     AddLog("===排名奖励任务结束===")
     BackToHall
 }
-; 任务收取
+;endregion 方舟排名奖励
+;region 每日任务收取
 Mission() {
     BackToHall
     AddLog("===每日任务奖励领取开始===")
@@ -2254,7 +2261,9 @@ Mission() {
     AddLog("===每日任务奖励领取结束===")
     BackToHall
 }
-; 通行证收取 兼容双通行证 兼容特殊活动
+;endregion 每日任务收取
+;region 通行证收取
+;tag 查找通行证
 Pass() {
     BackToHall()
     AddLog("===通行证任务开始===")
@@ -2275,7 +2284,7 @@ Pass() {
     AddLog("===通行证任务结束===")
     BackToHall()
 }
-;执行一次通行证
+;tag 执行一次通行证
 OnePass() {
     UserClick(3633, 405, scrRatio)
     Sleep g_numeric_settings["SleepTime"]
@@ -2302,7 +2311,9 @@ OnePass() {
     }
     BackToHall()
 }
-; 剧情活动（小活动）
+;endregion 通行证收取
+;region 剧情活动
+;tag 小活动
 Activity() {
     BackToHall
     Text := "|<作战出击的出击>*200$78.zzkDzzzzzzzzzzzkDzzzzzzzzzsDkDzzzzzzzzzsDkDzzzzzzzzzsDkDsDzzzsDzzsDkDs7zzzsDzzsDkDs7zzzsDzzsDkDs7zUzsDzzsDkDs7zU007zzsDkDs7zU0007zs7kDs7zU00003s007s7zU00003s00007zzs0003s00007zzzk003s00007zzzs7y3zw0007zzzsDzzzzk007y0zsDzz0zkDzDw0007zz0zkDzzy0000Dz0zkDzzy0000000zkDw3y0000000zkDw1zzk00000zkDw1zzzk0000zkDw1zrzs7s00zkDw1zkTsDzz0zkDw1zkDsDzz0TkDw1zkDsDsD000Dw1zkDsDs70001w1zkDsDs7000001zkDsDs7U00001zkDsDs7z00001zkDsDs7zzw001zk0k7s7zzzzU1zk003s7zzzzw1zk00007zzzzw1zk00007zzzzzzzy00007zzzzzzzzzs007zzzzzzzzzzz07zzzzzzzzzzzs7zzzzzzzzzzzzjU"
@@ -2357,10 +2368,10 @@ Activity() {
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y - 100 * TrueRatio, "L")
         Sleep g_numeric_settings["SleepTime"]
-        ; Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
-        ; if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        ;     AddLog("困难未在开放期间，可以继续")
-        ; }
+        ;Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
+        ;if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        ;    AddLog("困难未在开放期间，可以继续")
+        ;}
         UserClick(1662, 2013, scrRatio)
         Sleep g_numeric_settings["SleepTime"]
         UserClick(1662, 2013, scrRatio)
@@ -2404,7 +2415,9 @@ Activity() {
     AddLog("===剧情活动任务结束===")
     BackToHall
 }
-; 免费招募
+;endregion 剧情活动
+;region 招募
+;tag 每日免费招募
 FreeRecruit() {
     BackToHall()
     AddLog("===每日免费招募开始===")
@@ -2421,7 +2434,7 @@ FreeRecruit() {
                 Recruit()
             }
             else {
-                ; 点击翻页
+                ;点击翻页
                 Sleep g_numeric_settings["SleepTime"]
                 UserClick(3774, 1147, scrRatio)
                 Sleep g_numeric_settings["SleepTime"]
@@ -2431,10 +2444,12 @@ FreeRecruit() {
     AddLog("===每日免费招募结束===")
     UserClick(1929, 1982, scrRatio) ;点击大厅
 }
+;endregion 招募
+;region 协同作战
 Cooperate() {
     BackToHall
     AddLog("===协同作战任务开始===")
-    ; 把鼠标移动到活动栏
+    ;把鼠标移动到活动栏
     stdTargetX := 150
     stdTargetY := 257
     UserMove(stdTargetX, stdTargetY, scrRatio)
@@ -2496,6 +2511,8 @@ Cooperate() {
     AddLog("===协同作战任务结束===")
     BackToHall
 }
+;endregion 协同作战
+;region 单人突击
 SoloRaid() {
     BackToHall
     AddLog("===单人突击任务开始===")
@@ -2519,7 +2536,7 @@ SoloRaid() {
             return
         }
     }
-    ; 选中第七关
+    ;选中第七关
     UserClick(2270, 231, scrRatio)
     Sleep g_numeric_settings["SleepTime"]
     while True {
@@ -2575,7 +2592,9 @@ SoloRaid() {
     AddLog("===单人突击任务结束===")
     BackToHall
 }
-; 德雷克·反派之路
+;endregion 单人突击
+;region 其他限时活动
+;tag 德雷克·反派之路
 RoadToVillain() {
     BackToHall()
     AddLog("===反派之路任务开始===")
@@ -2626,23 +2645,61 @@ RoadToVillain() {
     AddLog("===反派之路任务结束===")
     BackToHall()
 }
+;endregion 其他限时活动
+;region 妙妙工具
+;tag 剧情模式
+StoryMode(*) {
+    Initialization
+    while True {
+        Text := "|<SKIP的图标>*10$39.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzztzDzzzz7szzzzsD1zzzz0s7zzzs30Tzzz000zzzs003zzz000Dzzs001zzz000zzzs10Dzzz0s7zzzsD1zzzz3szzzztzDzzzzzzzzzzzzzzzw"
+        while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            Text1 := "|<1的图标>*99$31.y000Ty0003y7zzkyDzzyCDzzzWDzzzt7zzzw7zzzz3zzzzVzzDzkzy3zsTy1zwDz0zy7zUTz3zwDzVzy7zkzz3zsTzVzwDzkzy7zsTz3zwDzVzy7zkzz3zsTzVzw7zzzwHzzzyMzzzyCDzzyDVzzwDs000Dy000zk"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text1, , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 800
+                Send "{1}"
+            }
+        }
+        Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , 8, TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep g_numeric_settings["SleepTime"]
+        }
+        Text := "|<播放>*192$53.sTzlzlz3zks01zVy7zVk03z3wDz3U0Dy7sTy7W4D00Uzk308y0100U400w02010000s0Q031000wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000D00kky400Q0001w8O0s3U07sEw3s700DkVs7wC4ATX3sDsQ00y67UTks01wAC0TVk03sMM0T3V37VkU08700C001UES00SA47VUw00ysATXjzzzzzzzy"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 3000
+            Send "{LShift Down}"
+            Sleep 500
+            Send "{LShift Up}"
+            Click 0, 0, 0
+        }
+        if !WinActive(nikkeID) {
+            MsgBox "窗口未聚焦，程序已终止"
+            Pause
+        }
+    }
+}
+;endregion 妙妙工具
+;region 快捷键
+;tag 关闭程序
 ^1:: {
     ExitApp
 }
+;tag 暂停程序
 ^2:: {
     Pause
 }
+;tag 初始化并调整窗口大小
 ^3:: {
     Initialization()
-    ; WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 1920, 1080, nikkeID ;窗口缩放居中
+    ;WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 1920, 1080, nikkeID ;窗口缩放居中
     WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 2347, 1350, nikkeID ;我电脑的尺寸
 }
-^4:: {
-}
-;调试指定函数
+;tag 调试指定函数
 ^0:: {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
     BattleSettlement
 }
+;endregion 快捷键

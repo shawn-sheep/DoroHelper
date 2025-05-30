@@ -7,6 +7,8 @@ body:
     attributes:
       label: 在提问之前...
       options:
+        - label: 我不是国服玩家
+          required: true
         - label: 我使用的是版本号1开头的新版本，而不是版本号0开头的（如0.1.22）的老版本
           required: true
         - label: 在更新至最新版本后，我仍想提出这个请求

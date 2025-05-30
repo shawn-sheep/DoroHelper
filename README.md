@@ -36,7 +36,7 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持除国�
 ### 运行仓库内的 ahk 文件（推荐）
 
 1. 将整个项目文件下载到本地并解压（右上角绿色 code 按钮-Download ZIP）
-1. 下载并安装[AutoHotkey V2.0](https://www.autohotkey.com/download/ahk-v2.exe)
+1. 下载并安装[AutoHotkey V2.0](https://www.autohotkey.com/download/ahk-v2.exe)（不要修改默认安装路径）
 1. 以管理员身份运行 DoroHelper.ahk
 
 ### 运行发行版的 exe 文件

@@ -1370,7 +1370,6 @@ SimulationRoom() {
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击模拟结束")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
-        Sleep g_numeric_settings["SleepTime"]
     }
     Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -2710,8 +2709,8 @@ StoryMode(*) {
 ;tag 调试指定函数
 ^0:: {
     ;添加基本的依赖
-    Initialization()
+    ; Initialization()
     ;下面写要调试的函数
-    BattleSettlement
+    Run("https://www.blablalink.com/")
 }
 ;endregion 快捷键

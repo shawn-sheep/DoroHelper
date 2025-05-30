@@ -1483,9 +1483,14 @@ Arena() {
     AddLog("===竞技场收菜任务开始===")
     AddLog("查找奖励")
     Text := "|<SPECIAL>*103$36.V132Qn1162Mn99CGMHB9COMHD9CSMH312SMHV12SMHt3CSMHtDCSEH9DCGE31DC2H31D22H0XjX7H0U"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    foundReward := false
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        foundReward := true
         AddLog("点击奖励")
-        FindText().Click(X, Y, "L")
+        FindText().Click(X + 30 * TrueRatio, Y, "L")
+        Sleep g_numeric_settings["SleepTime"]
+    }
+    if foundReward {
         Text := "|<领取>*179$44.sw0C07zwC0300zz3k0s000UTXzCA01XszlX74Q00w0tt1U0D0CQKDBXlXb7nn8wsslswmD6CAk3AXk3mA0m8w0w3yAWD4D1zb8XnXsTlmMwsS7UwaS03VkDkT01kC7w3k0s1kyATyAACC7XzW7XnXwzsnxU"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("点击领取")

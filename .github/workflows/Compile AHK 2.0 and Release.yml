@@ -65,10 +65,11 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }} # 使用从脚本提取的版本号作为标签名
           name: ${{ steps.get_version.outputs.VERSION_TAG }} # Release 的标题
           body: |
-            Automated release for DoroHelper ${{ steps.get_version.outputs.VERSION_TAG }}
-            Compiled from commit ${{ github.sha }}
+            测试版兼容性较差，请谨慎下载
+          # Automated release for DoroHelper ${{ steps.get_version.outputs.VERSION_TAG }}
+          # Compiled from commit ${{ github.sha }}
           draft: false # 不是草稿 Release
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }} # 根据上一步的判断设置是否为预发布
-          files: DoroHelper.exe # <-- **此处已修正，仅保留文件名**
+          files: DoroHelper.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub 令牌

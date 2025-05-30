@@ -2048,7 +2048,11 @@ LoveTalking() {
             Appreciation
         }
         UserClick(313, 756, scrRatio) ;点击妮姬头像位置（识图很困难）
-        Sleep g_numeric_settings["SleepTime"]
+        Sleep 500
+        UserClick(313, 756, scrRatio)
+        Sleep 500
+        UserClick(313, 756, scrRatio)
+        Sleep 500
     }
     AddLog("===妮姬咨询任务开始===")
     Text咨询 := "|<咨询的咨>*178$30.zzXzzlz3zzUT3zzUC000sC000yA001zw63VzsC7VzsS7Xzsy3XzXw3rw3s1zU3k0z0DUED0y0s13s1w0zs7z1zwTzlzwTzzw0007w0007w0007w7zw7wDzw7wDzw7wDzw7w7zw7w0007w0007w0007w7zw7yDzzzU"

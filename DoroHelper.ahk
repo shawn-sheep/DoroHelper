@@ -1657,7 +1657,10 @@ ChampionArena() {
             Confirm
         }
         else {
-            FindText().Click(X, Y, "L")
+            while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep g_numeric_settings["SleepTime"]
+            }
             Sleep 3000
             break
         }

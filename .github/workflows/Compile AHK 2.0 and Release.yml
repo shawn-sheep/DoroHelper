@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4 # 签出仓库代码
+        with:
+          fetch-depth: 0 # 获取所有历史，包括标签，以便进行版本比较
 
       - name: Compile AutoHotkey Script with Action
         id: compile_script # 为此步骤设置 ID，以便后续引用其输出或工作目录
@@ -59,15 +61,49 @@ jobs:
           echo "IS_PRERELEASE=$IS_PRERELEASE" >> $GITHUB_OUTPUT # 设置输出变量 IS_PRERELEASE
           echo "Release version: ${VERSION_TAG}, Is Prerelease: ${IS_PRERELEASE}"
 
+      - name: Generate Changelog
+        id: changelog # 为此步骤设置 ID，以便后续引用其输出
+        shell: bash
+        run: |
+          CURRENT_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
+
+          # 获取所有标签并排序，跳过当前的标签
+          LAST_TAG=$(git tag --sort=-v:refname | grep -v "${CURRENT_TAG}" | head -n 1)
+
+          echo "Current Tag: ${CURRENT_TAG}"
+          echo "Last Tag: ${LAST_TAG}"
+
+          CHANGELOG_BODY=""
+          if [ -z "${LAST_TAG}" ]; then
+            # 如果没有上一个标签，则获取从第一次提交到当前标签的所有提交
+            echo "No previous tag found. Generating changelog from initial commit to ${CURRENT_TAG}."
+            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${CURRENT_TAG}")
+          else
+            # 获取上一个标签到当前标签之间的所有提交
+            echo "Generating changelog from ${LAST_TAG}..${CURRENT_TAG}."
+            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..${CURRENT_TAG}")
+          fi
+
+          # 将 CHANGELOG_BODY 中的换行符替换为 %0A，并进行 URL 编码以确保多行内容能够正确传递
+          CHANGELOG_BODY="${CHANGELOG_BODY//'%'/'%25'}" # 先转义百分号
+          CHANGELOG_BODY="${CHANGELOG_BODY//$'\n'/'%0A'}" # 再转义换行符
+          CHANGELOG_BODY="${CHANGELOG_BODY//$'\r'/'%0D'}" # 转义回车符
+
+          echo "CHANGELOG_BODY=${CHANGELOG_BODY}" >> "$GITHUB_OUTPUT"
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2 # 使用 GitHub Release Action
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }} # 使用从脚本提取的版本号作为标签名
           name: ${{ steps.get_version.outputs.VERSION_TAG }} # Release 的标题
           body: |
+            ${{ steps.changelog.outputs.CHANGELOG_BODY }}
+
+            ---
+
             测试版兼容性较差，请谨慎下载
-          # Automated release for DoroHelper ${{ steps.get_version.outputs.VERSION_TAG }}
-          # Compiled from commit ${{ github.sha }}
+            # Automated release for DoroHelper ${{ steps.get_version.outputs.VERSION_TAG }}
+            # Compiled from commit ${{ github.sha }}
           draft: false # 不是草稿 Release
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }} # 根据上一步的判断设置是否为预发布
           files: DoroHelper.exe

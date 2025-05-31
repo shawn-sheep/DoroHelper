@@ -514,11 +514,11 @@ CheckForUpdateHandler(isManualCheck) {
 }
 ;tag 点击检查更新
 ClickOnCheckForUpdate(*) {
-    if InStr(currentVersion, "beta") {
-        MsgBox ("测试版本禁用更新！")
-        MsgBox ("请加群584275905")
-        Pause
-    }
+    ; if InStr(currentVersion, "beta") {
+    ;     MsgBox ("测试版本禁用更新！")
+    ;     MsgBox ("请加群584275905")
+    ;     Pause
+    ; }
     CheckForUpdateHandler(true) ;调用核心函数，标记为手动检查
 }
 ;endregion 软件更新

@@ -2389,7 +2389,7 @@ Activity() {
         Sleep g_numeric_settings["SleepTime"]
         UserClick(1662, 2013, scrRatio)
         Sleep g_numeric_settings["SleepTime"]
-        Text := "|<1.11>*200$58.zzzzzzjzzzzjzzzyzzzzwzzzznzzjzXzzzyDzwzsDzzzUzz3s0zzzk3z0Ds3zzzUDz0zkDzzz0zy3z0zzzw3zsDy3zzzsDzUzsDzzzUzz3zUzzzy3zwDy3zzzsDzkzsDzzzUzz3zUzzzy3zwDy3zzzsDzkzsDzzzUzz3zUzzzy3zwDy3z0zsDzkzsDw3zUzz3zUzkDy3zwDy3y0TsDzkzsDw3zUzz3zUzkDy3zwDy3zSzsDzkTs7zzzUTy0w07zzs0TU0U1zzz07w0C0Dzzs0zU3nXzzzi7yQTTDzzxyzvtxzzzzzzzjzs"
+        Text := "|<1-11>*200$47.Uzzzz1z01zzzw3w03zzzs7s7bzzzzDzDDzzzyTySTzzzwzwwzzzztzttzzzznznnw03zbzbbs07zDzDDk0DyTySTzzzwzwwzzzztzttzzzznznnzzzzbzbbzzzzDzDDzzzyTySTzzzwzwwzzzztzttzzzznzm"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("刷11关")
             FindText().Click(X, Y, "L")
@@ -2715,6 +2715,6 @@ StoryMode(*) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    Login()
+    Activity
 }
 ;endregion 快捷键

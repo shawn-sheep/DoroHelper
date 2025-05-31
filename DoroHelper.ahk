@@ -782,7 +782,7 @@ BattleSettlement(Screenshot := false) {
             ;是否需要截图
             if Screenshot {
                 TimeString := FormatTime(, "yyyyMMdd_HHmmss")
-                FindText().SavePic(A_ScriptDir "\Screenshots\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
+                FindText().SavePic(A_ScriptDir "\截图\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
             }
             Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
             Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"

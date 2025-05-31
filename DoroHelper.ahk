@@ -4,7 +4,7 @@
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
-currentVersion := "v1.0.0-beta.2"
+currentVersion := "v1.0.0-beta.3"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -2491,8 +2491,8 @@ Cooperate() {
         }
         else {
             AddLog("尝试滑动左上角的活动栏")
-            Send "{WheelDown 7}"
-            Sleep g_numeric_settings["SleepTime"]
+            Send "{WheelDown 3}"
+            Sleep 500
         }
         if (A_Index > 15) {
             AddLog("未能找到协同作战")
@@ -2733,6 +2733,6 @@ StoryMode(*) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    Activity
+    Cooperate
 }
 ;endregion 快捷键

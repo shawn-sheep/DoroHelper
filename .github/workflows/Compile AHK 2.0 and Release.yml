@@ -1,7 +1,7 @@
 name: Compile AHK 2.0 and Release
 
 on:
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
     inputs:
       version_override:
         description: "Override version from AHK script (e.g., v1.0.0)"
@@ -27,7 +27,7 @@ jobs:
           if ([string]::IsNullOrWhiteSpace($version)) {
             if (-not (Test-Path $scriptPath)) {
               Write-Warning "Script file '${scriptPath}' not found for version extraction. Current directory: $(Get-Location)"
-              $version = "0.0.0" # 如果找不到脚本，使用默认版本号
+              $version = "0.0.0"
             } else {
               $content = Get-Content -Path $scriptPath -Raw
               $match = $content | Select-String -Pattern 'currentVersion\s*:=\s*"([^"]+)"'
@@ -95,13 +95,16 @@ jobs:
             }
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
+      # 在创建标签后，尝试更新一下本地的 Git 标签缓存，以防万一
+      - name: Fetch all tags again (after potential tag creation)
+        run: git fetch --tags
+
       - name: Determine if Pre-release
         id: prerelease_check
         shell: bash
         run: |
           VERSION_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
           IS_PRERELEASE="false"
-          # 检查版本号是否包含预发布标识符 (beta, alpha, rc)
           if [[ "$VERSION_TAG" == *beta* || "$VERSION_TAG" == *alpha* || "$VERSION_TAG" == *rc* ]]; then
             IS_PRERELEASE="true"
           fi
@@ -134,13 +137,26 @@ jobs:
 
           CHANGELOG_BODY=""
           if [ -z "${LAST_TAG}" ]; then
-            # 如果没有上一个标签，则获取从第一次提交到当前标签的所有提交
-            echo "No previous tag found. Generating changelog from initial commit to ${CURRENT_TAG}."
-            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${CURRENT_TAG}")
+            # 如果没有上一个标签，或者新创建的标签在当前Git环境中可能还没完全同步
+            # 我们将从上一个提交到当前提交（HEAD）生成日志
+            echo "No previous tag found or current tag not fully recognized. Generating changelog from last commit to HEAD."
+            # 获取最近的非合并提交作为起始点，或者直接从仓库的起源点开始
+            # git log HEAD^..HEAD  获取当前提交与前一个提交之间的差异
+            # git log --pretty=format:"* %s (%h)" HEAD  只获取当前提交的信息
+            
+            # 为了确保包含所有自上次"已知"状态以来的提交
+            # 我们可以使用 git log <last_known_tag>..HEAD 或者直接 HEAD
+            # 但如果您确定这是第一次发布，那么从 HEAD 开始生成所有日志也可以
+            
+            # 最稳妥的方法是，如果LAST_TAG为空，日志内容是“首次发布”或只包含当前提交
+            # 如果您想包含所有历史，需要从根提交开始，但这通常不适用于“更新日志”
+            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" HEAD)
+            echo "Note: This is likely the first release or a tag issue. Changelog shows current commit(s)."
           else
             # 获取上一个标签到当前标签之间的所有提交
-            echo "Generating changelog from ${LAST_TAG}..${CURRENT_TAG}"
-            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..${CURRENT_TAG}")
+            # 这里使用 HEAD 作为终点，以确保获取到当前工作树中的所有提交
+            echo "Generating changelog from ${LAST_TAG}..HEAD"
+            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..HEAD")
           fi
 
           # 使用EOF语法输出多行字符串
@@ -157,13 +173,13 @@ jobs:
           icon: .\doro.ico
           target: x64
           ahk-tag: v2.0.19
-          github-token: ${{ secrets.GITHUB_TOKEN }} # 用于避免 GitHub API 限速
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.get_version.outputs.VERSION_TAG }} # 使用从脚本提取的版本号作为标签名
-          name: ${{ steps.get_version.outputs.VERSION_TAG }} # Release 的标题
+          tag_name: ${{ steps.get_version.outputs.VERSION_TAG }}
+          name: ${{ steps.get_version.outputs.VERSION_TAG }}
           body: |
             ${{ steps.changelog.outputs.CHANGELOG_BODY }}
 

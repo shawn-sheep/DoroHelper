@@ -62,15 +62,28 @@ jobs:
           echo "Release version: ${VERSION_TAG}, Is Prerelease: ${IS_PRERELEASE}"
 
       - name: Generate Changelog
-        id: changelog # 为此步骤设置 ID，以便后续引用其输出
+        id: changelog
         shell: bash
         run: |
           CURRENT_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
 
-          # 获取所有标签并排序，跳过当前的标签
-          LAST_TAG=$(git tag --sort=-v:refname | grep -v "${CURRENT_TAG}" | head -n 1)
-
           echo "Current Tag: ${CURRENT_TAG}"
+
+          ALL_SORTED_TAGS=$(git tag --sort=-v:refname)
+          LAST_TAG=""
+          FOUND_CURRENT_TAG=false
+
+          # 逐行遍历排序后的标签列表，找到当前标签的下一行（即版本号更低的最近一个标签）
+          while IFS= read -r tag; do
+            if [ "$FOUND_CURRENT_TAG" = true ]; then
+              LAST_TAG="$tag" # 找到当前标签的下一行（即上一个版本）
+              break
+            fi
+            if [ "$tag" = "$CURRENT_TAG" ]; then
+              FOUND_CURRENT_TAG=true
+            fi
+          done <<< "$ALL_SORTED_TAGS"
+
           echo "Last Tag: ${LAST_TAG}"
 
           CHANGELOG_BODY=""
@@ -80,16 +93,15 @@ jobs:
             CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${CURRENT_TAG}")
           else
             # 获取上一个标签到当前标签之间的所有提交
-            echo "Generating changelog from ${LAST_TAG}..${CURRENT_TAG}."
+            echo "Generating changelog from ${LAST_TAG}..${CURRENT_TAG}"
             CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..${CURRENT_TAG}")
           fi
 
-          # 将 CHANGELOG_BODY 中的换行符替换为 %0A，并进行 URL 编码以确保多行内容能够正确传递
-          CHANGELOG_BODY="${CHANGELOG_BODY//'%'/'%25'}" # 先转义百分号
-          CHANGELOG_BODY="${CHANGELOG_BODY//$'\n'/'%0A'}" # 再转义换行符
-          CHANGELOG_BODY="${CHANGELOG_BODY//$'\r'/'%0D'}" # 转义回车符
-
-          echo "CHANGELOG_BODY=${CHANGELOG_BODY}" >> "$GITHUB_OUTPUT"
+          # 使用EOF语法输出多行字符串，确保换行符能被正确解析
+          # 确保EOF标记在单独的一行，且不带任何空格或制表符
+          echo "CHANGELOG_BODY<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$CHANGELOG_BODY" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2 # 使用 GitHub Release Action

@@ -2614,6 +2614,10 @@ RoadToVillain() {
         FindText().Click(X, Y, "L")
         Sleep g_numeric_settings["SleepTime"]
     }
+    else {
+        AddLog("===找不到反派之路任务===")
+        return
+    }
     loop 3 {
         if A_Index = 1 {
             Text := "|<任务>*181$41.1U103U03Uz0D00Dzz0zzkTzs3zzVvz0Tzy7US0zXsD0w0rzUy1s0Tz3w3kDzzvzzyTsznzzwQQ33zzs0w070w1zzwC1s3zzsQ3k0T3ks7U0w71nzw7kC3bztzDw7DzlsTkC0030T2"
@@ -2709,8 +2713,8 @@ StoryMode(*) {
 ;tag 调试指定函数
 ^0:: {
     ;添加基本的依赖
-    ; Initialization()
+    Initialization()
     ;下面写要调试的函数
-    Run("https://www.blablalink.com/")
+    Login()
 }
 ;endregion 快捷键

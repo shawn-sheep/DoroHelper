@@ -4,7 +4,7 @@
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
-currentVersion := "v1.0.0-beta.1"
+currentVersion := "v1.0.0-beta.2"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量

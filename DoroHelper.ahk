@@ -903,7 +903,7 @@ Login() {
             }
         }
         Text := "|<全部>*200$39.zrzzbzzwTzsy0z1zw0k7k7z028wQDs0na7kzb6N1z0wNn8Dw7nCF001s0ED00z02NzXzzznbwTzzyQw0Ds0nb00z06QzVzssl7yTzDa0zXzssnM00706TU01s0nzzzzjrzU"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep g_numeric_settings["SleepTime"]
         }

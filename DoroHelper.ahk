@@ -2079,7 +2079,16 @@ LoveTalking() {
     loop 10 {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text快速咨询, , 0, , , , , TrueRatio, TrueRatio)) {
+            Text := "|<MAX>*180$45.00000S1z070M1sSw1s7073bkT0w0QwzjsDU3z7zz1y0DktwsTk0w7773b07Us0sss1y70773UTss0tkQ3bb07C1ksQs0vUCD1r07Q0vkDU"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, , , , , , TrueRatio, TrueRatio)) {
+                AddLog("好感度也已满，跳过")
+                Text := "|<已关注的图标>FC4E3C-323232$28.zzbzzzwTzzzkzzzy3zzzs7zzz0Tzzw0zzzU1zzk00zU0004000080001k000DU001z000Dy001zw00Dzk00zz003zw00Dzk00zy003zs00DzUC0Ty3y1zszy7zzzyzU"
+                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("尝试取消关注该妮姬")
+                    FindText().Click(X, Y, "L")
+                }
+            }
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text快速咨询, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("图鉴已满，尝试快速咨询")
                 FindText().Click(X, Y, "L")
                 Sleep g_numeric_settings["SleepTime"]

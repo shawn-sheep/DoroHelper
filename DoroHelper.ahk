@@ -200,9 +200,7 @@ doroGui.Show()
 ;endregion 创建gui
 ;region 点击运行
 ClickOnDoro(*) {
-    LogBox.Value := ""
     Initialization
-    WriteSettings()
     Login() ;登陆到主界面
     if g_settings["Shop"] {
         if g_settings["CashShop"]
@@ -289,6 +287,8 @@ Initialization() {
         MsgBox "请以管理员身份运行Doro"
         ExitApp
     }
+    LogBox.Value := ""
+    loadSettings()
     global BattleActive := 1
     global stdScreenW := 3840
     global stdScreenH := 2160

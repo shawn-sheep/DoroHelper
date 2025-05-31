@@ -1,64 +1,111 @@
 name: Compile AHK 2.0 and Release
 
 on:
-  push:
-    tags:
-      - "v**" # 当有以 'v' 开头的标签推送到仓库时触发
   workflow_dispatch: # 允许手动触发
+    inputs:
+      version_override:
+        description: "Override version from AHK script (e.g., v1.0.0)"
+        required: false
+        type: string
 
 jobs:
   build-and-release:
-    runs-on: windows-latest # 运行环境是 Windows 最新版本
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4 # 签出仓库代码
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # 获取所有历史，包括标签，以便进行版本比较
 
-      - name: Compile AutoHotkey Script with Action
-        id: compile_script # 为此步骤设置 ID，以便后续引用其输出或工作目录
-        uses: benmusson/ahk2exe-action@v1 # 使用 benmusson 提供的 AHK 编译 Action
-        with:
-          in: .\DoroHelper.ahk # 你的 AHK 脚本路径
-          out: .\DoroHelper.exe # 输出的 EXE 文件名
-          icon: .\doro.ico # 你的图标文件路径
-          target: x64 # 目标架构为 x64
-          ahk-tag: v2.0.19 # 指定 AutoHotkey 2.0.19 版本
-          github-token: ${{ secrets.GITHUB_TOKEN }} # 用于避免 GitHub API 限速
-
       - name: Extract Version from AHK script
-        id: get_version # 为此步骤设置 ID，以便后续引用其输出
-        shell: pwsh # 使用 PowerShell Core
+        id: get_version
+        shell: pwsh
         run: |
-          $scriptPath = "DoroHelper.ahk" # 你的主脚本文件路径
-          if (-not (Test-Path $scriptPath)) {
-            Write-Warning "Script file '${scriptPath}' not found for version extraction. Current directory: $(Get-Location)"
-            echo "VERSION_TAG=0.0.0" >> $env:GITHUB_OUTPUT # 如果找不到脚本，使用默认版本号
-            exit 0
-          }
-          $content = Get-Content -Path $scriptPath -Raw # 读取脚本内容
-          # 使用正则表达式匹配 currentVersion := "..."
-          $match = $content | Select-String -Pattern 'currentVersion\s*:=\s*"([^"]+)"'
-          if ($match) {
-            $version = $match.Matches[0].Groups[1].Value # 提取版本号
-            Write-Host "Version found: ${version}"
-            echo "VERSION_TAG=$version" >> $env:GITHUB_OUTPUT # 设置输出变量 VERSION_TAG
+          $scriptPath = "DoroHelper.ahk"
+          $version = "${{ github.event.inputs.version_override }}"
+          if ([string]::IsNullOrWhiteSpace($version)) {
+            if (-not (Test-Path $scriptPath)) {
+              Write-Warning "Script file '${scriptPath}' not found for version extraction. Current directory: $(Get-Location)"
+              $version = "0.0.0" # 如果找不到脚本，使用默认版本号
+            } else {
+              $content = Get-Content -Path $scriptPath -Raw
+              $match = $content | Select-String -Pattern 'currentVersion\s*:=\s*"([^"]+)"'
+              if ($match) {
+                $version = $match.Matches[0].Groups[1].Value
+                Write-Host "Version found in AHK script: ${version}"
+              } else {
+                Write-Warning "Version pattern (currentVersion := \"...\") not found in ${scriptPath}. Using default '0.0.0'."
+                $version = "0.0.0"
+              }
+            }
           } else {
-            Write-Warning "Version pattern (currentVersion := \"...\") not found in ${scriptPath}. Using default '0.0.0'."
-            echo "VERSION_TAG=0.0.0" >> $env:GITHUB_OUTPUT # 如果没有匹配到，使用默认版本号
+            Write-Host "Using overridden version: ${version}"
           }
+
+          # 确保版本号以 'v' 开头
+          if (-not $version.StartsWith("v")) {
+            $version = "v$version"
+          }
+          echo "VERSION_TAG=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Determine if Tag Already Exists
+        id: check_tag
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME="${{ steps.get_version.outputs.VERSION_TAG }}"
+          echo "Checking if tag ${TAG_NAME} already exists..."
+          TAG_EXISTS=$(git tag -l "${TAG_NAME}")
+          if [ -n "$TAG_EXISTS" ]; then
+            echo "Tag ${TAG_NAME} already exists."
+            echo "TAG_EXISTS=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Tag ${TAG_NAME} does not exist."
+            echo "TAG_EXISTS=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create Git Tag if Not Exists
+        if: steps.check_tag.outputs.TAG_EXISTS == 'false'
+        id: create_tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const tag = '${{ steps.get_version.outputs.VERSION_TAG }}';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const sha = context.sha;
+
+            console.log(`Creating tag ${tag} at commit ${sha}`);
+            try {
+              await github.rest.git.createRef({
+                owner,
+                repo,
+                ref: `refs/tags/${tag}`,
+                sha: sha
+              });
+              console.log(`Tag ${tag} created successfully.`);
+            } catch (error) {
+              if (error.status === 422 && error.response.data.message.includes('Reference already exists')) {
+                console.warn(`Tag ${tag} already exists, skipping creation.`);
+              } else {
+                throw error;
+              }
+            }
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Determine if Pre-release
-        id: prerelease_check # 为此步骤设置 ID，以便后续引用其输出
-        shell: bash # 使用 Bash shell
+        id: prerelease_check
+        shell: bash
         run: |
-          VERSION_TAG="${{ steps.get_version.outputs.VERSION_TAG }}" # 获取上一步输出的版本号
+          VERSION_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
           IS_PRERELEASE="false"
-          if [[ "$VERSION_TAG" == *beta* || "$VERSION_TAG" == *alpha* || "$VERSION_TAG" == *rc* ]]; then # 判断是否包含预发布标识符
+          # 检查版本号是否包含预发布标识符 (beta, alpha, rc)
+          if [[ "$VERSION_TAG" == *beta* || "$VERSION_TAG" == *alpha* || "$VERSION_TAG" == *rc* ]]; then
             IS_PRERELEASE="true"
           fi
-          echo "IS_PRERELEASE=$IS_PRERELEASE" >> $GITHUB_OUTPUT # 设置输出变量 IS_PRERELEASE
+          echo "IS_PRERELEASE=$IS_PRERELEASE" >> $GITHUB_OUTPUT
           echo "Release version: ${VERSION_TAG}, Is Prerelease: ${IS_PRERELEASE}"
 
       - name: Generate Changelog
@@ -73,10 +120,9 @@ jobs:
           LAST_TAG=""
           FOUND_CURRENT_TAG=false
 
-          # 逐行遍历排序后的标签列表，找到当前标签的下一行（即版本号更低的最近一个标签）
           while IFS= read -r tag; do
             if [ "$FOUND_CURRENT_TAG" = true ]; then
-              LAST_TAG="$tag" # 找到当前标签的下一行（即上一个版本）
+              LAST_TAG="$tag"
               break
             fi
             if [ "$tag" = "$CURRENT_TAG" ]; then
@@ -97,14 +143,24 @@ jobs:
             CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..${CURRENT_TAG}")
           fi
 
-          # 使用EOF语法输出多行字符串，确保换行符能被正确解析
-          # 确保EOF标记在单独的一行，且不带任何空格或制表符
+          # 使用EOF语法输出多行字符串
           echo "CHANGELOG_BODY<<EOF" >> "$GITHUB_OUTPUT"
           echo "$CHANGELOG_BODY" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
 
+      - name: Compile AutoHotkey Script with Action
+        id: compile_script
+        uses: benmusson/ahk2exe-action@v1
+        with:
+          in: .\DoroHelper.ahk
+          out: .\DoroHelper.exe
+          icon: .\doro.ico
+          target: x64
+          ahk-tag: v2.0.19
+          github-token: ${{ secrets.GITHUB_TOKEN }} # 用于避免 GitHub API 限速
+
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2 # 使用 GitHub Release Action
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }} # 使用从脚本提取的版本号作为标签名
           name: ${{ steps.get_version.outputs.VERSION_TAG }} # Release 的标题
@@ -114,10 +170,8 @@ jobs:
             ---
 
             测试版兼容性较差，请谨慎下载
-            # Automated release for DoroHelper ${{ steps.get_version.outputs.VERSION_TAG }}
-            # Compiled from commit ${{ github.sha }}
-          draft: false # 不是草稿 Release
-          prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }} # 根据上一步的判断设置是否为预发布
+          draft: false
+          prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }}
           files: DoroHelper.exe
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub 令牌
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

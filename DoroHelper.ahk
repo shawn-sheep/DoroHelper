@@ -101,6 +101,8 @@ global g_numeric_settings := Map(
     "InterceptionBoss", 1,        ;拦截战BOSS选择
     "Tolerance", 1                ;宽容度
 )
+;tag 其他全局变量
+global toleranceDisplayEditControl ; 新增：用于存储识图宽容度显示控件的引用
 ;endregion 设置变量
 ;region 读取设置
 SetWorkingDir A_ScriptDir
@@ -133,7 +135,8 @@ AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新(确保能连�
 AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
 AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
 doroGui.Add("Text", , "识图宽容度(越大越容易识到图、识错图)")
-doroGui.Add("DropDownList", "Choose" g_numeric_settings["Tolerance"], [1, 2, 3]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("Tolerance", CtrlObj))
+doroGui.Add("Slider", "w200 Range10-50 TickInterval1 ToolTip vToleranceSlider", g_numeric_settings["Tolerance"] * 10).OnEvent("Change", (CtrlObj, Info) => ChangeSlider("Tolerance", CtrlObj))
+toleranceDisplayEditControl := doroGui.Add("Edit", "w50 ReadOnly h20 vToleranceDisplay", Format("{:.1f}", g_numeric_settings["Tolerance"]))
 doroGui.Add("Button", "R1", "保存当前设置").OnEvent("Click", SaveSettings)
 doroGui.Add("Text", " R1 ", "===妙妙工具===")
 doroGui.Add("Text", "R1.2 Section", "剧情模式")
@@ -377,11 +380,20 @@ LoadSettings() {
         readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
         ;确保读取的值是数字，如果不是则使用默认值
         if IsNumber(readValue) {
-            g_numeric_settings[key] := Integer(readValue) ;转换为整数
+            g_numeric_settings[key] := readValue
         } else {
             g_numeric_settings[key] := defaultValue
         }
     }
+}
+;tag 改变滑条数据
+ChangeSlider(settingName, CtrlObj) {
+    global g_numeric_settings, toleranceDisplayEditControl
+    local actualValue := CtrlObj.Value / 10.0
+    g_numeric_settings[settingName] := actualValue
+    ; 使用 Format 函数将浮点数格式化为小数点后一位
+    local formattedValue := Format("{:.1f}", actualValue)
+    toleranceDisplayEditControl.Value := formattedValue
 }
 ;tag 保存数据
 SaveSettings(*) {

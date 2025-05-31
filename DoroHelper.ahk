@@ -429,13 +429,14 @@ ChangeNum(settingKey, GUICtrl, *) {
 ;endregion UI辅助函数
 ;region 消息函数合集
 MsgSponsor(*) {
-    myGui := Gui()
-    myGui.Title := "Make Doro Great Again"
-    myGui.Add("Picture", "w200 h200", "./img/alipay.png")
-    myGui.Add("Picture", "x+15 w200 h200", "./img/weixin.png")
-    MyGui.Add("Text", "xs Section w400 h50 Center Wrap", "知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    myGui.Add("Button", "xs+180 y+m w50 h20  ", "确定").OnEvent("Click", (*) => myGui.Destroy())
-    myGui.Show()
+    Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
+    ; myGui := Gui()
+    ; myGui.Title := "Make Doro Great Again"
+    ; myGui.Add("Picture", "w200 h200", "./img/alipay.png")
+    ; myGui.Add("Picture", "x+15 w200 h200", "./img/weixin.png")
+    ; MyGui.Add("Text", "xs Section w400 h50 Center Wrap", "知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    ; myGui.Add("Button", "xs+180 y+m w50 h20  ", "确定").OnEvent("Click", (*) => myGui.Destroy())
+    ; myGui.Show()
 }
 ClickOnHelp(*) {
     msgbox "

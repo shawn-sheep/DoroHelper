@@ -16,17 +16,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # 获取所有历史，包括标签，以便进行版本比较
+          fetch-depth: 0 # 获取所有历史，包括标签
 
       - name: Extract Version from AHK script
         id: get_version
         shell: pwsh
         run: |
-          $scriptPath = "DoroHelper.ahk"
+          $scriptPath = "DoroHelper.ahk" # 确保这个路径是正确的
           $version = "${{ github.event.inputs.version_override }}"
           if ([string]::IsNullOrWhiteSpace($version)) {
             if (-not (Test-Path $scriptPath)) {
-              Write-Warning "Script file '${scriptPath}' not found for version extraction. Current directory: $(Get-Location)"
+              Write-Warning "Script file '${scriptPath}' not found for version extraction. Current directory: $(Get-Location). Using default '0.0.0'."
               $version = "0.0.0"
             } else {
               $content = Get-Content -Path $scriptPath -Raw
@@ -43,41 +43,59 @@ jobs:
             Write-Host "Using overridden version: ${version}"
           }
 
-          # 确保版本号以 'v' 开头
           if (-not $version.StartsWith("v")) {
             $version = "v$version"
           }
           echo "VERSION_TAG=$version" >> $env:GITHUB_OUTPUT
 
-      - name: Determine if Tag Already Exists
-        id: check_tag
-        shell: bash
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          TAG_NAME="${{ steps.get_version.outputs.VERSION_TAG }}"
-          echo "Checking if tag ${TAG_NAME} already exists..."
-          TAG_EXISTS=$(git tag -l "${TAG_NAME}")
-          if [ -n "$TAG_EXISTS" ]; then
-            echo "Tag ${TAG_NAME} already exists."
-            echo "TAG_EXISTS=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Tag ${TAG_NAME} does not exist."
-            echo "TAG_EXISTS=false" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Create Git Tag if Not Exists
-        if: steps.check_tag.outputs.TAG_EXISTS == 'false'
-        id: create_tag
-        uses: actions/github-script@v6
+      - name: Check if version matches latest release tag
+        id: check_latest_release
+        uses: actions/github-script@v7
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const currentVersionTag = '${{ steps.get_version.outputs.VERSION_TAG }}';
+            let latestReleaseTagName = null;
+
+            try {
+              const { data: latestRelease } = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              if (latestRelease && latestRelease.tag_name) {
+                latestReleaseTagName = latestRelease.tag_name;
+                console.log(`Latest release tag found: ${latestReleaseTagName}`);
+              } else {
+                console.log('No latest release found or tag_name is missing.');
+              }
+            } catch (error) {
+              if (error.status === 404) {
+                console.log('No releases found in the repository yet. Proceeding to create a new release.');
+              } else {
+                console.warn(`Could not fetch latest release: ${error.message}. Proceeding with caution.`);
+                // Do not fail here, allow the workflow to continue if API fails for other reasons
+              }
+            }
+
+            if (currentVersionTag && latestReleaseTagName && currentVersionTag === latestReleaseTagName) {
+              core.setFailed(`Version ${currentVersionTag} matches the latest release tag (${latestReleaseTagName}). Workflow terminated to prevent duplicate release.`);
+            } else {
+              console.log(`Version ${currentVersionTag} does not match latest release tag ${latestReleaseTagName} (or no latest release found). Proceeding with release.`);
+            }
+
+      - name: Create Git Tag
+        # This step will not run if 'check_latest_release' failed.
+        # The script handles "tag already exists" gracefully.
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Explicitly provide token for clarity
           script: |
             const tag = '${{ steps.get_version.outputs.VERSION_TAG }}';
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const sha = context.sha;
 
-            console.log(`Creating tag ${tag} at commit ${sha}`);
+            console.log(`Attempting to create tag ${tag} at commit ${sha}`);
             try {
               await github.rest.git.createRef({
                 owner,
@@ -87,17 +105,17 @@ jobs:
               });
               console.log(`Tag ${tag} created successfully.`);
             } catch (error) {
-              if (error.status === 422 && error.response.data.message.includes('Reference already exists')) {
-                console.warn(`Tag ${tag} already exists, skipping creation.`);
+              // error.response.data.message often includes 'Reference already exists'
+              if (error.message && (error.message.includes('Reference already exists') || error.message.includes('Tag already exists'))) {
+                console.warn(`Tag ${tag} already exists on remote. Skipping creation.`);
               } else {
-                throw error;
+                core.setFailed(`Failed to create tag ${tag}: ${error.message || error}`);
+                throw error; // Re-throw to ensure workflow fails if it's an unexpected error
               }
             }
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 在创建标签后，尝试更新一下本地的 Git 标签缓存，以防万一
       - name: Fetch all tags again (after potential tag creation)
-        run: git fetch --tags
+        run: git fetch --tags --force # Use --force to ensure local tags are updated correctly
 
       - name: Determine if Pre-release
         id: prerelease_check
@@ -116,70 +134,71 @@ jobs:
         shell: bash
         run: |
           CURRENT_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
+          echo "Current Tag for Changelog: ${CURRENT_TAG}"
 
-          echo "Current Tag: ${CURRENT_TAG}"
+          # Ensure local git knows about all tags, especially the one just created
+          # git fetch --tags # Already done in previous step, but good to be aware
 
           ALL_SORTED_TAGS=$(git tag --sort=-v:refname)
+          echo "All sorted tags:"
+          echo "${ALL_SORTED_TAGS}"
+
           LAST_TAG=""
           FOUND_CURRENT_TAG=false
 
-          while IFS= read -r tag; do
+          # Loop to find the tag immediately preceding CURRENT_TAG in the sorted list
+          while IFS= read -r tag_item; do
             if [ "$FOUND_CURRENT_TAG" = true ]; then
-              LAST_TAG="$tag"
+              # The first tag encountered after CURRENT_TAG is the previous one in semantic versioning
+              LAST_TAG="$tag_item"
               break
             fi
-            if [ "$tag" = "$CURRENT_TAG" ]; then
+            if [ "$tag_item" = "$CURRENT_TAG" ]; then
               FOUND_CURRENT_TAG=true
             fi
           done <<< "$ALL_SORTED_TAGS"
 
-          echo "Last Tag: ${LAST_TAG}"
+          echo "Previous Tag for Changelog: ${LAST_TAG}"
 
           CHANGELOG_BODY=""
           if [ -z "${LAST_TAG}" ]; then
-            # 如果没有上一个标签，或者新创建的标签在当前Git环境中可能还没完全同步
-            # 我们将从上一个提交到当前提交（HEAD）生成日志
-            echo "No previous tag found or current tag not fully recognized. Generating changelog from last commit to HEAD."
-            # 获取最近的非合并提交作为起始点，或者直接从仓库的起源点开始
-            # git log HEAD^..HEAD  获取当前提交与前一个提交之间的差异
-            # git log --pretty=format:"* %s (%h)" HEAD  只获取当前提交的信息
-            
-            # 为了确保包含所有自上次"已知"状态以来的提交
-            # 我们可以使用 git log <last_known_tag>..HEAD 或者直接 HEAD
-            # 但如果您确定这是第一次发布，那么从 HEAD 开始生成所有日志也可以
-            
-            # 最稳妥的方法是，如果LAST_TAG为空，日志内容是“首次发布”或只包含当前提交
-            # 如果您想包含所有历史，需要从根提交开始，但这通常不适用于“更新日志”
-            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" HEAD)
-            echo "Note: This is likely the first release or a tag issue. Changelog shows current commit(s)."
+            echo "No previous tag found. Generating changelog from the beginning up to ${CURRENT_TAG}."
+            # This will list all commits leading to the CURRENT_TAG if it's the first tag
+            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${CURRENT_TAG}")
+            if [ -z "$CHANGELOG_BODY" ]; then
+              CHANGELOG_BODY="* Initial release or no new commits to list for ${CURRENT_TAG}."
+            fi
           else
-            # 获取上一个标签到当前标签之间的所有提交
-            # 这里使用 HEAD 作为终点，以确保获取到当前工作树中的所有提交
-            echo "Generating changelog from ${LAST_TAG}..HEAD"
-            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..HEAD")
+            echo "Generating changelog from ${LAST_TAG}..${CURRENT_TAG}"
+            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..${CURRENT_TAG}")
+            if [ -z "$CHANGELOG_BODY" ]; then
+              CHANGELOG_BODY="* No changes detected between ${LAST_TAG} and ${CURRENT_TAG}."
+            fi
           fi
 
-          # 使用EOF语法输出多行字符串
           echo "CHANGELOG_BODY<<EOF" >> "$GITHUB_OUTPUT"
           echo "$CHANGELOG_BODY" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
+          echo "--- Generated Changelog ---"
+          echo "$CHANGELOG_BODY"
+          echo "-------------------------"
 
       - name: Compile AutoHotkey Script with Action
         id: compile_script
         uses: benmusson/ahk2exe-action@v1
         with:
-          in: .\DoroHelper.ahk
-          out: .\DoroHelper.exe
-          icon: .\doro.ico
+          in: ./DoroHelper.ahk
+          out: ./DoroHelper.exe
+          icon: ./doro.ico # 确保这个路径是正确的
           target: x64
-          ahk-tag: v2.0.19
+          ahk-tag: v2.0.19 # 指定 AHK v2 版本
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }}
-          name: ${{ steps.get_version.outputs.VERSION_TAG }}
+          name: Release ${{ steps.get_version.outputs.VERSION_TAG }}
           body: |
             ${{ steps.changelog.outputs.CHANGELOG_BODY }}
 

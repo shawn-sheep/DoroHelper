@@ -4,6 +4,7 @@
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
+TraySetIcon "doro.ico"
 currentVersion := "v1.0.0-beta.3"
 usr := "1204244136"
 repo := "DoroHelper"

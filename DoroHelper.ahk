@@ -864,7 +864,6 @@ BattleSettlement(Screenshot := false) {
     }
     Victory := 0
     check := 0
-    CheckAutoBattle
     AddLog("等待战斗结算")
     ;无限塔胜利或失败会出现该图标
     TextTAB := "|<TAB的图标>*200$30.0Tzzz0Tzzz0Tzzz0Tzzz0Tzzz0Tzzz0Tzzz0T0Tz0T0Tz0T0Tz0T0Tz0T0Tz0T0Tz0T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S00T0S0zzzy0zzzzzzzzzzzzzzzzzzzz0000000000U0000U"
@@ -873,6 +872,9 @@ BattleSettlement(Screenshot := false) {
     ;拦截扫荡会出现该图标
     Text点击 := "|<点击>*100$37.zlzzwTzszzyDzw0Dz7zy07U03z7zk01zXzzszk01zwTs00w00ATwQ006DyD0033y7zlzU03ssss03wQQTzzyCCAH4T776MX7U02ANXk00CAMs00U"
     while true {
+        if (A_Index = 15) {
+            CheckAutoBattle
+        }
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
             ;AddLog("TAB已命中，共" check "次")
@@ -2715,6 +2717,6 @@ StoryMode(*) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    NormalShop
+    BattleSettlement
 }
 ;endregion 快捷键

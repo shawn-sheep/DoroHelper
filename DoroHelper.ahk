@@ -1,6 +1,7 @@
 #Requires AutoHotkey >=v2.0
 #Include <github>
 #Include <FindText>
+#Include <GuiCtrlTips>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
@@ -34,6 +35,12 @@ if A_Username != 12042 {
 2、软件中对应操作的日志
 如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。
 ===========================
+)"
+}
+if A_Username != 12042 {
+    msgbox "
+(
+鼠标悬浮在控件上会对应的提示，请勾选或点击前仔细阅读！
 )"
 }
 ;endregion 运行前提示
@@ -119,93 +126,178 @@ if g_settings["AutoCheckUpdate"] {
 ;endregion 读取设置
 ;region 创建gui
 doroGui := Gui(, "Doro小帮手" currentVersion)
+doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
+doroGui.Tips.SetBkColor(0xFFFFFF)
+doroGui.Tips.SetTxColor(0x000000)
+doroGui.Tips.SetMargins(3, 3, 3, 3)
 doroGui.Opt("+Resize")
 doroGui.MarginY := Round(doroGui.MarginY * 0.9)
 doroGui.SetFont("cred s11 Bold")
-doroGui.Add("Text", "R1", "关闭：ctrl + 1 终止：+ 2 调整窗口：+ 3")
-doroGui.Add("Link", " R1 xs", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
+TextKeyInfo := doroGui.Add("Text", "R1 +0x0100", "关闭：ctrl + 1 终止：+ 2 调整窗口：+ 3")
+doroGui.Tips.SetTip(TextKeyInfo, "DoroHelper 快捷键提示：`r`nCtrl+1: 立即关闭程序`r`nCtrl+2: 暂停当前正在执行的任务`r`nCtrl+3: 初始化程序并尝试调整游戏窗口至推荐状态")
+LinkProject := doroGui.Add("Link", " R1 xs", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
+doroGui.Tips.SetTip(LinkProject, "点击访问 DoroHelper 在 Github 上的官方项目页面，可以获取最新版本、查看源码或反馈问题")
 doroGui.SetFont()
-doroGui.Add("Button", "R1 x+8", "赞助").OnEvent("Click", MsgSponsor)
-doroGui.Add("Button", "R1 x+8", "帮助").OnEvent("Click", ClickOnHelp)
-doroGui.Add("Button", "R1 x+8", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
-BtnClear := doroGui.Add("Button", "R1 x+8", "清空日志").OnEvent("Click", (*) => LogBox.Value := "")
+BtnSponsor := doroGui.Add("Button", "R1 x+8", "赞助")
+doroGui.Tips.SetTip(BtnSponsor, "如果您觉得 DoroHelper 对您有帮助，可以考虑点击这里支持开发者，激励项目持续更新与维护")
+BtnSponsor.OnEvent("Click", MsgSponsor)
+BtnHelp := doroGui.Add("Button", "R1 x+8", "帮助")
+doroGui.Tips.SetTip(BtnHelp, "点击查看 DoroHelper 的详细使用说明、注意事项以及常见问题解答")
+BtnHelp.OnEvent("Click", ClickOnHelp)
+BtnUpdate := doroGui.Add("Button", "R1 x+8", "检查更新")
+doroGui.Tips.SetTip(BtnUpdate, "手动检查 DoroHelper 是否有新版本发布。建议定期检查以获取最新功能和修复")
+BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
+BtnClear := doroGui.Add("Button", "R1 x+8", "清空日志")
+doroGui.Tips.SetTip(BtnClear, "点击清除下方日志标签页中当前显示的所有运行记录")
+BtnClear.OnEvent("Click", (*) => LogBox.Value := "")
 Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
 Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
 Tab.UseTab("设置")
-AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新(确保能连上github)", "R1.2")
-AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
-AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
-doroGui.Add("Text", , "识图宽容度(越大越容易识到图、识错图)")
-doroGui.Add("Slider", "w200 Range10-50 TickInterval1 ToolTip vToleranceSlider", g_numeric_settings["Tolerance"] * 10).OnEvent("Change", (CtrlObj, Info) => ChangeSlider("Tolerance", CtrlObj))
-toleranceDisplayEditControl := doroGui.Add("Edit", "w50 ReadOnly h20 vToleranceDisplay", Format("{:.1f}", g_numeric_settings["Tolerance"]))
-doroGui.Add("Button", "R1", "保存当前设置").OnEvent("Click", SaveSettings)
-doroGui.Add("Text", " R1 ", "===妙妙工具===")
-doroGui.Add("Text", "R1.2 Section", "剧情模式")
-doroGui.Add("Button", " xp+50 yp-5", "←启动").OnEvent("Click", StoryMode)
+cbAutoCheckUpdate := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1.2")
+doroGui.Tips.SetTip(cbAutoCheckUpdate, "勾选后，DoroHelper 启动时会自动连接到 Github 检查是否有新版本`r`n请确保您的网络可以正常访问 Github")
+cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
+doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在您的默认浏览器中打开 Blablalink 网站")
+cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
+doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
+TextToleranceLabel := doroGui.Add("Text", "Section +0x0100", "识图宽容度")
+doroGui.Tips.SetTip(TextToleranceLabel, "调整图像识别的相似度阈值`r`n数值越高，匹配越宽松，更容易识别到目标但也可能发生误判`r`n数值越低，匹配越严格，准确性更高但可能错过一些稍有差异的目标`r`n请根据您的游戏分辨率和缩放情况适当调整")
+SliderTolerance := doroGui.Add("Slider", "w200 Range100-200 TickInterval1 ToolTip vToleranceSlider", g_numeric_settings["Tolerance"] * 100)
+doroGui.Tips.SetTip(SliderTolerance, "拖动滑块来调整识图的宽容度`r`n范围从 1.00 (最严格) 到 2.00 (最宽松)`r`n具体数值会显示在右侧的文本框中")
+SliderTolerance.OnEvent("Change", (CtrlObj, Info) => ChangeSlider("Tolerance", CtrlObj))
+toleranceDisplayEditControl := doroGui.Add("Edit", "x+10 yp w50 ReadOnly h20 vToleranceDisplay", Format("{:.1f}", g_numeric_settings["Tolerance"]))
+doroGui.Tips.SetTip(toleranceDisplayEditControl, "当前识图宽容度的精确数值，由左侧滑块控制")
+BtnSaveSettings := doroGui.Add("Button", "xs R1 +0x4000", "保存当前设置")
+doroGui.Tips.SetTip(BtnSaveSettings, "点击此按钮会将当前所有标签页中的设置（包括开关选项和数值调整）保存到配置文件 (settings.ini) 中，以便 DoroHelper 下次启动时自动加载")
+BtnSaveSettings.OnEvent("Click", SaveSettings)
+TextMiaoMiaoTitle := doroGui.Add("Text", " R1 +0x0100", "===妙妙工具===")
+doroGui.Tips.SetTip(TextMiaoMiaoTitle, "这里提供一些与日常任务流程无关的额外小功能")
+TextStoryModeLabel := doroGui.Add("Text", "R1.2 Section +0x0100", "剧情模式")
+doroGui.Tips.SetTip(TextStoryModeLabel, "对话时如果只有一个选项，在短暂延迟后点击该选项`r`n如果有两个选项，则等待玩家选择`r`n自动进行下一段剧情，自动启动auto`r`n自动将观看过的剧情收藏")
+BtnStoryMode := doroGui.Add("Button", " xp+50 yp-5", "←启动")
+doroGui.Tips.SetTip(BtnStoryMode, "点击启动剧情模式`r`nDoroHelper 将尝试自动点击对话选项并跳过剧情动画。请在需要时手动停止")
+BtnStoryMode.OnEvent("Click", StoryMode)
 Tab.UseTab("任务")
-doroGui.Add("Text", " R1.2 ", "只有下方的内容被勾选后才会执行，右侧是详细设置")
-AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
-AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "R1.2")
-AddCheckboxSetting(doroGui, "Arena", "竞技场", "R1.2 Section")
-AddCheckboxSetting(doroGui, "Tower", "无限之塔", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Interception", "异常拦截", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Award", "奖励收取", "R1.2 xs")
+TextTaskInfo := doroGui.Add("Text", " R1.2 +0x0100", "只有下方的内容被勾选后才会执行，右侧是详细设置")
+cbShop := AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
+doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店购买相关的任务`r`n具体的购买项目请在「商店」标签页中详细设置")
+cbSimulationRoom := AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "R1.2")
+doroGui.Tips.SetTip(cbSimulationRoom, "总开关：控制是否执行模拟室相关的任务，包括普通模拟室的快速战斗和模拟室超频`r`n详细设置请前往「战斗」标签页")
+cbArena := AddCheckboxSetting(doroGui, "Arena", "竞技场", "R1.2 Section")
+doroGui.Tips.SetTip(cbArena, "总开关：控制是否执行竞技场相关的任务，如领取奖励、挑战不同类型的竞技场`r`n详细设置请前往「战斗」标签页")
+cbTower := AddCheckboxSetting(doroGui, "Tower", "无限之塔", "R1.2 xs")
+doroGui.Tips.SetTip(cbTower, "总开关：控制是否执行无限之塔相关的任务，包括企业塔和通用塔的挑战`r`n详细设置请前往「战斗」标签页")
+cbInterception := AddCheckboxSetting(doroGui, "Interception", "异常拦截", "R1.2 xs")
+doroGui.Tips.SetTip(cbInterception, "总开关：控制是否执行异常拦截战任务`r`nBOSS选择、是否截图等详细设置请前往「战斗」标签页")
+cbAward := AddCheckboxSetting(doroGui, "Award", "奖励收取", "R1.2 xs")
+doroGui.Tips.SetTip(cbAward, "总开关：控制是否执行各类日常奖励的自动收取任务`r`n具体的奖励项目请在「奖励」标签页中选择")
 Tab.UseTab("商店")
-doroGui.Add("Text", "R1.2 Section", "===付费商店===")
-AddCheckboxSetting(doroGui, "CashShop", "领取付费商店免费钻(进不了的别选)", "R1.2 xs")
-doroGui.Add("Text", "R1.2 xs Section", "===普通商店===")
-AddCheckboxSetting(doroGui, "NormalShop", "每日白嫖2次", "R1.2 ")
-AddCheckboxSetting(doroGui, "NormalShopDust", "用信用点买芯尘盒", "R1.2 ")
-AddCheckboxSetting(doroGui, "NormalShopPackage", "购买简介个性化礼包", "R1.2 ")
-doroGui.Add("Text", " R1 xs", "===竞技场商店===")
-AddCheckboxSetting(doroGui, "BookFire", "燃烧", "R1.2")
-AddCheckboxSetting(doroGui, "BookWater", "水冷", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookWind", "风压", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookElec", "电击", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookIron", "铁甲", "R1.2 X+0.5")
-AddCheckboxSetting(doroGui, "BookBox", "购买代码手册宝箱", "xs R1.2")
-AddCheckboxSetting(doroGui, "ArenaShopPackage", "购买简介个性化礼包", "R1.2")
-AddCheckboxSetting(doroGui, "ArenaShopFurnace", "购买公司武器熔炉", "R1.2")
-doroGui.Add("Text", "R1.2 xs Section", "===废铁商店===")
-AddCheckboxSetting(doroGui, "ScrapShopGem", "购买珠宝", "R1.2")
-AddCheckboxSetting(doroGui, "ScrapShopVoucher", "购买全部好感券", "R1.2")
-AddCheckboxSetting(doroGui, "ScrapShopResources", "购买全部养成资源", "R1.2")
+TextCashShopTitle := doroGui.Add("Text", "R1.2 Section +0x0100", "===付费商店===")
+doroGui.Tips.SetTip(TextCashShopTitle, "设置与游戏内付费商店相关购买选项")
+cbCashShop := AddCheckboxSetting(doroGui, "CashShop", "领取免费珠宝", "R1.2 xs")
+doroGui.Tips.SetTip(cbCashShop, "自动领取付费商店中每日、每周、每月可获得的免费珠宝`r`n重要：如果您的游戏账号因网络原因无法正常进入付费商店，请不要勾选此项，否则可能导致程序卡住")
+TextNormalShopTitle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===普通商店===")
+doroGui.Tips.SetTip(TextNormalShopTitle, "设置与游戏内普通商店（使用信用点购买）相关选项")
+cbNormalShop := AddCheckboxSetting(doroGui, "NormalShop", "每日白嫖2次", "R1.2 ")
+doroGui.Tips.SetTip(cbNormalShop, "自动领取普通商店中每日提供的免费商品，然后利用免费刷新再领一次")
+cbNormalShopDust := AddCheckboxSetting(doroGui, "NormalShopDust", "用信用点买芯尘盒", "R1.2 ")
+doroGui.Tips.SetTip(cbNormalShopDust, "勾选后，在普通商店中如果出现可用信用点购买的芯尘盒，则自动购买")
+cbNormalShopPackage := AddCheckboxSetting(doroGui, "NormalShopPackage", "购买简介个性化礼包", "R1.2 ")
+doroGui.Tips.SetTip(cbNormalShopPackage, "勾选后，在普通商店中如果出现可用游戏内货币购买的简介个性化礼包，则自动购买")
+TextArenaShopTitle := doroGui.Add("Text", " R1 xs +0x0100", "===竞技场商店===")
+doroGui.Tips.SetTip(TextArenaShopTitle, "设置与游戏内竞技场商店（使用竞技场代币购买）相关选项")
+cbBookFire := AddCheckboxSetting(doroGui, "BookFire", "燃烧", "R1.2")
+doroGui.Tips.SetTip(cbBookFire, "在竞技场商店中自动购买所有的燃烧代码手册")
+cbBookWater := AddCheckboxSetting(doroGui, "BookWater", "水冷", "R1.2 X+0.5")
+doroGui.Tips.SetTip(cbBookWater, "在竞技场商店中自动购买所有的水冷代码手册")
+cbBookWind := AddCheckboxSetting(doroGui, "BookWind", "风压", "R1.2 X+0.5")
+doroGui.Tips.SetTip(cbBookWind, "在竞技场商店中自动购买所有的风压代码手册")
+cbBookElec := AddCheckboxSetting(doroGui, "BookElec", "电击", "R1.2 X+0.5")
+doroGui.Tips.SetTip(cbBookElec, "在竞技场商店中自动购买所有的电击代码手册")
+cbBookIron := AddCheckboxSetting(doroGui, "BookIron", "铁甲", "R1.2 X+0.5")
+doroGui.Tips.SetTip(cbBookIron, "在竞技场商店中自动购买所有的铁甲代码手册")
+cbBookBox := AddCheckboxSetting(doroGui, "BookBox", "购买代码手册宝箱", "xs R1.2")
+doroGui.Tips.SetTip(cbBookBox, "在竞技场商店中自动购买代码手册宝箱，可随机开出各种属性的代码手册")
+cbArenaShopPackage := AddCheckboxSetting(doroGui, "ArenaShopPackage", "购买简介个性化礼包", "R1.2")
+doroGui.Tips.SetTip(cbArenaShopPackage, "在竞技场商店自动购买简介个性化礼包")
+cbArenaShopFurnace := AddCheckboxSetting(doroGui, "ArenaShopFurnace", "购买公司武器熔炉", "R1.2")
+doroGui.Tips.SetTip(cbArenaShopFurnace, "在竞技场商店中自动购买公司武器熔炉，用于装备转化")
+TextScrapShopTitle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===废铁商店===")
+doroGui.Tips.SetTip(TextScrapShopTitle, "设置与游戏内废铁商店（使用废铁购买）相关选项")
+cbScrapShopGem := AddCheckboxSetting(doroGui, "ScrapShopGem", "购买珠宝", "R1.2")
+doroGui.Tips.SetTip(cbScrapShopGem, "在废铁商店中自动购买珠宝")
+cbScrapShopVoucher := AddCheckboxSetting(doroGui, "ScrapShopVoucher", "购买全部好感券", "R1.2")
+doroGui.Tips.SetTip(cbScrapShopVoucher, "在废铁商店中自动购买所有好感券，用于提升妮姬好感度")
+cbScrapShopResources := AddCheckboxSetting(doroGui, "ScrapShopResources", "购买全部养成资源", "R1.2")
+doroGui.Tips.SetTip(cbScrapShopResources, "在废铁商店中自动购买所有可用的养成资源")
 Tab.UseTab("战斗")
-doroGui.Add("Text", "R1.2 Section", "===竞技场===")
-AddCheckboxSetting(doroGui, "RookieArena", "新人竞技场", "R1.2")
-AddCheckboxSetting(doroGui, "SpecialArena", "特殊竞技场", "R1.2")
-AddCheckboxSetting(doroGui, "ChampionArena", "冠军竞技场(跟风竞猜)", "R1.2")
-doroGui.Add("Text", "R1.2 xs Section", "===异常拦截编队===")
-doroGui.Add("DropDownList", "Choose" String(g_numeric_settings["InterceptionBoss"]), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"]).OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
-AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+3 R1.2")
-doroGui.Add("Text", "R1.2 xs Section", "===模拟室===")
-doroGui.Add("Text", "R1.2 xs Section", "普通模拟室（需解锁快速模拟）")
-AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频（默认使用上次的tag）", "R1.2")
-doroGui.Add("Text", "R1.2 xs Section", "===无限之塔===")
-AddCheckboxSetting(doroGui, "CompanyTower", "尽可能地爬企业塔", "R1.2")
-AddCheckboxSetting(doroGui, "UniversalTower", "尽可能地爬通用塔", "R1.2")
+TextArenaTitleBattle := doroGui.Add("Text", "R1.2 Section +0x0100", "===竞技场===")
+doroGui.Tips.SetTip(TextArenaTitleBattle, "设置与各类竞技场挑战相关的选项")
+cbRookieArena := AddCheckboxSetting(doroGui, "RookieArena", "新人竞技场", "R1.2")
+doroGui.Tips.SetTip(cbRookieArena, "使用五次每日免费挑战次数挑战第三位")
+cbSpecialArena := AddCheckboxSetting(doroGui, "SpecialArena", "特殊竞技场", "R1.2")
+doroGui.Tips.SetTip(cbSpecialArena, "使用两次每日免费挑战次数挑战第三位")
+cbChampionArena := AddCheckboxSetting(doroGui, "ChampionArena", "冠军竞技场", "R1.2")
+doroGui.Tips.SetTip(cbChampionArena, "在活动期间进行跟风竞猜")
+TextInterceptionTeamTitle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===异常拦截编队===")
+doroGui.Tips.SetTip(TextInterceptionTeamTitle, "设置在执行异常拦截任务时，针对不同BOSS使用的队伍")
+DropDownListBoss := doroGui.Add("DropDownList", "Choose" String(g_numeric_settings["InterceptionBoss"]), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
+doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用您的编队1去挑战克拉肯")
+DropDownListBoss.OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
+cbInterceptionShot := AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+3 R1.2")
+doroGui.Tips.SetTip(cbInterceptionShot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
+TextSimRoomTitleBattle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===模拟室===")
+doroGui.Tips.SetTip(TextSimRoomTitleBattle, "设置与模拟室挑战相关的选项")
+TextNormalSimRoomLabel := doroGui.Add("Text", "R1.2 xs Section +0x0100", "普通模拟室")
+doroGui.Tips.SetTip(TextNormalSimRoomLabel, "普通模拟室的日常扫荡。此功能需要您在游戏内已经解锁了快速模拟功能才能正常使用`r`n此选项的勾选在「任务」标签里")
+cbSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频", "R1.2")
+doroGui.Tips.SetTip(cbSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用您上次进行超频挑战时选择的增益标签组合")
+TextTowerTitleBattle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===无限之塔===")
+doroGui.Tips.SetTip(TextTowerTitleBattle, "设置与无限之塔挑战相关的选项")
+cbCompanyTower := AddCheckboxSetting(doroGui, "CompanyTower", "爬企业塔", "R1.2")
+doroGui.Tips.SetTip(cbCompanyTower, "勾选后，自动挑战当前可进入的所有企业塔，直到无法通关或每日次数用尽")
+cbUniversalTower := AddCheckboxSetting(doroGui, "UniversalTower", "爬通用塔", "R1.2")
+doroGui.Tips.SetTip(cbUniversalTower, "勾选后，自动挑战通用无限之塔，直到无法通关")
 Tab.UseTab("奖励")
-doroGui.Add("Text", "R1.2 Section", "===常规奖励===")
-AddCheckboxSetting(doroGui, "OutpostDefence", "领取前哨基地防御奖励+1次免费歼灭", "R1.2  Y+M  Section")
-AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬（通过收藏可调整优先级）", "R1.2 xs Section")
-AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2 xs+15")
-AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
-AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
-;AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2")
-AddCheckboxSetting(doroGui, "Mission", "任务收取", "R1.2")
-AddCheckboxSetting(doroGui, "Pass", "通行证收取", "R1.2")
-AddCheckboxSetting(doroGui, "Activity", "小活动(需刷到11关)", "R1.2")
-doroGui.Add("Text", "R1.2 Section", "===限时奖励===")
-AddCheckboxSetting(doroGui, "FreeRecruit", "活动期间每日免费招募", "R1.2")
-AddCheckboxSetting(doroGui, "Cooperate", "协同作战摆烂", "R1.2")
-AddCheckboxSetting(doroGui, "SoloRaid", "单人突击日常", "R1.2")
-AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
+TextNormalAwardTitle := doroGui.Add("Text", "R1.2 Section +0x0100", "===常规奖励===")
+doroGui.Tips.SetTip(TextNormalAwardTitle, "设置各类日常可领取的常规奖励项目")
+cbOutpostDefence := AddCheckboxSetting(doroGui, "OutpostDefence", "领取前哨基地防御奖励+1次免费歼灭", "R1.2  Y+M  Section")
+doroGui.Tips.SetTip(cbOutpostDefence, "自动领取前哨基地的离线挂机收益，并执行一次每日免费的快速歼灭以获取额外资源")
+cbExpedition := AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
+doroGui.Tips.SetTip(cbExpedition, "自动领取已完成的派遣委托奖励，并根据当前可用妮姬重新派遣新的委托任务")
+cbLoveTalking := AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬", "R1.2 xs Section")
+doroGui.Tips.SetTip(cbLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n您可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序")
+cbAppreciation := AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2 xs+15")
+doroGui.Tips.SetTip(cbAppreciation, "自动观看并领取花絮鉴赏中当前可领取的奖励")
+cbFriendPoint := AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
+doroGui.Tips.SetTip(cbFriendPoint, "自动收取并回赠好友点数")
+cbMail := AddCheckboxSetting(doroGui, "Mail", "邮箱收取", "R1.2")
+doroGui.Tips.SetTip(cbMail, "自动收取邮箱中所有奖励")
+;cbRankingReward := AddCheckboxSetting(doroGui, "RankingReward", "方舟排名奖励", "R1.2")
+;doroGui.Tips.SetTip(cbRankingReward, "自动领取方舟内各类排名活动（如无限之塔排名、竞技场排名等）的结算奖励")
+cbMission := AddCheckboxSetting(doroGui, "Mission", "任务收取", "R1.2")
+doroGui.Tips.SetTip(cbMission, "自动收取每日任务、每周任务、主线任务以及成就等已完成任务的奖励")
+cbPass := AddCheckboxSetting(doroGui, "Pass", "通行证收取", "R1.2")
+doroGui.Tips.SetTip(cbPass, "自动收取当前通行证中所有可领取的等级奖励")
+cbActivity := AddCheckboxSetting(doroGui, "Activity", "小活动(需刷到11关)", "R1.2")
+doroGui.Tips.SetTip(cbActivity, "针对当前正在进行的小型剧情活动`r`n自动对最新的挑战关卡进行战斗或快速战斗`r`n然后对主要活动的第11关消耗所有次数进行快速战斗")
+TextLimitedAwardTitle := doroGui.Add("Text", "R1.2 Section +0x0100", "===限时奖励===")
+doroGui.Tips.SetTip(TextLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动")
+cbFreeRecruit := AddCheckboxSetting(doroGui, "FreeRecruit", "活动期间每日免费招募", "R1.2")
+doroGui.Tips.SetTip(cbFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
+cbCooperate := AddCheckboxSetting(doroGui, "Cooperate", "协同作战摆烂", "R1.2")
+doroGui.Tips.SetTip(cbCooperate, "自动参与每日三次的协同作战，战斗期间什么都不会干")
+cbSoloRaid := AddCheckboxSetting(doroGui, "SoloRaid", "单人突击日常", "R1.2")
+doroGui.Tips.SetTip(cbSoloRaid, "自动参与单人突击，自动对最新的关卡进行战斗或快速战斗")
+cbRoadToVillain := AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
+doroGui.Tips.SetTip(cbRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
 Tab.UseTab("日志")
 LogBox := doroGui.Add("Edit", "r20 w270 ReadOnly")
+doroGui.Tips.SetTip(LogBox, "这里会显示 DoroHelper 在运行过程中的详细日志")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 Tab.UseTab()
-doroGui.Add("Button", "Default w80 xm+100", "DORO!").OnEvent("Click", ClickOnDoro)
+BtnDoro := doroGui.Add("Button", "Default w80 xm+100", "DORO!")
+doroGui.Tips.SetTip(BtnDoro, "点击启动 DoroHelper 主程序！`r`nDoro 将会按照您在各个标签页中的设置，开始自动执行所有已勾选的任务`r`n在点击前，请确保游戏客户端已在前台运行并处于大厅界面")
+BtnDoro.OnEvent("Click", ClickOnDoro)
 doroGui.Show()
 ;endregion 创建gui
 ;region 点击运行
@@ -512,7 +604,7 @@ CheckForUpdateHandler(isManualCheck) {
                     MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
                     ExitApp ;下载完成后退出当前脚本
                 } catch as downloadError {
-                    MsgBox("下载失败，请检查网络。`n(" downloadError.Message ")", "下载错误", "IconX")
+                    MsgBox("下载失败，请检查网络`n(" downloadError.Message ")", "下载错误", "IconX")
                     ;删除临时文件
                     if FileExist(A_ScriptDir "\" downloadTempName)
                         FileDelete(A_ScriptDir "\" downloadTempName)
@@ -522,13 +614,13 @@ CheckForUpdateHandler(isManualCheck) {
         } else {
             ;没有新版本
             if (isManualCheck) { ;只有手动检查时才提示
-                MsgBox("当前Doro已是最新版本。", "检查更新")
+                MsgBox("当前Doro已是最新版本", "检查更新")
             }
         }
     } catch as githubError {
         ;只有手动检查时才提示连接错误，自动检查时静默失败
         if (isManualCheck) {
-            MsgBox("检查更新失败，无法连接到Github或仓库信息错误。`n(" githubError.Message ")", "检查更新错误", "IconX")
+            MsgBox("检查更新失败，无法连接到Github或仓库信息错误`n(" githubError.Message ")", "检查更新错误", "IconX")
         }
     }
 }
@@ -645,7 +737,7 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     latestSeconds := TimeToSeconds(latestTimeStr)
     ;检查转换是否有效
     if (earliestSeconds = -1 || latestSeconds = -1) {
-        AddLog("推算跨度失败：日志时间格式错误。")
+        AddLog("推算跨度失败：日志时间格式错误")
         return
     }
     ;处理跨午夜情况（如 23:59:59 → 00:00:01）
@@ -1228,93 +1320,58 @@ ScrapShop() {
         FindText().Click(X, Y, "L")
         Sleep g_numeric_settings["SleepTime"]
     }
-    if g_settings["ScrapShopGem"] {
-        Text := "|<珠宝>*171$40.00s01k3yHU070Dvi0zzyzjs7zzxszyTzznbztwDzCTz7U0zznUTzzjzS0TzwzzzVzzUtzz0D03bzsDzsC3y0zzUsTs3zy3tzk0zkzzzU1rXzvj0DSCDCszzy0Mtbzzs03UDzzc"
-        if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
+    ; 定义所有可购买物品的信息 (使用 Map)
+    PurchaseItems := Map(
+        "珠宝", {
+            Text: "|<珠宝>*171$40.00s01k3yHU070Dvi0zzyzjs7zzxszyTzznbztwDzCTz7U0zznUTzzjzS0TzzVzzUtzz0D03bzsDzsC3y0zzUsTs3zy3tzk0zkzzzU1rXzvj0DSCDCszzy0Mtbzzs03UDzzc",
+            Setting: g_settings["ScrapShopGem"],
+            Tolerance: 0.1 * PicTolerance
+        },
+        "好感券", {
+            Text: "|<礼物的图标>*195$22.3sS0Tnw1XwM67VUMQCDzDzzwzzznzzzDzzwzzznzzzDzzwzs0000000Dwzkznz3zDwDwzkznz3zDwDwzW",
+            Setting: g_settings["ScrapShopVoucher"],
+            Tolerance: 0.15 * PicTolerance
+        },
+        "养成资源", {
+            Text: "|<小时>**50$83.000003zw0000000000063zC00000000008AjzA00000001006R7zC000Dzzzzzzzzzz401k000000001zy0C2000000000RA0lzU00000000TM16zk00000000Pk6SLk00000000OU9vvU00100A00q0nQxU0k71wM00Y0ARn03kC3zs01c2MCS07XRazs03E4k3o076PB/U0701UAc0CBrSL00+030Hk0Qviby00Q0G0xU0trBBw00c0b1a03nCPss03E07Uw0DkQ7lU07817yk0TXsAD00SE17j0003U0S01YU11k000000007N01U000000000vW01zzzzzzzzzz5A00008020V0lHC00000k00060VXA00001U0000MX7NE",
+            Setting: g_settings["ScrapShopResources"],
+            Tolerance: 0.3 * PicTolerance
+        },
+        "信用点", {
+            Text: "|<信用点>**50$62.21U00000C01kw0Tzy03k0Q7U7zzU0jyDzTVTDg081XjrwLrv02ztf0755Wk0c0uE1VTTgDvyAY0ELnv3yzW9UA5wykjzcuE11TTg/zuCY0EIK/2U2Udzw5xykjzc+E13TDg9zu2Y0Ezrv3zzUdzqDzykUu8+TzXlMgQ2j2b1tsK/7ivsdzyS5yXnjS+LxbVrswdnnbztkRyCCQstkA83C0300U",
+            Setting: g_settings["ScrapShopResources"],
+            Tolerance: 0.3 * PicTolerance
         }
-        ;珠宝领了就默认整个任务做完了
-        else {
-            AddLog("已执行，跳过")
-            AddLog("===废铁商店任务结束===")
-            BackToHall
-            return
+    )
+    ; 遍历并购买所有物品
+    for Name, item in PurchaseItems {
+        if (!item.Setting) {
+            continue ; 如果设置未开启，则跳过此物品
         }
-        Text := "|<MAX>*124$23.76CMCAAkQMN0kksEVVkV33V267649DA0GCM0UME10kU21V8Ym2F1YUW31Vgi78"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
-        }
-        Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("购买珠宝")
-            FindText().Click(X, Y, "L")
-            ;确认至百货商店页面
-            Text := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-            while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                Confirm
-            }
-        }
-    }
-    if g_settings["ScrapShopVoucher"] {
-        loop 6 {
-            Text := "|<礼物的图标>*195$22.3sS0Tnw1XwM67VUMQCDzDzzwzzznzzzDzzwzzznzzzDzzwzs0000000Dwzkznz3zDwDwzkznz3zDwDwzW"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.15 * PicTolerance, 0.15 * PicTolerance, Text, , 0, , , , 1, TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep g_numeric_settings["SleepTime"]
-            }
-            Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("购买" A_Index "张好感券")
-                FindText().Click(X, Y, "L")
-                Text := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-                while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                    Confirm
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, item.Tolerance, item.Tolerance, item.Text, , , , , , , TrueRatio, TrueRatio)) {
+            ; 根据找到的同类图标数量进行循环购买
+            loop ok.Length {
+                FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
+                TextMAX := "|<MAX>*124$23.76CMCAAkQMN0kksEVVkV33V267649DA0GCM0UME10kU21V8Ym2F1YUW31Vgi78"
+                if (okMax := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text确认, , 0, , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击max")
+                    FindText().Click(&ConfirmX, &ConfirmY, "L")
+                    Sleep g_numeric_settings["SleepTime"]
+                }
+                Text确认 := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
+                if (ok1 := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text确认, 0, 0, , , , , TrueRatio, TrueRatio)) {
+                    AddLog("购买" . Name)
+                    FindText().Click(ConfirmX, ConfirmY, "L")
+                    Sleep g_numeric_settings["SleepTime"]
+                    GoodsText := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
+                    while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, GoodsText, , 0, , , , , TrueRatio, TrueRatio)) {
+                        Confirm
+                    }
                 }
             }
-        }
-    }
-    if g_settings["ScrapShopResources"] {
-        loop 6 {
-            Text := "|<小时>**50$83.000003zw0000000000063zC00000000008AjzA000000000k0bzzA00000001006R7zC000Dzzzzzzzzzz401k000000001zy0C2000000000RA0lzU00000000TM16zk00000000Pk6SLk00000000OU9vvU00100A00q0nQxU0k71wM00Y0ARn03kC3zs01c2MCS07XRazs03E4k3o076PB/U0701UAc0CBrSL00+030Hk0Qviby00Q0G0xU0trBBw00c0b1a03nCPss03E07Uw0DkQ7lU07817yk0TXsAD00SE17j0003U0S01YU11k000000007N01U000000000vW01zzzzzzzzzz5A00008020V0lHC00000k00060VXA00001U0000MX7NE"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text, , 0, , , , 1, TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep g_numeric_settings["SleepTime"]
-            }
-            Text := "|<MAX>*124$23.76CMCAAkQMN0kksEVVkV33V267649DA0GCM0UME10kU21V8Ym2F1YUW31Vgi78"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep g_numeric_settings["SleepTime"]
-            }
-            Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("购买" A_Index "次养成资源")
-                FindText().Click(X, Y, "L")
-                Text := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-                while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                    Confirm
-                }
-            }
-        }
-        Text := "|<信用点>**50$62.21U00000C01kw0Tzy03k0Q7U7zzU0jyDzTVTDg081XjrwLrv02ztf0755Wk0c0uE1VTTgDvyAY0ELnv3yzW9UA5wykjzcuE11TTg/zuCY0EIK/2U2Udzw5xykjzc+E13TDg9zu2Y0Ezrv3zzUdzqDzykUu8+TzXlMgQ2j2b1tsK/7ivsdzyS5yXnjS+LxbVrswdnnbztkRyCCQstkA83C0300U"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
-        }
-        Text := "|<MAX>*124$23.76CMCAAkQMN0kksEVVkV33V267649DA0GCM0UME10kU21V8Ym2F1YUW31Vgi78"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
-        }
-        Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("购买信用点")
-            FindText().Click(X, Y, "L")
-            Text := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-            while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                Confirm
-            }
+        } else {
+            ; 如果当前物品未找到，打印日志
+            AddLog(Name . " 未找到，跳过购买")
         }
     }
     AddLog("===废铁商店任务结束===")

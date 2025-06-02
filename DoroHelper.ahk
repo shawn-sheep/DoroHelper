@@ -292,7 +292,6 @@ cbRoadToVillain := AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反�
 doroGui.Tips.SetTip(cbRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
 Tab.UseTab("日志")
 LogBox := doroGui.Add("Edit", "r20 w270 ReadOnly")
-doroGui.Tips.SetTip(LogBox, "这里会显示 DoroHelper 在运行过程中的详细日志")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 Tab.UseTab()
 BtnDoro := doroGui.Add("Button", "Default w80 xm+100", "DORO!")
@@ -399,6 +398,8 @@ Initialization() {
     global NikkeY := 0
     global NikkeW := 0
     global NikkeH := 0
+    global NikkeXP := 0
+    global NikkeYP := 0
     global NikkeWP := 0
     global NikkeHP := 0
     global scrRatio := 1
@@ -430,10 +431,15 @@ Initialization() {
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
     currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
-    WinRatio := NikkeW / 2347 ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
-    TrueRatio := Round(currentScale * WinRatio, 1)
-    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
+    WinRatio := Round(NikkeW / 2347, 3) ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
+    TrueRatio := Round(currentScale * WinRatio, 3)
+    GameRatio := Round(NikkeW / NikkeH, 3)
+    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
+    if GameRatio != 1.778 {
+        MsgBox ("请将游戏画面比例调整至16:9")
+        Pause
+    }
     if A_ScreenWidth < 2347 {
         MsgBox ("屏幕尺寸过小，请更换显示器！")
         Pause

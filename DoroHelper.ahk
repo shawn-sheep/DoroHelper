@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.5"
+currentVersion := "v1.0.0-beta.6"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -431,22 +431,19 @@ Initialization() {
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
     currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
-    WinRatio := Round(NikkeW / 2347, 3) ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
+    WinRatio := Round(NikkeW / 2331, 3) ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke工作区宽度2331像素的情况下截图的），主要影响识图
     TrueRatio := Round(currentScale * WinRatio, 3)
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if GameRatio != 1.778 {
         MsgBox ("请将游戏画面比例调整至16:9")
-        Pause
     }
-    if A_ScreenWidth < 2347 {
+    if A_ScreenWidth < 2331 {
         MsgBox ("屏幕尺寸过小，请更换显示器！")
-        Pause
     }
     if A_ScreenDPI != 96 {
         MsgBox ("缩放比例不为100%，请更改！")
-        Pause
     }
     if Round(WinRatio) != 1 {
         MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
@@ -2736,8 +2733,8 @@ TestMode(BtnTestMode, Info) {
     NonClientWidth := Width - ClientWidth
     NewClientX := (A_ScreenWidth / 2) - (NikkeWP / 2)
     NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
-    NewClientWidth := 2347
-    NewClientHeight := 1350
+    NewClientWidth := 2331
+    NewClientHeight := 1311
     ; 计算新的窗口整体大小，以适应新的工作区大小
     NewWindowX := NewClientX
     NewWindowY := NewClientY

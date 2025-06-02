@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.4"
+currentVersion := "v1.0.0-beta.5"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1117,33 +1117,36 @@ NormalShop() {
                     Sleep g_numeric_settings["SleepTime"]
                     ConfirmText := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
                     TextCreditIcon := "|<信用点的图标>*169$29.000k0001s000Tk001vk007Xk00TDk03znk0DzDU0zyTU7zzz0Tzzz1zzzz7zzzwjzzxnDzzy6Dzzs0TzvU8zzy09zzk0DTr00DzQ00TxU00Te000RU000Q0000E004"
-                    if !(FindText(&CreditIconX, &CreditIconY, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextCreditIcon, , 0, , , , , TrueRatio, TrueRatio)) {
-                        AddLog("未检测到信用点支付选项。")
-                        break
+                    if name = "芯尘盒" {
+                        if !(FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextCreditIcon, , 0, , , , , TrueRatio, TrueRatio)) {
+                            AddLog("未检测到信用点支付选项。")
+                            Confirm
+                            continue
+                        }
                     }
                     if (ok1 := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
                         AddLog("购买" . Name)
                         FindText().Click(ConfirmX, ConfirmY, "L")
                         Sleep g_numeric_settings["SleepTime"]
-                        Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-                        while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
-                            Confirm
-                        }
+                    }
+                    Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
+                    while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
+                        Confirm
                     }
                 }
             } else {
                 AddLog(Name . "未找到，跳过购买。")
             }
         }
-        TextFreeR := "|<FREE>*184$36.UA7kC0081U607slXyT7ssXyT7ssUC10MlUC10M1XyT7s3XyT7slU60bstU60U"
-        if (ok := FindText(&RefreshX, &RefreshY, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextFreeR, , 1, , , , , TrueRatio, TrueRatio)) {
+        Text := "|<FREE>*184$36.UA7kC0081U607slXyT7ssXyT7ssUC10MlUC10M1XyT7s3XyT7slU60bstU60U"
+        if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             TextRefreshIcon := "|<刷新的图标>*154$19.zlzz07y00C7w77z37z1bzs3zzVzz8zzUTzlzzs7zwUDwMDwA7wC0sD80Dz0Tk"
-            if (okRefreshIcon := FindText(&ActualRefreshIconX, &ActualRefreshIconY, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextRefreshIcon, , 0, , , , , TrueRatio, TrueRatio)) {
+            if (okRefreshIcon := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextRefreshIcon, , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("点击免费刷新按钮。")
-                FindText().Click(ActualRefreshIconX, ActualRefreshIconY, "L")
+                FindText().Click(X - 50 * TrueRatio, Y, "L")
                 Sleep g_numeric_settings["SleepTime"]
                 ConfirmText := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-                if (okConfirmRefresh := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
+                if (okConfirmRefresh := FindText(&ConfirmX := "wait", &ConfirmY := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(ConfirmX, ConfirmY, "L")
                     Sleep g_numeric_settings["SleepTime"]
                     AddLog("刷新成功。")
@@ -1157,15 +1160,15 @@ NormalShop() {
             AddLog("等待返回百货商店页面。")
             Confirm
         }
+        Sleep g_numeric_settings["SleepTime"]
     }
     AddLog("===普通商店任务结束===")
-    BackToHall
 }
 ;tag 竞技场商店
 ArenaShop() {
     AddLog("===竞技场商店任务开始===")
     Text := "|<竞技场商店的图标>*127$42.zzs0DzzzzU03zzzz001zzzy1y1zzzw7z0zzzsTTUzzzswDUzzzkwDUlzylwDUwTsVsDVz7lXsD1zXXXsS3zl7XsE7zt7XU0TzsD301zzsD3U0Tzs73kkTzsb3ksDzlXXks7zntXkw7wrxVUw3szzVUy1kzzk1z01zzk1z03zzw1zU7zzy3zsTzU"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("进入竞技场商店")
         FindText().Click(X, Y, "L")
         Sleep g_numeric_settings["SleepTime"]
@@ -1300,10 +1303,9 @@ SimulationRoom() {
     AddLog("===模拟室任务开始===")
     AddLog("查找模拟室入口")
     Text := "|<方舟中的模拟室>*121$58.zzzzzzzzjz727lrszsTwM0D6DXU00lU0wM6A0023070UMk00040Q01XXzkUU0k80D00D603lW1y00w80D6A7w67UU0w8wTU0C00303lw00M00Q2D7s0n0k1kM0Da7A603lU0w00EM07603k01lk0wM07i2D703V20M00AEA4Csl000lXsszni003jzzzzzzzzs"
-    while (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("进入模拟室")
         FindText().Click(X, Y, "L")
-        Sleep g_numeric_settings["SleepTime"]
     }
     Text := "|<左上角的模拟室>*200$54.rn7vzvztzr03vbvk00nn7nUvlzs1zjVavnzw1U7VaPzzznbbnaPy03nXbvbvz7bXbbtbny77Vbblbnw031U7Vbnztz7wznbnztz7wTvUVzkTL03vVVw03rk7vb1ztzrnbnjAzszr7nXyRk00U"
     while !(ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -2717,6 +2719,6 @@ StoryMode(*) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    BattleSettlement
+    NormalShop
 }
 ;endregion 快捷键

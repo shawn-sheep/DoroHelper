@@ -1279,7 +1279,7 @@ ScrapShop() {
             loop ok.Length {
                 FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                 TextMAX := "|<MAX>*124$23.76CMCAAkQMN0kksEVVkV33V267649DA0GCM0UME10kU21V8Ym2F1YUW31Vgi78"
-                if (okMax := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text确认, , 0, , , , , TrueRatio, TrueRatio)) {
+                if (okMax := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextMAX, , 0, , , , , TrueRatio, TrueRatio)) {
                     AddLog("点击max")
                     FindText().Click(&ConfirmX, &ConfirmY, "L")
                     Sleep g_numeric_settings["SleepTime"]

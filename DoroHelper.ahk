@@ -29,10 +29,7 @@ if A_Username != 12042 {
 右键电脑桌面空白处-显示设置-将缩放设置为100%。不是nikke的缩放，是电脑显示器的缩放
 然后狂按ctrl+3按到画面不动为止，此时nikke应该是居中的，图片缩放应该是1
 ===========================
-反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏。
-除录屏外需尽可能附带以下信息，信息越多，修复的可能性越高
-1、电脑的配置（包括显示器分辨率、缩放比例等）
-2、软件中对应操作的日志
+反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和日志。
 如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。
 ===========================
 )"
@@ -244,7 +241,7 @@ doroGui.Tips.SetTip(cbChampionArena, "在活动期间进行跟风竞猜")
 TextInterceptionTeamTitle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===异常拦截编队===")
 doroGui.Tips.SetTip(TextInterceptionTeamTitle, "设置在执行异常拦截任务时，针对不同BOSS使用的队伍")
 DropDownListBoss := doroGui.Add("DropDownList", "Choose" String(g_numeric_settings["InterceptionBoss"]), ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
-doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用您的编队1去挑战克拉肯")
+doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用您的编队1去挑战克拉肯`r`n会使用3号位的狙击或发射器角色打红圈")
 DropDownListBoss.OnEvent("Change", (CtrlObj, Info) => ChangeNum("InterceptionBoss", CtrlObj))
 cbInterceptionShot := AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+3 R1.2")
 doroGui.Tips.SetTip(cbInterceptionShot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
@@ -268,7 +265,7 @@ doroGui.Tips.SetTip(cbOutpostDefence, "自动领取前哨基地的离线挂机�
 cbExpedition := AddCheckboxSetting(doroGui, "Expedition", "领取并重新派遣委托", "R1.2 xs+15")
 doroGui.Tips.SetTip(cbExpedition, "自动领取已完成的派遣委托奖励，并根据当前可用妮姬重新派遣新的委托任务")
 cbLoveTalking := AddCheckboxSetting(doroGui, "LoveTalking", "咨询妮姬", "R1.2 xs Section")
-doroGui.Tips.SetTip(cbLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n您可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序")
+doroGui.Tips.SetTip(cbLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n您可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`r`n会循环直到次数耗尽")
 cbAppreciation := AddCheckboxSetting(doroGui, "Appreciation", "花絮鉴赏", "R1.2 xs+15")
 doroGui.Tips.SetTip(cbAppreciation, "自动观看并领取花絮鉴赏中当前可领取的奖励")
 cbFriendPoint := AddCheckboxSetting(doroGui, "FriendPoint", "好友点数收取", "R1.2 xs")
@@ -287,8 +284,8 @@ TextLimitedAwardTitle := doroGui.Add("Text", "R1.2 Section +0x0100", "===限时�
 doroGui.Tips.SetTip(TextLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动")
 cbFreeRecruit := AddCheckboxSetting(doroGui, "FreeRecruit", "活动期间每日免费招募", "R1.2")
 doroGui.Tips.SetTip(cbFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
-cbCooperate := AddCheckboxSetting(doroGui, "Cooperate", "协同作战摆烂", "R1.2")
-doroGui.Tips.SetTip(cbCooperate, "自动参与每日三次的协同作战，战斗期间什么都不会干")
+cbCooperate := AddCheckboxSetting(doroGui, "Cooperate", "协同作战", "R1.2")
+doroGui.Tips.SetTip(cbCooperate, "自动参与每日三次的协同作战，战斗期间摆烂什么都不会干")
 cbSoloRaid := AddCheckboxSetting(doroGui, "SoloRaid", "单人突击日常", "R1.2")
 doroGui.Tips.SetTip(cbSoloRaid, "自动参与单人突击，自动对最新的关卡进行战斗或快速战斗")
 cbRoadToVillain := AddCheckboxSetting(doroGui, "RoadToVillain", "德雷克·反派之路", "R1.2")
@@ -435,7 +432,7 @@ Initialization() {
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
     WinRatio := NikkeW / 2347 ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke宽度2347像素的情况下截图的），主要影响识图
     TrueRatio := Round(currentScale * WinRatio, 1)
-    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n图片缩放系数是" TrueRatio "`n缩放容忍度是" PicTolerance)
+    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`ndpi缩放比例是" currentScale "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if A_ScreenWidth < 2347 {
         MsgBox ("屏幕尺寸过小，请更换显示器！")

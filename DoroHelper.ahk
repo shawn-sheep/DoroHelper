@@ -2723,8 +2723,41 @@ TestMode(BtnTestMode, Info) {
 ;tag 初始化并调整窗口大小
 ^3:: {
     Initialization()
-    ;WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 1920, 1080, nikkeID ;窗口缩放居中
-    WinMove (A_ScreenWidth / 2) - (NikkeWP / 2), (A_ScreenHeight / 2) - (NikkeHP / 2), 2347, 1350, nikkeID ;我电脑的尺寸
+    WinGetPos(&X, &Y, &Width, &Height, "ahk_exe nikke.exe") ; 获取当前窗口的整体位置和大小
+    WinGetClientPos(&ClientX, &ClientY, &ClientWidth, &ClientHeight, "ahk_exe nikke.exe") ; 获取当前窗口工作区的位置和大小
+    ; 计算非工作区（标题栏和边框）的高度和宽度
+    NonClientHeight := Height - ClientHeight
+    NonClientWidth := Width - ClientWidth
+    NewClientX := (A_ScreenWidth / 2) - (NikkeWP / 2)
+    NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
+    NewClientWidth := 2347
+    NewClientHeight := 1350
+    ; 计算新的窗口整体大小，以适应新的工作区大小
+    NewWindowX := NewClientX
+    NewWindowY := NewClientY
+    NewWindowWidth := NewClientWidth + NonClientWidth
+    NewWindowHeight := NewClientHeight + NonClientHeight
+    ; 使用 WinMove 移动和调整窗口大小
+    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, "ahk_exe nikke.exe"
+}
+^4:: {
+    Initialization()
+    WinGetPos(&X, &Y, &Width, &Height, "ahk_exe nikke.exe") ; 获取当前窗口的整体位置和大小
+    WinGetClientPos(&ClientX, &ClientY, &ClientWidth, &ClientHeight, "ahk_exe nikke.exe") ; 获取当前窗口工作区的位置和大小
+    ; 计算非工作区（标题栏和边框）的高度和宽度
+    NonClientHeight := Height - ClientHeight
+    NonClientWidth := Width - ClientWidth
+    NewClientX := (A_ScreenWidth / 2) - (NikkeWP / 2)
+    NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
+    NewClientWidth := 1920
+    NewClientHeight := 1080
+    ; 计算新的窗口整体大小，以适应新的工作区大小
+    NewWindowX := NewClientX
+    NewWindowY := NewClientY
+    NewWindowWidth := NewClientWidth + NonClientWidth
+    NewWindowHeight := NewClientHeight + NonClientHeight
+    ; 使用 WinMove 移动和调整窗口大小
+    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, "ahk_exe nikke.exe"
 }
 ;tag 调试指定函数
 ^0:: {

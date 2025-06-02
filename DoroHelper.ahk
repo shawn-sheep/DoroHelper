@@ -2105,11 +2105,11 @@ LoveTalking() {
             }
             else {
                 AddLog("该妮姬已咨询")
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text10, 0, 0, , , , , TrueRatio, TrueRatio)) {
-                    AddLog("咨询次数已耗尽，跳过任务")
-                    break
-                }
             }
+        }
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text10, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("咨询次数已耗尽，跳过任务")
+            break
         }
         Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {

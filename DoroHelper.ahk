@@ -2053,7 +2053,7 @@ LoveTalking() {
     Text快速咨询 := "|<快速咨询>*195$91.szbzzzDzzXzzTXzwTnzXz3zVlzz7lzyDtzsk03kM07lszz701w801yM03sM060U0z7wTzsMlyQ01000Tz00TwMNzwDlU7bDzU0DwQAzwDwk3nbzlX7sQ3y206MDtnkNlXUQ0z1k387sMsA01ksA7sslbX00D600tsD1wQMnlU07ns7zyTsyC0Nsy1zts1zk01z708wTUzws0Ds00zXX4SDUTyEF3w00TlE2D7l7z0NlyDyDs017XlVz2wzz7z7w0TXlksT0TzzXzXy7TlsUy30007k01y7y1wEzXbU03s00zbz0yBztzz07wTwTzzkw"
     Text20 := "|<20/>*240$24.3000DkM3Tly3Tvz71vz71vb73zbD3rbC7rbCTXbCzvzQzvzQTtyQ00Qs000s000k000kU"
     Text10 := "|<0/10>*178$38.Dw1g3z7zUvVzvkwCQwDs773i1y1lkvUTUQQCs7s773i1y1nUvUTUQsCs7wDC3j3rzb0tzszlkCDwU"
-    loop 10 {
+    while true {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             Text := "|<MAX>*180$45.00000S1z070M1sSw1s7073bkT0w0QwzjsDU3z7zz1y0DktwsTk0w7773b07Us0sss1y70773UTss0tkQ3bb07C1ksQs0vUCD1r07Q0vkDU"
@@ -2061,7 +2061,7 @@ LoveTalking() {
                 AddLog("好感度也已满，跳过")
                 Text := "|<已关注的图标>FC4E3C-323232$28.zzbzzzwTzzzkzzzy3zzzs7zzz0Tzzw0zzzU1zzk00zU0004000080001k000DU001z000Dy001zw00Dzk00zz003zw00Dzk00zy003zs00DzUC0Ty3y1zszy7zzzyzU"
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, , , , , , TrueRatio, TrueRatio)) {
-                    AddLog("尝试取消关注该妮姬")
+                    AddLog("尝试取消收藏该妮姬")
                     FindText().Click(X, Y, "L")
                 }
             }

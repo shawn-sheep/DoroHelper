@@ -172,10 +172,13 @@ BtnSaveSettings.OnEvent("Click", SaveSettings)
 TextMiaoMiaoTitle := doroGui.Add("Text", " R1 +0x0100", "===妙妙工具===")
 doroGui.Tips.SetTip(TextMiaoMiaoTitle, "这里提供一些与日常任务流程无关的额外小功能")
 TextStoryModeLabel := doroGui.Add("Text", "R1.2 Section +0x0100", "剧情模式")
-doroGui.Tips.SetTip(TextStoryModeLabel, "对话时如果只有一个选项，在短暂延迟后点击该选项`r`n如果有两个选项，则等待玩家选择`r`n自动进行下一段剧情，自动启动auto`r`n自动将观看过的剧情收藏")
-BtnStoryMode := doroGui.Add("Button", " xp+50 yp-5", "←启动")
-doroGui.Tips.SetTip(BtnStoryMode, "点击启动剧情模式`r`nDoroHelper 将尝试自动点击对话选项并跳过剧情动画。请在需要时手动停止")
-BtnStoryMode.OnEvent("Click", StoryMode)
+doroGui.Tips.SetTip(TextStoryModeLabel, "尝试自动点击对话选项`r`n对话时如果只有一个选项，在短暂延迟后点击该选项`r`n如果有两个选项，则等待玩家选择`r`n自动进行下一段剧情，自动启动auto`r`n自动将观看过的剧情收藏")
+BtnStoryMode := doroGui.Add("Button", " x+5 yp-5", "←启动").OnEvent("Click", StoryMode)
+TextTestModeLabel := doroGui.Add("Text", "xs R1.2 Section +0x0100", "调试模式")
+doroGui.Tips.SetTip(TextTestModeLabel, "直接执行对应任务")
+TestModeEditControl := doroGui.Add("Edit", "x+10 yp-5 w100  h20")
+doroGui.Tips.SetTip(TestModeEditControl, "输入要执行的任务的函数名")
+BtnTestMode := doroGui.Add("Button", "x+5", "←启动").OnEvent("Click", TestMode)
 Tab.UseTab("任务")
 TextTaskInfo := doroGui.Add("Text", " R1.2 +0x0100", "只有下方的内容被勾选后才会执行，右侧是详细设置")
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
@@ -2697,6 +2700,18 @@ StoryMode(*) {
             Pause
         }
     }
+}
+TestMode(BtnTestMode, Info) {
+    ; 获取 TestModeEditControl 文本框中的内容
+    funcName := TestModeEditControl.Value
+    ; 检查函数名是否为空
+    if (funcName = "") {
+        AddLog("请输入要执行的函数名！")
+        return
+    }
+    ; 尝试动态调用函数
+    Initialization()
+    %funcName%() ; 无参数调用
 }
 ;endregion 妙妙工具
 ;region 快捷键

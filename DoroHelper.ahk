@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.7"
+currentVersion := "v1.0.0-beta.8"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -2322,7 +2322,7 @@ OnePass() {
                 Sleep g_numeric_settings["SleepTime"]
             }
         }
-        Text := "|<灰色的全部>*148$40.zlzzXsDy3zwD0Dk7y000y0Ds003UkTk1487kT6AF0z0S8l4001U00s00C001s03s017z7zzz6DsDz0AMs03s0FXU0DU16DsTy740zlzsQE6003U14s00604TU00s0Ny"
+        Text := "|<灰色的全部>*170$39.zbzzDzzwTzsy1z1zs1k7n7z06NswTwtrCDkzbCt3z1wlmMTsDaCHk07k0GTwTy06NzXzzzrDwTzzyts0Ts0rj03z46NzXztsmDwTzD6HzXzssns00D06Tzzzttrw"
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             UserClick(2168, 2020, scrRatio) ;点领取
             Sleep 500

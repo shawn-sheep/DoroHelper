@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.6"
+currentVersion := "v1.0.0-beta.7"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -17,16 +17,13 @@ if A_Username != 12042 {
 ===========================
 暂不支持以下分辨率的适配和反馈：
 1、任何1080p分辨率
-2、非100%缩放的2K分辨率
-3、非100%缩放的4K分辨率
-4、多显示器、异形屏
+2、多显示器、异形屏
 不支持国服、多开
 ===========================
 模拟室需要能快速战斗、拦截战需要能打异常拦截
 ===========================
 如果是多显示器，请支持的显示器作为主显示器。
 运行前将游戏尺寸比例设置成16：9，不要开启全屏，确认关闭HDR，
-右键电脑桌面空白处-显示设置-将缩放设置为100%。不是nikke的缩放，是电脑显示器的缩放
 然后狂按ctrl+3按到画面不动为止，此时nikke应该是居中的，图片缩放应该是1
 ===========================
 反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和日志。
@@ -429,7 +426,8 @@ Initialization() {
     nikkeID := winID
     WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
-    currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
+    ; currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
+    currentScale := 1
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
     WinRatio := Round(NikkeW / 2331, 3) ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke工作区宽度2331像素的情况下截图的），主要影响识图
     TrueRatio := Round(currentScale * WinRatio, 3)
@@ -442,9 +440,9 @@ Initialization() {
     if A_ScreenWidth < 2331 {
         MsgBox ("屏幕尺寸过小，请更换显示器！")
     }
-    if A_ScreenDPI != 96 {
-        MsgBox ("缩放比例不为100%，请更改！")
-    }
+    ; if A_ScreenDPI != 96 {
+    ;     MsgBox ("缩放比例不为100%，请更改！")
+    ; }
     if Round(WinRatio) != 1 {
         MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
     }

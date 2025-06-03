@@ -386,7 +386,7 @@ Initialization() {
         ExitApp
     }
     LogBox.Value := ""
-    loadSettings()
+    WriteSettings()
     global BattleActive := 1
     global stdScreenW := 3840
     global stdScreenH := 2160

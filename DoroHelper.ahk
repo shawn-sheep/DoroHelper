@@ -1313,36 +1313,27 @@ SimulationRoom() {
     EnterToArk
     AddLog("===模拟室任务开始===")
     AddLog("查找模拟室入口")
-    Text := "|<方舟中的模拟室>*121$58.zzzzzzzzjz727lrszsTwM0D6DXU00lU0wM6A0023070UMk00040Q01XXzkUU0k80D00D603lW1y00w80D6A7w67UU0w8wTU0C00303lw00M00Q2D7s0n0k1kM0Da7A603lU0w00EM07603k01lk0wM07i2D703V20M00AEA4Csl000lXsszni003jzzzzzzzzs"
+    Text := "|<方舟中的模拟室>*125$59.ssEyCz7zXzlU0wMyC003X01skAM006327UUMk00820C10llzwM80A283k03sk0SAEDk07kU0wMkTkMT101sFsz00S00303ly00Q00C17Xw0tkA0Q607tVrUk0SA07U031U0wM0D007XU1skUDw7z703V24M00CA627QMU00QMyCDwvU00xzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzs00000000000000000000000000000U"
     while (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("进入模拟室")
-        FindText().Click(X, Y, "L")
-        Text := "|<左上角的模拟室>*200$54.rn7vzvztzr03vbvk00nn7nUvlzs1zjVavnzw1U7VaPzzznbbnaPy03nXbvbvz7bXbbtbny77Vbblbnw031U7Vbnztz7wznbnztz7wTvUVzkTL03vVVw03rk7vb1ztzrnbnjAzszr7nXyRk00U"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            break
-        }
+        FindText().Click(X, Y - 50 * TrueRatio, "L")
     }
     AddLog("成功进入模拟室")
-    Text := "|<模拟结>*95$58.A6A3000E30kzsAM61UQ37zklcMC1kADQ37lUlzzwNkzP67LzzrzXxiMtVkATy36PXy70tzsANiDnzbrzUlUkiDzTM63q30s01zzszMA7s0DHz3lZszjyw3U37rXszunzwATS03VfDzklnw0i6A7Q3CQnysMlswQnnjvzXD1nk6AkDyAE040000kO"
-    if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("退出进行中的模拟")
-        FindText().Click(X, Y, "L")
-        Sleep g_numeric_settings["SleepTime"]
-        Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while true {
+        Text := "|<开始模拟>*174$88.zzzz7wzyTbDtzzy001wTlzts0DXbwk007lyDzb00SSPnU00T7szyQ03ssDDsyDs77DUSQy1YMzXtz0AQQ1U1s6NXyDbw0Xss403UNWDsyTsU03slyDXa8zXszW007X00yCQX000CNUwQ403styQ000tbzzk1yDVbtk0036Tzy000s6TbwTby1U0sK07UtwTlyTwC031z7yXYEz7tzssyA600SC03szbzVXsuQ01ssM7XyTw2DXty0zX34QTtzV8yDbkVyAQM1zbwDU0yQ71VnXUDyTly03tUy67ySPztzztyTbTywzzzU"
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击开始模拟")
             FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
+            break
         }
-    }
-    Text := "|<开始模拟>*174$88.zzzz7wzyTbDtzzy001wTlzts0DXbwk007lyDzb00SSPnU00T7szyQ03ssDDsyDs77DUSQy1YMzXtz0AQQ1U1s6NXyDbw0Xss403UNWDsyTsU03slyDXa8zXszW007X00yCQX000CNUwQ403styQ000tbzzk1yDVbtk0036Tzy000s6TbwTby1U0sK07UtwTlyTwC031z7yXYEz7tzssyA600SC03szbzVXsuQ01ssM7XyTw2DXty0zX34QTtzV8yDbkVyAQM1zbwDU0yQ71VnXUDyTly03tUy67ySPztzztyTbTywzzzU"
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击开始模拟")
-        FindText().Click(X, Y, "L")
-        Sleep g_numeric_settings["SleepTime"]
+        Text := "|<模拟室重置的确认>*200$37.0tzxzbUM3yTnss1zbtwsszzwyQ8TzyTC03zzDXU1kz7UNAsTXkA0TDlta0DbsQn9bnwCNU3tw7gU1wCNkH4y6As1aT0DAlnDW7Www7rbt"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+        }
     }
     ;打过了就直接退
     Text := "|<已通关>*197$62.00000001047zz0kzy0s7XzzsSDzUD1kTzy3kzk1kw007UQDs1zzk00s3DzUzzyQ0C03zwDzzb03U0zz03k1zzsTDzk0Q0Tzy7nzw0DU7zzVwzz7zzxs0s7DzlzzzQ001nzwTzzb000Qzz07w1k0C7ATk1zUS03Vz7w1xw7U0szli0yDkzzyTzztz1zDzz7DzyT07kzzUUTz7U0u"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("今日模拟室已通关")
         GoBack
         AddLog("===模拟室任务结束===")

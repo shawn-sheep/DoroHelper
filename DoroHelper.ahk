@@ -1121,15 +1121,15 @@ NormalShop() {
                     ConfirmText := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
                     TextCreditIcon := "|<信用点的图标>*169$29.000k0001s000Tk001vk007Xk00TDk03znk0DzDU0zyTU7zzz0Tzzz1zzzz7zzzwjzzxnDzzy6Dzzs0TzvU8zzy09zzk0DTr00DzQ00TxU00Te000RU000Q0000E004"
                     if name = "芯尘盒" {
-                        if !(FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextCreditIcon, , 0, , , , , TrueRatio, TrueRatio)) {
+                        if !(ok0 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextCreditIcon, , 0, , , , , TrueRatio, TrueRatio)) {
                             AddLog("未检测到信用点支付选项。")
                             Confirm
                             continue
                         }
                     }
-                    if (ok1 := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
+                    if (ok1 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
                         AddLog("购买" . Name)
-                        FindText().Click(ConfirmX, ConfirmY, "L")
+                        FindText().Click(X, Y, "L")
                         Sleep g_numeric_settings["SleepTime"]
                     }
                     Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
@@ -1149,8 +1149,8 @@ NormalShop() {
                 FindText().Click(X - 50 * TrueRatio, Y, "L")
                 Sleep g_numeric_settings["SleepTime"]
                 ConfirmText := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-                if (okConfirmRefresh := FindText(&ConfirmX := "wait", &ConfirmY := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(ConfirmX, ConfirmY, "L")
+                if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, ConfirmText, , 0, , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
                     Sleep g_numeric_settings["SleepTime"]
                     AddLog("刷新成功。")
                 }
@@ -1221,9 +1221,9 @@ ArenaShop() {
             loop ok.Length {
                 FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                 Text确认 := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-                if (ok1 := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text确认, , 0, , , , , TrueRatio, TrueRatio)) {
+                if (ok1 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text确认, , 0, , , , , TrueRatio, TrueRatio)) {
                     AddLog("购买" . Name)
-                    FindText().Click(ConfirmX, ConfirmY, "L")
+                    FindText().Click(X, Y, "L")
                     Sleep g_numeric_settings["SleepTime"]
                     Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
                     while !(ok2 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -1276,15 +1276,15 @@ ScrapShop() {
             loop ok.Length {
                 FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                 TextMAX := "|<MAX>*124$23.76CMCAAkQMN0kksEVVkV33V267649DA0GCM0UME10kU21V8Ym2F1YUW31Vgi78"
-                if (okMax := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextMAX, , 0, , , , , TrueRatio, TrueRatio)) {
+                if (okMax := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextMAX, , 0, , , , , TrueRatio, TrueRatio)) {
                     AddLog("点击max")
-                    FindText().Click(&ConfirmX, &ConfirmY, "L")
+                    FindText().Click(X, Y, "L")
                     Sleep g_numeric_settings["SleepTime"]
                 }
                 Text确认 := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-                if (ok1 := FindText(&ConfirmX := "wait", &ConfirmY := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text确认, 0, 0, , , , , TrueRatio, TrueRatio)) {
+                if (ok1 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text确认, 0, 0, , , , , TrueRatio, TrueRatio)) {
                     AddLog("购买" . Name)
-                    FindText().Click(ConfirmX, ConfirmY, "L")
+                    FindText().Click(X, Y, "L")
                     Sleep g_numeric_settings["SleepTime"]
                     Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
                     while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {

@@ -1041,6 +1041,17 @@ CashShop() {
         Text一级红点 := "|<带红点的礼物>*100$62.zzzzzzzzk3zzzzzzzzk0Tzzzzzzzs03zzzzzzzy00Tzzzzzzz007zzzzzzzk00zzzzzzzs00Dzzzzzzy003zzzzzzzU00znzyDzzs00DkDy0zzz003s1z07zzk01w0Dk1zzy00T7VsQDzzU0DlwADXzzw07wTU7kzzzk7z0000Tzzzzzs0007zzzzzz0007zzzzzzzzzzzzzzzzzzzzzzzzzz007U07zzzzk01s00zzzzw00S00Dzzzz007U03zzzzk01s00zzzzw00S00Dzzzz007U03zzzzk01s00zzzzw00S00Dzzzz007U03zzzzk01s00zzzzy"
         Text二级红点 := "|<二级页面小红点>*200$69.000000000zk000000000TzU000000003kD000000000k0M00000000CTlbzzzzzzzXbzCzzzzzzzztzwrzzzzzzzzDzbzzzzzzzztzyTzzzzzzzzDznzzzzzzzztzyTzzzzzzzzDznzzzzzzzztzwzzzzzzzzz7zazzzzzzzzwTtrzzzzzzzzkwAzzzzzzzzz07bzzzzzzzzz3szzzzzzzzzzw7zzzzzzzzzzUzzzzzzzzzzw7zzzzzzzzzzUU"
         Text三级红点 := "|<三级页面带礼包的红点>*157$80.zzzzzzzzzzzwDzzzzzzzzzzzs0zzzzzzzzzzzwC7zzzzzzzzzzyDszzzzzzzzzzz7z7zzzzzzzzzznztzzzzzzzzzzwzyDzzzzzzzzzzDznzzzzzzzzzzXzwzzzzzzzzzzwzzDzzzzzzzzzzDzbzzzzzzzzzzlzlzzzzzzzzzzyDsTzzzzzzzzzzUwDzzzzzzzzzzw07zzzzzzzzzzzk7zzzzzzzzzzzzzzzzzzzzzzzzzzzxzzzzzzzzzzzzyD7zsTzzzzzzzzXlzy7zzzzzzzzswTz007zzzzzzk37zk01zzzzzzw0lzs00TzzzzzzgATwDz7zzzzzzz77y01lzzzzzzzllzk0QTzzzzzzsQTz077zzzzzzs37zlllzzzzzzw0FzwQQzzzzzzz04Tz06Dzzzzzzm/7zk03zzzzzzzXltwTkzzzzzzzswST7zzzzzzzzyD7blzszzzzzzzXk1w00Dzzzzzzsy0TU03zzzzzzyDsTy03zzzzzzy"
+        Text日服的框 := "|<框框>*178$22.7zzks07a006M00D000w001k007000Q001k007000Q001k007000Q001k007000q003M00Ms07VzzwU"
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text日服的框, , , , , , 3, TrueRatio, TrueRatio)) {
+            AddLog("发现日服特供的框")
+            FindText().Click(X, Y, "L")
+            Sleep g_numeric_settings["SleepTime"]
+            Text确认 := "|<确认的图标>*200$34.zzU7zzzk07zzw00zzzU7rzzw3zzzzUzzzbwDzzwDVzzzUy7zzw7kzzzUz7zzw7sTzzUzXzzw7yDzzUzszTw7z3szUzwD1w7zky3Uzs3w47zWDs0zy8zk7zsXzUzz27z7zwQTyzzVkzzzy7Vzzzky7zzy7w7zzkTsDzy3zkDzUTzU7k3zz000zzz00DzzzU7zy"
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text确认, , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击确认")
+                FindText().Click(X, Y, "L")
+            }
+        }
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text一级红点, , 0, , , , , TrueRatio, TrueRatio)) {
             Sleep g_numeric_settings["SleepTime"]
             AddLog("点击一级页面")

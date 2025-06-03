@@ -434,18 +434,18 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
-    if GameRatio != 1.778 {
-        MsgBox ("请将游戏画面比例调整至16:9")
-    }
-    if A_ScreenWidth < 2331 {
-        MsgBox ("屏幕尺寸过小，请更换显示器！")
-    }
+    ; if GameRatio != 1.778 {
+    ;     MsgBox ("请将游戏画面比例调整至16:9")
+    ; }
+    ; if A_ScreenWidth < 2331 {
+    ;     MsgBox ("屏幕尺寸过小，请更换显示器！")
+    ; }
     ; if A_ScreenDPI != 96 {
     ;     MsgBox ("缩放比例不为100%，请更改！")
     ; }
-    if Round(WinRatio) != 1 {
-        MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
-    }
+    ; if Round(WinRatio) != 1 {
+    ;     MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
+    ; }
 }
 ;endregion 初始化
 ;region UI辅助函数

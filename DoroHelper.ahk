@@ -247,7 +247,7 @@ doroGui.Tips.SetTip(TextSimRoomTitleBattle, "设置与模拟室挑战相关的�
 TextNormalSimRoomLabel := doroGui.Add("Text", "R1.2 xs Section +0x0100", "普通模拟室")
 doroGui.Tips.SetTip(TextNormalSimRoomLabel, "普通模拟室的日常扫荡。此功能需要您在游戏内已经解锁了快速模拟功能才能正常使用`r`n此选项的勾选在「任务」标签里")
 cbSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频", "R1.2")
-doroGui.Tips.SetTip(cbSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用您上次进行超频挑战时选择的增益标签组合")
+doroGui.Tips.SetTip(cbSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用您上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25")
 TextTowerTitleBattle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===无限之塔===")
 doroGui.Tips.SetTip(TextTowerTitleBattle, "设置与无限之塔挑战相关的选项")
 cbCompanyTower := AddCheckboxSetting(doroGui, "CompanyTower", "爬企业塔", "R1.2")
@@ -426,11 +426,11 @@ Initialization() {
     nikkeID := winID
     WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
-    ; currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
-    currentScale := 1
+    currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
     scrRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸的比例（4K），主要影响点击
     WinRatio := Round(NikkeW / 2331, 3) ;确定nikke尺寸之于额定nikke尺寸的比例（我是在nikke工作区宽度2331像素的情况下截图的），主要影响识图
-    TrueRatio := Round(currentScale * WinRatio, 3)
+    ; TrueRatio := Round(currentScale * WinRatio, 3)
+    TrueRatio := Round(1 * WinRatio, 3)
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")

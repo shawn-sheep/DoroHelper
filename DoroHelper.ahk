@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.8"
+currentVersion := "v1.0.0-beta.9"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -2508,19 +2508,20 @@ Cooperate() {
             }
         }
         else {
+            AddLog("协同作战次数已耗尽或未在开放时间")
+            AddLog("===协同作战任务结束===")
             BackToHall
             return
         }
         while true {
             ;防止有人取消，反复检测
             Text接受 := "|<接受>**50$48.7kT001zw4kNUTzk64rtzM0064w01M03yww01SSTAkDDDCSP4kDDACDCCkDDDSCADww01k0014s01k0014w01nzztQDnznzztsDXzv00Pk001z00Tks01X7sMwzD7VXsk4qDC1llk4o6A0s3U4r0Q1s3sQzkDTU0TMy03E1k1Es7XM7w3U"
-            if (ok := FindText(&X := "wait", &Y := 30, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text接受, , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text接受, , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep g_numeric_settings["SleepTime"]
             }
-            Sleep g_numeric_settings["SleepTime"]
             Text准备 := "|<准备>**50$54.y6AM067zUX4Q80A01kXAS80M00ElgSDlk00kks00H0TVUMk00G0D3UMkwDmA0709UyDnz0D0D0yDny07z3000z00032000M0D033800w1zs37syDo3zyCAsyDbU00QAMwDlU00E8M00FXkwMMs00lXkwMEsyDlU00Mkca81U00MlcyDtXkwMV800NXkwMX8009U00Mn800NU00MU"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text准备, , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text准备, , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep g_numeric_settings["SleepTime"]
                 break

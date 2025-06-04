@@ -1883,6 +1883,7 @@ Interception() {
         }
     }
     AddLog("已进入异常拦截界面")
+    Sleep g_numeric_settings["SleepTime"]
     Text := "|<0/3>*90$31.zzwTzw7yDUw0z70A0T7V2D7XnkDXlzs7lszkXsszkFwQTs8yCDzUT7Dzl737lsU3Xw0M3ly0S3lzkTzwzzy"
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("异常拦截次数已耗尽")

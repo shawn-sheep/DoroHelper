@@ -855,15 +855,11 @@ CheckAutoBattle() {
 }
 ;tag 战斗结算
 BattleSettlement(Screenshot := false) {
-    global NikkeX
-    global NikkeY
-    global NikkeW
-    global NikkeH
+    global Victory
     ;如果没战斗次数就跳过
     if (BattleActive = 0) {
         return
     }
-    Victory := 0
     check := 0
     AddLog("等待战斗结算")
     ;无限塔胜利或失败会出现该图标
@@ -873,56 +869,31 @@ BattleSettlement(Screenshot := false) {
     ;拦截扫荡会出现该图标
     Text点击 := "|<点击>*100$37.zlzzwTzszzyDzw0Dz7zy07U03z7zk01zXzzszk01zwTs00w00ATwQ006DyD0033y7zlzU03ssss03wQQTzzyCCAH4T776MX7U02ANXk00CAMs00U"
     while true {
-        if (A_Index = 15) {
+        ; 检测自动战斗和爆裂
+        if (A_Index = 20) {
             CheckAutoBattle
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
-            check := check + 1
-            ;AddLog("TAB已命中，共" check "次")
-        }
-        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
-            check := check + 1
-            ;AddLog("R已命中，共" check "次")
-        }
-        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
-            check := check + 1
-            ;AddLog("点击已命中，共" check "次")
-        }
-        else {
-            ;AddLog("均未命中，重新计数")
-            check := 0
-        }
-        ;需要连续三次命中代表战斗结束
-        if (check = 3) {
-            ;是否需要截图
-            if Screenshot {
-                TimeString := FormatTime(, "yyyyMMdd_HHmmss")
-                FindText().SavePic(A_ScriptDir "\截图\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
+        ; 检测完成战斗频率降低
+        if (A_Index / 2 = 0) {
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
+                check := check + 1
+                ;AddLog("TAB已命中，共" check "次")
             }
-            Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
-            Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
-            ;有编队代表输了，点Esc
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("战斗失败！尝试返回")
-                GoBack
-                Sleep g_numeric_settings["SleepTime"]
-                return False
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
+                check := check + 1
+                ;AddLog("R已命中，共" check "次")
             }
-            ;如果有下一关，就点下一关（爬塔的情况）
-            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("战斗成功！尝试进入下一关")
-                FindText().Click(X, Y, "L")
-                Victory := Victory + 1
-                if Victory > 1 {
-                    AddLog("共胜利" Victory "次")
-                }
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
+                check := check + 1
+                ;AddLog("点击已命中，共" check "次")
             }
-            ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
             else {
-                AddLog("战斗结束！")
-                GoBack
-                Sleep g_numeric_settings["SleepTime"]
-                return True
+                ;AddLog("均未命中，重新计数")
+                check := 0
+            }
+            ;需要连续三次命中代表战斗结束
+            if (check = 3) {
+                break
             }
         }
         Text上 := "|<红圈的上边缘>FEFE7B-323232$27.0Djk1zxzyzzjzzzxzzzzjzzw00z0000A"
@@ -945,6 +916,40 @@ BattleSettlement(Screenshot := false) {
             }
         }
     }
+    ;是否需要截图
+    if Screenshot {
+        TimeString := FormatTime(, "yyyyMMdd_HHmmss")
+        FindText().SavePic(A_ScriptDir "\截图\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
+    }
+    Text编队 := "|<编队>*103$46.tznzzznzXy7y0SDyC01s0szls07U7Xz7U0SASDsaTlslszW807WDXw1U0S8yDk601sXsz0szzWDVz3U0SAS7wQ00slsTUE03XX1w118CCQ3k44UsVkD7k03W60Tt00C8slw0Y0sz3302G3XsS4C98CD3s3lYUswTkzaG7Xnza"
+    Text下一关 := "|<下一关>*192$69.zzzzzzzzwzls001zzzzz3yD0007zzzzwTVs000zzzzzlwTzlzzzzzzk00TyDzzzzzw003zlzzzzzzU00TyDzzzzzzy7zzkDzzzzzzszzy0zk000zz7zzk1y0007zkzzyA3k000s000zlkTzzzz0007yDXzzzzzw3zzlyzzzzzzUTzyDzzzzzzs1zzlzzzzzzy23zyDzzzzzzUsDzlzzzzzzkDUTyDzzzzzk3y0zlzzzzzz1zwDyDzzzzzxzzxU"
+    ;有编队代表输了，点Esc
+    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text编队, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("战斗失败！尝试返回")
+        GoBack
+        Sleep g_numeric_settings["SleepTime"]
+        return False
+    }
+    ;如果有下一关，就点下一关（爬塔的情况）
+    else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text下一关, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("战斗成功！尝试进入下一关")
+        Victory := Victory + 1
+        if Victory > 1 {
+            AddLog("共胜利" Victory "次")
+        }
+        FindText().Click(X, Y, "L")
+        Sleep g_numeric_settings["SleepTime"]
+        BattleSettlement
+    }
+    ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
+    else {
+        AddLog("战斗结束！")
+        GoBack
+        Sleep g_numeric_settings["SleepTime"]
+        return True
+    }
+    ;递归结束时清零
+    Victory := 0
 }
 ;tag 返回大厅
 BackToHall() {

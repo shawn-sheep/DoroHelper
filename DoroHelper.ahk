@@ -1342,18 +1342,19 @@ SimulationRoom() {
         AddLog("今日模拟室已通关")
         GoBack
         AddLog("===模拟室任务结束===")
+        Sleep g_numeric_settings["SleepTime"]
         return
     }
     AddLog("选中5C")
     Text := "|<5>*163$22.7zzUTzz3zzwDzzkzzz3zzsDk00z003w00Dk00zz03zz0Dzz1zzy7zzwTzztz0zU01y007w00Dk00z003xw0Tzs1yTkDtzzzXzzw7zzUDzw0TzU0Ts2"
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
-        Sleep g_numeric_settings["SleepTime"] // 2
+        Sleep 500
     }
     Text := "|<C>*164$26.01zU03zz03zzw1zzzUzzzwTzzy7zUz3z03lzU08Tk007s003y000z000Dk003w000z000Dk003w000z000Dk001y000Tk007w000zk0MDy0T1zzzsDzzz1zzzUDzzk1zzs07zs007U2"
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
-        Sleep g_numeric_settings["SleepTime"] // 2
+        Sleep 500
     }
     Text := "|<快速模拟的图标>*200$42.zzk07zzzz000zzzw000Dzzk0007zzU0001zz00000zy00000Tw00000Ds00000Ds000007k0U1003k1k3U03U3s7k01U3yDs0103z7w0100zXy0000Tlz0000DsTk0007wDs0003y7w0001z3y0001z3w0003wDs0007wTk000TkzU000zVz0001z3y00U3y7w01U3w7s01U3s7k03k0k3U03k000007s000007w00000Dw00000Ty00000Tz00000zzU0003zzs0007zzw000Tzzz001zzzzs07zzU"
     while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {

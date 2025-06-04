@@ -104,7 +104,8 @@ global g_numeric_settings := Map(
     "Tolerance", 1                ;宽容度
 )
 ;tag 其他全局变量
-global toleranceDisplayEditControl ; 新增：用于存储识图宽容度显示控件的引用
+global toleranceDisplayEditControl
+global Victory := 0
 ;endregion 设置变量
 ;region 读取设置
 SetWorkingDir A_ScriptDir
@@ -874,7 +875,7 @@ BattleSettlement(Screenshot := false) {
             CheckAutoBattle
         }
         ; 检测完成战斗频率降低
-        if (A_Index / 2 = 0) {
+        if (Mod(A_Index, 2) = 0) {
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
                 check := check + 1
                 ;AddLog("TAB已命中，共" check "次")
@@ -937,7 +938,7 @@ BattleSettlement(Screenshot := false) {
         if Victory > 1 {
             AddLog("共胜利" Victory "次")
         }
-        FindText().Click(X, Y, "L")
+        FindText().Click(X, Y + 10 * TrueRatio, "L")
         Sleep g_numeric_settings["SleepTime"]
         BattleSettlement
     }

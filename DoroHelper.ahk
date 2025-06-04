@@ -9,6 +9,8 @@ try TraySetIcon "doro.ico"
 currentVersion := "v1.0.0-beta.9"
 usr := "1204244136"
 repo := "DoroHelper"
+global stdScreenW := 3840
+global stdScreenH := 2160
 ;endregion 设置常量
 ;region 运行前提示
 if A_Username != 12042 {
@@ -24,7 +26,7 @@ if A_Username != 12042 {
 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏
 此时nikke应该是居中的，图片缩放应该是1
 ===========================
-反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和日志。
+反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志。
 如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。
 ===========================
 )"
@@ -92,6 +94,7 @@ global g_settings := Map(
     "Activity", 0,             ;小活动
     ;其他
     "AutoCheckUpdate", 0,      ;自动检查更新
+    "AdjustSize", 0,           ;启用画面缩放
     "SelfClosing", 0,          ;完成后自动关闭程序
     "OpenBlablalink", 1,       ;完成后打开Blablalink
 )
@@ -102,7 +105,6 @@ global g_numeric_settings := Map(
     "Tolerance", 1                ;宽容度
 )
 ;tag 其他全局变量
-global toleranceDisplayEditControl
 global Victory := 0
 ;endregion 设置变量
 ;region 读取设置
@@ -148,6 +150,8 @@ Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
 Tab.UseTab("设置")
 cbAutoCheckUpdate := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1.2")
 doroGui.Tips.SetTip(cbAutoCheckUpdate, "勾选后，DoroHelper 启动时会自动连接到 Github 检查是否有新版本`r`n请确保您的网络可以正常访问 Github")
+cbAdjustSize := AddCheckboxSetting(doroGui, "AdjustSize", "启用窗口调整", "R1.2")
+doroGui.Tips.SetTip(cbAdjustSize, "勾选后，DoroHelper运行前会尝试将窗口调整至合适的尺寸，并在运行结束后还原")
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在您的默认浏览器中打开 Blablalink 网站")
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后自动关闭程序", "R1.2")
@@ -362,6 +366,9 @@ ClickOnDoro(*) {
             RoadToVillain()
         BackToHall
     }
+    if g_settings["AdjustSize"] {
+        AdjustSize(OriginalW, OriginalH)
+    }
     if g_settings["OpenBlablalink"]
         Run("https://www.blablalink.com/")
     CalculateAndShowSpan()
@@ -387,8 +394,6 @@ Initialization() {
     LogBox.Value := ""
     WriteSettings()
     global BattleActive := 1
-    global stdScreenW := 3840
-    global stdScreenH := 2160
     global nikkeID := ""
     global NikkeX := 0
     global NikkeY := 0
@@ -402,6 +407,8 @@ Initialization() {
     global currentScale := 1
     global WinRatio := 1
     global TrueRatio := 1
+    global OriginalW := 0
+    global OriginalH := 0
     global PicTolerance := g_numeric_settings["Tolerance"]
     ;设置窗口标题匹配模式为完全匹配
     SetTitleMatchMode 3
@@ -433,21 +440,62 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
+    if g_settings["AdjustSize"] {
+        OriginalW := NikkeW
+        OriginalH := NikkeH
+        ; 尝试归类为2160p (4K) 及其变种
+        if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
+            if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
+                AddLog("标准4K分辨率 (2160p)")
+            } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
+                AddLog("4K 加宽 (21:9 超宽屏)")
+            } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 2400) {
+                AddLog("4K 增高 (16:10 宽屏)")
+            } else {
+                AddLog("4K 及其它变种分辨率")
+            }
+            AdjustSize(2331, 1311)
+        }
+        ; 尝试归类为1440p (2K) 及其变种
+        else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
+            if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
+                AddLog("标准2K分辨率 (1440p)")
+            } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
+                AddLog("2K 加宽 (21:9 超宽屏)")
+            } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 1440) {
+                AddLog("2K 超宽 (32:9 超级带鱼屏)")
+            } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1600) {
+                AddLog("2K 增高 (16:10 宽屏)")
+            } else {
+                AddLog("2K 及其它变种分辨率")
+            }
+            AdjustSize(2331, 1311)
+        }
+        ; 尝试归类为1080p 及其变种
+        else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
+            AddLog("1080p及以下尺寸禁用窗口调整，请全屏运行游戏")
+            if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
+                AddLog("标准1080p分辨率")
+            } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
+                AddLog("1080p 加宽 (21:9 超宽屏)")
+            } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 1080) {
+                AddLog("1080p 超宽 (32:9 超级带鱼屏)")
+            } else if (A_ScreenWidth = 1920 and A_ScreenHeight = 1200) {
+                AddLog("1080p 增高 (16:10 宽屏)")
+            } else {
+                AddLog("1080p 及其它变种分辨率")
+            }
+        }
+        else {
+            AddLog("不足1080p分辨率")
+        }
+    }
     ; if GameRatio != 1.778 {
     ;     MsgBox ("请将游戏画面比例调整至16:9")
     ; }
-    ; if A_ScreenWidth < 2331 {
-    ;     MsgBox ("屏幕尺寸过小，请更换显示器！")
-    ; }
-    ; if A_ScreenDPI != 96 {
-    ;     MsgBox ("缩放比例不为100%，请更改！")
-    ; }
-    ; if Round(WinRatio) != 1 {
-    ;     MsgBox ("请按ctrl+3调整游戏尺寸直到没有此提示！")
-    ; }
 }
 ;endregion 初始化
-;region UI辅助函数
+;region 数据辅助函数
 ;tag 写入数据
 WriteSettings(*) {
     global g_settings, g_numeric_settings
@@ -538,7 +586,7 @@ ChangeNum(settingKey, GUICtrl, *) {
     global g_numeric_settings
     g_numeric_settings[settingKey] := GUICtrl.Value
 }
-;endregion UI辅助函数
+;endregion 数据辅助函数
 ;region 消息函数合集
 MsgSponsor(*) {
     Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
@@ -678,6 +726,27 @@ UserCheckColor(sX, sY, sC, k) {
             return 0
     }
     return 1
+}
+;tag 画面调整
+AdjustSize(TargetX, TargetY) {
+    WinGetPos(&X, &Y, &Width, &Height, nikkeID)
+    WinGetClientPos(&ClientX, &ClientY, &ClientWidth, &ClientHeight, nikkeID)
+    ; 计算非工作区（标题栏和边框）的高度和宽度
+    NonClientHeight := Height - ClientHeight
+    NonClientWidth := Width - ClientWidth
+    NewClientX := (A_ScreenWidth / 2) - (NikkeWP / 2)
+    NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
+    NewClientWidth := TargetX
+    NewClientHeight := TargetY
+    ; 计算新的窗口整体大小，以适应新的工作区大小
+    NewWindowX := NewClientX
+    NewWindowY := NewClientY
+    NewWindowWidth := NewClientWidth + NonClientWidth
+    NewWindowHeight := NewClientHeight + NonClientHeight
+    ; 使用 WinMove 移动和调整窗口大小
+    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, nikkeID
+    Sleep 500
+    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, nikkeID
 }
 ;endregion 坐标辅助函数
 ;region 日志辅助函数
@@ -2731,6 +2800,9 @@ TestMode(BtnTestMode, Info) {
 }
 ;tag 暂停程序
 ^2:: {
+    if g_settings["AdjustSize"] {
+        AdjustSize(OriginalW, OriginalH)
+    }
     Pause
 }
 ;tag 初始化并调整窗口大小

@@ -3031,7 +3031,7 @@ int __attribute__((__stdcall__)) PicFind(
                     . "`nnikkeID := WinGetIDLast(title)"
                     . "`nWinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID"
                     . "`nPicTolerance := 1"
-                    . "`nTrueRatio := A_ScreenDPI / 96 * NikkeW / 2347"
+                    . "`nTrueRatio :=  NikkeW / 2331"
                     . "`nt1:=A_TickCount, Text:=X:=Y:=`"`"" s
                     . "`nif (ok:=FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1*PicTolerance, 0.1*PicTolerance, Text,,,,,,, TrueRatio, TrueRatio)){"
                     . "`n     `; FindText()." . "Click(" . "X, Y, `"L`")"

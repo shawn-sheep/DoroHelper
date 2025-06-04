@@ -120,12 +120,11 @@ if g_settings["AutoCheckUpdate"] {
 }
 ;endregion 读取设置
 ;region 创建gui
-doroGui := Gui(, "Doro小帮手" currentVersion)
+doroGui := Gui("+Resize", "Doro小帮手" currentVersion)
 doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
 doroGui.Tips.SetBkColor(0xFFFFFF)
 doroGui.Tips.SetTxColor(0x000000)
 doroGui.Tips.SetMargins(3, 3, 3, 3)
-doroGui.Opt("+Resize")
 doroGui.MarginY := Round(doroGui.MarginY * 0.9)
 doroGui.SetFont("cred s11 Bold")
 TextKeyInfo := doroGui.Add("Text", "R1 +0x0100", "关闭：ctrl + 1 终止：+ 2 调整窗口：+ 3")
@@ -631,45 +630,50 @@ ClickOnHelp(*) {
 ;region 软件更新
 ;tag 检查更新
 CheckForUpdateHandler(isManualCheck) {
-    global currentVersion, usr, repo ;确保能访问全局变量
+    global currentVersion, usr, repo, latestObj ;确保能访问全局变量
     try {
         latestObj := Github.latest(usr, repo)
         if (currentVersion != latestObj.version) {
-            userResponse := MsgBox( ;发现新版本
-                "DoroHelper存在更新版本:`n"
-                "`nVersion: " latestObj.version
-                "`nNotes:`n"
-                . latestObj.change_notes
-                "`n`n是否下载?", , "36") ;0x24 = Yes/No + Question Icon
-            if (userResponse = "Yes") {
-                ;用户选择下载
-                downloadTempName := "DoroDownload.exe" ;临时文件名
-                finalName := "DoroHelper-" latestObj.version ".exe"
-                try {
-                    Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
-                    ;下载成功后重命名
-                    FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1) ;1 = overwrite
-                    MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
-                    ExitApp ;下载完成后退出当前脚本
-                } catch as downloadError {
-                    MsgBox("下载失败，请检查网络`n(" downloadError.Message ")", "下载错误", "IconX")
-                    ;删除临时文件
-                    if FileExist(A_ScriptDir "\" downloadTempName)
-                        FileDelete(A_ScriptDir "\" downloadTempName)
-                }
-            }
-            ;else 用户选择不下载，什么也不做
-        } else {
+            MyGui := Gui("+Resize", "更新提示")
+            MyGui.Add("Text", "w300 xm ym", "DoroHelper存在更新版本:")
+            MyGui.Add("Text", "xp yp+20 w300", "版本号: " . latestObj.version)
+            MyGui.Add("Text", "xp yp+20 w300", "更新内容:")
+            MyEdit := MyGui.Add("Edit", "w250 h200 ReadOnly VScroll Border", latestObj.change_notes)
+            MyGui.Add("Text", "xp yp+210 w300", "`n是否下载?")
+            userresponse := ""
+            MyGui.Add("Button", "xm w100", "是").OnEvent("Click", DownloadHandler)
+            MyGui.Add("Button", "x+10 w100", "否").OnEvent("Click", (*) => MyGui.Destroy())
+            MyGui.Show("w300 h350 Center ")
+        }
+        else {
             ;没有新版本
             if (isManualCheck) { ;只有手动检查时才提示
                 MsgBox("当前Doro已是最新版本", "检查更新")
             }
         }
-    } catch as githubError {
+    }
+    catch as githubError {
         ;只有手动检查时才提示连接错误，自动检查时静默失败
         if (isManualCheck) {
             MsgBox("检查更新失败，无法连接到Github或仓库信息错误`n(" githubError.Message ")", "检查更新错误", "IconX")
         }
+    }
+}
+;tag 专用下载处理函数
+DownloadHandler(*) {
+    try {
+        downloadTempName := "DoroDownload.exe"
+        finalName := "DoroHelper-" latestObj.version ".exe"
+        ; 执行下载（原下载代码）
+        Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
+        FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1)
+        MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
+        ExitApp
+    }
+    catch as downloadError {
+        MsgBox("下载失败，请检查网络`n(" downloadError.Message ")", "下载错误", "IconX")
+        if FileExist(A_ScriptDir "\" downloadTempName)
+            FileDelete(A_ScriptDir "\" downloadTempName)
     }
 }
 ;tag 点击检查更新

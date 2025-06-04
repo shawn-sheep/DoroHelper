@@ -769,7 +769,7 @@ Confirm() {
 ;tag 按Esc
 GoBack() {
     AddLog("返回")
-    UserClick(171, 2027, scrRatio)
+    Send "{Esc}"
     Sleep g_numeric_settings["SleepTime"]
 }
 ;tag 结算招募

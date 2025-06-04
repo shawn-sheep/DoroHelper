@@ -1401,6 +1401,7 @@ SimulationRoom() {
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("点击开始模拟")
             FindText().Click(X, Y, "L")
+            Sleep g_numeric_settings["SleepTime"]
             break
         }
         Text := "|<模拟室重置的确认>*200$37.0tzxzbUM3yTnss1zbtwsszzwyQ8TzyTC03zzDXU1kz7UNAsTXkA0TDlta0DbsQn9bnwCNU3tw7gU1wCNkH4y6As1aT0DAlnDW7Www7rbt"

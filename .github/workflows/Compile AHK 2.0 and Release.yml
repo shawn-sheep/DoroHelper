@@ -35,7 +35,7 @@ jobs:
                 $version = $match.Matches[0].Groups[1].Value
                 Write-Host "Version found in AHK script: ${version}"
               } else {
-                Write-Warning "Version pattern (currentVersion := \"...\") not found in ${scriptPath}. Using default '0.0.0'."
+                Write-Warning "Version pattern (currentVersion := \"...\") not found in ${scriptPath}.Using default '0.0.0'."
                 $version = "0.0.0"
               }
             }
@@ -94,7 +94,6 @@ jobs:
             const owner = context.repo.owner;
             const repo = context.repo.repo;
             const sha = context.sha;
-
             console.log(`Attempting to create tag ${tag} at commit ${sha}`);
             try {
               await github.rest.git.createRef({
@@ -119,69 +118,45 @@ jobs:
 
       - name: Determine if Pre-release
         id: prerelease_check
-        shell: bash
+        shell: pwsh
         run: |
-          VERSION_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
-          IS_PRERELEASE="false"
-          if [[ "$VERSION_TAG" == *beta* || "$VERSION_TAG" == *alpha* || "$VERSION_TAG" == *rc* ]]; then
-            IS_PRERELEASE="true"
-          fi
-          echo "IS_PRERELEASE=$IS_PRERELEASE" >> $GITHUB_OUTPUT
-          echo "Release version: ${VERSION_TAG}, Is Prerelease: ${IS_PRERELEASE}"
+          $VERSION_TAG = "${{ steps.get_version.outputs.VERSION_TAG }}"
+          $IS_PRERELEASE = "false"
+          # PowerShell 中的字符串匹配操作
+          if ($VERSION_TAG -like "*beta*" -or $VERSION_TAG -like "*alpha*" -or $VERSION_TAG -like "*rc*") {
+            $IS_PRERELEASE = "true"
+          }
+          echo "IS_PRERELEASE=$IS_PRERELEASE" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Release version: ${VERSION_TAG}, Is Prerelease: ${IS_PRERELEASE}"
 
-      - name: Generate Changelog
+      - name: Generate Changelog # 更改此步骤
         id: changelog
-        shell: bash
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: .github/cliff.toml # 假设你的 cliff.toml 文件在此路径
+          args: --latest --strip header # 生成最新版本的更新日志，并去除头部的标题
+        env:
+          OUTPUT: CHANGES.md # Git-cliff 将输出到此文件，但我们通过输出获取内容
+          GITHUB_REPO: ${{ github.repository }} # 提供仓库信息给 git-cliff
+
+      - name: Read Changelog Content # 读取 git-cliff 生成的内容
+        id: read_changelog_content
+        shell: pwsh # 确保使用 PowerShell
         run: |
-          CURRENT_TAG="${{ steps.get_version.outputs.VERSION_TAG }}"
-          echo "Current Tag for Changelog: ${CURRENT_TAG}"
+          # 在 PowerShell 中读取文件内容并赋值给变量
+          $CHANGELOG_BODY = Get-Content -Path CHANGES.md -Raw
 
-          # Ensure local git knows about all tags, especially the one just created
-          # git fetch --tags # Already done in previous step, but good to be aware
+          # 定义一个多行分隔符，确保它在 $CHANGELOG_BODY 内容中不出现
+          $DELIMITER = "EOF_CHANGELOG_BODY" 
 
-          ALL_SORTED_TAGS=$(git tag --sort=-v:refname)
-          echo "All sorted tags:"
-          echo "${ALL_SORTED_TAGS}"
+          # 将输出写入 GitHub Output 文件，使用多行分隔符
+          "CHANGELOG_BODY<<$DELIMITER" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          $CHANGELOG_BODY | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          "$DELIMITER" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
 
-          LAST_TAG=""
-          FOUND_CURRENT_TAG=false
-
-          # Loop to find the tag immediately preceding CURRENT_TAG in the sorted list
-          while IFS= read -r tag_item; do
-            if [ "$FOUND_CURRENT_TAG" = true ]; then
-              # The first tag encountered after CURRENT_TAG is the previous one in semantic versioning
-              LAST_TAG="$tag_item"
-              break
-            fi
-            if [ "$tag_item" = "$CURRENT_TAG" ]; then
-              FOUND_CURRENT_TAG=true
-            fi
-          done <<< "$ALL_SORTED_TAGS"
-
-          echo "Previous Tag for Changelog: ${LAST_TAG}"
-
-          CHANGELOG_BODY=""
-          if [ -z "${LAST_TAG}" ]; then
-            echo "No previous tag found. Generating changelog from the beginning up to ${CURRENT_TAG}."
-            # This will list all commits leading to the CURRENT_TAG if it's the first tag
-            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${CURRENT_TAG}")
-            if [ -z "$CHANGELOG_BODY" ]; then
-              CHANGELOG_BODY="* Initial release or no new commits to list for ${CURRENT_TAG}."
-            fi
-          else
-            echo "Generating changelog from ${LAST_TAG}..${CURRENT_TAG}"
-            CHANGELOG_BODY=$(git log --pretty=format:"* %s (%h)" "${LAST_TAG}..${CURRENT_TAG}")
-            if [ -z "$CHANGELOG_BODY" ]; then
-              CHANGELOG_BODY="* No changes detected between ${LAST_TAG} and ${CURRENT_TAG}."
-            fi
-          fi
-
-          echo "CHANGELOG_BODY<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$CHANGELOG_BODY" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-          echo "--- Generated Changelog ---"
-          echo "$CHANGELOG_BODY"
-          echo "-------------------------"
+          Write-Host "--- Generated Changelog ---"
+          Write-Host "$CHANGELOG_BODY"
+          Write-Host "-------------------------"
 
       - name: Compile AutoHotkey Script with Action
         id: compile_script
@@ -200,10 +175,8 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }}
           name: ${{ steps.get_version.outputs.VERSION_TAG }}
           body: |
-            ${{ steps.changelog.outputs.CHANGELOG_BODY }}
-
+            ${{ steps.read_changelog_content.outputs.CHANGELOG_BODY }}
             ---
-
             测试版兼容性较差，请谨慎下载
           draft: false
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }}

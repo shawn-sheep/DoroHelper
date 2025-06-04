@@ -1132,11 +1132,15 @@ NormalShop() {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                     Sleep g_numeric_settings["SleepTime"]
                     Text确认 := "|<确认的图标>*200$34.zzU7zzzk07zzw00zzzU7rzzw3zzzzUzzzbwDzzwDVzzzUy7zzw7kzzzUz7zzw7sTzzUzXzzw7yDzzUzszTw7z3szUzwD1w7zky3Uzs3w47zWDs0zy8zk7zsXzUzz27z7zwQTyzzVkzzzy7Vzzzky7zzy7w7zzkTsDzy3zkDzUTzU7k3zz000zzz00DzzzU7zy"
-                    TextCreditIcon := "|<信用点的图标>*169$29.000k0001s000Tk001vk007Xk00TDk03znk0DzDU0zyTU7zzz0Tzzz1zzzz7zzzwjzzxnDzzy6Dzzs0TzvU8zzy09zzk0DTr00DzQ00TxU00Te000RU000Q0000E004"
+                    Text信用点 := "|<信用点的图标>*172$29.000M0003s000Ds000ts007Vs00Tjk01zlk07zbk0zyTk3zzzUDzzzVzzzv7zzzyTzzzkjzzr6Dzzw4DzzU4jzy01zys0/zzU0Dzw00DQk00Dd000Dk000TU000S002"
                     if name = "芯尘盒" {
-                        if !(ok0 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextCreditIcon, , 0, , , , , TrueRatio, TrueRatio)) {
-                            AddLog("未检测到信用点支付选项。")
+                        if (ok0 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text信用点, , 0, , , , , TrueRatio, TrueRatio)) {
+                            AddLog("检测到信用点支付选项")
+                        }
+                        else {
+                            AddLog("未检测到信用点支付选项")
                             Confirm
+                            Sleep g_numeric_settings["SleepTime"]
                             continue
                         }
                     }
@@ -1259,7 +1263,7 @@ ScrapShop() {
     ; 定义所有可购买物品的信息 (使用 Map)
     PurchaseItems := Map(
         "珠宝", {
-            Text: "|<珠宝>*171$40.00s01k3yHU070Dvi0zzyzjs7zzxszyTzznbztwDzCTz7U0zznUTzzjzS0TzzVzzUtzz0D03bzsDzsC3y0zzUsTs3zy3tzk0zkzzzU1rXzvj0DSCDCszzy0Mtbzzs03UDzzc",
+            Text: "|<珠宝>*150$39.00k01k7wb00C0zis3zzrxz0zzzCDz7zztnzww07CTs7U0zzb0Tzzzcs1zzrzzw7zwCTzU1k1nzw3zsC3w0zzVkTk7zwDbz03r7xzw0Cwzyvk3rb7bQTzz0Mt3zzs070TzzU",
             Setting: g_settings["ScrapShopGem"],
             Tolerance: 0.1 * PicTolerance
         },

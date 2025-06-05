@@ -2476,7 +2476,7 @@ Activity() {
         Sleep g_numeric_settings["SleepTime"]
         UserClick(1662, 2013, scrRatio)
         Sleep g_numeric_settings["SleepTime"]
-        Text := "|<1-11>*200$47.Uzzzz1z01zzzw3w03zzzs7s7bzzzzDzDDzzzyTySTzzzwzwwzzzztzttzzzznznnw03zbzbbs07zDzDDk0DyTySTzzzwzwwzzzztzttzzzznznnzzzzbzbbzzzzDzDDzzzyTySTzzzwzwwzzzztzttzzzznzm"
+        Text := "|<1-11>*100$53.y3zzzw7z1k7zzzUDs20Dzzw0T040Tzzs0y001zzzU3s0q3zzzA7n1w7zzzsDy3sDzzzkTw7kzzzzVzsT1zzzy3zUy3s07w7z1w7k0TsDy3sTU0zkzwDUz01z1zkT1zzzy3zUy3zzzw7z1wDzzzsTy7kTzzzUzsDUzzzz1zkT1zzzy3zUy7zzzwDz3sDzzzkTw7s"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("刷11关")
             FindText().Click(X, Y, "L")

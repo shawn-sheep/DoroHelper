@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.10"
+currentVersion := "v1.0.0-beta.11"
 usr := "1204244136"
 repo := "DoroHelper"
 stdScreenW := 3840
@@ -92,6 +92,9 @@ global g_settings := Map(
     "Cooperate", 1,            ;协同作战
     "SoloRaid", 1,             ;个人突击
     "Activity", 0,             ;小活动
+    ;妙妙工具
+    "StoryModeAutoStar", 1,    ;剧情模式自动收藏
+    "StoryModeAutoChoose", 1,  ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,      ;自动检查更新
     "AdjustSize", 0,           ;启用画面缩放
@@ -171,11 +174,13 @@ BtnSaveSettings.OnEvent("Click", SaveSettings)
 TextMiaoMiaoTitle := doroGui.Add("Text", " R1 +0x0100", "===妙妙工具===")
 doroGui.Tips.SetTip(TextMiaoMiaoTitle, "这里提供一些与日常任务流程无关的额外小功能")
 TextStoryModeLabel := doroGui.Add("Text", "R1.2 Section +0x0100", "剧情模式")
-doroGui.Tips.SetTip(TextStoryModeLabel, "尝试自动点击对话选项`r`n对话时如果只有一个选项，在短暂延迟后点击该选项`r`n如果有两个选项，则等待玩家选择`r`n自动进行下一段剧情，自动启动auto`r`n自动将观看过的剧情收藏")
+doroGui.Tips.SetTip(TextStoryModeLabel, "尝试自动点击对话选项`r`n自动进行下一段剧情，自动启动auto")
+AddCheckboxSetting(doroGui, "StoryModeAutoStar", "自动收藏", "x+5  R1.2")
+AddCheckboxSetting(doroGui, "StoryModeAutoChoose", "自动抉择", "x+5 R1.2")
 BtnStoryMode := doroGui.Add("Button", " x+5 yp-5", "←启动").OnEvent("Click", StoryMode)
 TextTestModeLabel := doroGui.Add("Text", "xs R1.2 Section +0x0100", "调试模式")
 doroGui.Tips.SetTip(TextTestModeLabel, "直接执行对应任务")
-TestModeEditControl := doroGui.Add("Edit", "x+10 yp-5 w100  h20")
+TestModeEditControl := doroGui.Add("Edit", "x+10 yp-5 w145  h20")
 doroGui.Tips.SetTip(TestModeEditControl, "输入要执行的任务的函数名")
 BtnTestMode := doroGui.Add("Button", "x+5", "←启动").OnEvent("Click", TestMode)
 Tab.UseTab("任务")
@@ -2755,28 +2760,44 @@ RoadToVillain() {
 ;tag 剧情模式
 StoryMode(*) {
     Initialization
+    WriteSettings
     while True {
         Text := "|<SKIP的图标>*10$39.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzztzDzzzz7szzzzsD1zzzz0s7zzzs30Tzzz000zzzs003zzz000Dzzs001zzz000zzzs10Dzzz0s7zzzsD1zzzz3szzzztzDzzzzzzzzzzzzzzzw"
         while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            Text1 := "|<1的图标>*99$31.y000Ty0003y7zzkyDzzyCDzzzWDzzzt7zzzw7zzzz3zzzzVzzDzkzy3zsTy1zwDz0zy7zUTz3zwDzVzy7zkzz3zsTzVzwDzkzy7zsTz3zwDzVzy7zkzz3zsTzVzw7zzzwHzzzyMzzzyCDzzyDVzzwDs000Dy000zk"
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text1, , , , , , , TrueRatio, TrueRatio)) {
+            Text1 := "|<1>*200$10.zzzz3kD0zXyDszXyDszXyDszXyDzzzU"
+            Text2 := "|<2>*190$14.zzzzzU7s0wAD7XzszsDk7s3w7z7zlzw0D03k0zzzzzU"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text1, , 0, , , , , TrueRatio, TrueRatio)) {
+                if !g_settings["StoryModeAutoChoose"] {
+                    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text2, 0, 0, , , , , TrueRatio, TrueRatio)) {
+                        continue
+                    }
+                }
                 Sleep 800
                 Send "{1}"
+                Sleep 500
+            }
+            TextAUTO := "|<AUTO的图标>*220$26.zs1zzs07zw00zz3w7zvzkzzzwDtzzVwDzwS1zz30DzkwTzyD3zw0kzzUSDzwDVzzbwTzzz3zrzsDkzz00Dzs07zzU7zU"
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextAUTO, 0, 0, , , , , TrueRatio, TrueRatio)) {
+                Send "{LShift Down}"
+                Sleep 500
+                Send "{LShift Up}"
+                Click NikkeX + NikkeW, NikkeY + NikkeH, 0
             }
         }
-        Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , 8, TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep g_numeric_settings["SleepTime"]
+        if g_settings["StoryModeAutoStar"] {
+            Text := "|<灰色的星星>*51$28.zzbzzzwDzzzkzzzy1zzzs7zzz0Dzzw0zzzU1zy000700002000080001k000DU001z000Dz001zw00Dzk00zz003zw00Dzk00zz001zs1U7zUTUTy7zVztzzbs"
+            if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , , , , , 8, TrueRatio, TrueRatio)) {
+                Sleep g_numeric_settings["SleepTime"]
+                FindText().Click(X, Y, "L")
+                Sleep g_numeric_settings["SleepTime"]
+            }
         }
         Text := "|<播放>*192$53.sTzlzlz3zks01zVy7zVk03z3wDz3U0Dy7sTy7W4D00Uzk308y0100U400w02010000s0Q031000wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000D00kky400Q0001w8O0s3U07sEw3s700DkVs7wC4ATX3sDsQ00y67UTks01wAC0TVk03sMM0T3V37VkU08700C001UES00SA47VUw00ysATXjzzzzzzzy"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
-            Sleep 3000
-            Send "{LShift Down}"
             Sleep 500
-            Send "{LShift Up}"
-            Click 0, 0, 0
+            FindText().Click(X, Y, "L")
+            Sleep 2000
         }
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"

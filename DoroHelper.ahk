@@ -106,6 +106,9 @@ global g_numeric_settings := Map(
 )
 ;tag 其他全局变量
 global Victory := 0
+;region 识图素材
+Text百货 := "|<百货>*200$36.zzzyRz003wwV003ks3zbzUUTzbzoswk0Dww1k07wy3nz7zzznzbs03nz7s03k07tznk07tnnnzbtnrnzbtnzk07z6Dk07sD1nzDkztU"
+;endregion 识图素材
 ;endregion 设置变量
 ;region 读取设置
 SetWorkingDir A_ScriptDir

@@ -6,11 +6,11 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.9"
+currentVersion := "v1.0.0-beta.10"
 usr := "1204244136"
 repo := "DoroHelper"
-global stdScreenW := 3840
-global stdScreenH := 2160
+stdScreenW := 3840
+stdScreenH := 2160
 ;endregion 设置常量
 ;region 运行前提示
 if A_Username != 12042 {
@@ -22,7 +22,7 @@ if A_Username != 12042 {
 如果是多显示器，请支持的显示器作为主显示器
 运行前将游戏尺寸比例设置成16：9，确认关闭HDR
 ===========================
-1080p用户请全屏运行游戏
+1080p用户请全屏运行游戏，现版本仍大概率无法正常运行，请耐心等待优化
 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏
 此时nikke应该是居中的，图片缩放应该是1
 ===========================
@@ -34,7 +34,7 @@ if A_Username != 12042 {
 if A_Username != 12042 {
     msgbox "
 (
-鼠标悬浮在控件上会对应的提示，请勾选或点击前仔细阅读！
+鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！
 )"
 }
 ;endregion 运行前提示
@@ -437,7 +437,7 @@ Initialization() {
     ; TrueRatio := Round(currentScale * WinRatio, 3)
     TrueRatio := Round(1 * WinRatio, 3)
     GameRatio := Round(NikkeW / NikkeH, 3)
-    AddLog("`nnikke坐标是：" NikkeX "," NikkeY "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
+    AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if g_settings["AdjustSize"] {
         OriginalW := NikkeW
@@ -2790,7 +2790,7 @@ TestMode(BtnTestMode, Info) {
     funcName := TestModeEditControl.Value
     ; 检查函数名是否为空
     if (funcName = "") {
-        AddLog("请输入要执行的函数名！")
+        MsgBox("请输入要执行的函数名！")
         return
     }
     ; 尝试动态调用函数
@@ -2822,25 +2822,6 @@ TestMode(BtnTestMode, Info) {
     NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
     NewClientWidth := 2331
     NewClientHeight := 1311
-    ; 计算新的窗口整体大小，以适应新的工作区大小
-    NewWindowX := NewClientX
-    NewWindowY := NewClientY
-    NewWindowWidth := NewClientWidth + NonClientWidth
-    NewWindowHeight := NewClientHeight + NonClientHeight
-    ; 使用 WinMove 移动和调整窗口大小
-    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, "ahk_exe nikke.exe"
-}
-^4:: {
-    Initialization()
-    WinGetPos(&X, &Y, &Width, &Height, "ahk_exe nikke.exe") ; 获取当前窗口的整体位置和大小
-    WinGetClientPos(&ClientX, &ClientY, &ClientWidth, &ClientHeight, "ahk_exe nikke.exe") ; 获取当前窗口工作区的位置和大小
-    ; 计算非工作区（标题栏和边框）的高度和宽度
-    NonClientHeight := Height - ClientHeight
-    NonClientWidth := Width - ClientWidth
-    NewClientX := (A_ScreenWidth / 2) - (NikkeWP / 2)
-    NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
-    NewClientWidth := 1920
-    NewClientHeight := 1080
     ; 计算新的窗口整体大小，以适应新的工作区大小
     NewWindowX := NewClientX
     NewWindowY := NewClientY

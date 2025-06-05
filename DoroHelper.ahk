@@ -494,6 +494,106 @@ Initialization() {
     ; }
 }
 ;endregion 初始化
+;region 软件更新
+;tag 检查更新
+CheckForUpdateHandler(isManualCheck) {
+    global currentVersion, usr, repo, latestObj ;确保能访问全局变量
+    try {
+        latestObj := Github.latest(usr, repo)
+        if (currentVersion != latestObj.version) {
+            MyGui := Gui("+Resize", "更新提示")
+            MyGui.Add("Text", "w300 xm ym", "DoroHelper存在更新版本:")
+            MyGui.Add("Text", "xp yp+20 w300", "版本号: " . latestObj.version)
+            MyGui.Add("Text", "xp yp+20 w300", "更新内容:")
+            MyEdit := MyGui.Add("Edit", "w250 h200 ReadOnly VScroll Border", latestObj.change_notes)
+            MyGui.Add("Text", "xp yp+210 w300", "`n是否下载?")
+            userresponse := ""
+            MyGui.Add("Button", "xm w100", "是").OnEvent("Click", DownloadHandler)
+            MyGui.Add("Button", "x+10 w100", "否").OnEvent("Click", (*) => MyGui.Destroy())
+            MyGui.Show("w300 h350 Center ")
+        }
+        else {
+            ;没有新版本
+            if (isManualCheck) { ;只有手动检查时才提示
+                MsgBox("当前Doro已是最新版本", "检查更新")
+            }
+        }
+    }
+    catch as githubError {
+        ;只有手动检查时才提示连接错误，自动检查时静默失败
+        if (isManualCheck) {
+            MsgBox("检查更新失败，无法连接到Github或仓库信息错误`n(" githubError.Message ")", "检查更新错误", "IconX")
+        }
+    }
+}
+;tag 专用下载处理函数
+DownloadHandler(*) {
+    try {
+        downloadTempName := "DoroDownload.exe"
+        finalName := "DoroHelper-" latestObj.version ".exe"
+        ; 执行下载（原下载代码）
+        Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
+        FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1)
+        MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
+        ExitApp
+    }
+    catch as downloadError {
+        MsgBox("下载失败，请检查网络`n(" downloadError.Message ")", "下载错误", "IconX")
+        if FileExist(A_ScriptDir "\" downloadTempName)
+            FileDelete(A_ScriptDir "\" downloadTempName)
+    }
+}
+;tag 点击检查更新
+ClickOnCheckForUpdate(*) {
+    ; if InStr(currentVersion, "beta") {
+    ;     MsgBox ("测试版本禁用更新！")
+    ;     MsgBox ("请加群584275905")
+    ;     Pause
+    ; }
+    CheckForUpdateHandler(true) ;调用核心函数，标记为手动检查
+}
+;endregion 软件更新
+;region 消息辅助函数
+MsgSponsor(*) {
+    Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
+    ; myGui := Gui()
+    ; myGui.Title := "Make Doro Great Again"
+    ; myGui.Add("Picture", "w200 h200", "./img/alipay.png")
+    ; myGui.Add("Picture", "x+15 w200 h200", "./img/weixin.png")
+    ; MyGui.Add("Text", "xs Section w400 h50 Center Wrap", "知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    ; myGui.Add("Button", "xs+180 y+m w50 h20  ", "确定").OnEvent("Click", (*) => myGui.Destroy())
+    ; myGui.Show()
+}
+ClickOnHelp(*) {
+    msgbox "
+    (
+    #############################################
+    使用说明
+    对大多数老玩家来说Doro设置保持默认就好。
+    万一Doro失控，请按Ctrl + 1组合键结束进程。
+    万一Doro失控，请按Ctrl + 1组合键结束进程。
+    万一Doro失控，请按Ctrl + 1组合键结束进程。
+    ############################################# 
+    要求：
+    - 16:9的显示器比例
+    - 设定-画质-开启光晕效果
+    - 设定-画质-开启颜色分级
+    - 游戏语言设置为简体中文
+    - 以**管理员身份**运行DoroHelper
+    - 不要开启windows HDR显示
+    ############################################# 
+    步骤：
+    -打开NIKKE启动器。点击启动。等右下角腾讯ACE反作弊系统扫完，NIKKE主程序中央SHIFT UP logo出现之后，再切出来点击“DORO!”按钮。如果你看到鼠标开始在左下角连点，那就代表启动成功了。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待Doro完成工作了。
+    -也可以在游戏处在大厅界面时（有看板娘的页面）切出来点击“DORO!”按钮启动程序。
+    -游戏需要更新的时候请更新完再使用Doro。
+    ############################################# 
+    其他:
+    -检查是否发布了新版本。
+    -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
+    
+    )"
+}
+;endregion 消息辅助函数
 ;region 数据辅助函数
 ;tag 写入数据
 WriteSettings(*) {
@@ -586,106 +686,6 @@ ChangeNum(settingKey, GUICtrl, *) {
     g_numeric_settings[settingKey] := GUICtrl.Value
 }
 ;endregion 数据辅助函数
-;region 消息函数合集
-MsgSponsor(*) {
-    Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
-    ; myGui := Gui()
-    ; myGui.Title := "Make Doro Great Again"
-    ; myGui.Add("Picture", "w200 h200", "./img/alipay.png")
-    ; myGui.Add("Picture", "x+15 w200 h200", "./img/weixin.png")
-    ; MyGui.Add("Text", "xs Section w400 h50 Center Wrap", "知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    ; myGui.Add("Button", "xs+180 y+m w50 h20  ", "确定").OnEvent("Click", (*) => myGui.Destroy())
-    ; myGui.Show()
-}
-ClickOnHelp(*) {
-    msgbox "
-    (
-    #############################################
-    使用说明
-    对大多数老玩家来说Doro设置保持默认就好。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    ############################################# 
-    要求：
-    - 16:9的显示器比例
-    - 设定-画质-开启光晕效果
-    - 设定-画质-开启颜色分级
-    - 游戏语言设置为简体中文
-    - 以**管理员身份**运行DoroHelper
-    - 不要开启windows HDR显示
-    ############################################# 
-    步骤：
-    -打开NIKKE启动器。点击启动。等右下角腾讯ACE反作弊系统扫完，NIKKE主程序中央SHIFT UP logo出现之后，再切出来点击“DORO!”按钮。如果你看到鼠标开始在左下角连点，那就代表启动成功了。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待Doro完成工作了。
-    -也可以在游戏处在大厅界面时（有看板娘的页面）切出来点击“DORO!”按钮启动程序。
-    -游戏需要更新的时候请更新完再使用Doro。
-    ############################################# 
-    其他:
-    -检查是否发布了新版本。
-    -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
-    
-    )"
-}
-;endregion 消息函数合集
-;region 软件更新
-;tag 检查更新
-CheckForUpdateHandler(isManualCheck) {
-    global currentVersion, usr, repo, latestObj ;确保能访问全局变量
-    try {
-        latestObj := Github.latest(usr, repo)
-        if (currentVersion != latestObj.version) {
-            MyGui := Gui("+Resize", "更新提示")
-            MyGui.Add("Text", "w300 xm ym", "DoroHelper存在更新版本:")
-            MyGui.Add("Text", "xp yp+20 w300", "版本号: " . latestObj.version)
-            MyGui.Add("Text", "xp yp+20 w300", "更新内容:")
-            MyEdit := MyGui.Add("Edit", "w250 h200 ReadOnly VScroll Border", latestObj.change_notes)
-            MyGui.Add("Text", "xp yp+210 w300", "`n是否下载?")
-            userresponse := ""
-            MyGui.Add("Button", "xm w100", "是").OnEvent("Click", DownloadHandler)
-            MyGui.Add("Button", "x+10 w100", "否").OnEvent("Click", (*) => MyGui.Destroy())
-            MyGui.Show("w300 h350 Center ")
-        }
-        else {
-            ;没有新版本
-            if (isManualCheck) { ;只有手动检查时才提示
-                MsgBox("当前Doro已是最新版本", "检查更新")
-            }
-        }
-    }
-    catch as githubError {
-        ;只有手动检查时才提示连接错误，自动检查时静默失败
-        if (isManualCheck) {
-            MsgBox("检查更新失败，无法连接到Github或仓库信息错误`n(" githubError.Message ")", "检查更新错误", "IconX")
-        }
-    }
-}
-;tag 专用下载处理函数
-DownloadHandler(*) {
-    try {
-        downloadTempName := "DoroDownload.exe"
-        finalName := "DoroHelper-" latestObj.version ".exe"
-        ; 执行下载（原下载代码）
-        Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
-        FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1)
-        MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
-        ExitApp
-    }
-    catch as downloadError {
-        MsgBox("下载失败，请检查网络`n(" downloadError.Message ")", "下载错误", "IconX")
-        if FileExist(A_ScriptDir "\" downloadTempName)
-            FileDelete(A_ScriptDir "\" downloadTempName)
-    }
-}
-;tag 点击检查更新
-ClickOnCheckForUpdate(*) {
-    ; if InStr(currentVersion, "beta") {
-    ;     MsgBox ("测试版本禁用更新！")
-    ;     MsgBox ("请加群584275905")
-    ;     Pause
-    ; }
-    CheckForUpdateHandler(true) ;调用核心函数，标记为手动检查
-}
-;endregion 软件更新
 ;region 坐标辅助函数
 ;tag 点击
 UserClick(sX, sY, k) {

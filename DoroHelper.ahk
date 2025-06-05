@@ -1173,8 +1173,7 @@ NormalShop() {
         BackToHall
         return
     }
-    TextGoods := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, TextGoods, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("已进入百货商店。")
     }
     ; 定义所有可购买物品的信息 (使用 Map)
@@ -1222,8 +1221,7 @@ NormalShop() {
                         FindText().Click(X, Y, "L")
                         Sleep g_numeric_settings["SleepTime"]
                     }
-                    Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-                    while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
+                    while !(ok2 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
                         Confirm
                     }
                 }
@@ -1249,7 +1247,7 @@ NormalShop() {
             AddLog("没有免费刷新次数了，跳过刷新。")
             break ; 退出外层 loop 2 循环，因为没有免费刷新了
         }
-        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextGoods, , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("等待返回百货商店页面。")
             Confirm
         }
@@ -1315,8 +1313,7 @@ ArenaShop() {
                     AddLog("购买" . Name)
                     FindText().Click(X, Y, "L")
                     Sleep g_numeric_settings["SleepTime"]
-                    Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-                    while !(ok2 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
+                    while !(ok2 := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
                         Confirm
                     }
                 }
@@ -1375,8 +1372,7 @@ ScrapShop() {
                     AddLog("购买" . Name)
                     FindText().Click(X, Y, "L")
                     Sleep g_numeric_settings["SleepTime"]
-                    Text百货 := "|<百货>*128$36.zzzwMt001sM1001kE1z3zU0Bz3zk0sk07ws0k07ww1k07wzzlz7s03ly7s03k07slXk07slXlz7slXlz7sV3k07y07k07U60k07kTlnz7vzzU"
-                    while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
+                    while !(ok2 := FindText(&X_found, &Y_found, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text百货, , 0, , , , , TrueRatio, TrueRatio)) {
                         Confirm
                     }
                 }

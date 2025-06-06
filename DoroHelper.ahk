@@ -100,7 +100,7 @@ global g_settings := Map(
     "RoadToVillain", 1,        ;德雷克·反派之路
     "Cooperate", 1,            ;协同作战
     "SoloRaid", 1,             ;个人突击
-    "Activity", 0,             ;小活动
+    "Activity", 1,             ;小活动
     ;妙妙工具
     "StoryModeAutoStar", 1,    ;剧情模式自动收藏
     "StoryModeAutoChoose", 1,  ;剧情模式自动选择

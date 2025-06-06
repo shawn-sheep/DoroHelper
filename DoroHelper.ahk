@@ -2152,7 +2152,7 @@ LoveTalking() {
     Text咨询 := "|<咨询的咨>*178$30.zzXzzlz3zzUT3zzUC000sC000yA001zw63VzsC7VzsS7Xzsy3XzXw3rw3s1zU3k0z0DUED0y0s13s1w0zs7z1zwTzlzwTzzw0007w0007w0007w7zw7wDzw7wDzw7wDzw7w7zw7w0007w0007w0007w7zw7yDzzzU"
     Text快速咨询 := "|<快速咨询>*195$91.szbzzzDzzXzzTXzwTnzXz3zVlzz7lzyDtzsk03kM07lszz701w801yM03sM060U0z7wTzsMlyQ01000Tz00TwMNzwDlU7bDzU0DwQAzwDwk3nbzlX7sQ3y206MDtnkNlXUQ0z1k387sMsA01ksA7sslbX00D600tsD1wQMnlU07ns7zyTsyC0Nsy1zts1zk01z708wTUzws0Ds00zXX4SDUTyEF3w00TlE2D7l7z0NlyDyDs017XlVz2wzz7z7w0TXlksT0TzzXzXy7TlsUy30007k01y7y1wEzXbU03s00zbz0yBztzz07wTwTzzkw"
     Text20 := "|<20/>*240$24.3000DkM3Tly3Tvz71vz71vb73zbD3rbC7rbCTXbCzvzQzvzQTtyQ00Qs000s000k000kU"
-    Text10 := "|<0/10>*178$38.Dw1g3z7zUvVzvkwCQwDs773i1y1lkvUTUQQCs7s773i1y1nUvUTUQsCs7wDC3j3rzb0tzszlkCDwU"
+    Text0 := "|<0/>*200$28.00000000000zkC07zUs0zz7U3UQS0C1lk0s7703UQw0C1nk0s7C03kws07zbU0DwQ0000U0000000008"
     while true {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
@@ -2204,7 +2204,7 @@ LoveTalking() {
                 AddLog("该妮姬已咨询")
             }
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text10, 0, 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.05 * PicTolerance, Text0, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("咨询次数已耗尽，跳过任务")
             break
         }

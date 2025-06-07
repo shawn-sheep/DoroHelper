@@ -12,7 +12,7 @@ jobs:
         with:
           filetype: latest-release
           filename: "DoroHelper.exe"
-          mirrorchyan_rid: full
+          mirrorchyan_rid: DoroHelper
 
           github_token: ${{ secrets.GITHUB_TOKEN }}
           owner: 1204244136

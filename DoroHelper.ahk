@@ -2061,7 +2061,7 @@ Interception() {
         }
         else BattleSettlement
         Text := "|<异常个体拦截战>*200$94.07nRznzDTrhwBjjdzS03y7xszSrtrySk1vzjnDa0sEC03svDzc2wyCSDrzw8zj0zjbjbStszTzrryws1z0zxzb1wzy1/VvzzzDzrzRPX0tCS3WSz07zTxhjTzUtvy00wWDxzk2RzzHjjxjjrQzrzSDrzxAqvZyzQbzTxxzM1k0s48"
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }
@@ -2174,7 +2174,7 @@ LoveTalking() {
         Sleep g_numeric_settings["SleepTime"]
     }
     Text := "|<左上角的咨询>*111$37.nXztszkE0sQTw00CA07U0Da03sl7y01wM3U7sUMDUU4001kM28kMCAF7sSD60XU0DX0Fk07l20s03s00QTlw00C7ky0SD00T7s7U0Dby3lz7zz7U"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         if g_settings["Appreciation"] {
             Appreciation
         }
@@ -2227,7 +2227,7 @@ LoveTalking() {
                 }
                 Sleep g_numeric_settings["SleepTime"]
                 Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
-                while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
                     UserClick(1894, 1440, scrRatio) ;点击1号位默认位置
                     Sleep 200
                     UserClick(1903, 1615, scrRatio) ;点击2号位默认位置
@@ -2246,7 +2246,7 @@ LoveTalking() {
             break
         }
         Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
-        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
         Text := "|<向右的符号>*126$29.03zzy03zzy07zzy07zzy07zzw0Dzzw0Dzzw0Dzzs0Tzzs0Tzzs0Tzzk0zzzk0zzzk0zzzU1zzzU1zzzU1zzz03zzz03zzz03zzy03zzy07zzy07zzw07zzw0Dzzw0Dzzs0Dzzs0Tzzs0TzzU1zzz03zzw0Dzzs0zzzU1zzy07zzw0Tzzk0zzz03zzy07zzs0TzzU1zzz03zzw0Dzzk0zzzU1zzy07zzs0Tzzk0zzz03zzw0Dzzs0TzzU1zzy07zzw0Dzzk0zzz03zzy07zzs0Tzzs"

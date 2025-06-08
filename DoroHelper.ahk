@@ -385,12 +385,12 @@ ClickOnDoro(*) {
     if g_settings["AdjustSize"] {
         AdjustSize(OriginalW, OriginalH)
     }
-    if g_settings["OpenBlablalink"]
-        Run("https://www.blablalink.com/")
     CalculateAndShowSpan()
     Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
     if Result = "Yes"
         MsgSponsor
+    if g_settings["OpenBlablalink"]
+        Run("https://www.blablalink.com/")
     if g_settings["SelfClosing"] {
         if InStr(currentVersion, "beta") {
             MsgBox ("测试版本禁用自动关闭！")

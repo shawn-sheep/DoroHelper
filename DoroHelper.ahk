@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.11"
+currentVersion := "v1.0.0-beta.12"
 usr := "1204244136"
 repo := "DoroHelper"
 stdScreenW := 3840
@@ -614,13 +614,6 @@ ClickOnCheckForUpdate(*) {
 ;region 消息辅助函数
 MsgSponsor(*) {
     Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
-    ; myGui := Gui()
-    ; myGui.Title := "Make Doro Great Again"
-    ; myGui.Add("Picture", "w200 h200", "./img/alipay.png")
-    ; myGui.Add("Picture", "x+15 w200 h200", "./img/weixin.png")
-    ; MyGui.Add("Text", "xs Section w400 h50 Center Wrap", "知一一：前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    ; myGui.Add("Button", "xs+180 y+m w50 h20  ", "确定").OnEvent("Click", (*) => myGui.Destroy())
-    ; myGui.Show()
 }
 ClickOnHelp(*) {
     msgbox "
@@ -889,7 +882,6 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
 ;tag 点左下角的小房子的对应位置的右边（不返回）
 Confirm() {
     UserClick(474, 2028, scrRatio)
-    ;AddLog("点击默认位置(" Round(stdTargetX * scrRatio) "," Round(stdTargetY * scrRatio) ")")
     Sleep 500
 }
 ;tag 按Esc

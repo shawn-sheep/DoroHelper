@@ -106,6 +106,7 @@ global g_settings := Map(
     "StoryModeAutoChoose", 1,  ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,      ;自动检查更新
+    "isPreRelease", 1,         ;启用预发布通道
     "AdjustSize", 0,           ;启用画面缩放
     "SelfClosing", 0,          ;完成后自动关闭程序
     "OpenBlablalink", 1,       ;完成后打开Blablalink
@@ -162,9 +163,9 @@ BtnClear.OnEvent("Click", (*) => LogBox.Value := "")
 Tab := doroGui.Add("Tab3", "xm") ;由于autohotkey有bug只能这样写
 Tab.Add(["设置", "任务", "商店", "战斗", "奖励", "日志"])
 Tab.UseTab("设置")
-cbAutoCheckUpdate := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1.2")
-doroGui.Tips.SetTip(cbAutoCheckUpdate, "勾选后，DoroHelper 启动时会自动连接到 Github 检查是否有新版本`r`n请确保您的网络可以正常访问 Github")
-cbAdjustSize := AddCheckboxSetting(doroGui, "AdjustSize", "启用窗口调整", "R1.2")
+cbAutoCheckUpdate := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "Section R1.2")
+doroGui.Tips.SetTip(cbAutoCheckUpdate, "勾选后，DoroHelper 启动时会自动连接到 Github 检查是否有新版本")
+AddCheckboxSetting(doroGui, "isPreRelease", "测试版渠道", "x+5  R1.2")
 doroGui.Tips.SetTip(cbAdjustSize, "勾选后，DoroHelper运行前会尝试将窗口调整至合适的尺寸，并在运行结束后还原")
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后自动打开Blablalink", "R1.2")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在您的默认浏览器中打开 Blablalink 网站")
@@ -516,10 +517,41 @@ Initialization() {
 CheckForUpdateHandler(isManualCheck) {
     global currentVersion, usr, repo, latestObj ;确保能访问全局变量
     try {
-        latestObj := Github.latest(usr, repo)
+        allReleases := Github.historicReleases(usr, repo) ; 获取所有版本
+        if !IsObject(allReleases) || !allReleases.Length {
+            if (isManualCheck) {
+                MsgBox("无法获取版本列表，请检查网络或仓库信息。", "检查更新错误", "IconX")
+            }
+            return
+        }
+        targetRelease := "" ; 用于存储我们最终选择的版本对象
+        if g_settings["isPreRelease"] {
+            ; 用户希望接收预发布版本，直接取最新的（通常是列表的第一个）
+            targetRelease := allReleases[1]
+            AddLog("检查更新：当前设置为预发布版优先，最新版本为 " . targetRelease.version)
+        } else {
+            ; 用户希望接收稳定版本，遍历查找最新的稳定版
+            AddLog("检查更新：当前设置为稳定版优先，正在查找...")
+            for release in allReleases {
+                ; 简单的预发布版判断：如果版本名不包含beta, alpha, rc等
+                if !(InStr(release.version, "beta") || InStr(release.version, "alpha") || InStr(release.version, "rc")) {
+                    targetRelease := release
+                    AddLog("找到最新稳定版：" . targetRelease.version)
+                    break ; 找到最新的稳定版后即停止
+                }
+            }
+            if !IsObject(targetRelease) { ; 如果遍历后没有找到合适的稳定版
+                if (isManualCheck) {
+                    MsgBox("未找到合适的稳定版本。", "检查更新")
+                }
+                AddLog("未找到合适的稳定版本。")
+                return
+            }
+        }
+        latestObj := targetRelease ; 将选定的版本赋给 latestObj 供后续使用
         if (currentVersion != latestObj.version) {
             MyGui := Gui("+Resize", "更新提示")
-            MyGui.Add("Text", "w300 xm ym", "DoroHelper存在更新版本:")
+            MyGui.Add("Text", "w300 xm ym", "DoroHelper存在更新版本 (" . (g_settings["isPreRelease"] ? "预发布" : "稳定") . "):") ; 提示版本类型
             MyGui.Add("Text", "xp yp+20 w300", "版本号: " . latestObj.version)
             MyGui.Add("Text", "xp yp+20 w300", "更新内容:")
             MyEdit := MyGui.Add("Edit", "w250 h200 ReadOnly VScroll Border", latestObj.change_notes)
@@ -532,7 +564,7 @@ CheckForUpdateHandler(isManualCheck) {
         else {
             ;没有新版本
             if (isManualCheck) { ;只有手动检查时才提示
-                MsgBox("当前Doro已是最新版本", "检查更新")
+                MsgBox("当前Doro (" . (g_settings["isPreRelease"] ? "预发布通道" : "稳定版通道") . ")已是最新版本: " . currentVersion, "检查更新")
             }
         }
     }
@@ -541,6 +573,7 @@ CheckForUpdateHandler(isManualCheck) {
         if (isManualCheck) {
             MsgBox("检查更新失败，无法连接到Github或仓库信息错误`n(" githubError.Message ")", "检查更新错误", "IconX")
         }
+        AddLog("检查更新失败: " . githubError.Message)
     }
 }
 ;tag 专用下载处理函数
@@ -548,8 +581,16 @@ DownloadHandler(*) {
     try {
         downloadTempName := "DoroDownload.exe"
         finalName := "DoroHelper-" latestObj.version ".exe"
-        ; 执行下载（原下载代码）
-        Github.Download(latestObj.downloadURLs[1], A_ScriptDir "\" downloadTempName)
+        local downloadUrlToUse := ""
+        if IsObject(latestObj.downloadURLs) && latestObj.downloadURLs.Length > 0 {
+            downloadUrlToUse := latestObj.downloadURLs[1]
+        } else if IsObject(latestObj.downloadURL) { ; 兼容 historicReleases 返回的单个 downloadURL
+            downloadUrlToUse := latestObj.downloadURL
+        } else {
+            MsgBox("错误：找不到有效的下载链接。", "下载错误", "IconX")
+            return
+        }
+        Github.Download(downloadUrlToUse, A_ScriptDir "\" downloadTempName)
         FileMove(A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1)
         MsgBox("新版本已下载至当前目录: " finalName, "下载完成")
         ExitApp

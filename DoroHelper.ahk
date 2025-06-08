@@ -673,15 +673,11 @@ LoadSettings() {
         readValue := IniRead("settings.ini", "Toggles", key, defaultValue)
         g_settings[key] := readValue
     }
-    default_numeric_settings := g_numeric_settings.Clone() ;保留一份默认数值设置
+    default_numeric_settings := g_numeric_settings.Clone() ; 保留一份默认数值设置
     for key, defaultValue in default_numeric_settings {
+        ; 不再检查是否为数字，直接读取并赋值
         readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
-        ;确保读取的值是数字，如果不是则使用默认值
-        if IsNumber(readValue) {
-            g_numeric_settings[key] := readValue
-        } else {
-            g_numeric_settings[key] := defaultValue
-        }
+        g_numeric_settings[key] := readValue
     }
 }
 ;tag 改变滑条数据

@@ -2401,7 +2401,7 @@ Interception() {
     Text快速战斗 := "|<快速战斗>*191$95.wzXzzznzyTtzzzszlz7zbz3zwTlDzzlzXyDz700DszWDwDXz7wDy400Dlz4TsD7y201yA00zUCAzs6Dk403yTkzz0QTzwQTU717zk03y0slzzsz0D6DzU07wT03tzly2SATz66Dsw07UzXw7wMw2AQTlw7z0z7kDsks400zXzATUyDwM00y801s0SNzlwTsk01wS0Tk0w3zzszly1zsw0zXls7zzU3Xw3zlk0TDXkTz0077s7zW48ST7Vy000SDU7z0MswyD3s00DwT67y9lztwS4k7wTswS7k7nzk0k9zzszlUw70003U003zzlzW3w6C00700A7zzXz6DwQz00ST4wTzz7zDzzzzzzzzzxzzyTk"
     Text进入战斗 := "|<进入战斗>*200$115.zzzzzzzzzzzzyzzzzsztzlszztzzzyDyCzzzwTsTswTzsTzzz7z6DznyDy7wSDzw7zzzXzX7zkT7zVyD7zz1zzzlzllzs7Xzsk00TzkTzzs0wszz1lzys00DzwDzzw0SDzzkszzw007zz3zzy0D7zzywTzzsMTzzUzzz7z03zzyDzzwSDzzkTzzXw01yDz7zzyD7zzk7zzly07y1zXz0z7Xzzs3zzszURzUDlz0T10Dzw0zzwDyCTw3szkA003zwATzU0T6Dz3wTz6001zy67zk07X7zvyDzXU01zy7Vzs03l7zzz3zlwD7zz3kzwTVw3zzzU1syDXzz3wDyDsy3zzs00wS7lzzVz3z7wT1zs000yC7szzVzUzXyDVz000Dz73wTzUzsDlz7krU0CDz1nyDzUzy3sz3kNkDz7z0Tzzz0zz0w01kAzzzXz01zyD0zzkC00U0Tzzlz3U0070zzwD000kDzzsznw003kzzz7Xw8sDzzwTxzk03xzzzvlzDy7zzyDw"
     while True {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text0, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text0, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("异常拦截次数已耗尽")
             break
         }
@@ -2433,7 +2433,7 @@ Interception() {
         }
         else BattleSettlement
         Text := "|<异常个体拦截战>*200$94.07nRznzDTrhwBjjdzS03y7xszSrtrySk1vzjnDa0sEC03svDzc2wyCSDrzw8zj0zjbjbStszTzrryws1z0zxzb1wzy1/VvzzzDzrzRPX0tCS3WSz07zTxhjTzUtvy00wWDxzk2RzzHjjxjjrQzrzSDrzxAqvZyzQbzTxxzM1k0s48"
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }

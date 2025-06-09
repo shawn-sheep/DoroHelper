@@ -2831,6 +2831,10 @@ OnePass() {
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             UserClick(2168, 2020, scrRatio) ;点领取
             Sleep 500
+            UserClick(2168, 2020, scrRatio) ;点领取
+            Sleep 500
+            UserClick(2168, 2020, scrRatio) ;点领取
+            Sleep 500
         }
     }
     BackToHall()
@@ -3273,6 +3277,8 @@ TestMode(BtnTestMode, Info) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    NormalShop
+    ; AdjustSize(1280, 720)
+    ; AdjustSize(1920, 1080)
+    AdjustSize(2331, 1311)
 }
 ;endregion 快捷键

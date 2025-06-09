@@ -176,8 +176,8 @@ jobs:
           name: ${{ steps.get_version.outputs.VERSION_TAG }}
           body: |
             ${{ steps.read_changelog_content.outputs.CHANGELOG_BODY }}
-            ---
-            测试版兼容性较差，请谨慎下载
+            ${{ steps.prerelease_check.outputs.IS_PRERELEASE == 'true' && '---' || '' }}
+            ${{ steps.prerelease_check.outputs.IS_PRERELEASE == 'true' && '测试版兼容性较差，请谨慎下载' || '' }}
           draft: false
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }}
           files: DoroHelper.exe

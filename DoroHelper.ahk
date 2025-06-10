@@ -2431,11 +2431,11 @@ Interception() {
                 FindText().Click(X, Y, "L")
                 AddLog("跳过动画")
             }
+            if g_settings["InterceptionShot"] {
+                BattleSettlement(true)
+            }
+            else BattleSettlement
         }
-        if g_settings["InterceptionShot"] {
-            BattleSettlement(true)
-        }
-        else BattleSettlement
         Text := "|<异常个体拦截战>*200$94.07nRznzDTrhwBjjdzS03y7xszSrtrySk1vzjnDa0sEC03svDzc2wyCSDrzw8zj0zjbjbStszTzrryws1z0zxzb1wzy1/VvzzzDzrzRPX0tCS3WSz07zTxhjTzUtvy00wWDxzk2RzzHjjxjjrQzrzSDrzxAqvZyzQbzTxxzM1k0s48"
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm

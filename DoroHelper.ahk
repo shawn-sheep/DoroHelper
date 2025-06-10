@@ -2864,7 +2864,7 @@ Activity() {
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 3000
-        Text红 := "|<红色的关卡的循环图标>ED0000-323232$33.0600000w00007s007zzkTzzzz3zzzzsTzzzw3zz0y007s7U00z0k007s0000z00007s0000z00007s0000z000E7s00C0z007k7zw3zzzzkzzzzyDzzzzkTzz000y00003k0000604"
+        Text红 := "|<红色的关卡的循环图标>B40000-0.70$61.00000000000000000000000000000000000000000000000000000000000000000000000000001U000000000w000000000TU0000003zzsDzs0001zzz7zw0000zzzvzy0000Tzztzz0000DzzkzzU0007kTU07k0003sD003s0001w7001w0000y2000y0000T0000T0000DU000DU0007k0007k0003s0063s0001w00D1w0000y00TUy0000T00TkT0000DzkzzzU0007ztzzzk0003zwzzzs0001zy7zzw0000000zU000000007k000000001s000000000A00000000000000000000000000000000000000000000000000004"
         Text黄 := "|<黄色的关卡的循环图标>FAA71A-323232$33.0600000w00007s007zzkTzzzz3zzzzsTzzzw3zz0y007s7U00z0k007s0000z00007s0000z00007s0000z000E7s00C0z007k7zw3zzzzUzzzzwDzzzzkTzz000y00001k0000604"
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text红, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")

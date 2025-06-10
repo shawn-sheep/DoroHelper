@@ -13,7 +13,7 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持除**国
   <br/>
   <img alt="commit" src="https://img.shields.io/github/commit-activity/m/1204244136/DoroHelper">
   <img alt="stars" src="https://img.shields.io/github/stars/1204244136/DoroHelper?style=social">
-  <!-- <a href="https://mirrorchyan.com/zh/projects?rid=M9A" target="_blank"><img alt="mirrorc" src="https://img.shields.io/badge/Mirror%E9%85%B1-%239af3f6?logo=countingworkspro&logoColor=4f46e5"></a> -->
+  <a href="https://mirrorchyan.com/?source=doro-github-release" target="_blank"><img alt="mirrorc" src="https://img.shields.io/badge/Mirror%E9%85%B1-%239af3f6?logo=countingworkspro&logoColor=4f46e5"></a>
 </p>
 
 </div>

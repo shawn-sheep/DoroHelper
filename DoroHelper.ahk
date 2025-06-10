@@ -1290,16 +1290,14 @@ Recruit() {
 }
 ;tag 点掉推销
 RefuseSale() {
+    sleep 3000
     AddLog("尝试关闭可能的推销页面")
-    loop 5 {
-        Confirm
-        Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            break
-        }
+    Confirm
+    Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
+    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
     }
-    Sleep 1000
+    sleep 1000
 }
 ;tag 进入战斗
 EnterToBattle() {
@@ -2245,7 +2243,6 @@ CompanyTower() {
                     EnterToBattle
                 }
                 BattleSettlement
-                sleep 5000
                 RefuseSale
             }
             if !(A_Index = count) {
@@ -2286,7 +2283,6 @@ UniversalTower() {
         Sleep 1000
         EnterToBattle
         BattleSettlement
-        sleep 3000
         RefuseSale
     }
     AddLog("===通用塔任务结束===")

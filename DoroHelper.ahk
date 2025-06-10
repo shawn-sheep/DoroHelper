@@ -1864,10 +1864,9 @@ SimulationRoom() {
         FindText().Click(X + 100 * TrueRatio, Y, "L")
     }
     Text := "|<跳过增益选择的图标>*141$26.s0k0D0D03w3s0zUzUDyDw3znzkzzzyDzzzvzzzzzzzzjzzznzvzszwzsDwDw3y3w0y0y0D0C010300U"
-    while (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("跳过增益选择")
         FindText().Click(X, Y, "L")
-        Sleep 1000
     }
     EnterToBattle
     BattleSettlement
@@ -2145,6 +2144,7 @@ ChampionArena() {
     Text := "|<应援>*80$30.z7yQ0z3yM500CRg7zw4VDjQ80BjCQ09aSQDBaS00Aaw6TAkwS0CwyQ9DtyQ9DlyNX006F0M0AKQU"
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
+        AddLog("已找到一级应援文本")
         Sleep 1000
     }
     else {
@@ -2153,8 +2153,9 @@ ChampionArena() {
         return
     }
     Text := "|<冠军竞技场内部的应援>*140$29.zbyTlyDwk200toYxrVd9vr20GbDA0YaSM19AwE2GHkk4X7XU3iTb27wzA1CUyN2E0MY2"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y - 50 * TrueRatio, "L")
+        AddLog("已找到二级应援文本")
         Sleep 1000
     }
     Text := "|<晋级赛内部的应援>*100$41.0D00kzy0S01Xzzzzy33yrzzwD6NzzzszCnQ001yTzsC71tzzzQC1VzzyMQ31s7Qts7DzyRnUTzzwvb3zDytzw7wTzlps7UzzX3U73xy07067vg0S0ATzTzzkttyzzzXrzzDzz7aSy"

@@ -170,14 +170,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.2.2
         with:
           tag_name: ${{ steps.get_version.outputs.VERSION_TAG }}
           name: ${{ steps.get_version.outputs.VERSION_TAG }}
           body: |
             ${{ steps.read_changelog_content.outputs.CHANGELOG_BODY }}
-            ${{ steps.prerelease_check.outputs.IS_PRERELEASE == 'true' && '---' || '' }}
-            ${{ steps.prerelease_check.outputs.IS_PRERELEASE == 'true' && '测试版兼容性较差，请谨慎下载' || '' }}
           draft: false
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }}
           files: DoroHelper.exe

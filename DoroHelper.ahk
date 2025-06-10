@@ -1315,6 +1315,7 @@ EnterToBattle() {
     else {
         BattleActive := 0
         AddLog("无法战斗")
+        GoBack
     }
 }
 ;tag 判断自动按钮颜色

@@ -1029,9 +1029,6 @@ ClickOnHelp(*) {
 ;tag 写入数据
 WriteSettings(*) {
     global g_settings, g_numeric_settings
-    try {
-        FileDelete("settings.ini")
-    }
     ;从 g_settings Map 写入开关设置
     for key, value in g_settings {
         IniWrite(value, "settings.ini", "Toggles", key)

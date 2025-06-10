@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.13"
+currentVersion := "v1.0.0-beta.14"
 usr := "1204244136"
 repo := "DoroHelper"
 stdScreenW := 3840
@@ -133,8 +133,6 @@ try {
 catch {
     WriteSettings()
 }
-if g_settings["AutoCheckUpdate"]
-    CheckForUpdate(false)
 ;endregion 读取设置
 ;region 创建gui
 doroGui := Gui("+Resize", "DoroHelper - " currentVersion)
@@ -322,6 +320,8 @@ Tab.UseTab()
 BtnDoro := doroGui.Add("Button", "Default w80 xm+100", "DORO!")
 doroGui.Tips.SetTip(BtnDoro, "点击启动 DoroHelper 主程序！`r`nDoro 将会按照您在各个标签页中的设置，开始自动执行所有已勾选的任务`r`n在点击前，请确保游戏客户端已在前台运行并处于大厅界面")
 BtnDoro.OnEvent("Click", ClickOnDoro)
+if g_settings["AutoCheckUpdate"]
+    CheckForUpdate(false)
 doroGui.Show()
 ;endregion 创建gui
 ;region 点击运行

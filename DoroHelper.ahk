@@ -2696,7 +2696,7 @@ Mail() {
         return
     }
     Text := "|<全部领取的图标>*240$33.zz07zzz007zzU00Dzs000zy0003zU000Ds0000y00003k60k0Q1sD01UTXw0A1yTk107sz000TXw001zDk007wz000TXw007wz001zDk00Tnw007sz041yTk1UTXw0A1sD01k60k0S00003s0000zU000Dy0003zs000zzU00Dzz007zzz07zw"
-    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击全部领取")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
     }

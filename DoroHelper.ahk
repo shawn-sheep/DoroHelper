@@ -2428,11 +2428,11 @@ Interception() {
                 FindText().Click(X, Y, "L")
                 AddLog("跳过动画")
             }
-            if g_settings["InterceptionShot"] {
-                BattleSettlement(true)
-            }
-            else BattleSettlement
         }
+        if g_settings["InterceptionShot"] {
+            BattleSettlement(true)
+        }
+        else BattleSettlement
     }
     AddLog("===异常拦截任务结束===")
     BackToHall

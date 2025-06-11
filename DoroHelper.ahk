@@ -6,11 +6,27 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.15"
+currentVersion := "v1.0.0-beta.16"
 usr := "1204244136"
 repo := "DoroHelper"
 stdScreenW := 3840
 stdScreenH := 2160
+BattleActive := 1
+nikkeID := ""
+NikkeX := 0
+NikkeY := 0
+NikkeW := 0
+NikkeH := 0
+NikkeXP := 0
+NikkeYP := 0
+NikkeWP := 0
+NikkeHP := 0
+scrRatio := 1
+currentScale := 1
+WinRatio := 1
+TrueRatio := 1
+OriginalW := 0
+OriginalH := 0
 ;endregion 设置常量
 ;region 设置变量
 ;tag 简单开关
@@ -87,7 +103,8 @@ global g_numeric_settings := Map(
     "Username", "12042"            ;用户名
 )
 ;tag 其他全局变量
-global Victory := 0
+Victory := 0
+PicTolerance := g_numeric_settings["Tolerance"]
 ;region 识图素材
 Text百货 := "|<百货>*200$36.zzzyRz003wwV003ks3zbzUUTzbzoswk0Dww1k07wy3nz7zzznzbs03nz7s03k07tznk07tnnnzbtnrnzbtnzk07z6Dk07sD1nzDkztU"
 ;endregion 识图素材
@@ -96,8 +113,9 @@ Text百货 := "|<百货>*200$36.zzzyRz003wwV003ks3zbzUUTzbzoswk0Dww1k07wy3nz7zzz
 SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
-    if g_numeric_settings["Version"] != currentVersion {
+    if CompareVersionsSemVer(currentVersion, g_numeric_settings["Version"]) {
         MsgBox("版本已更新，所有设置将重置")
+        g_numeric_settings["Version"] := currentVersion
         WriteSettings()
     }
 }
@@ -410,23 +428,6 @@ Initialization() {
     }
     LogBox.Value := ""
     WriteSettings()
-    global BattleActive := 1
-    global nikkeID := ""
-    global NikkeX := 0
-    global NikkeY := 0
-    global NikkeW := 0
-    global NikkeH := 0
-    global NikkeXP := 0
-    global NikkeYP := 0
-    global NikkeWP := 0
-    global NikkeHP := 0
-    global scrRatio := 1
-    global currentScale := 1
-    global WinRatio := 1
-    global TrueRatio := 1
-    global OriginalW := 0
-    global OriginalH := 0
-    global PicTolerance := g_numeric_settings["Tolerance"]
     ;设置窗口标题匹配模式为完全匹配
     SetTitleMatchMode 3
     targetExe := "nikke.exe"
@@ -2848,7 +2849,7 @@ Activity() {
             FindText().Click(X, Y, "L")
         }
         Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("快速战斗已激活")
             FindText().Click(X, Y, "L")
             Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"

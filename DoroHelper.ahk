@@ -9,24 +9,6 @@ try TraySetIcon "doro.ico"
 currentVersion := "v1.0.0-beta.16"
 usr := "1204244136"
 repo := "DoroHelper"
-stdScreenW := 3840
-stdScreenH := 2160
-BattleActive := 1
-nikkeID := ""
-NikkeX := 0
-NikkeY := 0
-NikkeW := 0
-NikkeH := 0
-NikkeXP := 0
-NikkeYP := 0
-NikkeWP := 0
-NikkeHP := 0
-scrRatio := 1
-currentScale := 1
-WinRatio := 1
-TrueRatio := 1
-OriginalW := 0
-OriginalH := 0
 ;endregion 设置常量
 ;region 设置变量
 ;tag 简单开关
@@ -287,7 +269,7 @@ doroGui.Tips.SetTip(cbSimulationOverClock, "勾选后，自动进行模拟室超
 TextTowerTitleBattle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===无限之塔===")
 doroGui.Tips.SetTip(TextTowerTitleBattle, "设置与无限之塔挑战相关的选项")
 cbCompanyTower := AddCheckboxSetting(doroGui, "CompanyTower", "爬企业塔", "R1.2")
-doroGui.Tips.SetTip(cbCompanyTower, "勾选后，自动挑战当前可进入的所有企业塔，直到无法通关或每日次数用尽")
+doroGui.Tips.SetTip(cbCompanyTower, "勾选后，自动挑战当前可进入的所有企业塔，直到无法通关或每日次数用尽`r`n只要有一个是0/3就会判定为打过了从而跳过该任务")
 cbUniversalTower := AddCheckboxSetting(doroGui, "UniversalTower", "爬通用塔", "R1.2")
 doroGui.Tips.SetTip(cbUniversalTower, "勾选后，自动挑战通用无限之塔，直到无法通关")
 Tab.UseTab("奖励")
@@ -426,6 +408,22 @@ Initialization() {
         MsgBox "请以管理员身份运行Doro"
         ExitApp
     }
+    global stdScreenW := 3840
+    global stdScreenH := 2160
+    global BattleActive := 1
+    global nikkeID := ""
+    global NikkeX := 0
+    global NikkeY := 0
+    global NikkeW := 0
+    global NikkeH := 0
+    global NikkeXP := 0
+    global NikkeYP := 0
+    global NikkeWP := 0
+    global NikkeHP := 0
+    global scrRatio := 1
+    global currentScale := 1
+    global WinRatio := 1
+    global TrueRatio := 1
     LogBox.Value := ""
     WriteSettings()
     ;设置窗口标题匹配模式为完全匹配
@@ -459,8 +457,8 @@ Initialization() {
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if g_settings["AdjustSize"] {
-        OriginalW := NikkeW
-        OriginalH := NikkeH
+        global OriginalW := NikkeW
+        global OriginalH := NikkeH
         ; 尝试归类为2160p (4K) 及其变种
         if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
             if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
@@ -992,7 +990,7 @@ ClickOnHelp(*) {
     msgbox "
     (
 1. 游戏分辨率需要设置成 **16:9** 的分辨率，小于**等于** 1080p 可能有问题，暂不打算特殊支持
-   - 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏，此时nikke应该是居中的，图片缩放应该是1
+   - 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏，此时nikke应该位于画面左上角的，图片缩放应该是1
    <!-- 2. ~~如果游戏使用**全屏模式**，则需要 显示器屏幕的分辨率也是**16:9**，否则只能使用窗口模式~~
    - 异形屏或部分笔记本电脑用户需要特别注意这点 -->
 2. 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**
@@ -1158,9 +1156,7 @@ AdjustSize(TargetX, TargetY) {
     NewWindowWidth := NewClientWidth + NonClientWidth
     NewWindowHeight := NewClientHeight + NonClientHeight
     ; 使用 WinMove 移动和调整窗口大小
-    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, nikkeID
-    Sleep 500
-    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, nikkeID
+    WinMove 0, 0, NewWindowWidth, NewWindowHeight, nikkeID
 }
 ;endregion 坐标辅助函数
 ;region 日志辅助函数
@@ -1888,7 +1884,7 @@ SimulationOverClock() {
     }
     Text := "|<25>*121$44.U00y000k007U00A000s003000C000k001000DzzUEDzzzzw63zzzzz1Uzzzk00M00Dk006000w003U00C001s001U00y0000Dzzzzw03zzzzz00zzzzzk0001U000000E0010006000s001U00S000M00DU"
     if (ok := !FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("未选择难度！跳过")
+        AddLog("难度不是25！跳过")
         return
     }
     Text := "|<开始模拟>*177$110.zzzzzzzzzzTztzzzzzzzzzzlzszzXwQDwTzyT0003wTwDzkw00z7Xz3U000T7z7zwC007lsTks000DlzVzz3U01wS0wS0003wTsszkz73z3UD7z3wDw0QCDk3ttz08Flzkz3y077ls0k07U2AQTwDkzU1VwD0A00w1X37z3wDyAEE3wD00Tlsslzkz3zX000T3lz7wSCATwDkzsl007kM00z7XX7U008QQEDlw200Tkszlk00076Dzzy0Vz3w2DsQ0001lXzzzU000w0XyDU000w8s03k000S0MzXzlz3z0C00w3z1zUCCkTsTkzw3U0C0zszx7U47y7wDzUszXUC007ls00zVz3zsCDss3001wS0UDkzkzy1XyDMk00T7UM1sDwDz0MzXyDs1zlkQ8Q7z3zVa7kzXwADwQC763zkzkTU0Dss70S7b1k0zwDwDs03wA3s71zkwMTz3z7y60z33zXkTyTjTzlzzzbzTtzzzyzzzzU"
@@ -3227,8 +3223,10 @@ TestMode(BtnTestMode, Info) {
 }
 ;tag 暂停程序
 ^2:: {
-    if g_settings["AdjustSize"] {
-        AdjustSize(OriginalW, OriginalH)
+    try {
+        if g_settings["AdjustSize"] {
+            AdjustSize(OriginalW, OriginalH)
+        }
     }
     Pause
 }

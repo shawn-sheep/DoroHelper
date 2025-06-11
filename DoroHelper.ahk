@@ -6,47 +6,12 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.0-beta.14"
+currentVersion := "v1.0.0-beta.15"
 usr := "1204244136"
 repo := "DoroHelper"
 stdScreenW := 3840
 stdScreenH := 2160
 ;endregion 设置常量
-;region 运行前提示
-if A_Username != 12042 {
-    msgbox "
-(
-===========================
-不支持国服、多开、
-模拟室需要能快速战斗、拦截战需要能打异常拦截
-如果是多显示器，请支持的显示器作为主显示器
-运行前将游戏尺寸比例设置成16：9，确认关闭HDR，语言设置为简体中文
-===========================
-1080p用户请全屏运行游戏，现版本仍大概率无法正常运行，请耐心等待优化，不要在群里反馈
-2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏
-此时nikke应该是居中的，图片缩放应该是1
-===========================
-反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志。
-如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。
-===========================
-)"
-}
-if A_Username != 12042 {
-    msgbox "
-(
-鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！
-)"
-}
-if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
-    Result := Msgbox("1080p用户现版本仍大概率无法正常运行，请耐心等待优化，是否立刻关闭程序？", , "YesNo")
-    if Result = "Yes" {
-        ExitApp
-    }
-    else {
-        MsgBox("既然用了，请不要在群里反馈或吐槽，谢谢")
-    }
-}
-;endregion 运行前提示
 ;region 设置变量
 ;tag 简单开关
 global g_settings := Map(
@@ -117,7 +82,9 @@ global g_numeric_settings := Map(
     "SleepTime", 1000,            ;默认等待时间
     "InterceptionBoss", 1,        ;拦截战BOSS选择
     "Tolerance", 1,               ;宽容度
-    "MirrorCDK", ""               ;Mirror酱的CDK
+    "MirrorCDK", "",              ;Mirror酱的CDK
+    "Version", currentVersion,    ;版本号
+    "Username", "12042"            ;用户名
 )
 ;tag 其他全局变量
 global Victory := 0
@@ -129,11 +96,36 @@ Text百货 := "|<百货>*200$36.zzzyRz003wwV003ks3zbzUUTzbzoswk0Dww1k07wy3nz7zzz
 SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
+    if g_numeric_settings["Version"] != currentVersion {
+        MsgBox("版本已更新，所有设置将重置")
+        WriteSettings()
+    }
 }
 catch {
     WriteSettings()
 }
 ;endregion 读取设置
+;region 运行前提示
+if g_numeric_settings["Username"] != A_Username
+    ClickOnHelp
+if g_numeric_settings["Username"] != A_Username {
+    Result := msgbox(
+        (
+            "你是" A_Username
+            "`n反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志。"
+            "`n如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。"
+            "`n==========================="
+            "`n人机检测：你是否想立刻关闭程序"
+            "`n可以在配置文件settings.ini中将Username改成自己的永久关闭提示"
+            "`n==========================="
+            "`n鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！"
+        ), , "YesNo")
+    if Result = "Yes" {
+        msgbox("人机检测失败，你有认真看公告吗？")
+        ExitApp
+    }
+}
+;endregion 运行前提示
 ;region 创建gui
 doroGui := Gui("+Resize", "DoroHelper - " currentVersion)
 doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
@@ -498,7 +490,7 @@ Initialization() {
         }
         ; 尝试归类为1080p 及其变种
         else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
-            AddLog("1080p及以下尺寸禁用窗口调整，请全屏运行游戏")
+            MsgBox("1080p及以下尺寸暂时不适配")
             if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
                 AddLog("标准1080p分辨率")
             } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
@@ -998,30 +990,20 @@ MsgSponsor(*) {
 ClickOnHelp(*) {
     msgbox "
     (
-    #############################################
-    使用说明
-    对大多数老玩家来说Doro设置保持默认就好。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    万一Doro失控，请按Ctrl + 1组合键结束进程。
-    ############################################# 
-    要求：
-    - 16:9的显示器比例
-    - 设定-画质-开启光晕效果
-    - 设定-画质-开启颜色分级
-    - 游戏语言设置为简体中文
-    - 以**管理员身份**运行DoroHelper
-    - 不要开启windows HDR显示
-    ############################################# 
-    步骤：
-    -打开NIKKE启动器。点击启动。等右下角腾讯ACE反作弊系统扫完，NIKKE主程序中央SHIFT UP logo出现之后，再切出来点击“DORO!”按钮。如果你看到鼠标开始在左下角连点，那就代表启动成功了。然后就可以悠闲地去泡一杯咖啡，或者刷一会儿手机，等待Doro完成工作了。
-    -也可以在游戏处在大厅界面时（有看板娘的页面）切出来点击“DORO!”按钮启动程序。
-    -游戏需要更新的时候请更新完再使用Doro。
-    ############################################# 
-    其他:
-    -检查是否发布了新版本。
-    -如果你的电脑配置较好的话，或许可以尝试降低点击间隔。
-    
+1. 游戏分辨率需要设置成 **16:9** 的分辨率，小于**等于** 1080p 可能有问题，暂不打算特殊支持
+   - 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏，此时nikke应该是居中的，图片缩放应该是1
+   <!-- 2. ~~如果游戏使用**全屏模式**，则需要 显示器屏幕的分辨率也是**16:9**，否则只能使用窗口模式~~
+   - 异形屏或部分笔记本电脑用户需要特别注意这点 -->
+2. 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**
+   - 多显示器请支持的显示器作为主显示器，将游戏放在主显示器内
+   - 不要使用微星小飞机、游戏加加等悬浮显示数据的软件
+   - 游戏画质越高，脚本出错的几率越低。
+   - 游戏帧数建议保持60，帧数过低时，部分场景的行动可能会被吞，导致问题
+3. 请不要开启会改变画面颜色相关的功能或设置，例如
+   - 软件层面：各种驱动的色彩滤镜，部分笔记本的真彩模式
+   - 设备层面：显示器的护眼模式、色彩模式、色温调节、HDR 等。
+4. 游戏语言设置为**简体中文**，设定-画质-开启光晕效果，设定-画质-开启颜色分级
+5. 以**管理员身份**运行 DoroHelper
     )"
 }
 ;endregion 消息辅助函数

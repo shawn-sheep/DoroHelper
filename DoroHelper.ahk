@@ -2384,7 +2384,7 @@ Interception() {
         }
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text快速战斗的图标, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("已激活快速战斗")
-            FindText().Click(X, Y, "L")
+            FindText().Click(X + 50 * TrueRatio, Y, "L")
         }
         else if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text进入战斗, 0, 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("未激活快速战斗，尝试普通战斗")

@@ -1349,28 +1349,25 @@ BattleSettlement(Screenshot := false) {
         if (A_Index = 20) {
             CheckAutoBattle
         }
-        ; 检测完成战斗频率降低
-        if (Mod(A_Index, 2) = 0) {
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
-                check := check + 1
-                ;AddLog("TAB已命中，共" check "次")
-            }
-            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
-                check := check + 1
-                ;AddLog("R已命中，共" check "次")
-            }
-            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
-                check := check + 1
-                ;AddLog("点击已命中，共" check "次")
-            }
-            else {
-                ;AddLog("均未命中，重新计数")
-                check := 0
-            }
-            ;需要连续三次命中代表战斗结束
-            if (check = 3) {
-                break
-            }
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextTAB, , 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
+            ;AddLog("TAB已命中，共" check "次")
+        }
+        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, TextR, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
+            ;AddLog("R已命中，共" check "次")
+        }
+        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text点击, 0, 0, , , , , TrueRatio, TrueRatio)) {
+            check := check + 1
+            ;AddLog("点击已命中，共" check "次")
+        }
+        else {
+            ;AddLog("均未命中，重新计数")
+            check := 0
+        }
+        ;需要连续三次命中代表战斗结束
+        if (check = 3) {
+            break
         }
         Text上 := "|<红圈的上边缘>FEFE7B-323232$27.0Djk1zxzyzzjzzzxzzzzjzzw00z0000A"
         Text下 := "|<红圈的下边缘>*220$27.7zzz0020000E00020000E07020DU"

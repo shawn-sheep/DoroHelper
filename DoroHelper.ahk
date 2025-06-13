@@ -2483,12 +2483,11 @@ Expedition() {
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击派遣公告栏")
         FindText().Click(X, Y, "L")
-        Sleep 1000
+        Sleep 2000
         Text := "|<全部领取的符号>*190$28.zz3zzzwDzzzkzzzz3zzzwDzzzkzzzz3zzzwDzzzkzzzU07zy00zzw03zzs0TzzU3zzz0Dz7y1zUTs7y1zkzs7zbzUTyzy1zzzs7zzzUTzzy1zzzs7zzzU000000000U0006"
-        while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("点击全部领取")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
-            Sleep 1000
         }
         Text := "|<左上角的派遣>*149$68.000040001w01k00TU20TzzUS03zw1sDzzsDszzzUz3zzy3zTzzsDsyTDUTbzzk1zDzzs1tzy00Dnzzy0AT0101szzzU07k7s0Q07k001wzz00Dzzzm0TDzs03zzzxs7nzy00zzzyzVwzs001zzwDwTDS0TwTzz1z7nrk7z7zzk7VwxxVzlw1w0sTDDwTwTzz007nnzXz7zzk01wwzs7lzzw08SDDw1wT00077Xny0T7zzw1tswT07lzzz0yyD7k1wTzzkDjXlw0T7k3w7nswTU7lzzz1wyDDs3wTzzkyD7yz1zrzzsTblzrszzU01rlwTxyTzzzzxwyDyD7nzzzzSDVy3kwDzzzVXsQ0M60zzzs0A2000U0zzwU"
         while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {

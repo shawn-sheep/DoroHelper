@@ -2520,18 +2520,20 @@ LoveTalking() {
     Text := "|<咨询>*109$44.rlzzjkzsQ7blwDy200wC3zk00DVU0DkU3sk03wMEzs00yC6Tq7wA70zUU101U7kC0E00EC3U41kC3ss13yDkyC0Fs00TXU4S007ssV7U01y20FsTkTU04SDy7s017Vz1y2DVs00T1z0S007lzkDU01yzw3U"
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
-        Sleep 1000
     }
-    Text := "|<左上角的咨询>*111$37.nXztszkE0sQTw00CA07U0Da03sl7y01wM3U7sUMDUU4001kM28kMCAF7sSD60XU0DX0Fk07l20s03s00QTlw00C7ky0SD00T7s7U0Dby3lz7zz7U"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        if g_settings["Appreciation"] {
-            Appreciation
-        }
-        UserClick(313, 756, scrRatio) ;点击妮姬头像位置（识图很困难）
-        Sleep 500
-        UserClick(313, 756, scrRatio)
-        Sleep 500
-        UserClick(313, 756, scrRatio)
+    Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        Confirm
+    }
+    ; 花絮鉴赏会
+    if g_settings["Appreciation"] {
+        Appreciation
+    }
+    Sleep 1000
+    Text := "|<》》》>*200$36.D0S0w0TUz1y0zlz3y0zlzXz0TsznzUTszlzUDwTtzkDyTwzs7zDyTs3z7yDw3zbzDw1zXz7y1znzbz1zXz7y3zbzDy3z7yDw7zDyTsDyTwzsDwTtzkTszlzUTszlzUzlzXz0zlzXy0TUz1y0D0S0w0U"
+    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , 1, TrueRatio, TrueRatio)) {
+        FindText().Click(X + 50 * TrueRatio, Y, "L")
+        AddLog("点击左上角的妮姬")
         Sleep 500
     }
     AddLog("===妮姬咨询任务开始===")
@@ -2540,7 +2542,7 @@ LoveTalking() {
     Text20 := "|<20/>*240$24.3000DkM3Tly3Tvz71vz71vb73zbD3rbC7rbCTXbCzvzQzvzQTtyQ00Qs000s000k000kU"
     Text0 := "|<0/>*200$28.00000000000zkC07zUs0zz7U3UQS0C1lk0s7703UQw0C1nk0s7C03kws07zbU0DwQ0000U0000000008"
     while true {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.05 * PicTolerance, 0.1 * PicTolerance, Text20, , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             Text := "|<MAX>*180$45.00000S1z070M1sSw1s7073bkT0w0QwzjsDU3z7zz1y0DktwsTk0w7773b07Us0sss1y70773UTss0tkQ3bb07C1ksQs0vUCD1r07Q0vkDU"
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, , , , , , TrueRatio, TrueRatio)) {
@@ -2574,7 +2576,7 @@ LoveTalking() {
                     FindText().Click(X, Y, "L")
                     AddLog("已咨询" A_Index "次")
                 }
-                Sleep 1000
+                Sleep 2000
                 Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
                 while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
                     UserClick(1894, 1440, scrRatio) ;点击1号位默认位置

@@ -2611,27 +2611,41 @@ LoveTalking() {
 ;tag 花絮鉴赏
 Appreciation() {
     AddLog("===花絮鉴赏任务开始===")
-    Text := "|<花絮鉴赏会的N>*184$44.000000000000000000Dy00000zzz0000k00M000M00300087xU8004DzzV002Dzzy8017zzzl00lzzzwE08zzzzU02DzzzsU1bxzsy80NzDyDm0CTlzXwk7bw7szDztz0yDnzyTk7XwzzbwsMzDztzD2DnzyTns3wzzbwz0zDztzDwDnzyTnzXwzzbwzwy/zxzDzzWzzDzzzsjzlzzzwPzyTzzz4zzXzzzWDzwDzzV3zzVzzUUzzy000EDzzw00M3zzzzzw0zzzzzs0Dzzzzk02"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, 0, 0, , , , , TrueRatio, TrueRatio)) {
+    Sleep 1000
+    Text := "|<花絮>*200$44.zTrzzzzzXszyDzzkQ6y0A000070300001sElXsyDyCQwyTrzU7DDbzzw1lXsszzUQ0wSDTU00C7X3ksAzXs0zsCDky0zs63sD0zy07Q3Uzzk7XUkDzw1UTA3zw003XsyT01gsyDbwwnzDXly7ADns0S7Xkwz0DXUyDDzzzwzy"
+    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X + 50 * TrueRatio, Y, "L")
+        AddLog("点击花絮")
+    }
+    Text := "|<EPISO>*191$67.DztzwC7zU7sDzwzzb7zsDzDzyTznbzyDzr00C0tnU77VvU070Qtk070Tzy3zyQzy3U7zz1zyCDzXU3zzUzy73ztk1y00Q03U0SQ0z00C01k07C0TU0700tk3bUTk03U0Qw3lsSzztk0CDzkTyDzws077zs7y3zyQ03Uzk0w4"
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("播放第一个片段")
         FindText().Click(X, Y, "L")
-        Text := "|<EPISO>*191$67.DztzwC7zU7sDzwzzb7zsDzDzyTznbzyDzr00C0tnU77VvU070Qtk070Tzy3zyQzy3U7zz1zyCDzXU3zzUzy73ztk1y00Q03U0SQ0z00C01k07C0TU0700tk3bUTk03U0Qw3lsSzztk0CDzkTyDzws077zs7y3zyQ03Uzk0w4"
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("播放第一个片段")
+    }
+    else {
+        AddLog("花絮鉴赏任务已完成")
+        AddLog("===花絮鉴赏任务结束===")
+        Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            Confirm
+        }
+        return
+    }
+    Text领取 := "|<领取>*200$40.wzzzzzzVU1U1zy706000kD3wEU24QTl608E070Qs0U0Q1n4lkFl74P7976QFUAYQ1s60GFk7UzX970S3yA4QMwDtkFl1ls716063Uz1s0E7Xs3V60D767yMsyswTtbrzrzzbzs"
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text领取, , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("播放下一个片段")
+        Send "{]}" ;尝试跳过
+        Text播放 := "|<播放>*200$53.sTzlztz7zks01zVy7zVk03z3wDz3U0Dz7sTy7W4D01kzk328y0100U601w02010000w7w03VU01wDkMT3U03sTUky7k0Tk01VwC00TU037s0AED000DU0sky480Q0003w8S0w3U07sEw3s700DlVs7wC4ATX3sTsQ00y67kTks01wAD0TVk03sMM0T3V37VkU0M700C001UES00SA67Vkw00ysQzr"
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text播放, , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
         }
-        Text领取 := "|<领取>*200$40.wzzzzzzVU1U1zy706000kD3wEU24QTl608E070Qs0U0Q1n4lkFl74P7976QFUAYQ1s60GFk7UzX970S3yA4QMwDtkFl1ls716063Uz1s0E7Xs3V60D767yMsyswTtbrzrzzbzs"
-        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text领取, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("播放下一个片段")
-            Send "{]}" ;尝试跳过
-        }
-        FindText().Click(X, Y, "L")
-        AddLog("领取奖励")
-        GoBack
-        Sleep 1000
-        GoBack
-        Sleep 1000
     }
-    else AddLog("花絮鉴赏任务已完成")
+    FindText().Click(X, Y, "L")
+    AddLog("领取奖励")
+    Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        Confirm
+    }
     AddLog("===花絮鉴赏任务结束===")
 }
 ;endregion 咨询

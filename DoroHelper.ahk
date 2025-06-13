@@ -1501,6 +1501,10 @@ Login() {
         }
         UserClick(331, 2040, scrRatio)
         Sleep 500
+        if !WinActive(nikkeID) {
+            MsgBox "窗口未聚焦，程序已中止"
+            Pause
+        }
     }
     AddLog("已处于大厅页面，登录成功")
 }

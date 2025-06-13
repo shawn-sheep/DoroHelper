@@ -126,6 +126,10 @@ if g_numeric_settings["Username"] != A_Username {
             "`n可以在配置文件settings.ini中将Username改成自己的永久关闭提示"
             "`n==========================="
             "`n鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！"
+            "`n==========================="
+            "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
+            "`n废铁商店、模拟室超频、冠军竞技场、反派之路、花絮鉴赏会、普通协同作战、单人突击、每日免费招募"
+            "`n想适配的话务必在功能开放当天提醒我！"
         ), , "YesNo")
     if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
         msgbox("人机检测失败，你有认真看公告吗？")
@@ -147,7 +151,7 @@ LinkProject := doroGui.Add("Link", " R1 xs", '<a href="https://github.com/kyokak
 doroGui.Tips.SetTip(LinkProject, "点击访问 DoroHelper 在 Github 上的官方项目页面，可以获取最新版本、查看源码或反馈问题")
 doroGui.SetFont()
 BtnSponsor := doroGui.Add("Button", "R1 x+8", "赞助")
-doroGui.Tips.SetTip(BtnSponsor, "如果您觉得 DoroHelper 对您有帮助，可以考虑点击这里支持开发者，激励项目持续更新与维护")
+doroGui.Tips.SetTip(BtnSponsor, "如果你觉得 DoroHelper 对你有帮助，可以考虑点击这里支持开发者，激励项目持续更新与维护")
 BtnSponsor.OnEvent("Click", MsgSponsor)
 BtnHelp := doroGui.Add("Button", "R1 x+8", "帮助")
 doroGui.Tips.SetTip(BtnHelp, "点击查看 DoroHelper 的详细使用说明、注意事项以及常见问题解答")
@@ -461,7 +465,7 @@ Initialization() {
     ; TrueRatio := Round(currentScale * WinRatio, 3)
     TrueRatio := Round(1 * WinRatio, 3)
     GameRatio := Round(NikkeW / NikkeH, 3)
-    AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
+    AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
     if g_settings["AdjustSize"] {
         global OriginalW := NikkeW
@@ -496,7 +500,6 @@ Initialization() {
         }
         ; 尝试归类为1080p 及其变种
         else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
-            MsgBox("1080p及以下尺寸暂时不适配")
             if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
                 AddLog("标准1080p分辨率")
             } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
@@ -996,8 +999,9 @@ MsgSponsor(*) {
 ClickOnHelp(*) {
     msgbox "
     (
-1. 游戏分辨率需要设置成 **16:9** 的分辨率，小于**等于** 1080p 可能有问题，暂不打算特殊支持
-   - 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏，此时nikke应该位于画面左上角的，图片缩放应该是1
+1. 游戏分辨率需要设置成 **16:9** 的分辨率，小于1080p 可能有问题，暂不打算特殊支持
+   - 1080p用户请全屏运行游戏、1080p的异形屏不能设置全屏，按ctrl+3按到画面不动为止，此时nikke应该位于画面左上角
+   - 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏，此时nikke应该位于画面左上角，图片缩放应该是1
    <!-- 2. ~~如果游戏使用**全屏模式**，则需要 显示器屏幕的分辨率也是**16:9**，否则只能使用窗口模式~~
    - 异形屏或部分笔记本电脑用户需要特别注意这点 -->
 2. 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**
@@ -2289,7 +2293,7 @@ Interception() {
     while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm
         if A_Index > 20 {
-            MsgBox("异常个体拦截战未解锁！本脚本不支持普通拦截！")
+            MsgBox("异常个体拦截战未解锁！本脚本暂不支持普通拦截！")
             Pause
         }
     }

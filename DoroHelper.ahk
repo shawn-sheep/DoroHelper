@@ -2427,14 +2427,16 @@ OutpostDefence() {
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入前哨基地")
         FindText().Click(X, Y, "L")
-        Sleep 1000
     }
     else {
         AddLog("未找到前哨基地！返回")
         return
     }
     Text := "|<LV>*80$17.DlkDXUT70z41y8Xw17s6DsA3kM3lk7Xk"
-    while (ok := FindText(&X := "wait", &Y := 10, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        Confirm
+    }
+    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("点击左下角资源")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
         Sleep 1000

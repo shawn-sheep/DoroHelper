@@ -109,18 +109,25 @@ catch {
 if g_numeric_settings["Username"] != A_Username
     ClickOnHelp
 if g_numeric_settings["Username"] != A_Username {
+    N := Random(1, 2)
+    if N = 1 {
+        verify := "你是否想继续程序"
+    }
+    if N = 2 {
+        verify := "你是否想关闭程序"
+    }
     Result := msgbox(
         (
             "你是" A_Username
             "`n反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志。"
             "`n如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。"
             "`n==========================="
-            "`n人机检测：你是否想立刻关闭程序"
+            "`n人机检测：" verify
             "`n可以在配置文件settings.ini中将Username改成自己的永久关闭提示"
             "`n==========================="
             "`n鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！"
         ), , "YesNo")
-    if Result = "Yes" {
+    if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
         msgbox("人机检测失败，你有认真看公告吗？")
         ExitApp
     }

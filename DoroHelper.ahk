@@ -3262,22 +3262,28 @@ TestMode(BtnTestMode, Info) {
 ;tag 初始化并调整窗口大小
 ^3:: {
     Initialization()
-    WinGetPos(&X, &Y, &Width, &Height, "ahk_exe nikke.exe") ; 获取当前窗口的整体位置和大小
-    WinGetClientPos(&ClientX, &ClientY, &ClientWidth, &ClientHeight, "ahk_exe nikke.exe") ; 获取当前窗口工作区的位置和大小
-    ; 计算非工作区（标题栏和边框）的高度和宽度
-    NonClientHeight := Height - ClientHeight
-    NonClientWidth := Width - ClientWidth
-    NewClientX := (A_ScreenWidth / 2) - (NikkeWP / 2)
-    NewClientY := (A_ScreenHeight / 2) - (NikkeHP / 2)
-    NewClientWidth := 2331
-    NewClientHeight := 1311
-    ; 计算新的窗口整体大小，以适应新的工作区大小
-    NewWindowX := NewClientX
-    NewWindowY := NewClientY
-    NewWindowWidth := NewClientWidth + NonClientWidth
-    NewWindowHeight := NewClientHeight + NonClientHeight
-    ; 使用 WinMove 移动和调整窗口大小
-    WinMove NewWindowX, NewWindowY, NewWindowWidth, NewWindowHeight, "ahk_exe nikke.exe"
+    AdjustSize(2331, 1311)
+}
+^4:: {
+    Initialization()
+    AdjustSize(1920, 1080)
+}
+^5:: {
+    initialization()
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.951 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.951 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+    }
+    while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
+        UserClick(2412, 1905, scrRatio)
+        Sleep 1000
+    }
+    AddLog("===大活动任务结束===")
+}
+^9:: {
+    ;添加基本的依赖
+    Initialization()
+    ;下面写要调试的函数
+    AdjustSize(1920, 1080)
 }
 ;tag 调试指定函数
 ^0:: {

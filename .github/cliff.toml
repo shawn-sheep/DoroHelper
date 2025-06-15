@@ -61,18 +61,17 @@ footer = """
 conventional_commits = true
 filter_unconventional = false
 commit_parsers = [
-    { message = "^feat", group = "✨ 新功能" },
-    { message = "^fix", group = "🐛 Bug修复" },
-    { message = "^perf", group = "🚀 性能优化" },
-    { message = "^docs", group = "📚 文档" },
-    { message = "^refactor", group = "🚜 代码重构" },
-    { message = "^style", group = "🎨 样式" },
-    { message = "^test", group = "🧪 测试" },
-    { message = "^build", group = "📦 依赖更新" },
-    { message = "^chore", group = "🔧 日常维护" },
-    { message = "^ci", group = "⚙️ 持续集成" },
-    { body = ".*security", group = "🔒 安全" },
-    { message = "^revert", group = "◀️ 撤销" },
+    { message = "^feat", group = "新增 | New" },
+    { message = "^fix", group = "修复 | Fix" },
+    { message = "^perf", group = "改进 | Improved" },
+    { message = "^docs", group = "文档 | Docs" },
+    { message = "^refactor", group = "重构 | Refactor" },
+    { message = "^style", group = "样式 | Style" },
+    { message = "^test", group = "测试 | Test" },
+    { message = "^build", group = "依赖 | Build" },
+    { message = "^chore", group = "维护 | Chore" },
+    { message = "^ci", group = "集成 | Ci" },
+    { message = "^revert", group = "撤销 | Revert" },
 ]
 
 ignore_tags = "rc"

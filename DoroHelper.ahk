@@ -13,6 +13,8 @@ repo := "DoroHelper"
 ;region 设置变量
 ;tag 简单开关
 global g_settings := Map(
+    ;登录游戏
+    "Login", 1,                ;登录游戏总开关
     ;商店
     "Shop", 1,                 ;商店总开关
     "CashShop", 1,             ;付费商店
@@ -348,6 +350,8 @@ doroGui.Tips.SetTip(TestModeEditControl, "输入要执行的任务的函数名")
 BtnTestMode := doroGui.Add("Button", "x+5", "←启动").OnEvent("Click", TestMode)
 Tab.UseTab("任务")
 TextTaskInfo := doroGui.Add("Text", " R1.2 +0x0100", "只有下方的内容被勾选后才会执行，右侧是详细设置")
+cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "R1.2")
+doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店购买", "R1.2")
 doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店购买相关的任务`r`n具体的购买项目请在「商店」标签页中详细设置")
 cbSimulationRoom := AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "R1.2")
@@ -476,7 +480,8 @@ doroGui.Show()
 ;region 点击运行
 ClickOnDoro(*) {
     Initialization
-    Login() ;登陆到主界面
+    if g_settings["login"]
+        Login() ;登陆到主界面
     if g_settings["Shop"] {
         if g_settings["CashShop"]
             CashShop()

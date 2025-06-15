@@ -2523,16 +2523,14 @@ LoveTalking() {
                     Sleep 1000
                     AddLog("已咨询" A_Index "次")
                 }
-                Sleep 500
-                if (ok := FindText(X := "wait0", Y := -1, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.780 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.131 * NikkeW . " ", NikkeY + 0.780 * NikkeH + 0.088 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询的咨"), , , , , , , TrueRatio, TrueRatio)) {
-                    while !(ok := FindText(&X, &Y, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.009 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.009 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , , , , , , TrueRatio, TrueRatio)) {
-                        UserClick(1894, 1440, scrRatio) ;点击1号位默认位置
-                        Sleep 200
-                        UserClick(1903, 1615, scrRatio) ;点击2号位默认位置
-                        Sleep 200
-                        Send "{]}" ;尝试跳过
-                        Sleep 200
-                    }
+                Sleep 3000
+                while !(ok := FindText(&X, &Y, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.009 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.009 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , , , , , , TrueRatio, TrueRatio)) {
+                    UserClick(1894, 1440, scrRatio) ;点击1号位默认位置
+                    Sleep 200
+                    UserClick(1903, 1615, scrRatio) ;点击2号位默认位置
+                    Sleep 200
+                    Send "{]}" ;尝试跳过
+                    Sleep 200
                 }
                 Sleep 1000
             }

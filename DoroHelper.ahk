@@ -1599,9 +1599,9 @@ EnterToArk() {
 ;endregion 流程辅助函数
 ;region 登录
 Login() {
-    AddLog("正在登录")
     check := 0
     while True {
+        AddLog("正在登录")
         if (check = 3) {
             break
         }

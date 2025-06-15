@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.1"
+currentVersion := "v1.0.2"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -121,6 +121,7 @@ FindText().PicLib("|<白底蓝色右箭头>*200$33.zzUDzzzU0Dzzk00Tzs000zy0003zU
 FindText().PicLib("|<MAX>*120$27.zzzzzzzzzvvnzyCAAnllVaSAAA7kVVky4AC7kVVky48DDk19ty096Dk10ky0867k10kyF1YXm8AaSF1UnzTSjTzzzzzzzzw", 1)
 ;tag 商店
 FindText().PicLib("|<礼物的图标>*120$34.z0zw3zs1zU7z33w8TwS7VszlwADXz7s1wTw0001zs000Dzk001zzzzzzzzzzzzk03s01007U0000S00001s00007U0000S00001s00007U0000S00001s00007U03zzzzzzzzzzzs07U0zU0S01y01s07s07U0TU0S01y01s07s07U0TU0S01y01s07s07U0TU0S01y01s0DU", 1)
+FindText().PicLib("|<商店的图标>*200$45.007U000007z000007zw01k07y7nzz01y0Dzzs0C00zy3U1k03k0S0A0MC01k3U73U070QDww00w31z7173UsDtkTsC70yS3z1ks1XUTkS700S1w3sy01k70z3s0D00DzzU7w01zzy7zU0Tzzzzy07zzzzzvzzw", 1)
 FindText().PicLib("|<简介>*190$37.C3U0707zzU7U7zzk7s7zzsDz3zRkTzszzwzVzDzyTUTbzzDU7bzzUQD3jxkC7Vryw73kvzS3VsRzj3kwCzrVsS7TvlwD3jzlw7Vk3sw3ks1sA1kU", 1)
 FindText().PicLib("|<FREE>*200$35.0MDUQ00U70s0z7CTntySQzbnwws70UM1kC1Dk7bwyTXDDtwzDC0k1zSQ3U8", 1)
 FindText().PicLib("|<芯尘盒>*200$62.3Us01k00C00wC00Q007k3zzy3bi07z0zzzVxzk7zwDzzsSSy7zzvzzyDbjnzzz3rw7lswzzzUvy1sSD7zzk0w0A71UTzk0DU01k07zw6xsk0Q01zz1zSw0Dw0TzkTnbVzzsDzyDw1szzy3zznz3S7zzUzzwzkzk1s0DzzCzzw0S03ivlbzgTzzvzzy1zs7zzyzzzkDw1zzzDzzu", 1)
@@ -1677,14 +1678,12 @@ CashShop() {
 NormalShop() {
     AddLog("===普通商店任务开始===")
     BackToHall
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.341 * NikkeW . " ", NikkeY + 0.625 * NikkeH . " ", NikkeX + 0.341 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.625 * NikkeH + 0.017 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.236 * NikkeW . " ", NikkeY + 0.633 * NikkeH . " ", NikkeX + 0.236 * NikkeW + 0.118 * NikkeW . " ", NikkeY + 0.633 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击商店图标")
-        FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
-    } else {
-        AddLog("普通商店已领取")
-        AddLog("===普通商店任务结束===")
-        BackToHall
-        return
+        FindText().Click(X + 20 * TrueRatio, Y - 20 * TrueRatio, "L")
+    }
+    else {
+        MsgBox("商店图标未找到")
     }
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("已进入百货商店")

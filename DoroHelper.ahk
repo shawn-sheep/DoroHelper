@@ -3032,7 +3032,6 @@ CooperateBattle() {
         else {
             AddLog("协同作战次数已耗尽或未在开放时间")
             AddLog("===协同作战任务结束===")
-            BackToHall
             return
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.508 * NikkeW . " ", NikkeY + 0.600 * NikkeH . " ", NikkeX + 0.508 * NikkeW + 0.120 * NikkeW . " ", NikkeY + 0.600 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的圆圈加勾"), , , , , , , TrueRatio, TrueRatio)) {

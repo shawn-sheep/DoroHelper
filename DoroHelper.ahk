@@ -1910,7 +1910,7 @@ SimulationRoom() {
     EnterToBattle
     BattleSettlement
     sleep 5000
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.433 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.433 * NikkeW + 0.135 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.070 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("模拟结束的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.433 * NikkeW . " ", NikkeY + 0.683 * NikkeH . " ", NikkeX + 0.433 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.683 * NikkeH + 0.070 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("模拟结束的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击模拟结束")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
     }

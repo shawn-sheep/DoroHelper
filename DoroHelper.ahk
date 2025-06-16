@@ -2835,6 +2835,8 @@ Festival() {
         FindText().Click(X + 50 * TrueRatio, Y, "L")
         AddLog("点击全部领取")
     }
+    Sleep 1000
+    Confirm
     while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
         GoBack
         Sleep 1000

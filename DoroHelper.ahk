@@ -1271,13 +1271,21 @@ UserPress(sX, sY, k) {
     uX := Round(sX * k) ;计算转换后的坐标
     uY := Round(sY * k)
     CoordMode "Mouse", "Client"
-    Send "{Click " uX " " uY "}" ;点击转换后的坐标
+    Send "{Click " uX " " uY " " 0 "}" ;点击转换后的坐标
+    Send "Click " "Down" "}"
+}
+;tag 移动
+UserClick0(sX, sY, k) {
+    uX := Round(sX * k) ;计算转换后的坐标
+    uY := Round(sY * k)
+    CoordMode "Mouse", "Client"
+    Send "{Click " uX " " uY " " 0 "}" ;点击转换后的坐标
 }
 ;tag 移动
 UserMove(sX, sY, k) {
     uX := Round(sX * k) ;计算转换后的坐标
     uY := Round(sY * k)
-    Send "{Click " uX " " uY " " 0 "}" ;点击转换后的坐标
+    Send "{MouseMove " uX " " uY " " 500 "}" ;移动转换后的坐标
 }
 ;tag 颜色判断
 IsSimilarColor(targetColor, color) {

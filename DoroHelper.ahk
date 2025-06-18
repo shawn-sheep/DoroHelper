@@ -1489,11 +1489,10 @@ BattleSettlement(Screenshot := false) {
     checkend := 0
     checkred := 0
     AddLog("等待战斗结算")
+    Sleep 10000
+    ; 检测自动战斗和爆裂
+    CheckAuto
     while true {
-        ; 检测自动战斗和爆裂
-        if (A_Index = 20) {
-            CheckAuto
-        }
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             ;AddLog("TAB已命中，共" checkend "次")

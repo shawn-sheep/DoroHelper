@@ -3265,6 +3265,7 @@ TestMode(BtnTestMode, Info) {
             AdjustSize(OriginalW, OriginalH)
         }
     }
+    WriteSettings
     Pause
 }
 ;tag 初始化并调整窗口大小

@@ -2945,9 +2945,11 @@ Pass() {
             AddLog("执行第" t "个通行证")
             OnePass()
         }
-        UserMove(3787, 369, scrRatio)
+        UserClick0(3800, 369, scrRatio)
         Click "Down"
-        UserMove(3458, 369, scrRatio)
+        Sleep 1000
+        UserClick0(3100, 369, scrRatio)
+        Sleep 1000
         Click "Up"
         Sleep 500
     }

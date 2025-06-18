@@ -99,7 +99,7 @@ try {
     if CompareVersionsSemVer(currentVersion, g_numeric_settings["Version"]) {
         MsgBox("版本已更新，所有设置将重置")
         FileDelete "settings.ini"
-        WriteSettings()
+        LoadSettings
         g_numeric_settings["Version"] := currentVersion
     }
 }

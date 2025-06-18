@@ -2707,25 +2707,22 @@ Mission() {
     AddLog("===每日任务奖励领取开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.874 * NikkeW . " ", NikkeY + 0.073 * NikkeH . " ", NikkeX + 0.874 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.073 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
+        AddLog("点击每日任务图标")
         Sleep 3000
+        while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
+            UserClick(2412, 1905, scrRatio)
+            AddLog("点击全部领取")
+            Sleep 2000
+        }
+        Sleep 1000
+        BackToHall
     }
     else {
         AddLog("每日任务奖励已领取")
         AddLog("===每日任务奖励领取结束===")
         return
     }
-    while true {
-        while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
-            UserClick(2412, 1905, scrRatio)
-            Sleep 1000
-        }
-        if (ok := FindText(&X, &Y, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.154 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.292 * NikkeW . " ", NikkeY + 0.154 * NikkeH + 0.023 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("浅红点"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-        }
-        else break
-    }
     AddLog("===每日任务奖励领取结束===")
-    BackToHall
 }
 ;endregion 每日任务收取
 ;region 剧情活动

@@ -1677,6 +1677,12 @@ CashShop() {
                 Sleep 1000
                 Confirm
             }
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白色的叉叉"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                AddLog("检测到白色叉叉，尝试重新执行任务")
+                BackToHall
+                CashShop
+            }
         }
     }
     else {

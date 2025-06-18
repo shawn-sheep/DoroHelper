@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.2"
+currentVersion := "v1.0.3"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -395,7 +395,7 @@ cbArenaShopPackage := AddCheckboxSetting(doroGui, "ArenaShopPackage", "购买简
 doroGui.Tips.SetTip(cbArenaShopPackage, "在竞技场商店自动购买简介个性化礼包")
 cbArenaShopFurnace := AddCheckboxSetting(doroGui, "ArenaShopFurnace", "购买公司武器熔炉", "R1.2")
 doroGui.Tips.SetTip(cbArenaShopFurnace, "在竞技场商店中自动购买公司武器熔炉，用于装备转化")
-TextScrapShopTitle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===废铁商店===")
+TextScrapShopTitle := doroGui.Add("Text", "R1.2 xs Section +0x0100", "===废铁商店（活动期间暂时停用）===")
 doroGui.Tips.SetTip(TextScrapShopTitle, "设置与游戏内废铁商店（使用废铁购买）相关选项")
 cbScrapShopGem := AddCheckboxSetting(doroGui, "ScrapShopGem", "购买珠宝", "R1.2")
 doroGui.Tips.SetTip(cbScrapShopGem, "在废铁商店中自动购买珠宝")
@@ -1181,7 +1181,7 @@ WriteSettings(*) {
         IniWrite(value, "settings.ini", "NumericSettings", key)
     }
 }
-;tag 读入数据
+;tag 读出数据
 LoadSettings() {
     global g_settings, g_numeric_settings
     default_settings := g_settings.Clone()

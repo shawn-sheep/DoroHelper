@@ -2620,15 +2620,15 @@ Appreciation() {
 FriendPoint() {
     BackToHall
     AddLog("===好友点数任务开始===")
-    while (ok := FindText(&X, &Y, NikkeX + 0.980 * NikkeW . " ", NikkeY + 0.213 * NikkeH . " ", NikkeX + 0.980 * NikkeW + 0.009 * NikkeW . " ", NikkeY + 0.213 * NikkeH + 0.016 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.956 * NikkeW . " ", NikkeY + 0.211 * NikkeH . " ", NikkeX + 0.956 * NikkeW + 0.033 * NikkeW . " ", NikkeY + 0.211 * NikkeH + 0.068 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("好友的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击好友")
         FindText().Click(X, Y, "L")
-        Sleep 1000
+        Sleep 2000
     }
     while (ok := FindText(&X, &Y, NikkeX + 0.628 * NikkeW . " ", NikkeY + 0.822 * NikkeH . " ", NikkeX + 0.628 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.822 * NikkeH + 0.017 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击赠送")
         FindText().Click(X, Y, "L")
-        Sleep 1000
+        Sleep 2000
     }
     AddLog("===好友点数任务结束===")
     BackToHall

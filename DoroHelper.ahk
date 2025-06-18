@@ -2833,10 +2833,11 @@ Festival() {
     BackToHall
     if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y + 100 * TrueRatio, "L")
-        Sleep 500
+        Sleep 1000
     }
     while !(ok := FindText(&X, &Y, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
+        Sleep 1000
     }
     AddLog("已进入活动地区")
     AddLog("===签到===")

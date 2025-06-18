@@ -2922,6 +2922,7 @@ Festival() {
     AddLog("===领取奖励===")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.951 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.951 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
+        Sleep 1000
     }
     while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
         UserClick(2412, 1905, scrRatio)

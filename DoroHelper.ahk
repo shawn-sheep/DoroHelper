@@ -210,7 +210,7 @@ FindText().PicLib("|<全部派遣的图标>*200$35.00Ty0007zz000zzzU03zzzU0DzzzU
 FindText().PicLib("|<妮姬的图标>*150$32.zztzzzzk3zzzk0Dzzs01zzw00Dzy001zzU00Tzk003zw000zz000DzU003zs000zz000Dzk003zw000zzU00Tzs00Dzz003zzs01zzz00zzzw0zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw00001000000000000000000000M0000600003k0000w0000TU0007s0003z0000zk000Dy0007zU003zs000zz000Dzs007zy001zzU00zzw00Dzz003zzs01zzy00Tzzk0Dzzw03zzzU1zzzs0Tzzz0Dzzzk3zzzw1zzzzUTzzzwDzzzz3zzU", 1)
 FindText().PicLib("|<咨询的图标>*150$31.z7zwTzXzyDzlzz7zszzXyAM0lU6A0Mk360AM1X06A0zU3y0Tk1z0000000000000000000003zzzzVzzzzkzzjzsTzXzwDzUzy7z07z3zU7zVzs3zkzw3zsTy1zwDzizy7zzzz3zzzzVzzzzkzzzzs00000U0000E", 1)
 FindText().PicLib("|<》》》>*200$36.D0S0w0TUz1y0zlz3y0zlzXz0TsznzUTszlzUDwTtzkDyTwzs7zDyTs3z7yDw3zbzDw1zXz7y1znzbz1zXz7y3zbzDy3z7yDw7zDyTsDyTwzsDwTtzkTszlzUTsznzUzlzXz0zlzXy0TUz1y0D0S0w0U", 1)
-FindText().PicLib("|<20/>*200$25.000000003s00Fy7kMr7sA1nC61vb70tnX0wtnUwQtkwCQkzbCMTtyQ7syA0006000600030000U0000E", 1)
+FindText().PicLib("|<红色的20进度>FD382B-0.90$8.zDzzzzzzzzzyU", 1)
 FindText().PicLib("|<咨询·MAX>*190$49.0000000000000000301001s7Vk1k60S7Uw1s7U7bkT1w3k3nkDvy3w0zk7zz1y0Dk3bnVzU3k1llktk1s0s0sww1y0Q0QQC1zUC0CS7Vts707C1kwS3U3j0wwD1k1r0Cw3k0000000000000000U", 1)
 FindText().PicLib("|<收藏的图标>FE4431-0.90$32.zzzzzzzzzzzzzbzzzzkzzzzwDzzzy1zzzzUTzzzk3zzzw0Tzzw03zzk003z00003k0000w0000TU0007w0003zU001zw000zzU00Tzw007zz003zzk00zzs007zy001zzU00Tzs007zy1y1zzVzsTztzzbzzzzzzzzzzzs", 1)
 FindText().PicLib("|<快速咨询的图标>*200$32.zzzzzzzzzzz0S0zzs3k7zz0S0zzs3k7zz0S0zzs3k7zz0S0zzs3k7zz0S0zzs3k7zz0S0zzk7UDzs3k7zw1s3zy0w1zz0S0zzUD0Tzk7UDzs3k7zw1s3zy0w1zz0S0zzzzzzzzzzzzy", 1)
@@ -218,6 +218,7 @@ FindText().PicLib("|<咨询的咨>*200$30.zzXzznz3zzkz3zzkD001wC000zC001zwC3VzsS
 FindText().PicLib("|<咨询·向右的图标>*200$28.03zzy0Dzzw0Tzzk0zzzU3zzz07zzw0Dzzs0zzzk1zzz03zzy0Dzzw0Tzzk0zzzU3zzz07zzw0Dzzs0zzzk1zzz03zzy0Dzzw0Tzzk0zzzU3zzz07zzw0Dzzs0zzzk1zzz03zzy0Dzzs0zzz07zzs0TzzU3zzw0DzzU1zzy0Dzzk0zzy07zzs0zzz03zzw0TzzU3zzw0DzzU1zzy0Dzzk0zzz07zzs0zzz03zzw0TzzU3zzw0Dzzk1zzy0Dzzk0zzz07zzs0zzz03zzy", 1)
 FindText().PicLib("|<0/>*220$21.Dz1vzwDTzXnkQSQ3nrUSww3rbUSwQ3bXzxsTzj1zts1sC4", 1)
 ;tag 奖励
+FindText().PicLib("|<好友的图标>*200$27.01w000zs00DzU03zw00Tzk03zz00zzs07zz00zzs03zy00Tzk01zw007z000Tk000000000000000000007z007zz03zzy1zzzwTzzzrzzzzzzzzzzzzzzzzzzzzzzU", 1)
 FindText().PicLib("|<任务>*150$44.00000000000000010207000wTk3s00Dzs1zzU7Ds0zzs3kC0TVw0s3U7ww0S0s07z0DUC0Dzw1w7sDwzkTzzVk0M1rzs0Q00Q3U0DV060s1zzs1UC03xy0M3U0Q3U60s0C0k1XzsD0Q0MzyDVz063g1UT0000000000000002", 1)
 FindText().PicLib("|<奖励>*150$43.000000000000000A4000006707zA0n7z3za0TzzVzn04z1kk1U0ttkTzz1wDsDzzVy7sDyTkrzk7Q6M1rk3jXA0n01rta01U0vwn3zzwRyNVzzyCqQkzzz7PAM0TU3xyA0zw1wzC7yDszzj3w3wzzj0U04003000000000000000U", 1)
 FindText().PicLib("|<灰色的全部>#529-0.90$40.08000001k01UT07U0D3z1z07zjwDz0TyvVsy0tniT0y3bCvw3yCQzDzzlzzwDzyDzzk1s0TzvU30003a0z03zCMTzUTytVzy1zvi0S073js1s0QCz7zzVzvUzzz7zi1zzsQSk8", 1)

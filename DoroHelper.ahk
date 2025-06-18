@@ -14,69 +14,69 @@ repo := "DoroHelper"
 ;tag 简单开关
 global g_settings := Map(
     ;登录游戏
-    "Login", 1,                ;登录游戏总开关
+    "Login", 0,                ;登录游戏总开关
     ;商店
-    "Shop", 1,                 ;商店总开关
-    "CashShop", 1,             ;付费商店
-    "NormalShop", 1,           ;普通商店
-    "NormalShopDust", 1,       ;普通商店：芯尘盒
+    "Shop", 0,                 ;商店总开关
+    "CashShop", 0,             ;付费商店
+    "NormalShop", 0,           ;普通商店
+    "NormalShopDust", 0,       ;普通商店：芯尘盒
     "NormalShopPackage", 0,    ;普通商店：简介个性化礼包
-    "ArenaShop", 1,            ;竞技场商店
-    "BookFire", 1,             ;竞技场商店：燃烧手册
-    "BookWater", 1,            ;竞技场商店：水冷手册
-    "BookWind", 1,             ;竞技场商店：风压手册
-    "BookElec", 1,             ;竞技场商店：电击手册
-    "BookIron", 1,             ;竞技场商店：铁甲手册
-    "BookBox", 1,              ;竞技场商店：手册宝箱
-    "ArenaShopPackage", 1,     ;竞技场商店：简介个性化礼包
-    "ArenaShopFurnace", 1,     ;竞技场商店：公司武器熔炉
-    "ScrapShop", 1,            ;废铁商店
-    "ScrapShopGem", 1,         ;废铁商店：珠宝
+    "ArenaShop", 0,            ;竞技场商店
+    "BookFire", 0,             ;竞技场商店：燃烧手册
+    "BookWater", 0,            ;竞技场商店：水冷手册
+    "BookWind", 0,             ;竞技场商店：风压手册
+    "BookElec", 0,             ;竞技场商店：电击手册
+    "BookIron", 0,             ;竞技场商店：铁甲手册
+    "BookBox", 0,              ;竞技场商店：手册宝箱
+    "ArenaShopPackage", 0,     ;竞技场商店：简介个性化礼包
+    "ArenaShopFurnace", 0,     ;竞技场商店：公司武器熔炉
+    "ScrapShop", 0,            ;废铁商店
+    "ScrapShopGem", 0,         ;废铁商店：珠宝
     "ScrapShopVoucher", 0,     ;废铁商店：好感券
-    "ScrapShopResources", 1,   ;废铁商店：养成资源
+    "ScrapShopResources", 0,   ;废铁商店：养成资源
     ;模拟室
-    "SimulationRoom", 1,       ;模拟室
-    "SimulationOverClock", 1,  ;模拟室超频
+    "SimulationRoom", 0,       ;模拟室
+    "SimulationOverClock", 0,  ;模拟室超频
     ;竞技场
-    "Arena", 1,                ;竞技场收菜
-    "RookieArena", 1,          ;新人竞技场
-    "SpecialArena", 1,         ;特殊竞技场
-    "ChampionArena", 1,        ;冠军竞技场
+    "Arena", 0,                ;竞技场收菜
+    "RookieArena", 0,          ;新人竞技场
+    "SpecialArena", 0,         ;特殊竞技场
+    "ChampionArena", 0,        ;冠军竞技场
     ;无限之塔
-    "Tower", 1,                ;无限之塔总开关
-    "CompanyTower", 1,         ;企业塔
+    "Tower", 0,                ;无限之塔总开关
+    "CompanyTower", 0,         ;企业塔
     "UniversalTower", 0,       ;通用塔
     ;异常拦截
-    "Interception", 1,         ;拦截战
+    "Interception", 0,         ;拦截战
     "InterceptionShot", 0,    ;拦截截图
     ;常规奖励
-    "Award", 1,                ;奖励领取总开关
-    "OutpostDefence", 1,       ;前哨基地收菜
-    "Expedition", 1,           ;派遣
-    "LoveTalking", 1,          ;咨询
-    "Appreciation", 1,         ;花絮鉴赏
-    "FriendPoint", 1,          ;好友点数
-    "Mail", 1,                 ;邮箱
-    "RankingReward", 1,        ;排名奖励
-    "Mission", 1,              ;任务
-    "Pass", 1,                 ;通行证
+    "Award", 0,                ;奖励领取总开关
+    "OutpostDefence", 0,       ;前哨基地收菜
+    "Expedition", 0,           ;派遣
+    "LoveTalking", 0,          ;咨询
+    "Appreciation", 0,         ;花絮鉴赏
+    "FriendPoint", 0,          ;好友点数
+    "Mail", 0,                 ;邮箱
+    "RankingReward", 0,        ;排名奖励
+    "Mission", 0,              ;任务
+    "Pass", 0,                 ;通行证
     ;限时奖励
-    "FreeRecruit", 1,          ;活动期间每日免费招募
-    "RoadToVillain", 1,        ;德雷克·反派之路
-    "Cooperate", 1,            ;协同作战
-    "SoloRaid", 1,             ;个人突击
+    "FreeRecruit", 0,          ;活动期间每日免费招募
+    "RoadToVillain", 0,        ;德雷克·反派之路
+    "Cooperate", 0,            ;协同作战
+    "SoloRaid", 0,             ;个人突击
     "Session", 0,              ;小活动
-    "Festival", 1,             ;大活动
+    "Festival", 0,             ;大活动
     ;妙妙工具
-    "StoryModeAutoStar", 1,    ;剧情模式自动收藏
-    "StoryModeAutoChoose", 1,  ;剧情模式自动选择
+    "StoryModeAutoStar", 0,    ;剧情模式自动收藏
+    "StoryModeAutoChoose", 0,  ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,      ;自动检查更新
-    "isPreRelease", 1,         ;启用预发布通道
+    "isPreRelease", 0,         ;启用预发布通道
     "MirrorUpdate", 0,         ;使用Mirror酱检查和更新
     "AdjustSize", 0,           ;启用画面缩放
     "SelfClosing", 0,          ;完成后自动关闭程序
-    "OpenBlablalink", 1,       ;完成后打开Blablalink
+    "OpenBlablalink", 0,       ;完成后打开Blablalink
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(

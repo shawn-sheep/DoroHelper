@@ -2736,6 +2736,10 @@ Session() {
     while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
         Confirm
         Send "{]}"
+        if A_Index > 10 {
+            AddLog("未找到小活动，可能是活动已结束")
+            return
+        }
     }
     AddLog("===剧情活动任务开始===")
     AddLog("尝试完成挑战任务")

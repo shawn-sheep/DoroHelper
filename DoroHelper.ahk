@@ -1722,6 +1722,7 @@ NormalShop() {
             }
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.053 * NikkeW . " ", NikkeY + 0.477 * NikkeH . " ", NikkeX + 0.053 * NikkeW + 0.428 * NikkeW . " ", NikkeY + 0.477 * NikkeH + 0.251 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , , TrueRatio, TrueRatio)) {
                 loop ok.Length {
+                    AddLog("购买" . Name)
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                     Sleep 1000
                     if name = "芯尘盒" {
@@ -1736,7 +1737,6 @@ NormalShop() {
                         }
                     }
                     if (ok1 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白色的圆圈加勾"), , 0, , , , , TrueRatio, TrueRatio)) {
-                        AddLog("购买" . Name)
                         FindText().Click(X, Y, "L")
                         Sleep 500
                     }

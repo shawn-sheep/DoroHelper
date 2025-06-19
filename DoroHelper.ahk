@@ -1729,7 +1729,7 @@ NormalShop() {
             if (!item.Setting) {
                 continue ; 如果设置未开启，则跳过此物品
             }
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.057 * NikkeW . " ", NikkeY + 0.483 * NikkeH . " ", NikkeX + 0.057 * NikkeW + 0.938 * NikkeW . " ", NikkeY + 0.483 * NikkeH + 0.050 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.053 * NikkeW . " ", NikkeY + 0.477 * NikkeH . " ", NikkeX + 0.053 * NikkeW + 0.428 * NikkeW . " ", NikkeY + 0.477 * NikkeH + 0.251 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , , TrueRatio, TrueRatio)) {
                 loop ok.Length {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                     Sleep 1000

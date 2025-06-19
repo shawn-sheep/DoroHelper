@@ -590,6 +590,7 @@ Initialization() {
     global TrueRatio := 1
     LogBox.Value := ""
     WriteSettings()
+    PicTolerance := g_numeric_settings["Tolerance"]
     ;设置窗口标题匹配模式为完全匹配
     SetTitleMatchMode 3
     targetExe := "nikke.exe"

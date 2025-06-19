@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.3"
+currentVersion := "v1.0.4"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -85,7 +85,7 @@ global g_numeric_settings := Map(
     "Tolerance", 1,               ;宽容度
     "MirrorCDK", "",              ;Mirror酱的CDK
     "Version", currentVersion,    ;版本号
-    "Username", "12042"            ;用户名
+    "Username", "12042"           ;用户名
 )
 ;tag 其他全局变量
 Victory := 0

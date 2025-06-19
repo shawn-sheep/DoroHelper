@@ -124,7 +124,7 @@ FindText().PicLib("|<MAX>*120$27.zzzzzzzzzvvnzyCAAnllVaSAAA7kVVky4AC7kVVky48DDk1
 ;tag 商店
 FindText().PicLib("|<礼物的图标>*120$34.z0zw3zs1zU7z33w8TwS7VszlwADXz7s1wTw0001zs000Dzk001zzzzzzzzzzzzk03s01007U0000S00001s00007U0000S00001s00007U0000S00001s00007U03zzzzzzzzzzzs07U0zU0S01y01s07s07U0TU0S01y01s07s07U0TU0S01y01s07s07U0TU0S01y01s0DU", 1)
 FindText().PicLib("|<商店的图标>*200$45.007U000007z000007zw01k07y7nzz01y0Dzzs0C00zy3U1k03k0S0A0MC01k3U73U070QDww00w31z7173UsDtkTsC70yS3z1ks1XUTkS700S1w3sy01k70z3s0D00DzzU7w01zzy7zU0Tzzzzy07zzzzzvzzw", 1)
-FindText().PicLib("|<简介>*190$37.C3U0707zzU7U7zzk7s7zzsDz3zRkTzszzwzVzDzyTUTbzzDU7bzzUQD3jxkC7Vryw73kvzS3VsRzj3kwCzrVsS7TvlwD3jzlw7Vk3sw3ks1sA1kU", 1)
+FindText().PicLib("|<简介个性化礼包>*150$131.A300A002030M0Mk0MA0300zDs0w00C077s0tk0sM0C03zzs3s00w0CTk3nU1kk0zzbzzUDw03w0SzU77CDlU1zzBnC1wy0Ty1zzsSCQTn07zyDrQDkzXwz7zzlsTsza0S0QTzwy0zTaTDzw7kzUCA1zwMzzsk0QSASTQsDVy0wM1zsnUtkC30ksAyFkD3s3sk0xlbDnUQC01k0QTwDDUDtU1nbCzr0sQ03U0tzsDy0zr03ziRzi1ks0701lzUTw1zi07zwvzQ3Vk0C03UQ0zssSA8D3lrysD3U0Q070s1llksMsQ03jxkw700s0C3k33XVktks0zDzXsC01k0Rzy67y3VzVzzy0T7UQ03U0vzwCDw73y1zzM0Q60s0301k00M7UC0U0zsU", 1)
 FindText().PicLib("|<FREE>*200$35.0MDUQ00U70s0z7CTntySQzbnwws70UM1kC1Dk7bwyTXDDtwzDC0k1zSQ3U8", 1)
 FindText().PicLib("|<芯尘盒>*200$62.3Us01k00C00wC00Q007k3zzy3bi07z0zzzVxzk7zwDzzsSSy7zzvzzyDbjnzzz3rw7lswzzzUvy1sSD7zzk0w0A71UTzk0DU01k07zw6xsk0Q01zz1zSw0Dw0TzkTnbVzzsDzyDw1szzy3zznz3S7zzUzzwzkzk1s0DzzCzzw0S03ivlbzgTzzvzzy1zs7zzyzzzkDw1zzzDzzu", 1)
 FindText().PicLib("|<信用点的图标>*200$29.000s0003s000Ds001vs007bs00Tzs01zrk0Dzbk0zzzk3zzzUTzzzVzzzv7zzzyTzzzlzzzz7jzzw7Dzzk6jzy09zzs0/zzU0Dzy00Dzk00Dj000Tw000TU000S00008004", 1)
@@ -1720,7 +1720,7 @@ NormalShop() {
             Setting: g_settings["NormalShopDust"],
             Tolerance: 0.3 * PicTolerance },
         "简介个性化礼包", {
-            Text: FindText().PicLib("简介"),
+            Text: FindText().PicLib("简介个性化礼包"),
             Setting: g_settings["NormalShopPackage"],
             Tolerance: 0.3 * PicTolerance }
     )
@@ -1806,7 +1806,7 @@ ArenaShop() {
             Setting: g_settings["BookBox"],
             Tolerance: 0.3 * PicTolerance },
         "简介个性化礼包", {
-            Text: FindText().PicLib("简介"),
+            Text: FindText().PicLib("简介个性化礼包"),
             Setting: g_settings["ArenaShopPackage"],
             Tolerance: 0.3 * PicTolerance },
         "公司武器熔炉", {

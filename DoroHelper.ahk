@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.0.4"
+currentVersion := "v1.0.5"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1720,7 +1720,7 @@ NormalShop() {
             if (!item.Setting) {
                 continue ; 如果设置未开启，则跳过此物品
             }
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.053 * NikkeW . " ", NikkeY + 0.477 * NikkeH . " ", NikkeX + 0.053 * NikkeW + 0.428 * NikkeW . " ", NikkeY + 0.477 * NikkeH + 0.251 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.061 * NikkeW . " ", NikkeY + 0.490 * NikkeH . " ", NikkeX + 0.061 * NikkeW + 0.417 * NikkeW . " ", NikkeY + 0.490 * NikkeH + 0.041 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , , TrueRatio, TrueRatio)) {
                 loop ok.Length {
                     AddLog("购买" . Name)
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")

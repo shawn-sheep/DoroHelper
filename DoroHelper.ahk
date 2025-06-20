@@ -2503,6 +2503,10 @@ LoveTalking() {
     Sleep 1000
     AddLog("===妮姬咨询任务开始===")
     while true {
+        if A_Index > 20 {
+            AddLog("妮姬咨询任务已超过20次，结束任务")
+            break
+        }
         if (ok := FindText(&X, &Y, NikkeX + 0.635 * NikkeW . " ", NikkeY + 0.658 * NikkeH . " ", NikkeX + 0.635 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.658 * NikkeH + 0.034 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红色的20进度"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             if (ok := FindText(&X, &Y, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.637 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.637 * NikkeH + 0.028 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询·MAX"), , , , , , , TrueRatio, TrueRatio)) {

@@ -17,63 +17,61 @@ global g_settings := Map(
     "Login", 0,                ;登录游戏总开关
     ;商店
     "Shop", 0,                 ;商店总开关
-    "CashShop", 0,             ;付费商店
-    "NormalShop", 0,           ;普通商店
-    "NormalShopDust", 0,       ;普通商店：芯尘盒
-    "NormalShopPackage", 0,    ;普通商店：简介个性化礼包
-    "ArenaShop", 0,            ;竞技场商店
-    "BookFire", 0,             ;竞技场商店：燃烧手册
-    "BookWater", 0,            ;竞技场商店：水冷手册
-    "BookWind", 0,             ;竞技场商店：风压手册
-    "BookElec", 0,             ;竞技场商店：电击手册
-    "BookIron", 0,             ;竞技场商店：铁甲手册
-    "BookBox", 0,              ;竞技场商店：手册宝箱
-    "ArenaShopPackage", 0,     ;竞技场商店：简介个性化礼包
-    "ArenaShopFurnace", 0,     ;竞技场商店：公司武器熔炉
-    "ScrapShop", 0,            ;废铁商店
-    "ScrapShopGem", 0,         ;废铁商店：珠宝
-    "ScrapShopVoucher", 0,     ;废铁商店：好感券
-    "ScrapShopResources", 0,   ;废铁商店：养成资源
+    "ShopCash", 0,             ;付费商店
+    "ShopNormal", 0,           ;普通商店
+    "ShopNormal_Dust", 0,       ;普通商店：芯尘盒
+    "ShopNormal_Package", 0,    ;普通商店：简介个性化礼包
+    "ShopArena", 0,            ;竞技场商店
+    "ShopArenaBookFire", 0,             ;竞技场商店：燃烧手册
+    "ShopArenaBookWater", 0,            ;竞技场商店：水冷手册
+    "ShopArenaBookWind", 0,             ;竞技场商店：风压手册
+    "ShopArenaBookElec", 0,             ;竞技场商店：电击手册
+    "ShopArenaBookIron", 0,             ;竞技场商店：铁甲手册
+    "ShopArenaBookBox", 0,              ;竞技场商店：手册宝箱
+    "ShopArenaPackage", 0,     ;竞技场商店：简介个性化礼包
+    "ShopArenaFurnace", 0,     ;竞技场商店：公司武器熔炉
+    "ShopScrap", 0,            ;废铁商店
+    "ShopScrapGem", 0,         ;废铁商店：珠宝
+    "ShopScrapVoucher", 0,     ;废铁商店：好感券
+    "ShopScrapResources", 0,   ;废铁商店：养成资源
     ;模拟室
     "SimulationRoom", 0,       ;模拟室
     "SimulationOverClock", 0,  ;模拟室超频
     ;竞技场
     "Arena", 0,                ;竞技场收菜
-    "RookieArena", 0,          ;新人竞技场
-    "SpecialArena", 0,         ;特殊竞技场
-    "ChampionArena", 0,        ;冠军竞技场
+    "ArenaRookie", 0,          ;新人竞技场
+    "ArenaSpecial", 0,         ;特殊竞技场
+    "ArenaChampion", 0,        ;冠军竞技场
     ;无限之塔
     "Tower", 0,                ;无限之塔总开关
-    "CompanyTower", 0,         ;企业塔
-    "UniversalTower", 0,       ;通用塔
+    "TowerCompany", 0,         ;企业塔
+    "TowerUniversal", 0,       ;通用塔
     ;异常拦截
     "Interception", 0,         ;拦截战
     "InterceptionShot", 0,    ;拦截截图
     ;常规奖励
     "Award", 0,                ;奖励领取总开关
-    "OutpostDefence", 0,       ;前哨基地收菜
-    "Expedition", 0,           ;派遣
-    "LoveTalking", 0,          ;咨询
-    "Appreciation", 0,         ;花絮鉴赏
-    "FriendPoint", 0,          ;好友点数
-    "Mail", 0,                 ;邮箱
-    "RankingReward", 0,        ;排名奖励
-    "Mission", 0,              ;任务
-    "Pass", 0,                 ;通行证
+    "AwardOutpost", 0,       ;前哨基地收菜
+    "AwardOutpostExpedition", 0,           ;派遣
+    "AwardLoveTalking", 0,          ;咨询
+    "AwardAppreciation", 0,         ;花絮鉴赏
+    "AwardFriendPoint", 0,          ;好友点数
+    "AwardMail", 0,                 ;邮箱
+    "AwardRanking", 0,        ;排名奖励
+    "AwardDaily", 0,              ;任务
+    "AwardPass", 0,                 ;通行证
     ;限时奖励
-    "FreeRecruit", 0,          ;活动期间每日免费招募
-    "RoadToVillain", 0,        ;德雷克·反派之路
-    "Cooperate", 0,            ;协同作战
-    "SoloRaid", 0,             ;个人突击
-    "Session", 0,              ;小活动
-    "Festival", 0,             ;大活动
+    "AwardFreeRecruit", 0,          ;活动期间每日免费招募
+    "AwardRoadToVillain", 0,        ;德雷克·反派之路
+    "AwardCooperate", 0,            ;协同作战
+    "AwardSoloRaid", 0,             ;个人突击
+    "AwardSession", 0,              ;小活动
+    "AwardFestival", 0,             ;大活动
     ;妙妙工具
     "StoryModeAutoStar", 0,    ;剧情模式自动收藏
     "StoryModeAutoChoose", 0,  ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,      ;自动检查更新
-    "isPreRelease", 0,         ;启用预发布通道
-    "MirrorUpdate", 0,         ;使用Mirror酱检查和更新
     "AdjustSize", 0,           ;启用画面缩放
     "SelfClosing", 0,          ;完成后自动关闭程序
     "OpenBlablalink", 0,       ;完成后打开Blablalink
@@ -276,7 +274,7 @@ if g_numeric_settings["Username"] != A_Username {
             "`n==========================="
             "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
             "`n废铁商店、模拟室超频、冠军竞技场、反派之路、花絮鉴赏会、普通协同作战、单人突击、每日免费招募"
-            "`n想适配的话务必在功能开放当天提醒我！"
+            "`n关闭：ctrl + 1 终止：+ 2 调整窗口：+ 3"
         ), , "YesNo")
     if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
         msgbox("人机检测失败，你有认真看公告吗？")
@@ -475,14 +473,14 @@ ClickOnDoro(*) {
     if g_settings["Login"]
         Login() ;登陆到主界面
     if g_settings["Shop"] {
-        if g_settings["CashShop"]
-            CashShop()
-        if g_settings["NormalShop"]
-            NormalShop()
-        if g_settings["ArenaShop"]
-            ArenaShop()
-        if g_settings["ScrapShop"]
-            ScrapShop()
+        if g_settings["ShopCash"]
+            ShopCash()
+        if g_settings["ShopNormal"]
+            ShopNormal()
+        if g_settings["ShopArena"]
+            ShopArena()
+        if g_settings["ShopScrap"]
+            ShopScrap()
         BackToHall
     }
     if g_settings["SimulationRoom"] {
@@ -493,50 +491,50 @@ ClickOnDoro(*) {
     }
     if g_settings["Arena"] {
         Arena()
-        if g_settings["RookieArena"] ;新人竞技场
-            RookieArena()
-        if g_settings["SpecialArena"] ;特殊竞技场
-            SpecialArena()
-        if g_settings["ChampionArena"] ;冠军竞技场
-            ChampionArena()
+        if g_settings["ArenaRookie"] ;新人竞技场
+            ArenaRookie()
+        if g_settings["ArenaSpecial"] ;特殊竞技场
+            ArenaSpecial()
+        if g_settings["ArenaChampion"] ;冠军竞技场
+            ArenaChampion()
         BackToHall
     }
     if g_settings["Tower"] {
-        if g_settings["CompanyTower"]
-            CompanyTower()
-        if g_settings["UniversalTower"]
-            UniversalTower()
+        if g_settings["TowerCompany"]
+            TowerCompany()
+        if g_settings["TowerUniversal"]
+            TowerUniversal()
         BackToHall
     }
     if g_settings["Interception"]
         Interception()
     if g_settings["Award"] {
-        if g_settings["OutpostDefence"] ;使用键名检查 Map
-            OutpostDefence()
-        if g_settings["LoveTalking"]
-            LoveTalking()
-        if g_settings["FriendPoint"]
-            FriendPoint()
-        if g_settings["Mail"]
-            Mail()
-        if g_settings["RankingReward"] ;方舟排名奖励
-            RankingReward()
-        if g_settings["Mission"]
-            Mission()
-        if g_settings["Session"]
-            Session()
-        if g_settings["Festival"]
-            Festival()
-        if g_settings["Pass"]
-            Pass()
-        if g_settings["FreeRecruit"]
-            FreeRecruit()
-        if g_settings["Cooperate"]
-            Cooperate()
-        if g_settings["SoloRaid"]
-            SoloRaid()
-        if g_settings["RoadToVillain"]
-            RoadToVillain()
+        if g_settings["AwardOutpost"] ;使用键名检查 Map
+            AwardOutpost()
+        if g_settings["AwardLoveTalking"]
+            AwardLoveTalking()
+        if g_settings["AwardFriendPoint"]
+            AwardFriendPoint()
+        if g_settings["AwardMail"]
+            AwardMail()
+        if g_settings["AwardRanking"] ;方舟排名奖励
+            AwardRanking()
+        if g_settings["AwardDaily"]
+            AwardDaily()
+        if g_settings["AwardSession"]
+            AwardSession()
+        if g_settings["AwardFestival"]
+            AwardFestival()
+        if g_settings["AwardPass"]
+            AwardPass()
+        if g_settings["AwardFreeRecruit"]
+            AwardFreeRecruit()
+        if g_settings["AwardCooperate"]
+            AwardCooperate()
+        if g_settings["AwardSoloRaid"]
+            AwardSoloRaid()
+        if g_settings["AwardRoadToVillain"]
+            AwardRoadToVillain()
         BackToHall
     }
     if g_settings["AdjustSize"] {
@@ -1636,7 +1634,7 @@ Login() {
 ;endregion 登录
 ;region 商店
 ;tag 付费商店
-CashShop() {
+ShopCash() {
     BackToHall
     AddLog("===付费商店任务开始===")
     AddLog("寻找付费商店")
@@ -1673,7 +1671,7 @@ CashShop() {
                 FindText().Click(X, Y, "L")
                 AddLog("检测到白色叉叉，尝试重新执行任务")
                 BackToHall
-                CashShop
+                ShopCash
             }
         }
     }
@@ -1686,7 +1684,7 @@ CashShop() {
     BackToHall
 }
 ;tag 普通商店
-NormalShop() {
+ShopNormal() {
     AddLog("===普通商店任务开始===")
     BackToHall
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.236 * NikkeW . " ", NikkeY + 0.633 * NikkeH . " ", NikkeX + 0.236 * NikkeW + 0.118 * NikkeW . " ", NikkeY + 0.633 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -1708,11 +1706,11 @@ NormalShop() {
             Tolerance: 0.4 * PicTolerance },
         "芯尘盒", {
             Text: FindText().PicLib("芯尘盒"),
-            Setting: g_settings["NormalShopDust"],
+            Setting: g_settings["ShopNormal_Dust"],
             Tolerance: 0.3 * PicTolerance },
         "简介个性化礼包", {
             Text: FindText().PicLib("简介个性化礼包"),
-            Setting: g_settings["NormalShopPackage"],
+            Setting: g_settings["ShopNormal_Package"],
             Tolerance: 0.3 * PicTolerance }
     )
     loop 2 {
@@ -1763,7 +1761,7 @@ NormalShop() {
     AddLog("===普通商店任务结束===")
 }
 ;tag 竞技场商店
-ArenaShop() {
+ShopArena() {
     AddLog("===竞技场商店任务开始===")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.355 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.355 * NikkeH + 0.555 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("竞技场商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入竞技场商店")
@@ -1774,35 +1772,35 @@ ArenaShop() {
     PurchaseItems := Map(
         "燃烧代码手册", {
             Text: FindText().PicLib("燃烧代码的图标"),
-            Setting: g_settings["BookFire"],
+            Setting: g_settings["ShopArenaBookFire"],
             Tolerance: 0.2 * PicTolerance },
         "水冷代码手册", {
             Text: FindText().PicLib("水冷代码的图标"),
-            Setting: g_settings["BookWater"],
+            Setting: g_settings["ShopArenaBookWater"],
             Tolerance: 0.2 * PicTolerance },
         "风压代码手册", {
             Text: FindText().PicLib("风压代码的图标"),
-            Setting: g_settings["BookWind"],
+            Setting: g_settings["ShopArenaBookWind"],
             Tolerance: 0.2 * PicTolerance },
         "电击代码手册", {
             Text: FindText().PicLib("电击代码的图标"),
-            Setting: g_settings["BookElec"],
+            Setting: g_settings["ShopArenaBookElec"],
             Tolerance: 0.2 * PicTolerance },
         "铁甲代码手册", {
             Text: FindText().PicLib("铁甲代码的图标"),
-            Setting: g_settings["BookIron"],
+            Setting: g_settings["ShopArenaBookIron"],
             Tolerance: 0.2 * PicTolerance },
         "代码手册宝箱", {
             Text: FindText().PicLib("代码手册宝箱的图标"),
-            Setting: g_settings["BookBox"],
+            Setting: g_settings["ShopArenaBookBox"],
             Tolerance: 0.3 * PicTolerance },
         "简介个性化礼包", {
             Text: FindText().PicLib("简介个性化礼包"),
-            Setting: g_settings["ArenaShopPackage"],
+            Setting: g_settings["ShopArenaPackage"],
             Tolerance: 0.3 * PicTolerance },
         "公司武器熔炉", {
             Text: FindText().PicLib("熔炉"),
-            Setting: g_settings["ArenaShopFurnace"],
+            Setting: g_settings["ShopArenaFurnace"],
             Tolerance: 0.3 * PicTolerance }
     )
     ; 遍历并购买所有物品
@@ -1831,7 +1829,7 @@ ArenaShop() {
     AddLog("===竞技场商店任务结束===")
 }
 ;tag 废铁商店
-ScrapShop() {
+ShopScrap() {
     AddLog("===废铁商店任务开始===")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.355 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.355 * NikkeH + 0.555 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("废铁商店的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
@@ -1841,19 +1839,19 @@ ScrapShop() {
     PurchaseItems := Map(
         "珠宝", {
             Text: "|<珠宝>*150$39.00k01k7wb00C0zis3zzrxz0zzzCDz7zztnzww07CTs7U0zzb0Tzzzcs1zzrzzw7zwCTzU1k1nzw3zsC3w0zzVkTk7zwDbz03r7xzw0Cwzyvk3rb7bQTzz0Mt3zzs070TzzU",
-            Setting: g_settings["ScrapShopGem"],
+            Setting: g_settings["ShopScrapGem"],
             Tolerance: 0.1 * PicTolerance },
         "好感券", {
             Text: FindText().PicLib("黄色的礼物图标"),
-            Setting: g_settings["ScrapShopVoucher"],
+            Setting: g_settings["ShopScrapVoucher"],
             Tolerance: 0.2 * PicTolerance },
         "养成资源", {
             Text: "|<资源的图标>*170$17.1zU7zUS7VnnWTtgTnMCqk7hUTP0yq1xb3i7ZtDzl7y73k1U01zzU",
-            Setting: g_settings["ScrapShopResources"],
+            Setting: g_settings["ShopScrapResources"],
             Tolerance: 0.2 * PicTolerance },
         "信用点", {
             Text: "|<信用点的图标>*125$31.zXzs0TUzw0DUDz0703zk3U1zw1k3zy0w3zzUT3zzsDnzzy7ztzzXzw0Tlzk07wzw07zTy0zzzz2Djzz0bbzzWNlzzlaMzzsl4TzwQkTzz7ADzzVm7zzsM3zzyA1wzzi7xzzzzxzzzzszzzzsPzzzsB",
-            Setting: g_settings["ScrapShopResources"],
+            Setting: g_settings["ShopScrapResources"],
             Tolerance: 0.1 * PicTolerance }
     )
     ; 遍历并购买所有物品
@@ -2057,7 +2055,7 @@ Arena() {
     }
 }
 ;tag 新人竞技场
-RookieArena() {
+ArenaRookie() {
     AddLog("===新人竞技场任务开始===")
     AddLog("查找新人竞技场")
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("新人"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2104,7 +2102,7 @@ RookieArena() {
     AddLog("===新人竞技场任务结束===")
 }
 ;tag 特殊竞技场
-SpecialArena() {
+ArenaSpecial() {
     AddLog("===特殊竞技场任务开始===")
     AddLog("查找特殊竞技场")
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.543 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.543 * NikkeH + 0.022 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("特殊"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2151,7 +2149,7 @@ SpecialArena() {
     AddLog("===特殊竞技场任务结束===")
 }
 ;tag 冠军竞技场
-ChampionArena() {
+ArenaChampion() {
     AddLog("===冠军竞技场任务开始===")
     AddLog("查找冠军竞技场")
     Text := "|<应援>*80$30.z7yQ0z3yM500CRg7zw4VDjQ80BjCQ09aSQDBaS00Aaw6TAkwS0CwyQ9DtyQ9DlyNX006F0M0AKQU"
@@ -2205,7 +2203,7 @@ ChampionArena() {
 ;endregion 竞技场
 ;region 无限之塔
 ;tag 企业塔
-CompanyTower() {
+TowerCompany() {
     EnterToArk
     AddLog("===企业塔任务开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.559 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.559 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.029 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("无限之塔的无限"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2241,7 +2239,7 @@ CompanyTower() {
     BackToHall
 }
 ;tag 通用塔
-UniversalTower() {
+TowerUniversal() {
     EnterToArk
     AddLog("===通用塔任务开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.559 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.559 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.029 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("无限之塔的无限"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2386,7 +2384,7 @@ Interception() {
 ;endregion 拦截战
 ;region 前哨基地
 ;tag 前哨基地收菜
-OutpostDefence() {
+AwardOutpost() {
     BackToHall
     AddLog("===前哨基地收菜任务开始===")
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2432,12 +2430,12 @@ OutpostDefence() {
     }
     AddLog("已返回前哨基地主页面")
     AddLog("===前哨基地收菜任务结束===")
-    if g_settings["Expedition"] ;派遣
-        Expedition()
+    if g_settings["AwardOutpostExpedition"] ;派遣
+        AwardOutpostExpedition()
     BackToHall()
 }
 ;tag 派遣
-Expedition() {
+AwardOutpostExpedition() {
     AddLog("===派遣委托任务开始===")
     AddLog("查找派遣公告栏")
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.500 * NikkeW . " ", NikkeY + 0.901 * NikkeH . " ", NikkeX + 0.500 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.901 * NikkeH + 0.092 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("派遣公告栏的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2471,7 +2469,7 @@ Expedition() {
 ;endregion 前哨基地
 ;region 咨询
 ;tag 好感度咨询
-LoveTalking() {
+AwardLoveTalking() {
     BackToHall
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.883 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.039 * NikkeW . " ", NikkeY + 0.883 * NikkeH + 0.066 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("妮姬的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X + 10 * TrueRatio, Y, "L")
@@ -2491,8 +2489,8 @@ LoveTalking() {
     }
     AddLog("已进入好感度咨询界面")
     ; 花絮鉴赏会
-    if g_settings["Appreciation"] {
-        Appreciation
+    if g_settings["AwardAppreciation"] {
+        AwardAppreciation
     }
     Sleep 1000
     while (ok := FindText(&X, &Y, NikkeX + 0.118 * NikkeW . " ", NikkeY + 0.356 * NikkeH . " ", NikkeX + 0.118 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.356 * NikkeH + 0.022 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("》》》"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2572,7 +2570,7 @@ LoveTalking() {
     BackToHall
 }
 ;tag 花絮鉴赏
-Appreciation() {
+AwardAppreciation() {
     AddLog("===花絮鉴赏任务开始===")
     Sleep 1000
     Text := "|<花絮>*200$44.zTrzzzzzXszyDzzkQ6y0A000070300001sElXsyDyCQwyTrzU7DDbzzw1lXsszzUQ0wSDTU00C7X3ksAzXs0zsCDky0zs63sD0zy07Q3Uzzk7XUkDzw1UTA3zw003XsyT01gsyDbwwnzDXly7ADns0S7Xkwz0DXUyDDzzzwzy"
@@ -2613,7 +2611,7 @@ Appreciation() {
 }
 ;endregion 咨询
 ;region 好友点数收取
-FriendPoint() {
+AwardFriendPoint() {
     BackToHall
     AddLog("===好友点数任务开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.956 * NikkeW . " ", NikkeY + 0.211 * NikkeH . " ", NikkeX + 0.956 * NikkeW + 0.033 * NikkeW . " ", NikkeY + 0.211 * NikkeH + 0.068 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("好友的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2631,7 +2629,7 @@ FriendPoint() {
 }
 ;endregion 好友点数收取
 ;region 邮箱收取
-Mail() {
+AwardMail() {
     BackToHall
     AddLog("===邮箱任务开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.962 * NikkeW . " ", NikkeY + 0.017 * NikkeH . " ", NikkeX + 0.962 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.017 * NikkeH + 0.015 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2654,7 +2652,7 @@ Mail() {
 ;endregion 邮箱收取
 ;region 方舟排名奖励
 ;tag 排名奖励
-RankingReward() {
+AwardRanking() {
     EnterToArk()
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.979 * NikkeW . " ", NikkeY + 0.138 * NikkeH . " ", NikkeX + 0.979 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.138 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
@@ -2698,7 +2696,7 @@ RankingReward() {
 }
 ;endregion 方舟排名奖励
 ;region 每日任务收取
-Mission() {
+AwardDaily() {
     BackToHall
     AddLog("===每日任务奖励领取开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.874 * NikkeW . " ", NikkeY + 0.073 * NikkeH . " ", NikkeX + 0.874 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.073 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2723,7 +2721,7 @@ Mission() {
 ;endregion 每日任务收取
 ;region 剧情活动
 ;tag 小活动
-Session() {
+AwardSession() {
     BackToHall
     if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y + 100 * TrueRatio, "L")
@@ -2827,7 +2825,7 @@ Session() {
     BackToHall
 }
 ;tag 大活动
-Festival() {
+AwardFestival() {
     BackToHall
     AddLog("===大活动任务开始===")
     BackToHall
@@ -2905,14 +2903,14 @@ Festival() {
         Sleep 1000
     }
     AddLog("===协同作战===")
-    if g_settings["Cooperate"] {
+    if g_settings["AwardCooperate"] {
         while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X - 50 * TrueRatio, Y, "L")
             Sleep 500
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y - 50 * TrueRatio, "L")
-            CooperateBattle
+            AwardCooperateBattle
         }
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
             GoBack
@@ -2935,7 +2933,7 @@ Festival() {
 ;endregion 剧情活动
 ;region 通行证收取
 ;tag 查找通行证
-Pass() {
+AwardPass() {
     BackToHall()
     AddLog("===通行证任务开始===")
     loop 4 {
@@ -2943,7 +2941,7 @@ Pass() {
         if (ok := FindText(&X, &Y, NikkeX + 0.988 * NikkeW . " ", NikkeY + 0.127 * NikkeH . " ", NikkeX + 0.988 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.127 * NikkeH + 0.020 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             t := t + 1
             AddLog("执行第" t "个通行证")
-            OnePass()
+            OneAwardPass()
         }
         UserClick0(3800, 369, scrRatio)
         Click "Down"
@@ -2957,7 +2955,7 @@ Pass() {
     BackToHall()
 }
 ;tag 执行一次通行证
-OnePass() {
+OneAwardPass() {
     UserClick(3633, 405, scrRatio)
     loop 2 {
         Sleep 1000
@@ -2983,7 +2981,7 @@ OnePass() {
 ;endregion 通行证收取
 ;region 招募
 ;tag 每日免费招募
-FreeRecruit() {
+AwardFreeRecruit() {
     BackToHall()
     AddLog("===每日免费招募开始===")
     Text每天免费 := "|<每天免费>*156$64.wzzzzzbzz9zU0s03w1z00S01U0DU7zmNnzzyTwQzk0601ztzU07Abs07zby00Q00t6S00QttwNna9s01nba3aE01z3z00Q03167wDw03s0DgNzUTz9zbAw03wMzsbSNnk07Xky6Qt0TztsTVUs20kTyDbzbDUMTsU"
@@ -3011,7 +3009,7 @@ FreeRecruit() {
 }
 ;endregion 招募
 ;region 协同作战
-Cooperate() {
+AwardCooperate() {
     BackToHall
     AddLog("===协同作战任务开始===")
     ;把鼠标移动到活动栏
@@ -3032,11 +3030,11 @@ Cooperate() {
             return
         }
     }
-    CooperateBattle
+    AwardCooperateBattle
     AddLog("===协同作战任务结束===")
     BackToHall
 }
-CooperateBattle() {
+AwardCooperateBattle() {
     while true {
         if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.851 * NikkeW . " ", NikkeY + 0.750 * NikkeH . " ", NikkeX + 0.851 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.750 * NikkeH + 0.068 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("开始匹配的开始"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
@@ -3073,7 +3071,7 @@ CooperateBattle() {
 }
 ;endregion 协同作战
 ;region 单人突击
-SoloRaid() {
+AwardSoloRaid() {
     BackToHall
     AddLog("===单人突击任务开始===")
     Text := "|<单人突击的图标>*101$54.zU3w0D303z01s0D301z00s0C301z00k06200y00k06600y3kkw467Uy3UUw447Vy7UUwAA71w7VUs8AD1w710088D3s0100MMC3s0300MMS3s0700EES7s023kkkS7k063Ukkw7kQ67UUUw7kw47VVUwDUwA71VVsDUsAD11VsDVs8D3100T1sMC3300z1kMS2301z3kES6203z7ksy6607zzUzw7zzzzzVzwDzzzzzbzwzzzzzzjztzzzzzU"
@@ -3155,7 +3153,7 @@ SoloRaid() {
 ;endregion 单人突击
 ;region 其他限时活动
 ;tag 德雷克·反派之路
-RoadToVillain() {
+AwardRoadToVillain() {
     BackToHall()
     AddLog("===反派之路任务开始===")
     Text := "|<ROAD>*200$29.zzzznzzzy3zzwtbztlnCDbVaEC73BaNA6HQaPAYtAqN9WPgWOAq11kNw270XNYSN6bzxm9DznY5zy7AzzwCTzzzU"

@@ -3387,11 +3387,6 @@ TestMode(BtnTestMode, Info) {
 }
 ;tag 暂停程序
 ^2:: {
-    try {
-        if g_settings["AdjustSize"] {
-            AdjustSize(OriginalW, OriginalH)
-        }
-    }
     WriteSettings
     Pause
 }
@@ -3405,15 +3400,8 @@ TestMode(BtnTestMode, Info) {
     AdjustSize(1920, 1080)
 }
 ^5:: {
-    initialization()
-    AddLog("===领取奖励===")
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.951 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.951 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-    }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
-        UserClick(2412, 1905, scrRatio)
-        Sleep 1000
-    }
+    Initialization()
+    AdjustSize(3840, 2160)
 }
 ^9:: {
     ;添加基本的依赖
@@ -3425,9 +3413,18 @@ TestMode(BtnTestMode, Info) {
 ^0:: {
     ;添加基本的依赖
     Initialization()
-    ;下面写要调试的函数
-    ; AdjustSize(1280, 720)
-    ; AdjustSize(1920, 1080)
-    AdjustSize(2331, 1311)
+    ;tag 领取奖励
+    AddLog("===领取奖励===")
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.951 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.951 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+        AddLog("点击任务")
+        Sleep 2000
+    }
+    while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
+        UserClick(2412, 1905, scrRatio)
+        AddLog("点击领取奖励")
+        Sleep 1000
+    }
+    AddLog("已领取奖励")
 }
 ;endregion 快捷键

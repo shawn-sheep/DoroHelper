@@ -3031,7 +3031,7 @@ int __attribute__((__stdcall__)) PicFind(
                     . "`nnikkeID := WinGetIDLast(title)"
                     . "`nWinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID"
                     . "`nPicTolerance := 1"
-                    . "`nTrueRatio :=  NikkeW / 2331"
+                    . "`nTrueRatio :=  NikkeW / 3840"
                     . "`nFindText().PicLib(`"|<" Comment ">" color "$" txt "`", 1)`n"
                     . "`nt1:=A_TickCount, Text:=X:=Y:=`"`""
                     . "`nif (ok:=FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2*PicTolerance, 0.2*PicTolerance, FindText().PicLib(`"" Comment "`"),,,,,,, TrueRatio, TrueRatio)){"

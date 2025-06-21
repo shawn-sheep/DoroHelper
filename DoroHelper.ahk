@@ -1493,8 +1493,8 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
             timestamps.Push(match[])
         }
     }
-    ;直接取最早（正式运行时的第5个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
-    earliestTimeStr := timestamps[5]
+    ;直接取最早（正式运行时的第1个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
+    earliestTimeStr := timestamps[1]
     latestTimeStr := timestamps[timestamps.Length]
     ;转换为秒数
     earliestSeconds := TimeToSeconds(earliestTimeStr)
@@ -1518,6 +1518,9 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
         outputText .= spanMinutes " 分 "
     }
     outputText .= remainingSeconds " 秒"
+    if (spanSeconds = 0) {
+        MsgBox("刚运行就结束了，是不是没有进行详细的任务设置呢？")
+    }
     ;添加到日志
     AddLog(outputText)
 }

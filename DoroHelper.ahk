@@ -72,7 +72,6 @@ global g_settings := Map(
     "StoryModeAutoChoose", 0,  ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,      ;自动检查更新
-    "AdjustSize", 0,           ;启用画面缩放
     "SelfClosing", 0,          ;完成后自动关闭程序
     "OpenBlablalink", 0,       ;完成后打开Blablalink
 )
@@ -376,9 +375,7 @@ BtnAward := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click"
 ;tag 启动设置
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x10 yp+50 w250 h160 ", "启动选项")
-cbAdjustSize := AddCheckboxSetting(doroGui, "AdjustSize", "启用窗口调整", "x20 yp+30 Section")
-doroGui.Tips.SetTip(cbAdjustSize, "勾选后，DoroHelper运行前会尝试将窗口调整至合适的尺寸，并在运行结束后还原")
-cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "xs")
+cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "x20 yp+30 Section")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "xs")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
@@ -602,9 +599,6 @@ ClickOnDoro(*) {
             AwardRoadToVillain()
         BackToHall
     }
-    if g_settings["AdjustSize"] {
-        AdjustSize(OriginalW, OriginalH)
-    }
     CalculateAndShowSpan()
     Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
     if Result = "Yes"
@@ -675,54 +669,50 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
-    if g_settings["AdjustSize"] {
-        global OriginalW := NikkeW
-        global OriginalH := NikkeH
-        ; 尝试归类为2160p (4K) 及其变种
-        if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
-            if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
-                AddLog("标准4K分辨率 (2160p)")
-            } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
-                AddLog("4K 加宽 (21:9 超宽屏)")
-            } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 2400) {
-                AddLog("4K 增高 (16:10 宽屏)")
-            } else {
-                AddLog("4K 及其它变种分辨率")
-            }
-            AdjustSize(2331, 1311)
+    global OriginalW := NikkeW
+    global OriginalH := NikkeH
+    ; 尝试归类为2160p (4K) 及其变种
+    if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
+        if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
+            AddLog("标准4K分辨率 (2160p)")
+        } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
+            AddLog("4K 加宽 (21:9 超宽屏)")
+        } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 2400) {
+            AddLog("4K 增高 (16:10 宽屏)")
+        } else {
+            AddLog("4K 及其它变种分辨率")
         }
-        ; 尝试归类为1440p (2K) 及其变种
-        else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
-            if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
-                AddLog("标准2K分辨率 (1440p)")
-            } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
-                AddLog("2K 加宽 (21:9 超宽屏)")
-            } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 1440) {
-                AddLog("2K 超宽 (32:9 超级带鱼屏)")
-            } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1600) {
-                AddLog("2K 增高 (16:10 宽屏)")
-            } else {
-                AddLog("2K 及其它变种分辨率")
-            }
-            AdjustSize(2331, 1311)
+    }
+    ; 尝试归类为1440p (2K) 及其变种
+    else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
+        if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
+            AddLog("标准2K分辨率 (1440p)")
+        } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
+            AddLog("2K 加宽 (21:9 超宽屏)")
+        } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 1440) {
+            AddLog("2K 超宽 (32:9 超级带鱼屏)")
+        } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1600) {
+            AddLog("2K 增高 (16:10 宽屏)")
+        } else {
+            AddLog("2K 及其它变种分辨率")
         }
-        ; 尝试归类为1080p 及其变种
-        else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
-            if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
-                AddLog("标准1080p分辨率")
-            } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
-                AddLog("1080p 加宽 (21:9 超宽屏)")
-            } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 1080) {
-                AddLog("1080p 超宽 (32:9 超级带鱼屏)")
-            } else if (A_ScreenWidth = 1920 and A_ScreenHeight = 1200) {
-                AddLog("1080p 增高 (16:10 宽屏)")
-            } else {
-                AddLog("1080p 及其它变种分辨率")
-            }
+    }
+    ; 尝试归类为1080p 及其变种
+    else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
+        if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
+            AddLog("标准1080p分辨率")
+        } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
+            AddLog("1080p 加宽 (21:9 超宽屏)")
+        } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 1080) {
+            AddLog("1080p 超宽 (32:9 超级带鱼屏)")
+        } else if (A_ScreenWidth = 1920 and A_ScreenHeight = 1200) {
+            AddLog("1080p 增高 (16:10 宽屏)")
+        } else {
+            AddLog("1080p 及其它变种分辨率")
         }
-        else {
-            AddLog("不足1080p分辨率")
-        }
+    }
+    else {
+        AddLog("不足1080p分辨率")
     }
 }
 ;endregion 初始化

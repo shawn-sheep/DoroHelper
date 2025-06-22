@@ -111,7 +111,7 @@ SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
     if CompareVersionsSemVer(currentVersion, g_numeric_settings["Version"]) > 0 and g_numeric_settings["Username"] != A_Username {
-        MsgBox("版本已更新，所有设置将重置")
+        MsgBox("版本已更新，所有设置将重置`n可以在配置文件settings.ini中将Username改成自己的永久关闭重置")
         FileDelete "settings.ini"
         ; 使用之前保存的副本恢复默认设置
         g_settings := g_default_settings.Clone()
@@ -1305,10 +1305,6 @@ ClickOnHelp(*) {
     msgbox "
     (
 1. 游戏分辨率需要设置成 **16:9** 的分辨率，小于1080p 可能有问题，暂不打算特殊支持
-   - 1080p用户请全屏运行游戏、1080p的异形屏不能设置全屏，按ctrl+3按到画面不动为止，此时nikke应该位于画面左上角
-   - 2k和4k（包括异形屏）用户请按ctrl+3按到画面不动为止，不要开启全屏，此时nikke应该位于画面左上角，图片缩放应该是1
-   <!-- 2. ~~如果游戏使用**全屏模式**，则需要 显示器屏幕的分辨率也是**16:9**，否则只能使用窗口模式~~
-   - 异形屏或部分笔记本电脑用户需要特别注意这点 -->
 2. 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**
    - 多显示器请支持的显示器作为主显示器，将游戏放在主显示器内
    - 不要使用微星小飞机、游戏加加等悬浮显示数据的软件

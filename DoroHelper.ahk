@@ -1639,6 +1639,7 @@ EnterToBattle() {
 }
 ;tag 战斗结算
 BattleSettlement(Screenshot := false) {
+    global Victory
     if (BattleActive = 0) {
         AddLog("由于无法战斗，跳过战斗结算")
         return

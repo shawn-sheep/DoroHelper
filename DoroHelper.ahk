@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.0"
+currentVersion := "v1.2.1"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1943,7 +1943,7 @@ ShopArena() {
         "风压代码手册", {
             Text: FindText().PicLib("风压代码的图标"),
             Setting: g_settings["ShopArenaBookWind"],
-            Tolerance: 0.25 * PicTolerance },
+            Tolerance: 0.3 * PicTolerance },
         "电击代码手册", {
             Text: FindText().PicLib("电击代码的图标"),
             Setting: g_settings["ShopArenaBookElec"],

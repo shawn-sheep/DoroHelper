@@ -2344,7 +2344,7 @@ TowerCompany() {
         AddLog("进入无限之塔")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
     }
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.353 * NikkeW . " ", NikkeY + 0.827 * NikkeH . " ", NikkeX + 0.353 * NikkeW + 0.290 * NikkeW . " ", NikkeY + 0.827 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("每日通关"), , , , , , 1, TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.353 * NikkeW . " ", NikkeY + 0.827 * NikkeH . " ", NikkeX + 0.353 * NikkeW + 0.290 * NikkeW . " ", NikkeY + 0.827 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("每日通关"), , , , , , 1, TrueRatio, TrueRatio)) {
         count := ok.Length
         AddLog("今天有" count "座塔要打")
         Sleep 1000

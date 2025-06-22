@@ -100,16 +100,25 @@ Victory := 0
 BattleActive := 1
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
+;tag 变量备份
+g_default_settings := g_settings.Clone()
+g_default_numeric_settings := g_numeric_settings.Clone()
 ;endregion 设置变量
 ;region 读取设置
 SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
-    if CompareVersionsSemVer(currentVersion, g_numeric_settings["Version"]) {
+    if CompareVersionsSemVer(currentVersion, g_numeric_settings["Version"]) > 0 {
         MsgBox("版本已更新，所有设置将重置")
         FileDelete "settings.ini"
-        LoadSettings
+        ; 使用之前保存的副本恢复默认设置
+        g_settings := g_default_settings.Clone()
+        g_numeric_settings := g_default_numeric_settings.Clone()
+        ; 恢复默认设置后，再将版本号更新为当前最新版本
         g_numeric_settings["Version"] := currentVersion
+        ; 将重置后的默认设置写入新的 settings.ini 文件
+        WriteSettings()
+        MsgBox("设置已重置为默认值。GUI界面将在下次启动时完全更新。")
     }
 }
 catch {

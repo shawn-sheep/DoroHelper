@@ -14,66 +14,75 @@ repo := "DoroHelper"
 ;tag 简单开关
 global g_settings := Map(
     ;登录游戏
-    "Login", 0,                ;登录游戏总开关
+    "Login", 0,                  ;登录游戏总开关
     ;商店
-    "Shop", 0,                 ;商店总开关
-    "ShopCash", 0,             ;付费商店
-    "ShopNormal", 0,           ;普通商店
-    "ShopNormal_Dust", 0,       ;普通商店：芯尘盒
-    "ShopNormal_Package", 0,    ;普通商店：简介个性化礼包
-    "ShopArena", 0,            ;竞技场商店
-    "ShopArenaBookFire", 0,             ;竞技场商店：燃烧手册
-    "ShopArenaBookWater", 0,            ;竞技场商店：水冷手册
-    "ShopArenaBookWind", 0,             ;竞技场商店：风压手册
-    "ShopArenaBookElec", 0,             ;竞技场商店：电击手册
-    "ShopArenaBookIron", 0,             ;竞技场商店：铁甲手册
-    "ShopArenaBookBox", 0,              ;竞技场商店：手册宝箱
-    "ShopArenaPackage", 0,     ;竞技场商店：简介个性化礼包
-    "ShopArenaFurnace", 0,     ;竞技场商店：公司武器熔炉
-    "ShopScrap", 0,            ;废铁商店
-    "ShopScrapGem", 0,         ;废铁商店：珠宝
-    "ShopScrapVoucher", 0,     ;废铁商店：好感券
-    "ShopScrapResources", 0,   ;废铁商店：养成资源
+    "Shop", 0,                   ;商店总开关
+    "ShopCash", 0,               ;付费商店
+    "ShopNormal", 0,             ;普通商店
+    "ShopNormal_Dust", 0,        ;普通商店：芯尘盒
+    "ShopNormal_Package", 0,     ;普通商店：简介个性化礼包
+    "ShopArena", 0,              ;竞技场商店
+    "ShopArenaBookFire", 0,      ;竞技场商店：燃烧手册
+    "ShopArenaBookWater", 0,     ;竞技场商店：水冷手册
+    "ShopArenaBookWind", 0,      ;竞技场商店：风压手册
+    "ShopArenaBookElec", 0,      ;竞技场商店：电击手册
+    "ShopArenaBookIron", 0,      ;竞技场商店：铁甲手册
+    "ShopArenaBookBox", 0,       ;竞技场商店：手册宝箱
+    "ShopArenaPackage", 0,       ;竞技场商店：简介个性化礼包
+    "ShopArenaFurnace", 0,       ;竞技场商店：公司武器熔炉
+    "ShopScrap", 0,              ;废铁商店
+    "ShopScrapGem", 0,           ;废铁商店：珠宝
+    "ShopScrapVoucher", 0,       ;废铁商店：好感券
+    "ShopScrapResources", 0,     ;废铁商店：养成资源
     ;模拟室
-    "SimulationRoom", 0,       ;模拟室
-    "SimulationOverClock", 0,  ;模拟室超频
+    "SimulationRoom", 0,         ;模拟室
+    "SimulationOverClock", 0,    ;模拟室超频
     ;竞技场
-    "Arena", 0,                ;竞技场收菜
-    "ArenaRookie", 0,          ;新人竞技场
-    "ArenaSpecial", 0,         ;特殊竞技场
-    "ArenaChampion", 0,        ;冠军竞技场
+    "Arena", 0,                  ;竞技场收菜
+    "ArenaRookie", 0,            ;新人竞技场
+    "ArenaSpecial", 0,           ;特殊竞技场
+    "ArenaChampion", 0,          ;冠军竞技场
     ;无限之塔
-    "Tower", 0,                ;无限之塔总开关
-    "TowerCompany", 0,         ;企业塔
-    "TowerUniversal", 0,       ;通用塔
+    "Tower", 0,                  ;无限之塔总开关
+    "TowerCompany", 0,           ;企业塔
+    "TowerUniversal", 0,         ;通用塔
     ;异常拦截
-    "Interception", 0,         ;拦截战
-    "InterceptionShot", 0,    ;拦截截图
+    "Interception", 0,           ;拦截战
+    "InterceptionShot", 0,       ;拦截截图
     ;常规奖励
-    "Award", 0,                ;奖励领取总开关
-    "AwardOutpost", 0,       ;前哨基地收菜
-    "AwardOutpostExpedition", 0,           ;派遣
-    "AwardLoveTalking", 0,          ;咨询
-    "AwardAppreciation", 0,         ;花絮鉴赏
-    "AwardFriendPoint", 0,          ;好友点数
-    "AwardMail", 0,                 ;邮箱
-    "AwardRanking", 0,        ;排名奖励
-    "AwardDaily", 0,              ;任务
-    "AwardPass", 0,                 ;通行证
+    "Award", 0,                  ;奖励领取总开关
+    "AwardOutpost", 0,           ;前哨基地收菜
+    "AwardOutpostExpedition", 0, ;派遣
+    "AwardLoveTalking", 0,       ;咨询
+    "AwardAppreciation", 0,      ;花絮鉴赏
+    "AwardFriendPoint", 0,       ;好友点数
+    "AwardMail", 0,              ;邮箱
+    "AwardRanking", 0,           ;排名奖励
+    "AwardDaily", 0,             ;任务
+    "AwardPass", 0,              ;通行证
+    ;剧情活动
+    "Event", 0,                  ;活动总开关
+    "EventSmall", 0,             ;小活动
+    "EventSmallChallenge", 0,    ;小活动挑战
+    "EventSmallStory", 0,        ;小活动剧情
+    "EventLarge", 0,             ;大活动
+    "EventLargeSign", 0,         ;大活动签到
+    "EventLargeChallenge", 0,    ;大活动挑战
+    "EventLargeStory", 0,        ;大活动剧情
+    "EventLargeCooperate", 0,    ;大活动协同作战
+    "EventLargeDaily", 0,        ;大活动奖励
     ;限时奖励
-    "AwardFreeRecruit", 0,          ;活动期间每日免费招募
-    "AwardRoadToVillain", 0,        ;德雷克·反派之路
-    "AwardCooperate", 0,            ;协同作战
-    "AwardSoloRaid", 0,             ;个人突击
-    "AwardSession", 0,              ;小活动
-    "AwardFestival", 0,             ;大活动
+    "AwardFreeRecruit", 0,       ;活动期间每日免费招募
+    "AwardRoadToVillain", 0,     ;德雷克·反派之路
+    "AwardCooperate", 0,         ;协同作战
+    "AwardSoloRaid", 0,          ;个人突击
     ;妙妙工具
-    "StoryModeAutoStar", 0,    ;剧情模式自动收藏
-    "StoryModeAutoChoose", 0,  ;剧情模式自动选择
+    "StoryModeAutoStar", 0,      ;剧情模式自动收藏
+    "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;其他
-    "AutoCheckUpdate", 0,      ;自动检查更新
-    "SelfClosing", 0,          ;完成后自动关闭程序
-    "OpenBlablalink", 0,       ;完成后打开Blablalink
+    "AutoCheckUpdate", 0,        ;自动检查更新
+    "SelfClosing", 0,            ;完成后自动关闭程序
+    "OpenBlablalink", 0          ;完成后打开Blablalink
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(
@@ -1357,11 +1366,11 @@ AddCheckboxSetting(guiObj, settingKey, displayText, options := "", addToTaskList
     fullOptions := options (options ? " " : "") initialState ;如果有 options，加空格分隔
     ;添加复选框控件，并将 displayText 作为第三个参数
     cbCtrl := guiObj.Add("Checkbox", fullOptions, displayText)
-    ; <<< 新增：给控件附加 settingKey，方便后面识别
+    ;给控件附加 settingKey，方便后面识别
     cbCtrl.settingKey := settingKey
     ;绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey
     cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl, eventInfo))
-    ; <<< 新增：如果指定，则添加到任务列表数组
+    ;如果指定，则添加到任务列表数组
     if (addToTaskList) {
         g_taskListCheckboxes.Push(cbCtrl)
     }
@@ -3081,7 +3090,10 @@ AwardPass() {
             AddLog("执行第" t "个通行证")
             OneAwardPass()
         }
-        else break
+        else {
+            AddLog("通行证已全部收取")
+            break
+        }
         BackToHall()
     }
     AddLog("===通行证任务结束===")

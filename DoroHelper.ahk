@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.1.0"
+currentVersion := "v1.1.1"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1706,10 +1706,6 @@ BattleSettlement(Screenshot := false) {
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
     else {
         AddLog("战斗结束！")
-        Victory := Victory + 1
-        if Victory > 1 {
-            AddLog("共胜利" Victory "次")
-        }
         GoBack
         Sleep 1000
         return True

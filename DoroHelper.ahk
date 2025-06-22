@@ -1886,7 +1886,7 @@ ShopNormal() {
                     FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                     Sleep 1000
                     if name = "芯尘盒" {
-                        if (ok0 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+                        if (ok0 := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("信用点的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
                             AddLog("检测到信用点支付选项")
                         }
                         else {

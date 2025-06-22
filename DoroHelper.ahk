@@ -716,7 +716,7 @@ Initialization() {
     TrueRatio := Round(1 * WinRatio, 3)
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n额定缩放比例是" WinRatio "`n图片缩放系数是" TrueRatio "`n识图宽容度是" PicTolerance)
-    AddLog("如有问题请加入反馈qq群584275905，反馈请附带日志或录屏")
+    AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     global OriginalW := NikkeW
     global OriginalH := NikkeH
     ; 尝试归类为2160p (4K) 及其变种

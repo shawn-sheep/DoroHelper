@@ -2665,9 +2665,11 @@ EventLarge() {
             Confirm
         }
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
         }
+        else AddLog("已返回活动主页面")
     }
     ;tag 挑战
     if g_settings["EventLargeChallenge"] {
@@ -2690,9 +2692,11 @@ EventLarge() {
         EnterToBattle
         BattleSettlement
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
         }
+        else AddLog("已返回活动主页面")
     }
     ;tag 剧情活动
     if g_settings["EventLargeStory"] {
@@ -2728,9 +2732,11 @@ EventLarge() {
             BattleSettlement
         }
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
         }
+        else AddLog("已返回活动主页面")
     }
     ;tag 协同作战
     if g_settings["EventLargeCooperate"] {
@@ -2743,10 +2749,12 @@ EventLarge() {
             FindText().Click(X, Y - 50 * TrueRatio, "L")
             AwardCooperateBattle
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
         }
+        else AddLog("已返回活动主页面")
     }
     ;tag 领取奖励
     if g_settings["EventLargeDaily"] {
@@ -2759,6 +2767,12 @@ EventLarge() {
             UserClick(2412, 1905, scrRatio)
             Sleep 1000
         }
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试返回活动主页面")
+            GoBack
+            Sleep 1000
+        }
+        else AddLog("已返回活动主页面")
         AddLog("===已领取全部奖励===")
     }
     AddLog("===大活动任务结束===")

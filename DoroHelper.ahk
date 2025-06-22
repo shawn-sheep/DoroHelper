@@ -1322,7 +1322,6 @@ ClickOnHelp(*) {
 ;region 数据辅助函数
 ;tag 写入数据
 WriteSettings(*) {
-    global g_settings, g_numeric_settings
     ;从 g_settings Map 写入开关设置
     for key, value in g_settings {
         IniWrite(value, "settings.ini", "Toggles", key)
@@ -1333,7 +1332,6 @@ WriteSettings(*) {
 }
 ;tag 读出数据
 LoadSettings() {
-    global g_settings, g_numeric_settings
     default_settings := g_settings.Clone()
     ;从 Map 加载开关设置
     for key, defaultValue in default_settings {
@@ -1638,7 +1636,6 @@ EnterToBattle() {
 }
 ;tag 战斗结算
 BattleSettlement(Screenshot := false) {
-    global Victory
     if (BattleActive = 0) {
         AddLog("由于无法战斗，跳过战斗结算")
         return

@@ -369,11 +369,11 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 }
 ;tag 任务列表
 global g_taskListCheckboxes := []
-doroGui.AddGroupBox("x10 yp+50 w250 h300 ", "任务列表")
+doroGui.AddGroupBox("x10 yp+40 w250 h330 ", "任务列表")
 doroGui.SetFont('s10')
-BtnCheckAll := doroGui.Add("Button", "xp+160 R1", "☑️").OnEvent("Click", CheckAllTasks) ; <<< 修改：添加 OnEvent
+BtnCheckAll := doroGui.Add("Button", "xp+160 R1", "☑️").OnEvent("Click", CheckAllTasks)
 doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
-BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks) ; <<< 修改：添加 OnEvent
+BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks)
 doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
 doroGui.SetFont('s14')
 cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+40 Section", true)
@@ -397,20 +397,23 @@ BtnInterception := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent(
 cbAward := AddCheckboxSetting(doroGui, "Award", "奖励收取", "xs", true)
 doroGui.Tips.SetTip(cbAward, "总开关：控制是否执行各类日常奖励的收取任务`r`n请在右侧详细设置")
 BtnAward := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Award"))
+cbEvent := AddCheckboxSetting(doroGui, "Event", "活动", "xs", true)
+doroGui.Tips.SetTip(cbEvent, "总开关：控制是否执行大小活动的刷取`r`n请在右侧详细设置")
+BtnEvent := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
 ;tag 启动设置
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x10 yp+50 w250 h160 ", "启动选项")
+doroGui.AddGroupBox("x10 yp+50 w250 h130 ", "启动选项")
+BtnSaveSettings := doroGui.Add("Button", "x180 yp-2 w60 h30", "保存").OnEvent("Click", SaveSettings)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "x20 yp+30 Section")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "xs")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
-BtnSaveSettings := doroGui.Add("Button", "xs w60 h30 +0x4000", "保存").OnEvent("Click", SaveSettings)
 BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+30", "DORO!").OnEvent("Click", ClickOnDoro)
 ;tag 二级设置
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x280 y10 w300 h680 ", "任务设置")
 ;tag 二级登录
-SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
+SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====(暂无)")
 ;tag 二级商店
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 SetShopCashTitle := doroGui.Add("Text", "R1", "===付费商店===")
@@ -492,10 +495,6 @@ SetAwardRanking := AddCheckboxSetting(doroGui, "AwardRanking", "方舟排名奖�
 doroGui.Tips.SetTip(SetAwardRanking, "自动领取方舟内各类排名活动（如无限之塔排名、竞技场排名等）的结算奖励")
 SetAwardDaily := AddCheckboxSetting(doroGui, "AwardDaily", "任务收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardDaily, "收取每日任务、每周任务、主线任务以及成就等已完成任务的奖励")
-SetAwardSession := AddCheckboxSetting(doroGui, "AwardSession", "小活动[暂时禁用]", "R1.2")
-doroGui.Tips.SetTip(SetAwardSession, "对最新的挑战关卡进行战斗或快速战斗`r`n然后对主要活动的第11关消耗所有次数进行快速战斗")
-SetAwardFestival := AddCheckboxSetting(doroGui, "AwardFestival", "大活动", "R1.2")
-doroGui.Tips.SetTip(SetAwardFestival, "进行签到`r`n对最新的挑战关卡进行战斗或快速战斗`r`n然后对主要活动的第11关消耗所有次数进行快速战斗")
 SetAwardPass := AddCheckboxSetting(doroGui, "AwardPass", "通行证收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardPass, "收取当前通行证中所有可领取的等级奖励")
 SetLimitedAwardTitle := doroGui.Add("Text", "R1 Section +0x0100", "===限时奖励===")
@@ -508,6 +507,17 @@ SetAwardSoloRaid := AddCheckboxSetting(doroGui, "AwardSoloRaid", "单人突击�
 doroGui.Tips.SetTip(SetAwardSoloRaid, "参与单人突击，自动对最新的关卡进行战斗或快速战斗")
 SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德雷克·反派之路", "R1.2")
 doroGui.Tips.SetTip(SetAwardRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
+;tag 二级活动
+SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项====")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[暂时禁用]", "R1")
+SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
+SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
+SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关", "R1 xs")
+SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
+SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "大活动挑战", "R1 xs+15")
+SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
+SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
+SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 ;tag 妙妙工具
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x600 y10 w350 h300 Section", "妙妙工具")
@@ -541,10 +551,12 @@ g_settingPages := Map(
     "Arena", [SetArenaTitle, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
     "Tower", [SetTowerTitle, SetTowerCompany, SetTowerUniversal],
     "Interception", [SetInterceptionTitle, DropDownListBoss, SetInterceptionShot],
+    "Event", [SetEventTitle, SetEventSmall, SetEventSmallChallenge, SetEventSmallStory,
+        SetEventLarge, SetEventLargeSign, SetEventLargeChallenge, SetEventLargeStory, SetEventLargeCooperate, SetEventLargeDaily,],
     "Award", [
         SetAwardTitle, SetAwardNormalTitle, SetAwardOutpost, SetAwardOutpostExpedition, SetAwardLoveTalking,
         SetAwardAppreciation, SetAwardFriendPoint, SetAwardMail, SetAwardRanking,
-        SetAwardDaily, SetAwardSession, SetAwardFestival, SetAwardPass,
+        SetAwardDaily, SetAwardPass,
         SetLimitedAwardTitle, SetAwardFreeRecruit, SetAwardCooperate, SetAwardSoloRaid,
         SetAwardRoadToVillain
     ]
@@ -608,10 +620,6 @@ ClickOnDoro(*) {
             AwardRanking()
         if g_settings["AwardDaily"]
             AwardDaily()
-        if g_settings["AwardSession"]
-            AwardSession()
-        if g_settings["AwardFestival"]
-            AwardFestival()
         if g_settings["AwardPass"]
             AwardPass()
         if g_settings["AwardFreeRecruit"]
@@ -623,6 +631,12 @@ ClickOnDoro(*) {
         if g_settings["AwardRoadToVillain"]
             AwardRoadToVillain()
         BackToHall
+    }
+    if g_settings["Event"] {
+        if g_settings["EventSmall"]
+            EventSmall()
+        if g_settings["EventLarge"]
+            EventLarge()
     }
     CalculateAndShowSpan()
     Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
@@ -1594,9 +1608,12 @@ EnterToBattle() {
         Sleep 500
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.683 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.683 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            Sleep 500
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.470 * NikkeW . " ", NikkeY + 0.733 * NikkeH . " ", NikkeX + 0.470 * NikkeW + 0.157 * NikkeW . " ", NikkeY + 0.733 * NikkeH + 0.073 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("进行战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            BattleActive := 1
+            Sleep 500
         }
     }
     else if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
@@ -1620,10 +1637,11 @@ BattleSettlement(Screenshot := false) {
     checkend := 0
     checkred := 0
     AddLog("等待战斗结算")
-    Sleep 10000
-    ; 检测自动战斗和爆裂
-    CheckAuto
     while true {
+        ; 检测自动战斗和爆裂
+        if A_Index = 40 {
+            CheckAuto
+        }
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             ;AddLog("TAB已命中，共" checkend "次")
@@ -1644,7 +1662,7 @@ BattleSettlement(Screenshot := false) {
         if (checkend = 3) {
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkred := checkred + 1
             if checkred = 3 {
                 AddLog("检测到红圈，尝试打红圈")
@@ -1688,6 +1706,10 @@ BattleSettlement(Screenshot := false) {
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
     else {
         AddLog("战斗结束！")
+        Victory := Victory + 1
+        if Victory > 1 {
+            AddLog("共胜利" Victory "次")
+        }
         GoBack
         Sleep 1000
         return True
@@ -1881,9 +1903,9 @@ ShopNormal() {
                 AddLog(Name . "未找到，跳过购买")
             }
         }
-        while (ok := FindText(&X, &Y, NikkeX + 0.173 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.173 * NikkeW + 0.034 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.050 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("FREE"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X, &Y, NikkeX + 0.173 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.173 * NikkeW + 0.034 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X - 100 * TrueRatio, Y + 30 * TrueRatio, "L")
-            if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.127 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.066 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 AddLog("刷新成功")
             }
@@ -2057,7 +2079,6 @@ SimulationRoom() {
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.364 * NikkeW . " ", NikkeY + 0.323 * NikkeH . " ", NikkeX + 0.364 * NikkeW + 0.272 * NikkeW . " ", NikkeY + 0.323 * NikkeH + 0.558 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("模拟结束的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击模拟结束")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
-        Sleep 1000
     }
     while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm
@@ -2066,19 +2087,19 @@ SimulationRoom() {
 }
 ;tag 模拟室超频
 SimulationOverClock() {
-    UserClick(1918, 1637, scrRatio) ; 点击模拟室超频按钮
-    ; AddLog("===模拟室超频任务开始===")
-    ; if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.095 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红框中的0"), , , , , , , TrueRatio, TrueRatio)) {
-    ;     AddLog("模拟室超频未完成")
-    ;     Sleep 1000
-    ;     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
-    ;         Confirm
-    ;     }
-    ; }
-    ; else {
-    ;     AddLog("模拟室超频已完成！")
-    ;     return
-    ; }
+    ; UserClick(1918, 1637, scrRatio) ; 点击模拟室超频按钮
+    AddLog("===模拟室超频任务开始===")
+    if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.095 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红框中的0"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("模拟室超频未完成")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+            Confirm
+        }
+    }
+    else {
+        AddLog("模拟室超频已完成！")
+        return
+    }
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.434 * NikkeW . " ", NikkeY + 0.573 * NikkeH . " ", NikkeX + 0.434 * NikkeW + 0.132 * NikkeW . " ", NikkeY + 0.573 * NikkeH + 0.077 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("BIOS"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
@@ -2264,7 +2285,7 @@ ArenaSpecial() {
         }
         EnterToBattle
         BattleSettlement
-        while !(ok := FindText(&X, &Y, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.003 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.083 * NikkeW . " ", NikkeY + 0.003 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X, &Y, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.003 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.083 * NikkeW . " ", NikkeY + 0.003 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }
@@ -2279,8 +2300,7 @@ ArenaSpecial() {
 ArenaChampion() {
     AddLog("===冠军竞技场任务开始===")
     AddLog("查找冠军竞技场")
-    Text := "|<应援>*80$30.z7yQ0z3yM500CRg7zw4VDjQ80BjCQ09aSQDBaS00Aaw6TAkwS0CwyQ9DtyQ9DlyNX006F0M0AKQU"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.630 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.077 * NikkeW . " ", NikkeY + 0.630 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("蓝色的应援"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         AddLog("已找到一级应援文本")
         Sleep 1000
@@ -2290,26 +2310,18 @@ ArenaChampion() {
         AddLog("===冠军竞技场任务结束===")
         return
     }
-    Text := "|<冠军竞技场内部的应援>*140$29.zbyTlyDwk200toYxrVd9vr20GbDA0YaSM19AwE2GHkk4X7XU3iTb27wzA1CUyN2E0MY2"
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.467 * NikkeW . " ", NikkeY + 0.731 * NikkeH . " ", NikkeX + 0.467 * NikkeW + 0.064 * NikkeW . " ", NikkeY + 0.731 * NikkeH + 0.048 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("内部的紫色应援"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y - 50 * TrueRatio, "L")
         AddLog("已找到二级应援文本")
         Sleep 1000
     }
-    Text := "|<晋级赛内部的应援>*100$41.0D00kzy0S01Xzzzzy33yrzzwD6NzzzszCnQ001yTzsC71tzzzQC1VzzyMQ31s7Qts7DzyRnUTzzwvb3zDytzw7wTzlps7UzzX3U73xy07067vg0S0ATzTzzkttyzzzXrzzDzz7aSy"
-    while true {
-        if !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            Confirm
-        }
-        else {
-            while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-            }
-            Sleep 3000
-            break
-        }
+    while !(ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.869 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.117 * NikkeW . " ", NikkeY + 0.869 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("晋级赛内部的应援"), , , , , , , TrueRatio, TrueRatio)) {
+        Confirm
+        Sleep 1000
     }
+    AddLog("已找到三级应援文本")
+    FindText().Click(X, Y, "L")
+    Sleep 4000
     if UserCheckColor([1926], [1020], ["0xF2762B"], scrRatio) {
         AddLog("左边支持的人多")
         UserClick(1631, 1104, scrRatio)
@@ -2319,8 +2331,7 @@ ArenaChampion() {
         UserClick(2097, 1096, scrRatio)
     }
     Sleep 1000
-    Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.837 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.096 * NikkeW . " ", NikkeY + 0.837 * NikkeH + 0.058 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
     }
@@ -2354,7 +2365,7 @@ TowerCompany() {
                 RefuseSale
             }
             if !(A_Index = count) {
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(X + 30 * TrueRatio, Y, "L")
                 }
             }
@@ -2510,6 +2521,245 @@ Interception() {
     BackToHall
 }
 ;endregion 拦截战
+;region 小活动
+EventSmall() {
+    BackToHall
+    if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y + 100 * TrueRatio, "L")
+    }
+    Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
+    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
+        Confirm
+        Send "{]}"
+        if A_Index > 10 {
+            AddLog("未找到小活动，可能是活动已结束")
+            return
+        }
+    }
+    AddLog("===剧情活动任务开始===")
+    ;tag 挑战
+    if g_settings["EventSmallChallenge"] {
+        AddLog("尝试完成挑战任务")
+        Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 3000
+            Text红 := "|<红色的关卡的循环图标>B40000-0.70$61.00000000000000000000000000000000000000000000000000000000000000000000000000001U000000000w000000000TU0000003zzsDzs0001zzz7zw0000zzzvzy0000Tzztzz0000DzzkzzU0007kTU07k0003sD003s0001w7001w0000y2000y0000T0000T0000DU000DU0007k0007k0003s0063s0001w00D1w0000y00TUy0000T00TkT0000DzkzzzU0007ztzzzk0003zwzzzs0001zy7zzw0000000zU000000007k000000001s000000000A00000000000000000000000000000000000000000000000000004"
+            Text黄 := "|<黄色的关卡的循环图标>F5A317-0.60$49.0000000000000000000000000000000000000000000000000000A00000007U0000003w00000Dzz1zy00DzzszzU07zzyTzk03zzyDzs01zzw7zw00y3w00y00T1s00T00DUk00DU07k0007k03s0003s01w0001w00y0000y00T000kT00DU01sDU07k03w7k03s03y3s01zy7zzw00zzDzzy00TzXzzz00DzkTzz000007w0000000y0000000700000000U000000000000000001"
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text红, , 0, , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+            }
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text黄, , 0, , , , 3, TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+            }
+            Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("快速战斗已激活")
+                FindText().Click(X, Y, "L")
+                Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                }
+                Text := "|<左上角的挑战>*110$38.ls7yT7wS1z7kD607kwF000w16k00T0Ea207ss1lU3yS0QC1z7Ui30D061001k1UEE0A0MC44H763l15llVwMFAMM76AH040V30k00MFkAM66TzDzznU"
+                while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                    Confirm
+                }
+                AddLog("完成挑战任务")
+            }
+            else {
+                EnterToBattle
+                BattleSettlement
+                AddLog("完成挑战任务")
+            }
+        }
+    }
+    ;tag 剧情活动
+    if g_settings["EventSmallStory"] {
+        Text := "|<剧情活动>*200$73.zzvvyTzztzzrk3xxk0wS0y1vs1ayM0zC1z0xwynT7XzztzzwS0Ni00Dzwzzw10Ar3wzzwDzy0aSPX01lk0M1bH7Blzzwz3w1nc0ayw0zznzbtolnTQ0TztzrwsttjiTjzU3viQ04rr07xk1tnQ03vvXnwvww1C1txxk1wxyQ072wyys0ySTDDXX0QTQzST07zn3aSTiSDzU3zzX"
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            GoBack
+        }
+        Text := "|<加成>*200$32.nzzzawzzztbDYw00UPjDbwqvntzRiwyNrPj0qxqvnBDRiwn7rPjAltqvrAyxixbCiMCTdbCvbr6"
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y - 100 * TrueRatio, "L")
+            Sleep 1000
+            ;Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
+            ;if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            ;    AddLog("困难未在开放期间，可以继续")
+            ;}
+            UserClick(1662, 2013, scrRatio)
+            Sleep 1000
+            UserClick(1662, 2013, scrRatio)
+            Sleep 1000
+            UserClick(1662, 2013, scrRatio)
+            Sleep 1000
+            Text := "|<1-11>*100$53.y3zzzw7z1k7zzzUDs20Dzzw0T040Tzzs0y001zzzU3s0q3zzzA7n1w7zzzsDy3sDzzzkTw7kzzzzVzsT1zzzy3zUy3s07w7z1w7k0TsDy3sTU0zkzwDUz01z1zkT1zzzy3zUy3zzzw7z1wDzzzsTy7kTzzzUzsDUzzzz1zkT1zzzy3zUy7zzzwDz3sDzzzkTw7s"
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("刷11关")
+                FindText().Click(X, Y, "L")
+                Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                    AddLog("快速战斗已激活")
+                    FindText().Click(X, Y, "L")
+                    Text := "|<MAX>*130$23.66CMAAQYMMt8klkFV1lX2HX64b649CA2GQM4Ysk91lUG399UWGH3YZa73XBiLM"
+                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.15 * PicTolerance, 0.15 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                        AddLog("进行多倍率快速战斗")
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                    }
+                    Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"
+                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X, Y, "L")
+                    }
+                    AddLog("完成活动关卡")
+                }
+                else {
+                    EnterToBattle
+                    BattleSettlement
+                    AddLog("完成活动关卡")
+                }
+            }
+            else {
+                AddLog("未找到第11关")
+            }
+        }
+        Text := "|<剧情活动>*200$73.zzvvyTzztzzrk3xxk0wS0y1vs1ayM0zC1z0xwynT7XzztzzwS0Ni00Dzwzzw10Ar3wzzwDzy0aSPX01lk0M1bH7Blzzwz3w1nc0ayw0zznzbtolnTQ0TztzrwsttjiTjzU3viQ04rr07xk1tnQ03vvXnwvww1C1txxk1wxyQ072wyys0ySTDDXX0QTQzST07zn3aSTiSDzU3zzX"
+        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+            GoBack
+        }
+    }
+    AddLog("===剧情活动任务结束===")
+    BackToHall
+}
+;endregion 小活动
+;region 大活动
+EventLarge() {
+    BackToHall
+    AddLog("===大活动任务开始===")
+    BackToHall
+    if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y + 100 * TrueRatio, "L")
+        Sleep 1000
+    }
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        GoBack
+        Sleep 1000
+    }
+    AddLog("已进入活动地区")
+    ;tag 签到
+    if g_settings["EventLargeSign"] {
+        AddLog("===签到===")
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.105 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X - 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.530 * NikkeW . " ", NikkeY + 0.915 * NikkeH . " ", NikkeX + 0.530 * NikkeW + 0.106 * NikkeW . " ", NikkeY + 0.915 * NikkeH + 0.049 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X + 50 * TrueRatio, Y, "L")
+            AddLog("点击全部领取")
+            Sleep 3000
+            Confirm
+        }
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            GoBack
+            Sleep 1000
+        }
+    }
+    ;tag 挑战
+    if g_settings["EventLargeChallenge"] {
+        AddLog("===刷挑战===")
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.840 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.107 * NikkeW . " ", NikkeY + 0.840 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("挑战"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X - 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.063 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("挑战关卡"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("进入挑战关卡页面")
+        }
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X + 50 * TrueRatio, Y, "L")
+            Sleep 1000
+        }
+        else if (ok := FindText(&X, &Y, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的关卡的循环图标"), , , , , , 3, TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+        }
+        EnterToBattle
+        BattleSettlement
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            GoBack
+            Sleep 1000
+        }
+    }
+    ;tag 剧情活动
+    if g_settings["EventLargeStory"] {
+        AddLog("===刷11关===")
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.338 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.338 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("STORYⅠⅠ"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X - 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
+        Sleep 1000
+        Confirm
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.052 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("剧情活动"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("进入剧情活动页面")
+        }
+        else MsgBox("进入剧情活动超时")
+        Confirm
+        while (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.769 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.769 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("时间"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y - 50 * TrueRatio, "L")
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.054 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("进入活动关卡页面")
+                Sleep 500
+                break
+            }
+        }
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.062 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.041 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("剩下"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("活动到了第二阶段")
+        }
+        else {
+            MsgBox("活动到了第三阶段，请暂停")
+        }
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.455 * NikkeW . " ", NikkeY + 0.473 * NikkeH . " ", NikkeX + 0.455 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.473 * NikkeH + 0.344 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE右侧的图标"), , , , , , 3, TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            EnterToBattle
+            BattleSettlement
+        }
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            GoBack
+            Sleep 1000
+        }
+    }
+    ;tag 协同作战
+    if g_settings["EventLargeCooperate"] {
+        AddLog("===协同作战===")
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X - 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
+        if (ok := FindText(&X, &Y, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y - 50 * TrueRatio, "L")
+            AwardCooperateBattle
+        }
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
+            GoBack
+            Sleep 1000
+        }
+    }
+    ;tag 领取奖励
+    if g_settings["EventLargeDaily"] {
+        AddLog("===领取奖励===")
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.951 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.951 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+        }
+        while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
+            UserClick(2412, 1905, scrRatio)
+            Sleep 1000
+        }
+        AddLog("===已领取全部奖励===")
+    }
+    AddLog("===大活动任务结束===")
+    BackToHall
+}
+;endregion 大活动
 ;region 前哨基地
 ;tag 前哨基地收菜
 AwardOutpost() {
@@ -2573,10 +2823,9 @@ AwardOutpostExpedition() {
         while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.547 * NikkeW . " ", NikkeY + 0.807 * NikkeH . " ", NikkeX + 0.547 * NikkeW + 0.087 * NikkeW . " ", NikkeY + 0.807 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
             AddLog("点击全部领取")
             FindText().Click(X + 100 * TrueRatio, Y, "L")
-            Sleep 1000
         }
         else AddLog("没有可领取的奖励")
-        while !(ok := FindText(&X, &Y, NikkeX + 0.378 * NikkeW . " ", NikkeY + 0.137 * NikkeH . " ", NikkeX + 0.378 * NikkeW + 0.085 * NikkeW . " ", NikkeY + 0.137 * NikkeH + 0.040 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("派遣公告栏最左上角的派遣"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X, &Y, NikkeX + 0.378 * NikkeW . " ", NikkeY + 0.137 * NikkeH . " ", NikkeX + 0.378 * NikkeW + 0.085 * NikkeW . " ", NikkeY + 0.137 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("派遣公告栏最左上角的派遣"), , , , , , , TrueRatio, TrueRatio)) {
             UserClick(1595, 1806, scrRatio)
             Sleep 500
         }
@@ -2628,7 +2877,7 @@ AwardLoveTalking() {
             AddLog("妮姬咨询任务已超过20次，结束任务")
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX + 0.635 * NikkeW . " ", NikkeY + 0.658 * NikkeH . " ", NikkeX + 0.635 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.658 * NikkeH + 0.034 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红色的20进度"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.635 * NikkeW . " ", NikkeY + 0.658 * NikkeH . " ", NikkeX + 0.635 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.658 * NikkeH + 0.034 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的20进度"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             if (ok := FindText(&X, &Y, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.637 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.637 * NikkeH + 0.028 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询·红色的MAX"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("好感度也已满，跳过")
@@ -2679,7 +2928,7 @@ AwardLoveTalking() {
                 AddLog("该妮姬已咨询")
             }
         }
-        if (ok := FindText(&X, &Y, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.780 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.131 * NikkeW . " ", NikkeY + 0.780 * NikkeH + 0.088 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("0/"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.780 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.131 * NikkeW . " ", NikkeY + 0.780 * NikkeH + 0.088 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("0/"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("咨询次数已耗尽")
             break
         }
@@ -2845,233 +3094,6 @@ AwardDaily() {
     AddLog("===每日任务奖励领取结束===")
 }
 ;endregion 每日任务收取
-;region 小活动
-AwardSession() {
-    BackToHall
-    if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y + 100 * TrueRatio, "L")
-    }
-    ;tag 挑战
-    Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-        Confirm
-        Send "{]}"
-        if A_Index > 10 {
-            AddLog("未找到小活动，可能是活动已结束")
-            return
-        }
-    }
-    AddLog("===剧情活动任务开始===")
-    AddLog("尝试完成挑战任务")
-    Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-        Sleep 3000
-        Text红 := "|<红色的关卡的循环图标>B40000-0.70$61.00000000000000000000000000000000000000000000000000000000000000000000000000001U000000000w000000000TU0000003zzsDzs0001zzz7zw0000zzzvzy0000Tzztzz0000DzzkzzU0007kTU07k0003sD003s0001w7001w0000y2000y0000T0000T0000DU000DU0007k0007k0003s0063s0001w00D1w0000y00TUy0000T00TkT0000DzkzzzU0007ztzzzk0003zwzzzs0001zy7zzw0000000zU000000007k000000001s000000000A00000000000000000000000000000000000000000000000000004"
-        Text黄 := "|<黄色的关卡的循环图标>F5A317-0.60$49.0000000000000000000000000000000000000000000000000000A00000007U0000003w00000Dzz1zy00DzzszzU07zzyTzk03zzyDzs01zzw7zw00y3w00y00T1s00T00DUk00DU07k0007k03s0003s01w0001w00y0000y00T000kT00DU01sDU07k03w7k03s03y3s01zy7zzw00zzDzzy00TzXzzz00DzkTzz000007w0000000y0000000700000000U000000000000000001"
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text红, , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-        }
-        else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text黄, , 0, , , , 3, TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-        }
-        Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("快速战斗已激活")
-            FindText().Click(X, Y, "L")
-            Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-            }
-            Text := "|<左上角的挑战>*110$38.ls7yT7wS1z7kD607kwF000w16k00T0Ea207ss1lU3yS0QC1z7Ui30D061001k1UEE0A0MC44H763l15llVwMFAMM76AH040V30k00MFkAM66TzDzznU"
-            while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                Confirm
-            }
-            AddLog("完成挑战任务")
-        }
-        else {
-            EnterToBattle
-            BattleSettlement
-            AddLog("完成挑战任务")
-        }
-    }
-    ;tag 剧情活动
-    Text := "|<剧情活动>*200$73.zzvvyTzztzzrk3xxk0wS0y1vs1ayM0zC1z0xwynT7XzztzzwS0Ni00Dzwzzw10Ar3wzzwDzy0aSPX01lk0M1bH7Blzzwz3w1nc0ayw0zznzbtolnTQ0TztzrwsttjiTjzU3viQ04rr07xk1tnQ03vvXnwvww1C1txxk1wxyQ072wyys0ySTDDXX0QTQzST07zn3aSTiSDzU3zzX"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        GoBack
-    }
-    Text := "|<加成>*200$32.nzzzawzzztbDYw00UPjDbwqvntzRiwyNrPj0qxqvnBDRiwn7rPjAltqvrAyxixbCiMCTdbCvbr6"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y - 100 * TrueRatio, "L")
-        Sleep 1000
-        ;Text := "|<离活动开始还剩下的剩下>*200$36.zbtzzzU7tzzzwztU00yTNznz01NznzyzNznzqbNzlzaXNzkTqbNzk7qrNznXalNznnwTNznzsDtznzsXtznzavtznziznznzyzXznzU"
-        ;if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        ;    AddLog("困难未在开放期间，可以继续")
-        ;}
-        UserClick(1662, 2013, scrRatio)
-        Sleep 1000
-        UserClick(1662, 2013, scrRatio)
-        Sleep 1000
-        UserClick(1662, 2013, scrRatio)
-        Sleep 1000
-        Text := "|<1-11>*100$53.y3zzzw7z1k7zzzUDs20Dzzw0T040Tzzs0y001zzzU3s0q3zzzA7n1w7zzzsDy3sDzzzkTw7kzzzzVzsT1zzzy3zUy3s07w7z1w7k0TsDy3sTU0zkzwDUz01z1zkT1zzzy3zUy3zzzw7z1wDzzzsTy7kTzzzUzsDUzzzz1zkT1zzzy3zUy7zzzwDz3sDzzzkTw7s"
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("刷11关")
-            FindText().Click(X, Y, "L")
-            Text := "|<快速战斗的图标>*194$29.UD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0TzUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zUD0Ty0w1zs3k7zs"
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("快速战斗已激活")
-                FindText().Click(X, Y, "L")
-                Text := "|<MAX>*130$23.66CMAAQYMMt8klkFV1lX2HX64b649CA2GQM4Ysk91lUG399UWGH3YZa73XBiLM"
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.15 * PicTolerance, 0.15 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                    AddLog("进行多倍率快速战斗")
-                    FindText().Click(X, Y, "L")
-                    Sleep 1000
-                }
-                Text := "|<进行战斗的战斗>*186$45.zzrzzzbzbwPzzwTszWDyDXz3wMzUwTs3X7y1Xz0ARzwATs1VbzvXz3s0TTwTsy07kzXz7k9y3wTsTlbsDXs0C8zlwT01k7zTXs0C1zzs07lkDzk00yD3w0007lsz003syC6M1wT01U3zzXs000TzwT0047zzXsy1kzzwTzzzDzzbw"
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                }
-                AddLog("完成活动关卡")
-            }
-            else {
-                EnterToBattle
-                BattleSettlement
-                AddLog("完成活动关卡")
-            }
-        }
-        else {
-            AddLog("未找到第11关")
-        }
-    }
-    Text := "|<剧情活动>*200$73.zzvvyTzztzzrk3xxk0wS0y1vs1ayM0zC1z0xwynT7XzztzzwS0Ni00Dzwzzw10Ar3wzzwDzy0aSPX01lk0M1bH7Blzzwz3w1nc0ayw0zznzbtolnTQ0TztzrwsttjiTjzU3viQ04rr07xk1tnQ03vvXnwvww1C1txxk1wxyQ072wyys0ySTDDXX0QTQzST07zn3aSTiSDzU3zzX"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        GoBack
-    }
-    AddLog("===剧情活动任务结束===")
-    BackToHall
-}
-;endregion 小活动
-;region 大活动
-AwardFestival() {
-    BackToHall
-    AddLog("===大活动任务开始===")
-    BackToHall
-    if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y + 100 * TrueRatio, "L")
-        Sleep 1000
-    }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
-        Confirm
-        Sleep 1000
-    }
-    AddLog("已进入活动地区")
-    ;tag 签到
-    AddLog("===签到===")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.105 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X - 50 * TrueRatio, Y, "L")
-        Sleep 500
-    }
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.530 * NikkeW . " ", NikkeY + 0.915 * NikkeH . " ", NikkeX + 0.530 * NikkeW + 0.106 * NikkeW . " ", NikkeY + 0.915 * NikkeH + 0.049 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X + 50 * TrueRatio, Y, "L")
-        AddLog("点击全部领取")
-        Sleep 3000
-        Confirm
-    }
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
-        GoBack
-        Sleep 1000
-    }
-    ;tag 挑战
-    AddLog("===刷挑战===")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.840 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.107 * NikkeW . " ", NikkeY + 0.840 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("挑战"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X - 50 * TrueRatio, Y, "L")
-        Sleep 500
-    }
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.063 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("挑战关卡"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("进入挑战关卡页面")
-    }
-    Sleep 1000
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X + 50 * TrueRatio, Y, "L")
-        Sleep 1000
-    }
-    else if (ok := FindText(&X, &Y, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的关卡的循环图标"), , , , , , 3, TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-    }
-    EnterToBattle
-    BattleSettlement
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
-        GoBack
-        Sleep 1000
-    }
-    ;tag 剧情活动
-    AddLog("===刷11关===")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.338 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.338 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("STORYⅠⅠ"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X - 50 * TrueRatio, Y, "L")
-        Sleep 500
-    }
-    Sleep 1000
-    Confirm
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.052 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("剧情活动"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("进入剧情活动页面")
-    }
-    else MsgBox("进入剧情活动超时")
-    Confirm
-    while (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.769 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.769 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("时间"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y - 50 * TrueRatio, "L")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.054 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("进入活动关卡页面")
-            Sleep 500
-            break
-        }
-    }
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.062 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.041 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("剩下"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("活动到了第二阶段")
-    }
-    else {
-        MsgBox("活动到了第三阶段，请暂停")
-    }
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.455 * NikkeW . " ", NikkeY + 0.473 * NikkeH . " ", NikkeX + 0.455 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.473 * NikkeH + 0.344 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE右侧的图标"), , , , , , 3, TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-        EnterToBattle
-        BattleSettlement
-    }
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
-        GoBack
-        Sleep 1000
-    }
-    ;tag 协同作战
-    AddLog("===协同作战===")
-    if g_settings["AwardCooperate"] {
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X - 50 * TrueRatio, Y, "L")
-            Sleep 500
-        }
-        if (ok := FindText(&X, &Y, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y - 50 * TrueRatio, "L")
-            AwardCooperateBattle
-        }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
-            GoBack
-            Sleep 1000
-        }
-    }
-    ;tag 领取奖励
-    AddLog("===领取奖励===")
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.951 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.951 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
-        Sleep 1000
-    }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
-        UserClick(2412, 1905, scrRatio)
-        Sleep 1000
-    }
-    AddLog("===已领取全部奖励===")
-    AddLog("===大活动任务结束===")
-    BackToHall
-}
-;endregion 大活动
 ;region 通行证收取
 ;tag 查找通行证
 AwardPass() {

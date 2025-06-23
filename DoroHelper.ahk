@@ -2228,7 +2228,10 @@ ArenaRookie() {
             FindText().Click(X, Y + 10 * TrueRatio, "L")
             Sleep 1000
         }
-        else break
+        else {
+            AddLog("没有免费次数，尝试返回")
+            break
+        }
         if skip = false {
             if (ok := FindText(&X, &Y, NikkeX + 0.393 * NikkeW . " ", NikkeY + 0.815 * NikkeH . " ", NikkeX + 0.393 * NikkeW + 0.081 * NikkeW . " ", NikkeY + 0.815 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ON"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("快速战斗已开启")
@@ -2275,7 +2278,10 @@ ArenaSpecial() {
             FindText().Click(X, Y + 10 * TrueRatio, "L")
             Sleep 1000
         }
-        else break
+        else {
+            AddLog("没有免费次数，尝试返回")
+            break
+        }
         if skip = false {
             if (ok := FindText(&X, &Y, NikkeX + 0.393 * NikkeW . " ", NikkeY + 0.815 * NikkeH . " ", NikkeX + 0.393 * NikkeW + 0.081 * NikkeW . " ", NikkeY + 0.815 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ON"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("快速战斗已开启")

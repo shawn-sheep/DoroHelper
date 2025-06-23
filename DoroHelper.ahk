@@ -2363,6 +2363,7 @@ TowerCompany() {
         AddLog("今天有" count "座塔要打")
         Sleep 1000
         FindText().Click(X, Y, "L")
+        Sleep 1000
         loop count {
             if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.426 * NikkeW . " ", NikkeY + 0.405 * NikkeH . " ", NikkeX + 0.426 * NikkeW + 0.025 * NikkeW . " ", NikkeY + 0.405 * NikkeH + 0.024 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("已进入塔的内部")

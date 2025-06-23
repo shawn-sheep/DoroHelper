@@ -2325,7 +2325,7 @@ ArenaChampion() {
         return
     }
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.467 * NikkeW . " ", NikkeY + 0.731 * NikkeH . " ", NikkeX + 0.467 * NikkeW + 0.064 * NikkeW . " ", NikkeY + 0.731 * NikkeH + 0.048 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("内部的紫色应援"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y - 50 * TrueRatio, "L")
+        FindText().Click(X, Y - 200 * TrueRatio, "L")
         AddLog("已找到二级应援文本")
         Sleep 1000
     }

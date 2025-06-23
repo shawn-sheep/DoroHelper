@@ -2794,7 +2794,7 @@ EventLarge() {
             UserClick(1904, 1886, TrueRatio)
             Sleep 5000
             while true {
-                AddLog(A_Index)
+                ; AddLog(A_Index)
                 if A_Index = 30 {
                     loop 50 {
                         Send "Q"
@@ -2815,7 +2815,18 @@ EventLarge() {
                     }
                 }
             }
-            while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+            while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.552 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.106 * NikkeW . " ", NikkeY + 0.552 * NikkeH + 0.047 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白色的四个点"), , , , , , , TrueRatio, TrueRatio)) {
+                GoBack
+            }
+            if (ok := FindText(&X, &Y, NikkeX + 0.262 * NikkeW . " ", NikkeY + 0.770 * NikkeH . " ", NikkeX + 0.262 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.770 * NikkeH + 0.033 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("小游戏·任务"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+            }
+            while !(ok := FindText(&X, &Y, NikkeX + 0.444 * NikkeW . " ", NikkeY + 0.854 * NikkeH . " ", NikkeX + 0.444 * NikkeW + 0.119 * NikkeW . " ", NikkeY + 0.854 * NikkeH + 0.059 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("小游戏·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
+                UserClick(2072, 1916, TrueRatio)
+                Sleep 1000
+            }
+            while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("尝试返回活动主页面")
                 GoBack
                 Sleep 1000

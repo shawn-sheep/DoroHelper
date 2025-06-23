@@ -1810,7 +1810,7 @@ ShopCash() {
                 FindText().Click(X, Y, "L")
             }
         }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.182 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.330 * NikkeW . " ", NikkeY + 0.182 * NikkeH + 0.075 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("礼物的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.040 * NikkeW . " ", NikkeY + 0.178 * NikkeH . " ", NikkeX + 0.040 * NikkeW + 0.229 * NikkeW . " ", NikkeY + 0.178 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("礼物的图标"), , , , , , , TrueRatio, TrueRatio)) {
             Sleep 1000
             AddLog("点击一级页面")
             FindText().Click(X + 20 * TrueRatio, Y + 20 * TrueRatio, "L")

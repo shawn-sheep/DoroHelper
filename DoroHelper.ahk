@@ -275,6 +275,8 @@ FindText().PicLib("|<小游戏>*200$90.zzzzzzzjzzzzzzzzz3zzty7kzzzy7Dzz3zzkS7kzz
 FindText().PicLib("|<白色的四个点>FBFBFB-0.75$46.zz0003zzzw000Dzzzk000zzzz0003zzzw000Dzzzk000zzzz0003zzzw000Dzzzk000zzzz0003zzzw000Dzrzk000zy0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003zw000Dzzzk000zzzz0003zzzw000Dzzzk000zzzz0003zzzw000Dzzzk000zzzz0003zzzw000Dzzzk000zzU", 1)
 FindText().PicLib("|<搜索的图标>*200$56.zzzw07zzzzzzs007zzzzzk000Dzzzzk0000zzzzs00007zzzs00000Tzzw000003zzy000000Tzz0000003zzU000000Tzk01zk003zs03zzU00zy03zzy007z01zzzk00zU0zzzy00Ds0Tw1zk01w07w07w00T03y00zU03k1z007w00s0TU00z00C07k007s01U3w001y00M0z000TU040DU007s0103s000y0000y000DU000DU003s0003s001y0000z000TU000Dk007s0001y003w0000TU00z00403w00Tk01U0zU0Ds00M07y0Dw00601zwTz001U0Dzzzy00w00zzzzk0D007zzny03s00zzszk1y001zk7y0Tk00000zkDw000007y7zU00000zlzw00000Dyzz000001zzzs000007zzz000000zzzs000007zzzU00001zzzw00000zzzzU0000zzzzy0000Tzzzzs000zzzzzzk01zzzzzzzyTzzzy", 1)
 FindText().PicLib("|<小游戏·重新开始的图标>*200$40.001y00001zzU000TzzUM07zzzXU1zzzzT0Dzzzzw1zzzzzkDzk3zz1zs01zw7z003zszk00DzXy001zyTs00Dzxz000zzzs000TzzU000Dzy00007zk00001z000003s00000DU00000S00001k00000Dk00000z000003w00000Dz00001zzU0007zzk000Tjzw003yzzk00Tnzy001zDzk00DsTz003zVzy00Tw7zz0DzkDzzzzy0zzzzzk3zzzzw067zzzU0EDzzs000Dzy00003z002", 1)
+FindText().PicLib("|<小游戏·任务>*150$87.zwzzzzTzzy7zzzzzUzzz1zzzU7zzzzs3zy07zzw1zzzzz0Tk00Tzz0Dzzzzk20001zzk0001zy00000Dzw00007zUA000Tzy00000Tw1U00zzzU00007z0S00Dzzk00001zs3ky1zzs07zy0Ty0zzkDzz00Tz07zU7zy1zzw01zU1zs0zzkDzzUk1k0Tz07zy1zzyT000Dzk0zzkDzzzw003zw07zy1zzzzU00zz00zzkDzzw00000M07zy1zzU000000U0k0000y000000A0600007k00z001k0k0000z01zzk0T8600007s7yTzy7v0k0000zzzkDzzzs600007zzy1zzzz0zzkDzzzzUDzzzs7zy1zzw000007z0zzkDzzU00000zs7zy1zzw000007z0zzkDzzU00000zs7zy1zzw000007z0zzkDzzzy0zy1zs7zy1zzzzUDzkDz0zzkDzzzs3zy1zs7zy1zzzw0TzkDz0zzUDzzz07zw1zs7U0007z01zzUTz0w0000z00STk3zs7U0007k07s00Tz0w0000z03z007zs7U0007w1zw01zz0w0000zUzzU0Tzs7zzzzzyzzz1zzU", 1)
+FindText().PicLib("|<小游戏·全部领取的全部>*200$80.zzzTzzzzyzzzzzzzVzzzzwDzzzzzzsDzzzz1zzzzzzw3zzzzsTz00Tzy0Tzzzy3zk03zz03zzy000Q00zzU0TzzU00700DzUA3zzs001ky7zk7UTzy000QD1zs3w1zzyDsz3kzw1zUDzz3y7kwDw0zw0zzkz1wC3w0zzk3zw7kz3Vy0Tzy0TzVwDksQ0Dzzk1zsS3wA707zzy07y7Vz33k000003k000kky40000Vw000AADr0000Cz000331zs0003zk000ksDzzsTzzzzzzwD3zzy7zzzzzzz3kTzzVzzzzzzzky7zzsTzzzzzzwDVzzw7zzzk00D3sTs0007zw003ky3y0001zz000wDUzU000Tzk00D3sDs0007zwDz3ky7zzsTzzz3zkwC1zzy7zzzkzwD20TzzVzzzwDz3kUDzzsTzzz3zkwA7zzy7zzzkTsD37w000007w003kzz000001z000wDzk00000Tk00D3zw000007w7y3kzzzzzzzzz3zkwDzU", 1)
 ;tag 协同作战
 FindText().PicLib("|<开始匹配的开始>*200$88.zzzzzzzzkTzwDzzzzzzzzzz1zzkTzw000001zw7zy1zzk000003zkTzs7zz000000Dz3zzUzzw000000zwDzw3zzk000003zkzzkTrzzkDzUzzy3zy1wDzzUzy3zzk6TsDUzzy3zsDzw00T0z1zzsDzUzzU01w7w3zzUzy3zy007UzsDzy3zsDzs00Q3zUTzsDzUzzw71kTy0zzUzy3zzkQ60003zy3zsDzz3kE0007zsDzUzzwD30000TzUzy3zzkwA0001U000001y3ks07y00000007sC3Xzzsk000000TVsDzzzj0000001y7Uzzzzw0000007kS7zzzzzz0zw3zz0kT0007zw7zsDzw01w000TzkTzUzzw07k001zy1zy3zzs0z0007zs7zsDzzk3w3zUTzUTzUzzzUDkTz1zw3zy3zzz0T1zw7zkDzsDzzw0w7zkTy1zzUzzzU1kTz1zk7zy3zzy071zw7z0TzsDzzk0Q7zkTs3zzUzzy1VkTz1z0Tzy3zzkDD0007s1zzsDzy0xw000S0DzzUzzk7zk001s1zzy3zz0zz0007kDzzsDzy7zw000TXzzzUzzszzkTz1zTzzy3zzzzz1zw7U", 1)
 FindText().PicLib("|<普通>*200$112.007001k00000000000003y007w0000000000U00Tw00zs00100Dzzzz001zk07zU00D00zzzzz003zU0Tw001y03zzzzy00Dy03zk00Dw0Dzzzzs3zzzzzzzs1zs0zzzzz0TzzzzzzzU7zk3zzzzs1zzzzzzzy0DzU0DkTz07zzzzzzzs0TzU0znzs0TzzzzzzzU0zz0Dzzy01zzzzzzzy01zw0zzzk07zzzzzzzs03zU1zzy003y7yDwDw007w01zzs00TsTszkzk00DU07zzs01zlzXz3z000Q1zzzzzk3z7yDwDs000U7zzzzz0DwTszlzU0000Tzzzzw0TtzXz7w00001zzzzzk1zbyDwzk00007zzzzz07sTszlz00000TsTsDwTzzzzzzzy0001zUzUznzzzzzzzzwDzs7y7z7zDzzzzzzzzkzzkTzzzzwzzzzzzzzz3zz1zzzzznzzzzzzzzwDzw7zzzzzDzzzzzzzzkzzkTzzzzwzzzzzzzzz3zz1zzzzzk000000000Dzw7y7y3z0000000000zzkTsDsDw0Tzzzzzy003z1zzzzzk1zzzzzzs00Dw7zzzzz07zzzzzzU00zkTzzzzw0Tzzzzzy003z1zzzzzk1zzzzzzs00Dw7zzzzz07zzzzzzU00zkTzzzzw0Tw000Dy003z1zVzUzk1zU000zs00Dw7y3y3z07z0003zU00zkTsDvzw0Tzzzzzy003z1zUzjzk1zzzzzzs00Dw7y3yTz07zzzzzzU00zkTsDtzs0Tzzzzzy003zVzUzbzU1zzzzzzs00zz7y3yTs07zzzzzzU07zyE000w00Ts000Dy00zzz0000001zU000zs0Dzzzk007zk7zzzzzzU1zzzzzzzzz0Tzzzzzy07zXzzzzzzs1zzzzzzs0Dw3zzzzzzU7zzzzzzU0TU7zzzzzy0Tzzzzzy00w07zzzzzs1zzzzzzs03k03zzzzz07z0003zU06000Tzzw00Ts0007y00000000002", 1)
@@ -1853,7 +1855,7 @@ ShopNormal() {
     else {
         MsgBox("商店图标未找到")
     }
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("已进入百货商店")
     }
     Sleep 1000
@@ -1897,7 +1899,7 @@ ShopNormal() {
                         FindText().Click(X, Y, "L")
                         Sleep 1000
                     }
-                    while !(ok2 := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , TrueRatio, TrueRatio)) {
+                    while !(ok2 := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , TrueRatio, TrueRatio)) {
                         Confirm
                     }
                 }
@@ -1977,7 +1979,7 @@ ShopArena() {
                     AddLog("购买" . Name)
                     FindText().Click(X, Y, "L")
                     Sleep 1000
-                    while !(ok2 := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , TrueRatio, TrueRatio)) {
+                    while !(ok2 := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , 0, , , , , TrueRatio, TrueRatio)) {
                         Confirm
                     }
                 }
@@ -2032,7 +2034,7 @@ ShopScrap() {
                     AddLog("购买" . Name)
                     FindText().Click(X, Y, "L")
                     Sleep 1000
-                    while !(ok2 := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+                    while !(ok2 := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
                         Confirm
                     }
                 }
@@ -2084,7 +2086,7 @@ SimulationRoom() {
         AddLog("点击模拟结束")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
     }
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm
     }
     AddLog("===模拟室任务结束===")
@@ -2096,7 +2098,7 @@ SimulationOverClock() {
     if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.095 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红框中的0"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("模拟室超频未完成")
         Sleep 1000
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }
@@ -2245,12 +2247,11 @@ ArenaRookie() {
         }
         EnterToBattle
         BattleSettlement
-        while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }
-    AddLog("没有免费次数，尝试返回")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
     }
     AddLog("已返回竞技场页面")
@@ -2295,12 +2296,11 @@ ArenaSpecial() {
         }
         EnterToBattle
         BattleSettlement
-        while !(ok := FindText(&X, &Y, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.003 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.083 * NikkeW . " ", NikkeY + 0.003 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }
-    AddLog("没有免费次数，尝试返回")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.006 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.078 * NikkeW . " ", NikkeY + 0.006 * NikkeH + 0.049 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
     }
     AddLog("已返回竞技场页面")
@@ -2651,7 +2651,7 @@ EventLarge() {
         FindText().Click(X, Y + 100 * TrueRatio, "L")
         Sleep 1000
     }
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
         Sleep 1000
     }
@@ -2670,7 +2670,7 @@ EventLarge() {
             Sleep 3000
             Confirm
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2698,7 +2698,7 @@ EventLarge() {
         }
         EnterToBattle
         BattleSettlement
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2739,7 +2739,7 @@ EventLarge() {
             EnterToBattle
             BattleSettlement
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2758,7 +2758,7 @@ EventLarge() {
             FindText().Click(X, Y - 50 * TrueRatio, "L")
             AwardCooperateBattle
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2845,7 +2845,7 @@ EventLarge() {
             UserClick(2412, 1905, TrueRatio)
             Sleep 1000
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2875,7 +2875,7 @@ AwardOutpost() {
         Confirm
         Sleep 1000
     }
-    else {
+    while (ok := FindText(&X, &Y, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击左下角资源")
         FindText().Click(X - 100 * TrueRatio, Y, "L")
         Sleep 1000
@@ -2887,7 +2887,7 @@ AwardOutpost() {
             AddLog("点击进行歼灭")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            while !(ok := FindText(&X, &Y, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.825 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.121 * NikkeW . " ", NikkeY + 0.825 * NikkeH + 0.059 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.825 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.121 * NikkeW . " ", NikkeY + 0.825 * NikkeH + 0.059 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio, TrueRatio)) {
                 Confirm
                 Sleep 1000
             }

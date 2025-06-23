@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.1"
+currentVersion := "v1.2.2"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -2670,7 +2670,7 @@ EventLarge() {
             Sleep 3000
             Confirm
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2739,7 +2739,7 @@ EventLarge() {
             EnterToBattle
             BattleSettlement
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2758,7 +2758,7 @@ EventLarge() {
             FindText().Click(X, Y - 50 * TrueRatio, "L")
             AwardCooperateBattle
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000
@@ -2845,7 +2845,7 @@ EventLarge() {
             UserClick(2412, 1905, TrueRatio)
             Sleep 1000
         }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000

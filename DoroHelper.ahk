@@ -754,6 +754,10 @@ Initialization() {
     else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("标准1080p分辨率")
+            if NikkeW < 1920 and NikkeH < 1080 {
+                MsgBox("请全屏运行NIKKE")
+                ExitApp
+            }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("1080p 加宽 (21:9 超宽屏)")
         } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 1080) {

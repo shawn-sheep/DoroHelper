@@ -581,6 +581,7 @@ g_settingPages := Map(
     ]
 )
 HideAllSettings()
+DeleteOldFile
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
 doroGui.Show()
@@ -1115,6 +1116,7 @@ DownloadUpdate(*) {
         return
     }
     downloadTempName := "DoroDownload.exe"
+    ; finalName 现在是新版本的最终文件名，例如 DoroHelper-v1.2.3.exe
     finalName := "DoroHelper-" latestObj.version ".exe"
     downloadUrlToUse := latestObj.download_url
     if downloadUrlToUse = "" {
@@ -1142,9 +1144,18 @@ DownloadUpdate(*) {
         } else {
             throw Error("未知的下载源: " . latestObj.source)
         }
-        FileMove A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1
-        MsgBox("新版本已通过 " . latestObj.display_name . " 下载至当前目录: `n" . A_ScriptDir "\" finalName, "下载完成")
+        ; 将下载的临时文件重命名为最终文件名
+        ; 注意：这里我们不直接替换当前运行的EXE，而是创建一个新文件
+        FileMove A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1 ; 1表示覆盖同名文件
+        oldExePath := A_AhkPath ; 获取当前运行的旧EXE路径
+        deleteMarkFile := A_Temp . "\DoroHelper_DeleteOld.tmp" ; 创建一个临时标记文件
+        FileDelete deleteMarkFile ; 确保文件不存在，以防上次失败
+        FileAppend oldExePath, deleteMarkFile ; 将旧EXE的路径写入标记文件
+        AddLog("创建旧版本删除标记文件: " . deleteMarkFile . "，内容: " . oldExePath)
+        MsgBox("新版本已通过 " . latestObj.display_name . " 下载至当前目录: `n" . A_ScriptDir "\" finalName . "`n`n程序将重启以应用更新。", "下载完成")
         AddLog(latestObj.display_name . " 下载：成功下载并保存为 " . finalName)
+        ; 启动新下载的程序并退出当前程序
+        Run A_ScriptDir "\" finalName
         ExitApp
     } catch as downloadError {
         MsgBox(latestObj.display_name . " 下载失败: `n" . downloadError.Message, "下载错误", "IconX")
@@ -1245,6 +1256,34 @@ CompareVersionsSemVer(v1, v2) {
         }
     }
     return 0
+}
+;tag 删除旧程序
+DeleteOldFile(*) {
+    deleteMarkFile := A_Temp . "\DoroHelper_DeleteOld.tmp"
+    if (FileExist(deleteMarkFile)) {
+        try {
+            oldExeToDelete := FileRead(deleteMarkFile)
+            ; 确保要删除的文件不是当前正在运行的文件，并且文件存在
+            ; A_AhkPath 是当前新版本程序的路径
+            ; oldExeToDelete 是旧版本程序的路径
+            if (oldExeToDelete != "" && FileExist(oldExeToDelete) && oldExeToDelete != A_AhkPath) {
+                ; 为了更健壮地删除，可以使用 RunWait 来执行一个外部命令，
+                ; 例如 cmd /c del "path_to_old_exe"
+                ; 但对于大多数情况，FileDelete 应该足够
+                FileDelete oldExeToDelete ; 尝试删除旧的EXE文件
+                AddLog("成功删除旧版本程序: " . oldExeToDelete)
+            } else {
+                AddLog("旧版本文件路径无效、与当前运行程序相同，或文件不存在，未执行删除操作。路径: " . oldExeToDelete)
+            }
+        } catch as e {
+            AddLog("删除旧版本程序失败: " . e.Message . " (路径: " . (IsSet(oldExeToDelete) ? oldExeToDelete : "N/A") . ")")
+            ; 可以选择弹窗提示，或者只是记录日志
+        } finally {
+            ; 无论删除成功与否，都尝试删除标记文件，避免重复删除
+            FileDelete deleteMarkFile
+            AddLog("已处理并删除旧版本删除标记文件: " . deleteMarkFile)
+        }
+    }
 }
 ;endregion 软件更新
 ;region GUI辅助函数

@@ -2250,6 +2250,7 @@ Arena() {
     while !(ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
     }
+    Sleep 1000
 }
 ;tag 新人竞技场
 ArenaRookie() {
@@ -2364,9 +2365,10 @@ ArenaChampion() {
         return
     }
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.467 * NikkeW . " ", NikkeY + 0.731 * NikkeH . " ", NikkeX + 0.467 * NikkeW + 0.064 * NikkeW . " ", NikkeY + 0.731 * NikkeH + 0.048 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("内部的紫色应援"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y - 200 * TrueRatio, "L")
         AddLog("已找到二级应援文本")
-        Sleep 1000
+        FindText().Click(X, Y - 200 * TrueRatio, "L")
+        Sleep 500
+        FindText().Click(X, Y - 200 * TrueRatio, "L")
     }
     while !(ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.869 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.117 * NikkeW . " ", NikkeY + 0.869 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("晋级赛内部的应援"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm

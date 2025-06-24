@@ -2798,6 +2798,10 @@ EventLarge() {
             AddLog("尝试进入对应活动页")
             FindText().Click(X - 50 * TrueRatio, Y, "L")
             Sleep 500
+            if A_Index > 50 {
+                AddLog("不在活动期间")
+                break
+            }
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y - 50 * TrueRatio, "L")

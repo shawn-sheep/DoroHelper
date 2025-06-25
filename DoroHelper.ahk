@@ -102,6 +102,8 @@ Victory := 0
 BattleActive := 1
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
+global RedCircle
+global Screenshot
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -1685,8 +1687,10 @@ EnterToBattle() {
     }
 }
 ;tag 战斗结算
-BattleSettlement(Screenshot := false) {
+BattleSettlement() {
     global Victory
+    global Screenshot
+    global RedCircle
     if (BattleActive = 0) {
         AddLog("由于无法战斗，跳过战斗结算")
         return
@@ -1719,7 +1723,7 @@ BattleSettlement(Screenshot := false) {
         if (checkend = 3) {
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) and RedCircle {
             checkred := checkred + 1
             if checkred = 3 {
                 AddLog("检测到红圈，尝试打红圈")
@@ -2573,10 +2577,14 @@ Interception() {
                 }
             }
         }
+        global RedCircle := true
         if g_settings["InterceptionShot"] {
-            BattleSettlement(true)
+            global Screenshot := true
+            BattleSettlement()
+            global Screenshot := false
         }
         else BattleSettlement
+        global RedCircle := false
         Sleep 2000
     }
     AddLog("===异常拦截任务结束===")

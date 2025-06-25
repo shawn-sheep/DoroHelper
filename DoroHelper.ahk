@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.3"
+currentVersion := "v1.2.4"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -735,6 +735,10 @@ Initialization() {
     }
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
+        if NikkeW < 1920 and NikkeH < 1080 {
+            MsgBox("请重启程序后，先按ctrl+4，这是最小尺寸，再根据需要调整")
+            Pause
+        }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
             AddLog("标准4K分辨率 (2160p)")
         } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
@@ -747,6 +751,10 @@ Initialization() {
     }
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
+        if NikkeW < 1920 and NikkeH < 1080 {
+            MsgBox("请重启程序后，先按ctrl+4，这是最小尺寸，再根据需要调整")
+            Pause
+        }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
             AddLog("标准2K分辨率 (1440p)")
         } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
@@ -764,8 +772,8 @@ Initialization() {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
-                MsgBox("请全屏运行NIKKE")
-                ExitApp
+                MsgBox("尺寸过小！请重启程序后，全屏运行NIKKE")
+                Pause
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("1080p 加宽 (21:9 超宽屏)")

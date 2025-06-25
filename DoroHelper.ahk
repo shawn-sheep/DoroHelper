@@ -538,6 +538,7 @@ SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "�
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 ;tag 妙妙工具
 doroGui.SetFont('s12')
@@ -727,8 +728,9 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
-    global OriginalW := NikkeW
-    global OriginalH := NikkeH
+    if GameRatio = 1.778 {
+        AddLog("标准的16：9尺寸")
+    }
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {

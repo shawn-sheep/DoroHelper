@@ -102,8 +102,8 @@ Victory := 0
 BattleActive := 1
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
-global RedCircle
-global Screenshot
+RedCircle := 0
+Screenshot := 0
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -2476,6 +2476,8 @@ TowerUniversal() {
 ;region 拦截战
 ;tag 异常拦截
 Interception() {
+    global RedCircle
+    global Screenshot
     BackToHall
     EnterToArk
     AddLog("===异常拦截任务开始===")
@@ -2585,14 +2587,14 @@ Interception() {
                 }
             }
         }
-        global RedCircle := true
+        RedCircle := true
         if g_settings["InterceptionShot"] {
-            global Screenshot := true
+            Screenshot := true
             BattleSettlement()
-            global Screenshot := false
+            Screenshot := false
         }
         else BattleSettlement
-        global RedCircle := false
+        RedCircle := false
         Sleep 2000
     }
     AddLog("===异常拦截任务结束===")

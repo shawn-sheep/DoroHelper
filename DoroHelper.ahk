@@ -3456,7 +3456,9 @@ AwardSoloRaid(stage7 := True) {
                 Sleep 1000
                 BattleSettlement()
                 sleep 5000
-                Confirm
+                while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+                    Confirm
+                }
             }
         }
         if stage7 {
@@ -3464,7 +3466,7 @@ AwardSoloRaid(stage7 := True) {
             AwardSoloRaid(stage7 := false)
             return
         }
-        else {
+        if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.413 * NikkeW . " ", NikkeY + 0.800 * NikkeH . " ", NikkeX + 0.413 * NikkeW + 0.176 * NikkeW . " ", NikkeY + 0.800 * NikkeH + 0.085 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("单人突击·挑战"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已无挑战次数，返回")
             AddLog("===单人突击任务结束===")
             BackToHall

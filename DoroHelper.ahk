@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.3"
+currentVersion := "v1.2.4"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -102,6 +102,8 @@ Victory := 0
 BattleActive := 1
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
+RedCircle := 0
+Screenshot := 0
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -538,6 +540,7 @@ SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "�
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 ;tag 妙妙工具
 doroGui.SetFont('s12')
@@ -727,10 +730,15 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
-    global OriginalW := NikkeW
-    global OriginalH := NikkeH
+    if GameRatio = 1.778 {
+        AddLog("标准的16：9尺寸")
+    }
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
+        if NikkeW < 1920 and NikkeH < 1080 {
+            MsgBox("请重启程序后，先按ctrl+4，这是最小尺寸，再根据需要调整")
+            Pause
+        }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
             AddLog("标准4K分辨率 (2160p)")
         } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
@@ -743,6 +751,10 @@ Initialization() {
     }
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
+        if NikkeW < 1920 and NikkeH < 1080 {
+            MsgBox("请重启程序后，先按ctrl+4，这是最小尺寸，再根据需要调整")
+            Pause
+        }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
             AddLog("标准2K分辨率 (1440p)")
         } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
@@ -760,8 +772,8 @@ Initialization() {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
-                MsgBox("请全屏运行NIKKE")
-                ExitApp
+                MsgBox("尺寸过小！请重启程序后，全屏运行NIKKE")
+                Pause
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("1080p 加宽 (21:9 超宽屏)")
@@ -1120,7 +1132,6 @@ DownloadUpdate(*) {
         return
     }
     downloadTempName := "DoroDownload.exe"
-    ; finalName 现在是新版本的最终文件名，例如 DoroHelper-v1.2.3.exe
     finalName := "DoroHelper-" latestObj.version ".exe"
     downloadUrlToUse := latestObj.download_url
     if downloadUrlToUse = "" {
@@ -1148,18 +1159,9 @@ DownloadUpdate(*) {
         } else {
             throw Error("未知的下载源: " . latestObj.source)
         }
-        ; 将下载的临时文件重命名为最终文件名
-        ; 注意：这里我们不直接替换当前运行的EXE，而是创建一个新文件
-        FileMove A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1 ; 1表示覆盖同名文件
-        oldExePath := A_AhkPath ; 获取当前运行的旧EXE路径
-        deleteMarkFile := A_Temp . "\DoroHelper_DeleteOld.tmp" ; 创建一个临时标记文件
-        FileDelete deleteMarkFile ; 确保文件不存在，以防上次失败
-        FileAppend oldExePath, deleteMarkFile ; 将旧EXE的路径写入标记文件
-        AddLog("创建旧版本删除标记文件: " . deleteMarkFile . "，内容: " . oldExePath)
-        MsgBox("新版本已通过 " . latestObj.display_name . " 下载至当前目录: `n" . A_ScriptDir "\" finalName . "`n`n程序将重启以应用更新。", "下载完成")
+        FileMove A_ScriptDir "\" downloadTempName, A_ScriptDir "\" finalName, 1
+        MsgBox("新版本已通过 " . latestObj.display_name . " 下载至当前目录: `n" . A_ScriptDir "\" finalName, "下载完成")
         AddLog(latestObj.display_name . " 下载：成功下载并保存为 " . finalName)
-        ; 启动新下载的程序并退出当前程序
-        Run A_ScriptDir "\" finalName
         ExitApp
     } catch as downloadError {
         MsgBox(latestObj.display_name . " 下载失败: `n" . downloadError.Message, "下载错误", "IconX")
@@ -1263,31 +1265,40 @@ CompareVersionsSemVer(v1, v2) {
 }
 ;tag 删除旧程序
 DeleteOldFile(*) {
-    deleteMarkFile := A_Temp . "\DoroHelper_DeleteOld.tmp"
-    if (FileExist(deleteMarkFile)) {
-        try {
-            oldExeToDelete := FileRead(deleteMarkFile)
-            ; 确保要删除的文件不是当前正在运行的文件，并且文件存在
-            ; A_AhkPath 是当前新版本程序的路径
-            ; oldExeToDelete 是旧版本程序的路径
-            if (oldExeToDelete != "" && FileExist(oldExeToDelete) && oldExeToDelete != A_AhkPath) {
-                ; 为了更健壮地删除，可以使用 RunWait 来执行一个外部命令，
-                ; 例如 cmd /c del "path_to_old_exe"
-                ; 但对于大多数情况，FileDelete 应该足够
-                FileDelete oldExeToDelete ; 尝试删除旧的EXE文件
-                AddLog("成功删除旧版本程序: " . oldExeToDelete)
-            } else {
-                AddLog("旧版本文件路径无效、与当前运行程序相同，或文件不存在，未执行删除操作。路径: " . oldExeToDelete)
+    currentScriptPath := A_ScriptFullPath
+    scriptDir := A_ScriptDir
+    foundAnyDeletableFile := false ; 标志，只有当发现可删除的文件时才设置为true
+    loop files, scriptDir . "\*.*" {
+        currentFile := A_LoopFileFullPath
+        fileName := A_LoopFileName
+        ; 确保要删除的文件包含 "DoroHelper" (不区分大小写)
+        ; 并且最重要的是：确保要删除的文件不是当前正在运行的脚本文件本身
+        if (InStr(fileName, "DoroHelper", false) && currentFile != currentScriptPath) {
+            ; 如果这是第一次发现可删除的文件，则输出初始日志
+            if (!foundAnyDeletableFile) {
+                AddLog("开始在目录 " . scriptDir . " 中查找并删除旧版本文件。")
+                AddLog("当前正在运行的脚本路径: " . currentScriptPath)
+                foundAnyDeletableFile := true
             }
-        } catch as e {
-            AddLog("删除旧版本程序失败: " . e.Message . " (路径: " . (IsSet(oldExeToDelete) ? oldExeToDelete : "N/A") . ")")
-            ; 可以选择弹窗提示，或者只是记录日志
-        } finally {
-            ; 无论删除成功与否，都尝试删除标记文件，避免重复删除
-            FileDelete deleteMarkFile
-            AddLog("已处理并删除旧版本删除标记文件: " . deleteMarkFile)
+            try {
+                FileDelete currentFile
+                AddLog("成功删除旧版本程序: " . currentFile) ; 只有成功删除才输出此日志
+            } catch as e {
+                AddLog("删除文件失败: " . currentFile . " 错误: " . e.Message)
+            }
+        } else if (currentFile = currentScriptPath) {
+            ; 即使是自身，如果之前没有发现可删除文件，也不输出初始日志
+            if (foundAnyDeletableFile) { ; 只有在已经开始输出日志后，才记录跳过自身
+                AddLog("跳过当前运行的程序（自身）: " . currentFile)
+            }
         }
     }
+    ; 只有当确实有文件被处理（删除或尝试删除），才输出结束日志
+    if (foundAnyDeletableFile) {
+        AddLog("旧版本文件删除操作完成。")
+    }
+    ; 如果foundAnyDeletableFile仍然是false，则意味着没有找到任何符合删除条件的文件，
+    ; 并且根据要求，此时不会输出任何日志。
 }
 ;endregion 软件更新
 ;region GUI辅助函数
@@ -1683,8 +1694,10 @@ EnterToBattle() {
     }
 }
 ;tag 战斗结算
-BattleSettlement(Screenshot := false) {
+BattleSettlement() {
     global Victory
+    global Screenshot
+    global RedCircle
     if (BattleActive = 0) {
         AddLog("由于无法战斗，跳过战斗结算")
         return
@@ -1717,7 +1730,7 @@ BattleSettlement(Screenshot := false) {
         if (checkend = 3) {
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) and RedCircle {
             checkred := checkred + 1
             if checkred = 3 {
                 AddLog("检测到红圈，尝试打红圈")
@@ -2099,7 +2112,7 @@ SimulationRoom() {
     EnterToArk
     AddLog("===模拟室任务开始===")
     AddLog("查找模拟室入口")
-    while (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.596 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.596 * NikkeH + 0.031 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("模拟室"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.596 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.596 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入模拟室")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
         Sleep 1000
@@ -2368,7 +2381,7 @@ ArenaChampion() {
         AddLog("===冠军竞技场任务结束===")
         return
     }
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.467 * NikkeW . " ", NikkeY + 0.731 * NikkeH . " ", NikkeX + 0.467 * NikkeW + 0.064 * NikkeW . " ", NikkeY + 0.731 * NikkeH + 0.048 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("内部的紫色应援"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.373 * NikkeW . " ", NikkeY + 0.727 * NikkeH . " ", NikkeX + 0.373 * NikkeW + 0.255 * NikkeW . " ", NikkeY + 0.727 * NikkeH + 0.035 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("内部的紫色应援"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("已找到二级应援文本")
         FindText().Click(X, Y - 200 * TrueRatio, "L")
         Sleep 500
@@ -2462,6 +2475,8 @@ TowerUniversal() {
 ;region 拦截战
 ;tag 异常拦截
 Interception() {
+    global RedCircle
+    global Screenshot
     BackToHall
     EnterToArk
     AddLog("===异常拦截任务开始===")
@@ -2472,7 +2487,7 @@ Interception() {
     }
     Sleep 500
     Confirm
-    while !(ok := FindText(&X, &Y, NikkeX + 0.580 * NikkeW . " ", NikkeY + 0.956 * NikkeH . " ", NikkeX + 0.580 * NikkeW + 0.074 * NikkeW . " ", NikkeY + 0.956 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红字的异常"), , , , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X, &Y, NikkeX + 0.580 * NikkeW . " ", NikkeY + 0.956 * NikkeH . " ", NikkeX + 0.580 * NikkeW + 0.074 * NikkeW . " ", NikkeY + 0.956 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红字的异常"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
         if A_Index > 20 {
             MsgBox("异常个体拦截战未解锁！本脚本暂不支持普通拦截！")
@@ -2571,10 +2586,14 @@ Interception() {
                 }
             }
         }
+        RedCircle := true
         if g_settings["InterceptionShot"] {
-            BattleSettlement(true)
+            Screenshot := true
+            BattleSettlement()
+            Screenshot := false
         }
         else BattleSettlement
+        RedCircle := false
         Sleep 2000
     }
     AddLog("===异常拦截任务结束===")
@@ -2924,9 +2943,11 @@ AwardOutpost() {
         AddLog("未找到前哨基地！")
         return
     }
-    Sleep 5000
-    while (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 15, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        Sleep 1000
         AddLog("点击右下角资源")
+        FindText().Click(X - 100 * TrueRatio, Y, "L")
+        Sleep 500
         FindText().Click(X - 100 * TrueRatio, Y, "L")
         Sleep 500
     }
@@ -3444,7 +3465,9 @@ AwardSoloRaid(stage7 := True) {
                 Sleep 1000
                 BattleSettlement()
                 sleep 5000
-                Confirm
+                while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+                    Confirm
+                }
             }
         }
         if stage7 {
@@ -3452,7 +3475,7 @@ AwardSoloRaid(stage7 := True) {
             AwardSoloRaid(stage7 := false)
             return
         }
-        else {
+        if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.413 * NikkeW . " ", NikkeY + 0.800 * NikkeH . " ", NikkeX + 0.413 * NikkeW + 0.176 * NikkeW . " ", NikkeY + 0.800 * NikkeH + 0.085 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("单人突击·挑战"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已无挑战次数，返回")
             AddLog("===单人突击任务结束===")
             BackToHall

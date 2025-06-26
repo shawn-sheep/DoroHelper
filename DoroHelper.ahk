@@ -328,7 +328,7 @@ if g_numeric_settings["Username"] != A_Username {
             "`n==========================="
             "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
             "`n废铁商店、冠军竞技场、反派之路、花絮鉴赏会、普通协同作战、单人突击、每日免费招募"
-            "`n关闭：ctrl + 1 终止：+ 2 调整窗口：+ 3"
+            "`n关闭：ctrl + 1 终止：+ 2（终止后需重启） 调整窗口：+ 3"
         ), , "YesNo")
     if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
         msgbox("人机检测失败，你有认真看公告吗？")
@@ -738,6 +738,7 @@ Initialization() {
     if GameRatio = 1.778 {
         AddLog("标准的16：9尺寸")
     }
+    else MsgBox("请在nikke设置中将画面比例调整为16:9")
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if NikkeW < 1920 and NikkeH < 1080 {

@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.4"
+currentVersion := "v1.2.5"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -247,6 +247,10 @@ FindText().PicLib("|<快速咨询的图标>*200$47.01z00zzz01z00zzz01z01zzz01z00
 FindText().PicLib("|<咨询的咨>*200$50.zzzxzzzzzzzy1zzzznzzUTzzzw7zk7zzzy0Tw1zzzz01z0Tzzjs0DU0000TU3s00007y0w00001zsS00000TzDU0000Dzzk7s3w3zzs1y1z0zzw0zUTUTzz0Tk7s7zzs7w1y3zzzXz0DUzzyDzU1zTzw3zs0Tzzs0Tw03zzk07y00TzU03z083zk03z070Tw03zU3k1z03z00y03s7y00zk027zU0Tz01zzw0Dzs0Tzz0DzzUDzzsTzzz7zzyTzzzzzzzbzzzzzy000000zzU00000Dzs000003zy000000zzU00000Dzs3zzzs3zy0zzzy0zzUDzzzUDzs3zzzs3zy0zzzy0zzUDzzzUDzs3zzzs3zy0zzzy0zzU00000Dzs000003zy000000zzU00000Dzs000003zy0zzzy0zzUDzzzUDs", 1)
 FindText().PicLib("|<咨询·向右的图标>*200$46.007zzzzw00Dzzzzs00Tzzzzk01zzzzz003zzzzy007zzzzw00Tzzzzk00zzzzzU01zzzzz007zzzzw00Dzzzzs00Tzzzzk01zzzzz003zzzzy007zzzzw00Tzzzzs00zzzzzU01zzzzz007zzzzy00Dzzzzs00Tzzzzk00zzzzzU03zzzzy007zzzzw00Dzzzzk00zzzzzU01zzzzz003zzzzw00Dzzzzs00Tzzzzk00zzzzz003zzzzy007zzzzw00Tzzzzs00zzzzzU01zzzzz003zzzzy00Dzzzzs00Tzzzzk00zzzzzU03zzzzy007zzzzw00Dzzzzs00TzzzzU01zzzzz003zzzzy00Dzzzzs00zzzzz003zzzzw00TzzzzU01zzzzw00Dzzzzk01zzzzy00Dzzzzk00zzzzz007zzzzs00zzzzz007zzzzw00TzzzzU03zzzzw00DzzzzU01zzzzy00Dzzzzk00zzzzz007zzzzs00zzzzz003zzzzw00TzzzzU01zzzzw00Dzzzzk01zzzzy00Dzzzzk00zzzzz007zzzzs00zzzzzU03zzzzw00TzzzzU03zzzzy00Dzzzzk01zzzzy00Dzzzzk00zzzzz007zzzzs00zzzzz003zzzzw00TzzzzU01zzzzw00Dzzzzk01zzzzy007zzzzk00zzzzz007zzzzs00TzzzzU03zzzzw00Tzzzzs", 1)
 FindText().PicLib("|<灰色的咨询次数0/>5D5E60-0.70$161.01k0000s0007U0078Q000000000Q3k00s3k000D007Sww000000001yDzy1s7U070S00Dxlk000000001yTzy3sT00D1w00DvXU0003zw03Uxzzw3szzszXzzUTy70000Dzw07ULzzs3XzzkzbzzXzzTz000zzw0S0D7XU2DzzUTTzz7zzzz003zzw0w0SDD00z0D0QzzyDzzzy007U1s1s1syQ21w0C01tlw3zbzs00S01s3kT1y0DvzwQ07XnkDzjbU00w03kD7y7y0Tnzws0T7bVzzzC001s07USTszz0zXztk0wDD3zbyQ003k0D0wzDwzkD3XnU1syQ7D7ys007U0S3ksTkzUS77j08VwM0Q7zk00D00w7U0y0S0wDzS0s3s0DzgzU00S01sD01s0Q1sTyw1s7k0TzVy000w03kS0zzzU3kzxs7kDk0zz3w001s07Vs1zzzU7VlvkD0zU1zy3s003k0D3k3zzz0DHzrUy1zU1ss7U007k0y7U7U0y0Tzzj3s7zU3vkDU007k3sS0D01w0zzyS7UTDU7z0z000Dzzkw0S03s1zw0wT1wTU3y3z000Dzz1s0w07k7ss3kw7sTU7yTz000Dzs3k1zzzUDU1zUszUTkzxyTU000z0703zzz0S03z03y0T7wrsT000000007zzy0M07w03k0SDUD0Q00000000D01s0007k03008A0A0000000004", 1)
+FindText().PicLib("|<花絮>*190$75.zsDw7zzwDzzzzz1zUzzzUzzzzzsDw7zzsDzzzw00000DU00s00000000w003000000007U00M00000000w0070s000000Dw7UsTUzsDw7zz1wD3w7z1zUzzk71sTUzsDw7zy00T3w7zDzzzzw03sTUzsT1zzzs0T007y1sDzzzU1s00zkT1zjzk0B007w7sDkzk1U001z0z1w3w0y0yTzkDsC0TkT071zw1z003zTU3U7zUDs01zzU3k1zs1z00zzs000zw0Ds0Dzz000Qz01y07zzw00C3s0C07zzzw0DkDU1U1zzzz03z0yMA0Dzzz00003z1U1zzz00000DsCMDyDw00000z1z1zkTU00Dy7sDsDy3wny3nnz1z1zkzy7kQ7zsDs7w7z0S30Dz1zU00zU7kS0zsDw007k1U3s1z1zU01w0s0TkDsDy00TkTU7zXz1zw0DzDw1zyw", 1)
+FindText().PicLib("|<EPI>FC3E32-0.70$59.0zzz1zzs0QDzzz3zzy0wzzzy7zzy1vzzzwDzzy3zzzzsTzzy7z0000w01wDw0001s01sTs0003k03kzk0007U0DVzk000DU1z3zzzw0Tzzy7zzzs0zzzsDzzzk1zzzUTzzzU3zzw0zk0007k001zU000D0003z0000S0007y0000w000Dw0001s000Ts0003k000zs0007U001zzzzwD0003rzzzsS0007bzzzkw000D7zzzVs000S3zzz3k000y", 1)
+FindText().PicLib("|<播放>*200$88.y3zzzyTzzXzwDzzs7zy00zzs7zkDzzUS0001zzUTz0zzy1s0003zy1zs3zzs7k000Dzs3zUDzzUT0003zzkTy0zzy1w1UQ7zy0zs7zzs7s61UTk007UTzs03kM61z000Q000U0D0UMDw001k00200w210zk0070008000000D000M000U000000zUDzU0020000003y0zy000DUS0000Dw3zk3kDy1s0000zkDz0D0zs7z001zz0080w3zUTs007zw0003UDy1z0007zk00060zs5k010Dz0000M7zU00M60Dw0001UTw003UQ0zk00021z000S1s7y0k8007k001s7kTs70l00z00A0003zUQ3g03w07k000Dy1kDs0Dk0T0000zs70zU1zU1w0003zUQ3z07ys7kC1UDy1kDw0zzUT0sD0zs70zk3zy1w0003z0Q3z0Dzs7k000Dw3kDs0TzUT0000zkD0z00zy1w0003y0w3s01zs7k000Ds3kD001zUT0sD0z0S0k003w1w3UM3w1s2060207k000DUA000w0M0z0000y0k1U7s1k3w0003w7060zkD0Tk000Dww0wDzlw3z0zz0zvs7tzzjU", 1)
+FindText().PicLib("|<领取>*200$70.znzzzzzzzzzzy3zzzy007zzzsDU00s00Tzzz0y003U01zzzw3s00C00000TU7U01s00001w0Dy7zkQ7007k0TkTz1kQ00S30z1zw71kT1kC0007k07Vw60A000T00S7Uk0M001w01sC300n1w7k07UsCD3wDkT1kT3UwwDkV1w71wC3ztz247kQ7kETU0Q8ET0ET11y00kV1w01y07s03247k07s0TU0A8ET00TU3zz1kV1w01z0Dzw7247kQ7w1zzUw8ET1kTk7zw7kV1w70DUTw0T047k00w1zU3w0rw003U3y0Dy0Tk00C07w1zs0zU03k0Ts7z01y0ES00TkDs43tz1UC0zUQ0s7zw60s3z3k7kTzkM7kTyTUzXzz1lznzzyDzTzw7jzy", 1)
 ;tag 奖励
 FindText().PicLib("|<好友的图标>*200$46.000Dk000003zs00000zzk00007zzk0000zzz00007zzy0000Tzzw0003zzzk000DzzzU000zzzy0003zzzs000DzzzU000zzzy0003zzzs000DzzzU000zzzw0001zzzk0007zzz0000Dzzs0000Tzz00000zzs00001zz000001zU00000000000000000000000000000000000000000000000000000000003zz00003zzzk001zzzzs00Tzzzzw07zzzzzs0zzzzzzs7zzzzzzkzzzzzzzXzzzzzzyTzzzzzzxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzTzzzzzzy", 1)
 FindText().PicLib("|<灰色的全部>BBBBBB-0.90$77.002000020000000D0000y0000000z0001w0Tz0003y0001w0zz000Dy007zztzz000zy00Dzznzy003zz00Tzzbns00Dtz00zzzD7k41zVz00zzwSDUM7y1zU0y7kwS1kzs1zk1wDVtw7bz00zs1wT3nsTzw00zw3tw7bUyzzzzzs7nsDT0wzzzzzVzzySw0lrzzzy3zzyxw00Dzzz07zzxtw1UDzzy0Dzzvns300Dk000007Xs600TU00000D7kA00z000000S7U03zzz01zzswD007zzz03zzlsS00Dzzy07zzXkw00Tzzw0Dzz7Xs000TU00T0yDzk400z000y1wSzUM01y001w3sxy0E03w003s7lvs07zzzzs7zzXm00DzzzzkDzz7U00TzzzzUTzyD000zzzzz0zzwS000zzzzy1w3sw008", 1)
@@ -3117,38 +3121,37 @@ AwardLoveTalking() {
 AwardAppreciation() {
     AddLog("===花絮鉴赏任务开始===")
     Sleep 1000
-    Text := "|<花絮>*200$44.zTrzzzzzXszyDzzkQ6y0A000070300001sElXsyDyCQwyTrzU7DDbzzw1lXsszzUQ0wSDTU00C7X3ksAzXs0zsCDky0zs63sD0zy07Q3Uzzk7XUkDzw1UTA3zw003XsyT01gsyDbwwnzDXly7ADns0S7Xkwz0DXUyDDzzzwzy"
-    while (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X + 50 * TrueRatio, Y, "L")
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.911 * NikkeW . " ", NikkeY + 0.909 * NikkeH . " ", NikkeX + 0.911 * NikkeW + 0.086 * NikkeW . " ", NikkeY + 0.909 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("花絮"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
         AddLog("点击花絮")
     }
-    Text := "|<EPISO>*191$67.DztzwC7zU7sDzwzzb7zsDzDzyTznbzyDzr00C0tnU77VvU070Qtk070Tzy3zyQzy3U7zz1zyCDzXU3zzUzy73ztk1y00Q03U0SQ0z00C01k07C0TU0700tk3bUTk03U0Qw3lsSzztk0CDzkTyDzws077zs7y3zyQ03Uzk0w4"
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.363 * NikkeW . " ", NikkeY + 0.550 * NikkeH . " ", NikkeX + 0.363 * NikkeW + 0.270 * NikkeW . " ", NikkeY + 0.550 * NikkeH + 0.316 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("EPI"), , , , , , 1, TrueRatio, TrueRatio)) {
         AddLog("播放第一个片段")
         FindText().Click(X, Y, "L")
     }
     else {
         AddLog("花絮鉴赏任务已完成")
         AddLog("===花絮鉴赏任务结束===")
-        Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
-        while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.118 * NikkeW . " ", NikkeY + 0.356 * NikkeH . " ", NikkeX + 0.118 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.356 * NikkeH + 0.022 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("》》》"), , , , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
         return
     }
-    Text领取 := "|<领取>*200$40.wzzzzzzVU1U1zy706000kD3wEU24QTl608E070Qs0U0Q1n4lkFl74P7976QFUAYQ1s60GFk7UzX970S3yA4QMwDtkFl1ls716063Uz1s0E7Xs3V60D767yMsyswTtbrzrzzbzs"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text领取, , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("播放下一个片段")
-        Send "{]}" ;尝试跳过
-        Text播放 := "|<播放>*200$53.sTzlztz7zks01zVy7zVk03z3wDz3U0Dz7sTy7W4D01kzk328y0100U601w02010000w7w03VU01wDkMT3U03sTUky7k0Tk01VwC00TU037s0AED000DU0sky480Q0003w8S0w3U07sEw3s700DlVs7wC4ATX3sTsQ00y67kTks01wAD0TVk03sMM0T3V37VkU0M700C001UES00SA67Vkw00ysQzr"
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text播放, , 0, , , , , TrueRatio, TrueRatio)) {
+    while true {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.559 * NikkeW . " ", NikkeY + 0.893 * NikkeH . " ", NikkeX + 0.559 * NikkeW + 0.070 * NikkeW . " ", NikkeY + 0.893 * NikkeH + 0.062 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("领取"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            AddLog("领取奖励")
+            break
+        }
+        else {
+            AddLog("播放下一个片段")
+            Send "{]}" ;尝试跳过
+            if (ok := FindText(&X, &Y, NikkeX + 0.499 * NikkeW . " ", NikkeY + 0.513 * NikkeH . " ", NikkeX + 0.499 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.513 * NikkeH + 0.072 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("播放"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+            }
         }
     }
-    FindText().Click(X, Y, "L")
-    AddLog("领取奖励")
-    Text := "|<左上角的咨询>*200$35.zbzzvz60DbXzw0Db3zn6zw0DiRzlyTwTznyVkTXUQDCTbavsyDjBrvyzS3DXvywqM07wtglzDsENbzTlbn7wz7za01yTsSTnzztk"
-    while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.118 * NikkeW . " ", NikkeY + 0.356 * NikkeH . " ", NikkeX + 0.118 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.356 * NikkeH + 0.022 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("》》》"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
     }
     AddLog("===花絮鉴赏任务结束===")

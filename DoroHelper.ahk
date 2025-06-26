@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.5"
+currentVersion := "v1.2.6"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -327,7 +327,7 @@ if g_numeric_settings["Username"] != A_Username {
             "`n鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！"
             "`n==========================="
             "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
-            "`n废铁商店、冠军竞技场、反派之路、花絮鉴赏会、普通协同作战、单人突击、每日免费招募"
+            "`n废铁商店、反派之路、普通协同作战、每日免费招募"
             "`n关闭：ctrl + 1 终止：+ 2（终止后需重启） 调整窗口：+ 3"
         ), , "YesNo")
     if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
@@ -512,7 +512,7 @@ SetAwardOutpostExpedition := AddCheckboxSetting(doroGui, "AwardOutpostExpedition
 doroGui.Tips.SetTip(SetAwardOutpostExpedition, "自动领取已完成的派遣委托奖励，并根据当前可用妮姬重新派遣新的委托任务")
 SetAwardLoveTalking := AddCheckboxSetting(doroGui, "AwardLoveTalking", "咨询妮姬", "R1 xs Section")
 doroGui.Tips.SetTip(SetAwardLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n你可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`r`n会循环直到次数耗尽")
-SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏[暂时禁用]", "R1 xs+15")
+SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏", "R1 xs+15")
 doroGui.Tips.SetTip(SetAwardAppreciation, "自动观看并领取花絮鉴赏中当前可领取的奖励")
 SetAwardFriendPoint := AddCheckboxSetting(doroGui, "AwardFriendPoint", "好友点数收取", "R1 xs")
 doroGui.Tips.SetTip(SetAwardFriendPoint, "收取并回赠好友点数")

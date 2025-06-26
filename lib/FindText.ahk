@@ -3034,7 +3034,7 @@ int __attribute__((__stdcall__)) PicFind(
                     . "`nTrueRatio :=  NikkeW / 3840"
                     . "`nFindText().PicLib(`"|<" Comment ">" color "$" txt "`", 1)`n"
                     . "`nt1:=A_TickCount, Text:=X:=Y:=`"`""
-                    . "`nif (ok:=FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2*PicTolerance, 0.2*PicTolerance, FindText().PicLib(`"" Comment "`"),,,,,,, TrueRatio, TrueRatio)){"
+                    . "`nif (ok:=FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3*PicTolerance, 0.3*PicTolerance, FindText().PicLib(`"" Comment "`"),,,,,,, TrueRatio, TrueRatio)){"
                     . "`n     `; FindText()." . "Click(" . "X, Y, `"L`")"
                     . "`n}`n"
                     . "`n`; ok:=FindText(&X:=`"wait`", &Y:=3, 0,0,0,0,0,0,Text)  `; " r[7]

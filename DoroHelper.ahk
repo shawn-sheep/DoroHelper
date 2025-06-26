@@ -2721,7 +2721,7 @@ EventSmall() {
 EventLarge() {
     BackToHall
     AddLog("===大活动任务开始===")
-    if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y + 100 * TrueRatio, "L")
         Sleep 1000
     }

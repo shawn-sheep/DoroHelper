@@ -270,6 +270,7 @@ FindText().PicLib("|<时间>*200$67.zzzzVztzzzzzzzzkzsS00080TzsTwD000007zwDz3U00
 FindText().PicLib("|<活动关卡>*150$121.zzzwTzzzXzztzwzzzkzzwTzU7zzzUzzkTw7zzsDzw3U01w03kTzwDy3zzw7zy0k01y01sDzy3y3zzy00TUs07z00w7zzVz1zzz007wQ0DzU0S3zzkz1zzzU03zzy7zzzw01y0003zzk01zzz3zzzw00z0001zzsDzzzzUzzzy00TU000zzw7zyT000A0000Dk000Tzy3zy3U00600Q67zz1zzk00000k00300C73zzUzzk0000UM001U073VzzkTzs0000QDz3zz3zVkzzsDzw0000DjzVzzVzksS0000D00007zzkzzUlsQD00007zy3zzzs00TkkwC7U0003zz1zzww007sQA73k0001zzUbzyC003sC63VzzU7zzzk0zy3001wC33kzzU3zzzs03z3VzUy00VsTzU0zzzw00T1kzkS000wDzU07zzy3071sTwD000w7z0A1zzz1s7UwDw7UDkS3y0D07zzUz3Uy003kzk43s0Dk0TzkTzkT001zzs81s0Dw0TzsDzsTU00zzwC0y0TzUDzw7zyTk00Tzz70zUzzwDzy3zzzsTwTzzzXzvzzzzzz1zz", 1)
 FindText().PicLib("|<REPEAT>*150$57.zzzzzzzzzzzzzzzzzzzk70k70yS0S0k60M7Xs3naDnXDwTnyQlyQNzVyTnaDnXDwDnyQlyQNzdyTnaDnXDtDnyEkCQMDByTmC7k3DtbnyHly0tzAyTmCDnzDtbnyNlyTty0yTnCDnzDk7nyMlyTtySSTna0nz0nnnyQs6Ts6SSTzzzzzzzzzzzzzzzzzzzU", 1)
 FindText().PicLib("|<STAGE右侧的图标>*200$34.0Ts3zw0zU7zk1y0DzU3w0Tz0Ds1zy0Tk3zw0zU7zs1y0DzU3w0Tz07s0zy0Tk3zw0zU7zs1z0DzU3w0Tz07s0zw0TU3zk3y0Ty0Dk3zk1y0Dy0Dk1zk1z0Dz0Ds1zs1z0Dz07s1zs0z07z07s0zs0z07zU7w0zw0zU7zk7y0zzU", 1)
+FindText().PicLib("|<13>*190$42.s3zk003s3z0001s3z0000k3z0000k3y0000k3y0000k3y0Tw0U3y0zy0U3y0zy0U3y0zy003y0zy003y0zy003y0zy003y0zy0k3y0zy0k3zzzy0k3zzzy0k3zzzy0k3zzzw0k3zzzk1k3zzzU1k3zzy07k3zzw0Dk3zzs0zk3zzk1zk3zzk1zk3zzs0Tk3zzw0Dk3zzz03k3zzzU1k3zzzs1k3zzzw0k3zzzy0k3zzzy0k3zzzy0k3y0zy0k3y0zy0k3y0zy0k3y0zy0k3y0zy0k3y0zy0k3y0zy0k3y0zy0k3y0zy0k3y0Tw0k3y0000k3y0000k3z0000k3z0000k3z0001k3zk003U", 1)
 FindText().PicLib("|<剩下>*150$51.zzztzzzzzk1z7zzzzU0Dsw00060Tz70000zbyMs000400n7zwTz002MzzXzs00H7zwTzzbyMzzXzzArn7zw7zVa6MzzUTwAkn7zw0ztaSMzzU1zArn7zwM71aGMzzXkQAkn7zwTXw7yMzzXyzkDn7zwTzw0zszzXzz01z7zwTzka7szzXzwAxz7zwTzXbz1zzXzzwzsDzwTzzbz3zzXzw", 1)
 FindText().PicLib("|<快速战斗的图标>*200$46.01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzz01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzz01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0TzzU", 1)
 FindText().PicLib("|<进行战斗的进>*200$25.zzzzzzzzyTnnz7tlzVwszsw8DyM01zw01zzVXzztlz1wszUwADsM01yA00z7XXzXnlzllszskwTwQyDw6zjw0TySQ00DDk07zzzzzzzzk", 1)
@@ -2800,13 +2801,8 @@ EventLarge() {
                 break
             }
         }
-        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.062 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.041 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("剩下"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("活动到了第二阶段")
-        }
-        else {
-            MsgBox("活动到了第三阶段，请暂停")
-        }
-        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.455 * NikkeW . " ", NikkeY + 0.473 * NikkeH . " ", NikkeX + 0.455 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.473 * NikkeH + 0.344 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE右侧的图标"), , , , , , 3, TrueRatio, TrueRatio)) {
+        ; 到了第三阶段会自动卡死，不用提示
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.476 * NikkeW . " ", NikkeY + 0.381 * NikkeH . " ", NikkeX + 0.476 * NikkeW + 0.106 * NikkeW . " ", NikkeY + 0.381 * NikkeH + 0.193 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("13"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             EnterToBattle
             BattleSettlement

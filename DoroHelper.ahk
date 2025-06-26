@@ -2868,7 +2868,7 @@ EventLarge() {
             Sleep 5000
             while true {
                 ; AddLog(A_Index)
-                if A_Index = 30 {
+                if A_Index = 20 {
                     loop 50 {
                         Send "Q"
                         Sleep 100

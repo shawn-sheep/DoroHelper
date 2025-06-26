@@ -3026,9 +3026,6 @@ AwardLoveTalking() {
         FindText().Click(X, Y, "L")
         Sleep 1000
     }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.471 * NikkeW . " ", NikkeY + 0.079 * NikkeH . " ", NikkeX + 0.471 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.079 * NikkeH + 0.037 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        Confirm
-    }
     AddLog("已进入好感度咨询界面")
     ; 花絮鉴赏会
     if g_settings["AwardAppreciation"] {

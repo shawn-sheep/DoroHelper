@@ -2865,14 +2865,11 @@ EventLarge() {
             Sleep 1000
             AddLog("点击进入战斗")
             UserClick(1904, 1886, TrueRatio)
-            Sleep 5000
+            Sleep 20000
             while true {
-                ; AddLog(A_Index)
-                if A_Index = 20 {
-                    loop 50 {
-                        Send "Q"
-                        Sleep 100
-                    }
+                loop 50 {
+                    Send "Q"
+                    Sleep 100
                 }
                 Send " "
                 Sleep 100

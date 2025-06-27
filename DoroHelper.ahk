@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.6"
+currentVersion := "v1.2.7"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -2730,6 +2730,7 @@ EventLarge() {
         Sleep 1000
     }
     AddLog("已进入活动地区")
+    Sleep 3000
     ;tag 签到
     if g_settings["EventLargeSign"] {
         AddLog("===签到===")
@@ -2827,10 +2828,11 @@ EventLarge() {
                 break
             }
         }
-        if (ok := FindText(&X, &Y, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y - 50 * TrueRatio, "L")
-            AwardCooperateBattle
-        }
+        AwardCooperateBattle
+        ; if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
+        ;     FindText().Click(X, Y - 50 * TrueRatio, "L")
+        ;     AwardCooperateBattle
+        ; }
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack

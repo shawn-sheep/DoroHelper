@@ -317,7 +317,7 @@ if g_numeric_settings["Username"] != A_Username {
     }
     Result := msgbox(
         (
-            "你是" A_Username
+            "你的用户名是" A_Username
             "`n反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志。"
             "`n如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。"
             "`n==========================="
@@ -742,7 +742,7 @@ Initialization() {
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+4，这是最小尺寸，再根据需要调整")
+            MsgBox("请重启程序后，先按ctrl+4调整为1920*1080尺寸，再根据需要放大")
             Pause
         }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
@@ -758,7 +758,7 @@ Initialization() {
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+4，这是最小尺寸，再根据需要调整")
+            MsgBox("请重启程序后，先按ctrl+4调整为1920*1080尺寸，再根据需要放大")
             Pause
         }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {

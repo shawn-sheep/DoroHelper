@@ -2868,11 +2868,11 @@ EventLarge() {
             AddLog("点击进入战斗")
             UserClick(1904, 1886, TrueRatio)
             Sleep 20000
+            loop 50 {
+                Send "Q"
+                Sleep 100
+            }
             while true {
-                loop 50 {
-                    Send "Q"
-                    Sleep 100
-                }
                 Send " "
                 Sleep 100
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("小游戏·重新开始的图标"), , , , , , , TrueRatio, TrueRatio)) {

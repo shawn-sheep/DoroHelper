@@ -3620,13 +3620,17 @@ TestMode(BtnTestMode, Info) {
 ;tag 初始化并调整窗口大小
 ^3:: {
     Initialization()
-    AdjustSize(2331, 1311)
+    AdjustSize(1920, 1080)
 }
 ^4:: {
     Initialization()
-    AdjustSize(1920, 1080)
+    AdjustSize(2331, 1311)
 }
 ^5:: {
+    Initialization()
+    AdjustSize(2560, 1440)
+}
+^6:: {
     Initialization()
     AdjustSize(3840, 2160)
 }
@@ -3634,7 +3638,7 @@ TestMode(BtnTestMode, Info) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    AdjustSize(1920, 1080)
+    AdjustSize(3840, 2160)
 }
 ;tag 调试指定函数
 ^0:: {

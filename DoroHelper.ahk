@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.7"
+currentVersion := "v1.2.8"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -328,7 +328,7 @@ if g_numeric_settings["Username"] != A_Username {
             "`n==========================="
             "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
             "`n废铁商店、反派之路、普通协同作战、每日免费招募"
-            "`n关闭：ctrl + 1 终止：+ 2（终止后需重启） 调整窗口：+ 3"
+            "`n关闭：ctrl + 1 终止：+ 2（终止后需重启）调整画面尺寸: ctrl+3~6"
         ), , "YesNo")
     if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
         msgbox("人机检测失败，你有认真看公告吗？")
@@ -742,7 +742,7 @@ Initialization() {
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+4调整为1920*1080尺寸，再根据需要放大")
+            MsgBox("请重启程序后，先按ctrl+3调整为1920*1080尺寸，再根据需要放大")
             Pause
         }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
@@ -758,7 +758,7 @@ Initialization() {
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+4调整为1920*1080尺寸，再根据需要放大")
+            MsgBox("请重启程序后，先按ctrl+3调整为1920*1080尺寸，再根据需要放大")
             Pause
         }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
@@ -2955,7 +2955,7 @@ AwardOutpost() {
         FindText().Click(X - 50 * TrueRatio, Y + 50 * TrueRatio, "L")
         Sleep 1000
         if (ok := FindText(&X, &Y, NikkeX + 0.465 * NikkeW . " ", NikkeY + 0.738 * NikkeH . " ", NikkeX + 0.465 * NikkeW + 0.163 * NikkeW . " ", NikkeY + 0.738 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("进行歼灭的歼灭"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击进行歼灭")
+            AddLog("点击进行免费一举歼灭")
             FindText().Click(X, Y, "L")
             Sleep 1000
             while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.825 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.121 * NikkeW . " ", NikkeY + 0.825 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2998,11 +2998,12 @@ AwardOutpostExpedition() {
             UserClick(1595, 1806, TrueRatio)
             Sleep 500
         }
-        AddLog("点击全部派遣")
         if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.456 * NikkeW . " ", NikkeY + 0.807 * NikkeH . " ", NikkeX + 0.456 * NikkeW + 0.087 * NikkeW . " ", NikkeY + 0.807 * NikkeH + 0.064 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("蓝底白色右箭头"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试全部派遣")
             FindText().Click(X, Y, "L")
             Sleep 1000
         }
+        else AddLog("没有可进行的派遣")
         if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.501 * NikkeW . " ", NikkeY + 0.814 * NikkeH . " ", NikkeX + 0.501 * NikkeW + 0.092 * NikkeW . " ", NikkeY + 0.814 * NikkeH + 0.059 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白底蓝色右箭头"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("点击全部派遣")
             FindText().Click(X, Y, "L")

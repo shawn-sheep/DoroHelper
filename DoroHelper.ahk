@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.9"
+currentVersion := "v1.2.10"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -82,8 +82,9 @@ global g_settings := Map(
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,        ;自动检查更新
+    "AutoDeleteOldFile", 0,      ;自动删除旧版本
     "SelfClosing", 0,            ;完成后自动关闭程序
-    "OpenBlablalink", 0,          ;完成后打开Blablalink
+    "OpenBlablalink", 0,         ;完成后打开Blablalink
     "BluePill", 0                ;万用开关
 )
 ;tag 其他非简单开关
@@ -354,9 +355,10 @@ BtnHelp := doroGui.Add("Button", "x+5 yp w60 h30", "帮助").OnEvent("Click", Cl
 doroGui.Add("Text", "x20 y40 R1 +0x0100", "DoroHelper的版本是 " currentVersion)
 BtnUpdate := doroGui.Add("Button", "R1", "检查更新")
 BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
-AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp+5 R1")
+AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp-1 R1")
+AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+20")
 ;tag 更新渠道
-doroGui.Add("Text", "Section x20 yp+40 R1 +0x0100", "更新渠道")
+doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
     var := 1
 }
@@ -593,7 +595,8 @@ g_settingPages := Map(
     ]
 )
 HideAllSettings()
-DeleteOldFile
+if g_settings["AutoDeleteOldFile"]
+    DeleteOldFile
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
 doroGui.Show()

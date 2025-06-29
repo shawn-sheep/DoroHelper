@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.7"
+currentVersion := "v1.2.10"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -82,8 +82,9 @@ global g_settings := Map(
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,        ;自动检查更新
+    "AutoDeleteOldFile", 0,      ;自动删除旧版本
     "SelfClosing", 0,            ;完成后自动关闭程序
-    "OpenBlablalink", 0,          ;完成后打开Blablalink
+    "OpenBlablalink", 0,         ;完成后打开Blablalink
     "BluePill", 0                ;万用开关
 )
 ;tag 其他非简单开关
@@ -328,7 +329,7 @@ if g_numeric_settings["Username"] != A_Username {
             "`n==========================="
             "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
             "`n废铁商店、反派之路、普通协同作战、每日免费招募"
-            "`n关闭：ctrl + 1 终止：+ 2（终止后需重启） 调整窗口：+ 3"
+            "`n关闭：ctrl + 1 终止：+ 2（终止后需重启）调整画面尺寸: ctrl+3~6"
         ), , "YesNo")
     if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
         msgbox("人机检测失败，你有认真看公告吗？")
@@ -354,9 +355,10 @@ BtnHelp := doroGui.Add("Button", "x+5 yp w60 h30", "帮助").OnEvent("Click", Cl
 doroGui.Add("Text", "x20 y40 R1 +0x0100", "DoroHelper的版本是 " currentVersion)
 BtnUpdate := doroGui.Add("Button", "R1", "检查更新")
 BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
-AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp+5 R1")
+AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp-1 R1")
+AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+20")
 ;tag 更新渠道
-doroGui.Add("Text", "Section x20 yp+40 R1 +0x0100", "更新渠道")
+doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
     var := 1
 }
@@ -593,7 +595,8 @@ g_settingPages := Map(
     ]
 )
 HideAllSettings()
-DeleteOldFile
+if g_settings["AutoDeleteOldFile"]
+    DeleteOldFile
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
 doroGui.Show()
@@ -742,7 +745,7 @@ Initialization() {
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+4调整为1920*1080尺寸，再根据需要放大")
+            MsgBox("请重启程序后，先按ctrl+3调整为1920*1080尺寸，再根据需要放大")
             Pause
         }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
@@ -758,7 +761,7 @@ Initialization() {
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+4调整为1920*1080尺寸，再根据需要放大")
+            MsgBox("请重启程序后，先按ctrl+3调整为1920*1080尺寸，再根据需要放大")
             Pause
         }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
@@ -1865,7 +1868,7 @@ ShopCash() {
     BackToHall
     AddLog("===付费商店任务开始===")
     AddLog("寻找付费商店")
-    if (ok := FindText(&X, &Y, NikkeX + 0.250 * NikkeW . " ", NikkeY + 0.599 * NikkeH . " ", NikkeX + 0.250 * NikkeW + 0.027 * NikkeW . " ", NikkeY + 0.599 * NikkeH + 0.047 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("付费商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.250 * NikkeW . " ", NikkeY + 0.599 * NikkeH . " ", NikkeX + 0.250 * NikkeW + 0.027 * NikkeW . " ", NikkeY + 0.599 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("付费商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击付费商店")
         FindText().Click(X, Y, "L")
         Sleep 1000
@@ -2377,7 +2380,7 @@ ArenaSpecial() {
 ArenaChampion() {
     AddLog("===冠军竞技场任务开始===")
     AddLog("查找冠军竞技场")
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.630 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.077 * NikkeW . " ", NikkeY + 0.630 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("蓝色的应援"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.546 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.546 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.020 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("蓝色的应援"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         AddLog("已找到一级应援文本")
         Sleep 1000
@@ -2491,7 +2494,6 @@ Interception() {
         FindText().Click(X, Y - 50 * TrueRatio, "L")
         Sleep 1000
     }
-    Sleep 500
     Confirm
     while !(ok := FindText(&X, &Y, NikkeX + 0.580 * NikkeW . " ", NikkeY + 0.956 * NikkeH . " ", NikkeX + 0.580 * NikkeW + 0.074 * NikkeW . " ", NikkeY + 0.956 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红字的异常"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
@@ -2533,7 +2535,7 @@ Interception() {
                 Pause
         }
         AddLog("非对应BOSS，尝试切换")
-        if (ok := FindText(&X, &Y, NikkeX + 0.584 * NikkeW . " ", NikkeY + 0.730 * NikkeH . " ", NikkeX + 0.584 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.730 * NikkeH + 0.039 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("异常拦截·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.584 * NikkeW . " ", NikkeY + 0.730 * NikkeH . " ", NikkeX + 0.584 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.730 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("异常拦截·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X + 10 * TrueRatio, Y, "L")
         }
         Sleep 1000
@@ -2543,22 +2545,27 @@ Interception() {
     switch g_numeric_settings["InterceptionBoss"] {
         case 1:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("01"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 2:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("02"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 3:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("03"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 4:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("04"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 5:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("05"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         default:
@@ -2868,11 +2875,11 @@ EventLarge() {
             AddLog("点击进入战斗")
             UserClick(1904, 1886, TrueRatio)
             Sleep 20000
+            loop 50 {
+                Send "Q"
+                Sleep 100
+            }
             while true {
-                loop 50 {
-                    Send "Q"
-                    Sleep 100
-                }
                 Send " "
                 Sleep 100
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("小游戏·重新开始的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2946,16 +2953,18 @@ AwardOutpost() {
     if (ok := FindText(&X := "wait", &Y := 15, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
         Sleep 1000
         AddLog("点击右下角资源")
-        FindText().Click(X - 100 * TrueRatio, Y, "L")
-        Sleep 500
-        FindText().Click(X - 100 * TrueRatio, Y, "L")
-        Sleep 500
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 500
+        }
     }
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.490 * NikkeW . " ", NikkeY + 0.820 * NikkeH . " ", NikkeX + 0.490 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.820 * NikkeH + 0.017 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.490 * NikkeW . " ", NikkeY + 0.820 * NikkeH . " ", NikkeX + 0.490 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.820 * NikkeH + 0.017 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X - 50 * TrueRatio, Y + 50 * TrueRatio, "L")
         Sleep 1000
         if (ok := FindText(&X, &Y, NikkeX + 0.465 * NikkeW . " ", NikkeY + 0.738 * NikkeH . " ", NikkeX + 0.465 * NikkeW + 0.163 * NikkeW . " ", NikkeY + 0.738 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("进行歼灭的歼灭"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击进行歼灭")
+            AddLog("点击进行免费一举歼灭")
             FindText().Click(X, Y, "L")
             Sleep 1000
             while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.825 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.121 * NikkeW . " ", NikkeY + 0.825 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2998,11 +3007,12 @@ AwardOutpostExpedition() {
             UserClick(1595, 1806, TrueRatio)
             Sleep 500
         }
-        AddLog("点击全部派遣")
         if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.456 * NikkeW . " ", NikkeY + 0.807 * NikkeH . " ", NikkeX + 0.456 * NikkeW + 0.087 * NikkeW . " ", NikkeY + 0.807 * NikkeH + 0.064 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("蓝底白色右箭头"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试全部派遣")
             FindText().Click(X, Y, "L")
             Sleep 1000
         }
+        else AddLog("没有可进行的派遣")
         if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.501 * NikkeW . " ", NikkeY + 0.814 * NikkeH . " ", NikkeX + 0.501 * NikkeW + 0.092 * NikkeW . " ", NikkeY + 0.814 * NikkeH + 0.059 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白底蓝色右箭头"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("点击全部派遣")
             FindText().Click(X, Y, "L")
@@ -3613,13 +3623,17 @@ TestMode(BtnTestMode, Info) {
 ;tag 初始化并调整窗口大小
 ^3:: {
     Initialization()
-    AdjustSize(2331, 1311)
+    AdjustSize(1920, 1080)
 }
 ^4:: {
     Initialization()
-    AdjustSize(1920, 1080)
+    AdjustSize(2331, 1311)
 }
 ^5:: {
+    Initialization()
+    AdjustSize(2560, 1440)
+}
+^6:: {
     Initialization()
     AdjustSize(3840, 2160)
 }
@@ -3627,7 +3641,7 @@ TestMode(BtnTestMode, Info) {
     ;添加基本的依赖
     Initialization()
     ;下面写要调试的函数
-    AdjustSize(1920, 1080)
+    AdjustSize(3840, 2160)
 }
 ;tag 调试指定函数
 ^0:: {

@@ -2491,7 +2491,6 @@ Interception() {
         FindText().Click(X, Y - 50 * TrueRatio, "L")
         Sleep 1000
     }
-    Sleep 500
     Confirm
     while !(ok := FindText(&X, &Y, NikkeX + 0.580 * NikkeW . " ", NikkeY + 0.956 * NikkeH . " ", NikkeX + 0.580 * NikkeW + 0.074 * NikkeW . " ", NikkeY + 0.956 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红字的异常"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
@@ -2533,7 +2532,7 @@ Interception() {
                 Pause
         }
         AddLog("非对应BOSS，尝试切换")
-        if (ok := FindText(&X, &Y, NikkeX + 0.584 * NikkeW . " ", NikkeY + 0.730 * NikkeH . " ", NikkeX + 0.584 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.730 * NikkeH + 0.039 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("异常拦截·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.584 * NikkeW . " ", NikkeY + 0.730 * NikkeH . " ", NikkeX + 0.584 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.730 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("异常拦截·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X + 10 * TrueRatio, Y, "L")
         }
         Sleep 1000
@@ -2543,22 +2542,27 @@ Interception() {
     switch g_numeric_settings["InterceptionBoss"] {
         case 1:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("01"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 2:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("02"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 3:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("03"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 4:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("04"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         case 5:
             if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("05"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 1000
                 FindText().Click(X, Y, "L")
             }
         default:

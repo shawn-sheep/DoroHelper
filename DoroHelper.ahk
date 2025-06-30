@@ -2874,7 +2874,7 @@ EventLarge() {
             Sleep 1000
             AddLog("点击进入战斗")
             UserClick(1904, 1886, TrueRatio)
-            Sleep 20000
+            Sleep 15000
             loop 50 {
                 Send "Q"
                 Sleep 100

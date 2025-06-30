@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.10"
+currentVersion := "v1.2.11"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -146,7 +146,7 @@ FindText().PicLib("|<左上角的方舟>*150$59.zz3zzzzUzzzy3zzzy3zzzw7zzzw7zzzw
 FindText().PicLib("|<确认的白色勾>*200$46.zzzzzzwDzzzzzz0Tzzzzzs0zzzzzz03zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zlzzzs0Dy3zzz01zk7zzs0Dz0Dzz01zw0Tzs0Dzk0zz01zzU1zs0Dzy03z01zzw07s0Dzzs0D01zzzk080DzzzU001zzzz000Dzzzy001zzzzw00Dzzzzw01zzzzzs0Dzzzzzk1zzzzzzUDzzzzzz1zzzzzzyTzzzzU", 1)
 ;tag 商店
 FindText().PicLib("|<付费商店的图标>7EBBED-0.80$24.0UVU1VkU13sE27s807w44Dy68Tz2EzzVlzzkVzzk3zzs7zzwDzzyDzzyTzzwDzzw7zzs3zzk3zzkVzzVEzz2MTy48DyA4Dw827sE13kU1VkU0UV0U", 1)
-FindText().PicLib("|<礼物的图标>*120$57.zz0Tzzk7zzzk1zzw0Tzzs03zy00zzz00Tzk07zzk40zs10Tzy3s7z0y3zzUzUDkDsDzw7y1w3z1zzUzs30zsDzw7zU0Dz1zzkDy01zUTzy0000003zzs000000zzzU00000Dzzy000003zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw0003y0001U000Tk00080003y00000000Tk00000003y00000000Tk00000003y00000000Tk00000003y00000000Tk00000003y00000000Tk00000003y00000000Tk00000003y00000000Tk00040003y0001U000Tk000Dzzzzzzzzzzzzzzzzzzzzzzzzzzzzz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs003y000zz000Tk007zs007y000zU", 1)
+FindText().PicLib("|<礼物的下半>*150$51.s007z000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000zU00zs00Dzzzzzzzzzzzzzzzzzzzzzzzzzw", 1)
 FindText().PicLib("|<商店的图标>*240$69.0000w0000000001zs000000000TzU00000000zzz00000001zzzw0000000zzzzk0Dzw00zzs7zDzzzU07zy0Tzzzzy00zw01zzzzzs0Dw003zzzzzU1y000Dzz07y0Dk000zk00Tk1w01k3y001z0DU0D0TU00Ds3s33w7w000zUT0TzVz0003w3s7zwDs030Dkz1zzXy0kQ1z7kDzwTUDzs7ty0zz7w3zz0TDk7zsz0Tzs3ty0TyDk3zz0TTU0zly0Tzk7vw00wTU3zw0zTk003y0Dz0Dvz000Ds0zk3zDw001zU3w0Tszs007y0707z3zU03zk001zzzy00zz000Dzzzs1zzs003zzzzlzzzU00Tzzzzzzzw007zzzzzzzzk07zzU", 1)
 FindText().PicLib("|<左上角的百货商店>*150$121.zzzzzzVkzzzzUzzzzsTzU0003zUsT7zzkTzzzw7zk0001zUw41y6000zzy3zs0000z0S00y0000DU00040000T0C01y00007k0001zs7zy0007z00003s0000zw7zzU20TXzkT1zw0000Ty3zzs10DkzsDUzy3zzzzy0zzzUw00zw7kzz1z3zz0007zkT00Ty3kDzUzUzzU003zsDU0TU000DkTkTzk001zw7y0zk0007sDs01sDzUzzzzzzs0003w7w00wDzsTy000DwD73Vy7y00S7zwDz0007y63Ukz3z1zz3zy7zU003z01k0TVzUzzU003zk001zU3w0DkzkTzk001zsTzkzk0w07sM007s000zwD3sTsE013wA003w000Ty7UwDwA01Vy6001y7zwDz3kS7y67Vky3000z3zy7zVsT3z33ssT1VzsTVzz3zks8DzVU0QDVkzwDk001zzk43zkk0C7ksDw7s000zz040DsM073kQ003w000Tk0D01wADvVsC001y000Ds0Tw0y7zw0wD000z3zy7y0zzkz3zz0z7UzkTVzz3zbzzyzVzzVzzlzyD", 1)
 FindText().PicLib("|<简介个性化礼包>*150$222.100U0003000000003k00006000010000080003s0w0007U0000s007k0y007lw007UDU00T0007s1y000Dk0001y007kyy00Dlw00DkDU00T0007ztzz00Tk0003w007kyy00DVw007kDU00z000Dzvzz00zs0007y007kyy00TVw003kDU00zzzsTzzzz01zw000Dz007kyy00T1w703kDU01zzzwTTDrs07zz000TzU07wyy00z1wDVzyDU03zzzwyD7Xs0Dwzk00zzs0Tyzzy1y1wTlzyDU07zzzwSD3Xk0zsTw03zDw0Tzzzy1y1wzVzyDU0Dzzzw5y11U7zUDzkDy7z0zzzzy3y1xz1zyDU0Tk01w3tzzyDz07zkzw1zkzzzzy7y1zy01wDU0zk01w3vzzyDy01zXztszwzzsy0Dy1zy01wDU0zzzVw1zzzy7s00TXzVsTwznsy0Dy1zw03sDU0DzzVw1tzzy7U0071z1s7szlky07y1zs07sDU05zzVwDU00y27k7k0w1s3kzkky03y1zk0DsDU01zzVsD7zsy07k7k0E1s0kTkOy03y3zU0TwDU01wDVsD7zsy07k7k001s007kzzw0y7y01zyDU01wDVsD7zsy07k7k003s007kzzw0yDw03zzDU01zzXsD7zsy07k7k003s007kzzw0zzw03zzDU01zzXsD7Vsy07k7k001s007kTzw0zzw01zzDU01zzzsD7zsy0DU7k001s007k0y00zzw31rqDUU1zzjsD7zsy0DU7k001s007k0y00yzw3lbmDUw1w0DkD7zsy0DU7k001s007k0y00yFw7k7kDUw1w0DUD7Vsy0TU7k001s007k0y00y1w7k7kDUw1w00AD7zsy0z07k001s007k0y00y1w7k7kDUw1w00TD7zsy1z07k001s007nzzz0y1yDk7kDVw1w00zD7zwy3y07k001s007nzzz0y1zzU7kDzw1zzzzD00Dy7y07k001s007nzzz0y1zzU7k7zs0zzzyD007w3w07k001s007nzzz0y0zz07k7zs0zzzwD007s0s07k001s007nzzz0y0Ty07k1zU0DzzsD00000007k001s003k0000S00003k00000000U", 1)
@@ -1881,7 +1881,7 @@ ShopCash() {
                 FindText().Click(X, Y, "L")
             }
         }
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.040 * NikkeW . " ", NikkeY + 0.178 * NikkeH . " ", NikkeX + 0.040 * NikkeW + 0.229 * NikkeW . " ", NikkeY + 0.178 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("礼物的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.040 * NikkeW . " ", NikkeY + 0.178 * NikkeH . " ", NikkeX + 0.040 * NikkeW + 0.229 * NikkeW . " ", NikkeY + 0.178 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("礼物的下半"), , , , , , , TrueRatio, TrueRatio)) {
             Sleep 1000
             AddLog("点击一级页面")
             FindText().Click(X + 20 * TrueRatio, Y + 20 * TrueRatio, "L")
@@ -1895,6 +1895,8 @@ ShopCash() {
                 AddLog("点击三级页面")
                 FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                 Sleep 1000
+                Confirm
+                Sleep 500
                 Confirm
             }
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白色的叉叉"), , , , , , , TrueRatio, TrueRatio)) {

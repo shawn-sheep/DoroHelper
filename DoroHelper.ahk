@@ -36,6 +36,7 @@ global g_settings := Map(
     "ShopScrapResources", 0,     ;废铁商店：养成资源
     ;模拟室
     "SimulationRoom", 0,         ;模拟室
+    "SimulationNormal", 0,       ;普通模拟室
     "SimulationOverClock", 0,    ;模拟室超频
     ;竞技场
     "Arena", 0,                  ;竞技场收菜
@@ -412,7 +413,7 @@ cbShop := AddCheckboxSetting(doroGui, "Shop", "商店购买", "xs", true)
 doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店购买相关的任务`r`n具体的购买项目请在右侧详细设置")
 BtnShop := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Shop"))
 cbSimulationRoom := AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "xs", true)
-doroGui.Tips.SetTip(cbSimulationRoom, "普通模拟室的日常扫荡。此功能需要你在游戏内已经解锁了快速模拟功能才能正常使用，需要预勾选5C")
+doroGui.Tips.SetTip(cbSimulationRoom, "总开关：控制是否执行模拟室相关的任务")
 BtnSimulationRoom := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("SimulationRoom"))
 cbArena := AddCheckboxSetting(doroGui, "Arena", "竞技场", "xs", true)
 doroGui.Tips.SetTip(cbArena, "总开关：控制是否执行竞技场相关的任务，如领取奖励、挑战不同类型的竞技场`r`n请在右侧详细设置")
@@ -482,6 +483,8 @@ SetShopScrapResources := AddCheckboxSetting(doroGui, "ShopScrapResources", "购�
 doroGui.Tips.SetTip(SetShopScrapResources, "在废铁商店中自动购买所有可用的养成资源")
 ;tag 二级模拟室
 SetSimulationTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====模拟室选项====")
+SetSimulationNormal := AddCheckboxSetting(doroGui, "SimulationNormal", "普通模拟室", "R1")
+doroGui.Tips.SetTip(SetSimulationNormal, "勾选后，自动进行普通模拟室超频挑战`r`n此功能需要你在游戏内已经解锁了快速模拟功能才能正常使用，需要预勾选5C")
 SetSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频", "R1")
 doroGui.Tips.SetTip(SetSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25")
 ;tag 二级竞技场
@@ -580,7 +583,7 @@ g_settingPages := Map(
         SetShopArenaTitle, SetShopArena, SetShopArenaBookFire, SetShopArenaBookWater, SetShopArenaBookWind, SetShopArenaBookElec, SetShopArenaBookIron, SetShopArenaBookBox, SetShopArenaPackage, SetShopArenaFurnace,
         SetShopScrapTitle, SetShopScrap, SetShopScrapGem, SetShopScrapVoucher, SetShopScrapResources
     ],
-    "SimulationRoom", [SetSimulationTitle, SetSimulationOverClock],
+    "SimulationRoom", [SetSimulationTitle, SetSimulationOverClock, SetSimulationNormal],
     "Arena", [SetArenaTitle, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
     "Tower", [SetTowerTitle, SetTowerCompany, SetTowerUniversal],
     "Interception", [SetInterceptionTitle, DropDownListBoss, SetInterceptionShot],
@@ -618,7 +621,8 @@ ClickOnDoro(*) {
         BackToHall
     }
     if g_settings["SimulationRoom"] {
-        SimulationRoom()
+        if g_settings["SimulationNormal"] ;模拟室超频
+            SimulationNormal()
         if g_settings["SimulationOverClock"] ;模拟室超频
             SimulationOverClock()
         BackToHall
@@ -2135,7 +2139,7 @@ ShopScrap() {
 ;endregion 商店
 ;region 模拟室
 ;tag 模拟室
-SimulationRoom() {
+SimulationNormal() {
     EnterToArk
     AddLog("===模拟室任务开始===")
     AddLog("查找模拟室入口")

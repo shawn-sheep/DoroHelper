@@ -1673,6 +1673,21 @@ CheckAuto() {
         Send "{LShift}"
     }
 }
+;tag 跳过boss入场动画
+Skipping() {
+    while true {
+        UserClick(2123, 1371, TrueRatio)
+        Sleep 500
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            AddLog("跳过动画")
+            break
+        }
+        if (A_Index > 30) {
+            break
+        }
+    }
+}
 ;tag 进入战斗
 EnterToBattle() {
     global BattleActive
@@ -2601,18 +2616,7 @@ Interception() {
             AddLog("未激活快速战斗，尝试普通战斗")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            while true {
-                UserClick(2123, 1371, TrueRatio)
-                Sleep 500
-                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                    AddLog("跳过动画")
-                    break
-                }
-                if (A_Index > 30) {
-                    break
-                }
-            }
+            Skipping
         }
         RedCircle := true
         if g_settings["InterceptionShot"] {

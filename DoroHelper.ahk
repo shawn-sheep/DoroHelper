@@ -2860,7 +2860,7 @@ EventLarge() {
         ;     FindText().Click(X, Y - 50 * TrueRatio, "L")
         ;     AwardCooperateBattle
         ; }
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
             Sleep 1000

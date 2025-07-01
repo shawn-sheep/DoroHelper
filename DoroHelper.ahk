@@ -2900,8 +2900,10 @@ EventLarge() {
                 Sleep 100
             }
             while true {
-                Send " "
-                Sleep 100
+                loop 5 {
+                    Send " "
+                    Sleep 200
+                }
                 if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("小游戏·重新开始的图标"), , , , , , , TrueRatio, TrueRatio)) {
                     if g_settings["BluePill"] {
                         FindText().Click(X, Y, "L")

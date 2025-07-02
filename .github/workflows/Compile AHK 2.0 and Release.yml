@@ -47,6 +47,10 @@ jobs:
             $version = "v$version"
           }
           echo "VERSION_TAG=$version" >> $env:GITHUB_OUTPUT
+          # 新增一步：为了方便构建文件名，我们也输出一个不带“v”的版本号，但文件名仍然会带“v”
+          # 这样可以灵活用于文件名（带v）和内部逻辑（不带v），但在这里为了您的需求，我们直接用VERSION_TAG构建文件名
+          $fileNameVersion = $version
+          echo "FILENAME_VERSION=$fileNameVersion" >> $env:GITHUB_OUTPUT
 
       - name: Check if version matches latest release tag
         id: check_latest_release
@@ -84,11 +88,9 @@ jobs:
             }
 
       - name: Create Git Tag
-        # This step will not run if 'check_latest_release' failed.
-        # The script handles "tag already exists" gracefully.
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # Explicitly provide token for clarity
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const tag = '${{ steps.get_version.outputs.VERSION_TAG }}';
             const owner = context.repo.owner;
@@ -104,17 +106,16 @@ jobs:
               });
               console.log(`Tag ${tag} created successfully.`);
             } catch (error) {
-              // error.response.data.message often includes 'Reference already exists'
               if (error.message && (error.message.includes('Reference already exists') || error.message.includes('Tag already exists'))) {
                 console.warn(`Tag ${tag} already exists on remote. Skipping creation.`);
               } else {
                 core.setFailed(`Failed to create tag ${tag}: ${error.message || error}`);
-                throw error; // Re-throw to ensure workflow fails if it's an unexpected error
+                throw error;
               }
             }
 
       - name: Fetch all tags again (after potential tag creation)
-        run: git fetch --tags --force # Use --force to ensure local tags are updated correctly
+        run: git fetch --tags --force
 
       - name: Determine if Pre-release
         id: prerelease_check
@@ -122,38 +123,31 @@ jobs:
         run: |
           $VERSION_TAG = "${{ steps.get_version.outputs.VERSION_TAG }}"
           $IS_PRERELEASE = "false"
-          # PowerShell 中的字符串匹配操作
           if ($VERSION_TAG -like "*beta*" -or $VERSION_TAG -like "*alpha*" -or $VERSION_TAG -like "*rc*") {
             $IS_PRERELEASE = "true"
           }
           echo "IS_PRERELEASE=$IS_PRERELEASE" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           Write-Host "Release version: ${VERSION_TAG}, Is Prerelease: ${IS_PRERELEASE}"
 
-      - name: Generate Changelog # 更改此步骤
+      - name: Generate Changelog
         id: changelog
         uses: orhun/git-cliff-action@v4
         with:
-          config: .github/cliff.toml # 假设你的 cliff.toml 文件在此路径
-          args: --latest --strip header # 生成最新版本的更新日志，并去除头部的标题
+          config: .github/cliff.toml
+          args: --latest --strip header
         env:
-          OUTPUT: CHANGES.md # Git-cliff 将输出到此文件，但我们通过输出获取内容
-          GITHUB_REPO: ${{ github.repository }} # 提供仓库信息给 git-cliff
+          OUTPUT: CHANGES.md
+          GITHUB_REPO: ${{ github.repository }}
 
-      - name: Read Changelog Content # 读取 git-cliff 生成的内容
+      - name: Read Changelog Content
         id: read_changelog_content
-        shell: pwsh # 确保使用 PowerShell
+        shell: pwsh
         run: |
-          # 在 PowerShell 中读取文件内容并赋值给变量
           $CHANGELOG_BODY = Get-Content -Path CHANGES.md -Raw
-
-          # 定义一个多行分隔符，确保它在 $CHANGELOG_BODY 内容中不出现
-          $DELIMITER = "EOF_CHANGELOG_BODY" 
-
-          # 将输出写入 GitHub Output 文件，使用多行分隔符
+          $DELIMITER = "EOF_CHANGELOG_BODY"
           "CHANGELOG_BODY<<$DELIMITER" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           $CHANGELOG_BODY | Out-File -FilePath $env:GITHUB_OUTPUT -Append
           "$DELIMITER" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-
           Write-Host "--- Generated Changelog ---"
           Write-Host "$CHANGELOG_BODY"
           Write-Host "-------------------------"
@@ -163,10 +157,11 @@ jobs:
         uses: benmusson/ahk2exe-action@v1
         with:
           in: ./DoroHelper.ahk
-          out: ./DoroHelper.exe
-          icon: ./doro.ico # 确保这个路径是正确的
+          # 直接使用 VERSION_TAG 构建文件名
+          out: ./DoroHelper_${{ steps.get_version.outputs.VERSION_TAG }}.exe
+          icon: ./doro.ico
           target: x64
-          ahk-tag: v2.0.19 # 指定 AHK v2 版本
+          ahk-tag: v2.0.19
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
@@ -178,7 +173,8 @@ jobs:
             ${{ steps.read_changelog_content.outputs.CHANGELOG_BODY }}
           draft: false
           prerelease: ${{ steps.prerelease_check.outputs.IS_PRERELEASE }}
-          files: DoroHelper.exe
+          # 直接使用 VERSION_TAG 构建文件名
+          files: DoroHelper_${{ steps.get_version.outputs.VERSION_TAG }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

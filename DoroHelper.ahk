@@ -3338,7 +3338,7 @@ OneAwardPass() {
             }
         }
         if A_Index = 2 {
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.278 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.278 * NikkeH + 0.070 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("奖励"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.075 * NikkeH . " ", 0.4 * PicTolerance, 0.45 * PicTolerance, FindText().PicLib("奖励"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
             }

@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.11"
+currentVersion := "v1.2.12"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -102,6 +102,7 @@ global g_numeric_settings := Map(
 ;tag 其他全局变量
 Victory := 0
 BattleActive := 1
+BattleSkip := 0
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
 RedCircle := 0
@@ -1695,6 +1696,7 @@ Skipping() {
 ;tag 进入战斗
 EnterToBattle() {
     global BattleActive
+    global BattleSkip
     AddLog("尝试进入战斗")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击快速战斗")
@@ -1713,6 +1715,7 @@ EnterToBattle() {
     else if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入战斗")
         BattleActive := 1
+        BattleSkip := 1
         FindText().Click(X + 50 * TrueRatio, Y, "L")
     }
     else {
@@ -2802,7 +2805,9 @@ EventLarge() {
             FindText().Click(X, Y, "L")
         }
         EnterToBattle
-        Skipping
+        if BattleSkip = 1 {
+            Skipping
+        }
         BattleSettlement
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")

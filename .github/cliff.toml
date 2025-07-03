@@ -55,6 +55,7 @@ body = """
 footer = """
 
 [已有 Mirror酱 CDK？点击前往高速下载](https://mirrorchyan.com/zh/projects?rid=DoroHelper&source=doro-gh-release)
+[如果觉得DoroHelper好用的话，点击这里支持作者](https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1)
 """
 
 [git]

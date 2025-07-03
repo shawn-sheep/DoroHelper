@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.2.13"
+currentVersion := "v1.3.0"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -544,7 +544,7 @@ SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德�
 doroGui.Tips.SetTip(SetAwardRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
 ;tag 二级活动
 SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项====")
-SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[暂时禁用]", "R1")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关", "R1")
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
 SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
 SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关", "R1 xs")
@@ -552,7 +552,7 @@ SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签
 SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "大活动挑战", "R1 xs+15")
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
-SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏", "R1 xs+15")
+SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏[暂时禁用]", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 ;tag 妙妙工具
@@ -3494,7 +3494,6 @@ AwardSoloRaid(stage7 := True) {
             BackToHall
             return
         }
-        AddLog("检测普通战斗")
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.413 * NikkeW . " ", NikkeY + 0.800 * NikkeH . " ", NikkeX + 0.413 * NikkeW + 0.176 * NikkeW . " ", NikkeY + 0.800 * NikkeH + 0.085 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("单人突击·挑战"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试普通战斗")
             FindText().Click(X, Y, "L")

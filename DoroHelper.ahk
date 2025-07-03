@@ -1809,14 +1809,14 @@ BattleSettlement() {
         return False
     }
     ;如果有下一关，就点下一关（爬塔的情况）
-    else if (ok := FindText(&X, &Y, NikkeX + 0.887 * NikkeW . " ", NikkeY + 0.909 * NikkeH . " ", NikkeX + 0.887 * NikkeW + 0.105 * NikkeW . " ", NikkeY + 0.909 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("下一关卡的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+    else if (ok := FindText(&X, &Y, NikkeX + 0.889 * NikkeW . " ", NikkeY + 0.912 * NikkeH . " ", NikkeX + 0.889 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.912 * NikkeH + 0.081 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("下一关卡的下一"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("战斗成功！尝试进入下一关")
         Victory := Victory + 1
         if Victory > 1 {
             AddLog("共胜利" Victory "次")
         }
         FindText().Click(X, Y + 20 * TrueRatio, "L")
-        Sleep 5000
+        Sleep 1000
         BattleSettlement
     }
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）

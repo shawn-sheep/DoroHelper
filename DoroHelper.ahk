@@ -1750,6 +1750,10 @@ BattleSettlement() {
     checkred := 0
     AddLog("等待战斗结算")
     while true {
+        ; 跳过剧情
+        if A_Index < 10 {
+            Send "{]}"
+        }
         ; 检测自动战斗和爆裂
         if A_Index = 40 {
             CheckAuto
@@ -1820,6 +1824,7 @@ BattleSettlement() {
         AddLog("战斗结束！")
         GoBack
         Sleep 1000
+        Send "{]}"
         return True
     }
     ;递归结束时清零
@@ -1831,6 +1836,7 @@ BackToHall() {
     while !(ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         ; 点左下角的小房子的位置
         UserClick(333, 2041, TrueRatio)
+        Send "{]}"
         Sleep 500
         if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.127 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")

@@ -1714,16 +1714,16 @@ EnterToBattle() {
             Sleep 500
         }
     }
-    else if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
+    else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入战斗")
         BattleActive := 1
         BattleSkip := 1
         FindText().Click(X + 50 * TrueRatio, Y, "L")
+        Sleep 500
     }
     else {
         BattleActive := 0
         AddLog("无法战斗")
-        GoBack
     }
 }
 ;tag 战斗结算

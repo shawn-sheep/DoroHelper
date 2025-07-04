@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.0"
+currentVersion := "v1.3.1"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -2726,6 +2726,7 @@ EventSmall() {
         Sleep 1000
         Confirm
         AddLog("===通用模式===")
+        Sleep 1000
         if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.431 * NikkeW . " ", NikkeY + 0.277 * NikkeH . " ", NikkeX + 0.431 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.277 * NikkeH + 0.553 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {
                 try {
@@ -2860,7 +2861,8 @@ EventLarge() {
         }
         ; 到了第三阶段会自动卡死，不用提示
         AddLog("===通用模式===")
-        if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.455 * NikkeW . " ", NikkeY + 0.252 * NikkeH . " ", NikkeX + 0.455 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.252 * NikkeH + 0.614 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·EVENT"), , , , , , , TrueRatio, TrueRatio)) {
+        Sleep 1000
+        if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.455 * NikkeW . " ", NikkeY + 0.252 * NikkeH . " ", NikkeX + 0.455 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.252 * NikkeH + 0.614 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")

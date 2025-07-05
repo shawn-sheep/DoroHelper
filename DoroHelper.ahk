@@ -39,7 +39,8 @@ global g_settings := Map(
     "SimulationNormal", 0,       ;普通模拟室
     "SimulationOverClock", 0,    ;模拟室超频
     ;竞技场
-    "Arena", 0,                  ;竞技场收菜
+    "Arena", 0,                  ;竞技场总开关
+    "AwardArena", 0,             ;竞技场收菜
     "ArenaRookie", 0,            ;新人竞技场
     "ArenaSpecial", 0,           ;特殊竞技场
     "ArenaChampion", 0,          ;冠军竞技场
@@ -503,6 +504,8 @@ SetSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "�
 doroGui.Tips.SetTip(SetSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25")
 ;tag 二级竞技场
 SetArenaTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====竞技场选项====")
+SetAwardArena := AddCheckboxSetting(doroGui, "AwardArena", "竞技场收菜", "R1")
+doroGui.Tips.SetTip(SetAwardArena, "领取竞技场每日奖励")
 SetArenaRookie := AddCheckboxSetting(doroGui, "ArenaRookie", "新人竞技场", "R1")
 doroGui.Tips.SetTip(SetArenaRookie, "使用五次每日免费挑战次数挑战第三位")
 SetArenaSpecial := AddCheckboxSetting(doroGui, "ArenaSpecial", "特殊竞技场", "R1")
@@ -598,7 +601,7 @@ g_settingPages := Map(
         SetShopScrapTitle, SetShopScrap, SetShopScrapGem, SetShopScrapVoucher, SetShopScrapResources
     ],
     "SimulationRoom", [SetSimulationTitle, SetSimulationOverClock, SetSimulationNormal],
-    "Arena", [SetArenaTitle, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
+    "Arena", [SetArenaTitle, SetAwardArena, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
     "Tower", [SetTowerTitle, SetTowerCompany, SetTowerUniversal],
     "Interception", [SetInterceptionTitle, DropDownListBoss, SetInterceptionShot],
     "Event", [SetEventTitle, SetEventSmall, SetEventSmallChallenge, SetEventSmallStory,
@@ -642,7 +645,8 @@ ClickOnDoro(*) {
         BackToHall
     }
     if g_settings["Arena"] {
-        Arena()
+        if g_settings["AwardArena"] ;竞技场收菜
+            AwardArena()
         if g_settings["ArenaRookie"] ;新人竞技场
             ArenaRookie()
         if g_settings["ArenaSpecial"] ;特殊竞技场
@@ -2298,7 +2302,7 @@ SimulationOverClock() {
 ;endregion 模拟室
 ;region 竞技场
 ;tag 竞技场收菜
-Arena() {
+AwardArena() {
     EnterToArk()
     AddLog("===竞技场收菜任务开始===")
     AddLog("查找奖励")
@@ -2320,6 +2324,10 @@ Arena() {
     }
     else AddLog("未找到奖励")
     AddLog("===竞技场收菜任务结束===")
+}
+;tag 新人竞技场
+ArenaRookie() {
+    EnterToArk()
     AddLog("进入竞技场")
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.712 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.712 * NikkeH + 0.030 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击竞技场")
@@ -2330,9 +2338,6 @@ Arena() {
         Confirm
     }
     Sleep 1000
-}
-;tag 新人竞技场
-ArenaRookie() {
     AddLog("===新人竞技场任务开始===")
     AddLog("查找新人竞技场")
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("新人"), , , , , , , TrueRatio, TrueRatio)) {

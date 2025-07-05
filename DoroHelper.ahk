@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.1"
+currentVersion := "v1.3.2"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -551,7 +551,7 @@ SetAwardCooperate := AddCheckboxSetting(doroGui, "AwardCooperate", "协同作战
 doroGui.Tips.SetTip(SetAwardCooperate, "参与每日三次的普通难度协同作战`r`n也可参与大活动的协同作战")
 SetAwardSoloRaid := AddCheckboxSetting(doroGui, "AwardSoloRaid", "单人突击日常", "R1.2")
 doroGui.Tips.SetTip(SetAwardSoloRaid, "参与单人突击，自动对最新的关卡进行战斗或快速战斗")
-SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德雷克·反派之路", "R1.2")
+SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德雷克·反派之路[失效]", "R1.2")
 doroGui.Tips.SetTip(SetAwardRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
 ;tag 二级活动
 SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项====")
@@ -1402,6 +1402,7 @@ ClickOnHelp(*) {
    - 设备层面：显示器的护眼模式、色彩模式、色温调节、HDR 等。
 4. 游戏语言设置为**简体中文**，设定-画质-开启光晕效果，设定-画质-开启颜色分级，不要使用太亮的大厅背景
 5. 以**管理员身份**运行 DoroHelper
+6. 推荐使用win11操作系统，win10可能有未知bug
     )"
 }
 ;endregion 消息辅助函数

@@ -457,6 +457,8 @@ BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+30", "DORO!").OnEvent("Click", Cl
 ;tag 二级设置
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x280 y10 w300 h680 ", "任务设置")
+;tag 二级默认
+SetDefault := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "请到左侧「任务列表」处`n对每个任务进行详细设置")
 ;tag 二级登录
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====(暂无)")
 ;tag 二级商店
@@ -592,6 +594,7 @@ LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h320 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 ;tag 二级控制
 g_settingPages := Map(
+    "Default", [SetDefault],
     "Login", [SetLogin],
     "Shop", [
         SetShop,
@@ -615,6 +618,7 @@ g_settingPages := Map(
     ]
 )
 HideAllSettings()
+ShowSetting("Default")
 if g_settings["AutoDeleteOldFile"]
     DeleteOldFile
 if g_settings["AutoCheckUpdate"]

@@ -1669,7 +1669,9 @@ Confirm() {
 GoBack() {
     AddLog("返回")
     Send "{Esc}"
-    Sleep 1000
+    Sleep 500
+    Send "{]}"
+    Sleep 500
 }
 ;tag 结算招募
 Recruit() {

@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.2"
+currentVersion := "v1.3.3"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -50,6 +50,7 @@ global g_settings := Map(
     "TowerUniversal", 0,         ;通用塔
     ;异常拦截
     "Interception", 0,           ;拦截战
+    "InterceptionAnomaly", 0,    ;异常拦截战
     "InterceptionShot", 0,       ;拦截截图
     ;常规奖励
     "Award", 0,                  ;奖励领取总开关
@@ -522,6 +523,7 @@ SetTowerUniversal := AddCheckboxSetting(doroGui, "TowerUniversal", "爬通用塔
 doroGui.Tips.SetTip(SetTowerUniversal, "勾选后，自动挑战通用无限之塔，直到无法通关")
 ;tag 二级拦截战
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
+SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
 DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
 doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用你的编队1去挑战克拉肯`r`n会使用3号位的狙击或发射器角色打红圈")
 DropDownListBoss.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBoss"] := Ctrl.Value)
@@ -606,7 +608,7 @@ g_settingPages := Map(
     "SimulationRoom", [SetSimulationTitle, SetSimulationOverClock, SetSimulationNormal],
     "Arena", [SetArenaTitle, SetAwardArena, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
     "Tower", [SetTowerTitle, SetTowerCompany, SetTowerUniversal],
-    "Interception", [SetInterceptionTitle, DropDownListBoss, SetInterceptionShot],
+    "Interception", [SetInterceptionTitle, SetInterceptionAnomaly, DropDownListBoss, SetInterceptionShot],
     "Event", [SetEventTitle, SetEventSmall, SetEventSmallChallenge, SetEventSmallStory,
         SetEventLarge, SetEventLargeSign, SetEventLargeChallenge, SetEventLargeStory, SetEventLargeCooperate, SetEventLargeDaily, SetEventLargeMinigame],
     "Award", [
@@ -667,7 +669,8 @@ ClickOnDoro(*) {
         BackToHall
     }
     if g_settings["Interception"]
-        Interception()
+        if g_settings["InterceptionAnomaly"]
+            InterceptionAnomaly()
     if g_settings["Award"] {
         if g_settings["AwardOutpost"] ;使用键名检查 Map
             AwardOutpost()
@@ -2545,7 +2548,7 @@ TowerUniversal() {
 ;endregion 无限之塔
 ;region 拦截战
 ;tag 异常拦截
-Interception() {
+InterceptionAnomaly() {
     global RedCircle
     global Screenshot
     BackToHall

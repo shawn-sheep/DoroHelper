@@ -3502,7 +3502,7 @@ AwardSoloRaid(stage7 := True) {
     }
     while True {
         AddLog("检测快速战斗")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.728 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.144 * NikkeW . " ", NikkeY + 0.728 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("快速战斗已激活")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
             Sleep 500

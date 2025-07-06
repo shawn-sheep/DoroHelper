@@ -1903,6 +1903,7 @@ Login() {
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("点击确认")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
+            Sleep 1000
         }
         Confirm
         if !WinActive(nikkeID) {

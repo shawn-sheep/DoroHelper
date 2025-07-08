@@ -315,6 +315,7 @@ FindText().PicLib("|<SP灰色的全部>*130$70.00200006000000S0003w000003w000Dk3
 FindText().PicLib("|<RAID>*80$89.zy003y003y0w00Dzw007w003w1k00Dzs007s007s3U00TzU00DU00DU7000zz000T000D0Q000zy000S000S0s001zs000s1U0s3k0M1zk7w1k7w1k70Dk7z0Ds7UDk3UC0zUDy0zUC0zUC0w1y0Tw1z0Q1z0Q1k3w1zk3w0s3y1s3UDs3zUDs3UDs3UD0Tk7z0Tk700070S1zUTy0z0C000C0s3y0zs3y0s000s3k7w1zk203k001k7UDk7zU007U003UC0zUDy000z000C0Q1z0zw001w000Q1s3w0zs001s3y0s3UDs3zU003U7s3k70Tk7z00070Tk70S0z0Dy0z0C0z0C0w3y0zs1y0s1y0M1k7w1zk7w1k7w1k7UDs3zUDs3UDs3UC0TUDy0zUC0TUD0Q1z0Tw1z0Q1z0Q1s3w0zs3y0s3y0s3UDs3zk7s3k7w3k70Tk7z0Tk70Tk70S000Ty0zUC0zUC0s001zw3y0w1y0Q1k007zk7w1k7w1k3U00TzUDs3UDs3UC001zz0zU70TU70Q007zzzz0Tzz0S1s00Tzzzy0zzy0zzzzzzzzzs3zzw1zzzzzzzzzk7zzk7zzzzzzzzzUzzzUzzzzzzzzzy7zzz3zzzzzzzzzwTzzwTzzzzzzzzzvzzzvzzzzzzzzw", 1)
 FindText().PicLib("|<单人突击·挑战>*200$90.y1zyCTzzzzzzUTzy1zs61zzz0zzUTzy1zs61zzz0zzUSTy1zs61zzz0zzUMDy1zs61zzz0zzUM7y1zs61zzz0zzUM3y1yM61Xzz0zzUQ3y1sM61Uzz007US1U000610Tz007US70000610Tz007UTD0000610zz007kTz0080601zz007kDl00A0601zz007k0100A0603zz0Ty001y1y0603zz0Ts001y1y0607zz0Ts001y1z0617zz0Ts001y1zs61zzz0Ts03zy1Ds61zzz0Ts0DTy0Ds61zzz0TzkD7y07s60Dz000DkC1s07s607z000DkC1007U603z000DsA30070C01z000Ds4300w0C00z000Ds07U1s0C00T000Ds07U1U0C10D0zkDs07U1U0C1UD0zkDs0Dy1U0C1kT0zkDs0Ty1k0C1kz0zkDw0Ty1sUC1tz0zkDw0zy1tUS1zz0zkDw0ry1z0S1vz0zkDs1ny1z0S1sz0zkDk1ky1y0y1sD000DU1Uy1w0y1sD000D00Uy1s1y1kD000A000U1k1y00D0000000U103y00T0000001U1U7y00T00001U1k3kDz00T0zkA3k3k3sTz00z0zkCDs3kDwzzk1zUzzzzw7U", 1)
 FindText().PicLib("|<个人突击·进入战斗的进>*200$43.wzzkTVzwDzsDUTw3zw7kDy0zy3s7zUDz1w3zs3zUy1zy0zUD0TzUs0000zsw0000Tyy0000Dzz00007zzk0007zzzkT0zzzzsDUTzzzw7kDy0Ty3s7y07z1w3z03zUy1zU1k0001k0s0000TUQ0000DsC00007w700003y3y0y1zz1zUz0zzUzUTUTzkTkTkDzsDkDs7zw7kDw3zy3s7y1zz1s7z0zzUy3zUTz0DXzkDz03vzwDz00Tzzzz000Tzw00Q00000UTU0000MTw0000CTzU000Djzzs1zz", 1)
+FindText().PicLib("|<红色的MODE>F12C1D-0.90$121.0000000y00Dzy0007zzzk000403zs07zzw00Dzzzw000607zz03zzzU0Dzzzz000D07zzk1zzzs0Dzzzzs00DU7zzw0zzzy07zzzzy00Dk7w1z0S00zU7k000zU0Ds7s0DkD007s3k000Tw0Tw3s03s7U01w1s000Dz0Ty3s00y3k00T0w0007zkTz1s00D1s007US0003ryzjUw007Uw003kDzzz1szzXkw001sS001w7zzzUwDzVsS000wD000S3zzzkS3zUwD000S7U00D1zzzsD0T0S7U00D3k007Uzzzw7U70D3k007Vs003kS0003k007Vs003kw001sD0001s003ky003kS001s7U000w001sD001sD000w3k000S000w7k01w7U00y1s000D000S1w01w3k00y0w0007U00D0z01y1s00z0S0003k007UDs3y0w01z0DU001s003k3zzy0Tzzz03zzzzw001s0zzy0Dzzz01zzzzy000w0Dzy07zzz00Tzzzz000S01zw03zzy007zzzzU00D007k01zzs000zzzy", 1)
 ;tag 剧情模式
 FindText().PicLib("|<SKIP的图标>*200$20.7szky7w7Uz0M3k20Q00100000040030M3kC1wDVz7sznyTy", 1)
 FindText().PicLib("|<1>*150$38.zzzzzwzzzzzz7zzzzztzzzzzyTzkzzzXzUDzzszU3zzyDk0zzzXw0Dzzsz03zzyDlUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzzzzzXzzzzztzzzzzyTzzzzz7zzzzznU", 1)
@@ -3522,6 +3523,11 @@ AwardSoloRaid(stage7 := True) {
         Sleep 1000
     }
     while True {
+        if (ok := FindText(&X, &Y, NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.618 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.618 * NikkeH + 0.037 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红色的MODE"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("挑战模式")
+            AddLog("===单人突击任务结束===")
+            return
+        }
         AddLog("检测快速战斗")
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.728 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.144 * NikkeW . " ", NikkeY + 0.728 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("快速战斗已激活")

@@ -117,8 +117,8 @@ g_default_numeric_settings := g_numeric_settings.Clone()
 SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
-    if CompareVersionsSemVer(currentVersion, g_numeric_settings["Version"]) > 0 and g_numeric_settings["Username"] != A_Username {
-        MsgBox("版本已更新，所有设置将重置`n可以在配置文件settings.ini中将Username改成自己的永久关闭重置")
+    if currentVersion = "v0.0.0" {
+        MsgBox("该版本有重大调整，所有设置将重置")
         FileDelete "settings.ini"
         ; 使用之前保存的副本恢复默认设置
         g_settings := g_default_settings.Clone()

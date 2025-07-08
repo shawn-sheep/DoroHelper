@@ -181,6 +181,7 @@ FindText().PicLib("|<TAB的图标>*200$49.01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzz
 ;特殊竞技场快速战斗会出现该图标
 FindText().PicLib("|<重播的图标>*200$66.zzzzz0Dzzzzzzzz000Tzzzzzzw0007zzzzzzk0000zzzzzz00000Dzzzzw000007zzzzk00C001zzzzU0Dzy00zvzz01zzzk0Dnzy07zzzw07Xzw0Tzzzz033zs0zzzzzk01zk3zzzzzs01zU7zzzzzw01z0Dzzzzzy01y0Tzzzzzz01y0zzzzzzz01w0zzzzzzy01w1zzzzzzw00s3zzzzzzs00s7zzxzzzk00k7zzwzzzw00kDzzwTzzzz0kDzzw7zzzzzUTzzw3zzzzzUTzzw1zzzzzUTzzw0zzzzzUTzzw0Dzzzz0zzzw07zzzz0zzzw03zzzz0zzzw01zzzz0zzzw00Tzzz0zzzw00Dzzz0zzzw007zzz0zzzw001zzz0zzzw001zzz0zzzw007zzz0zzzw00Dzzz0zzzw00Tzzz0zzzw00zzzz0zzzw03zzzUUTzzw07zzz0UTzzw0Dzzz0UTzzw0zzzz0kDzzw1zzzy0kDzzw3zzzy0kDzzw7zzzy1k7zzwTzzzw1s3zzwzzzzw3s3zzxzzzzs3w1zzzzzzzk7w0zzzzzzzk7y0TzzzzzzUDy0Tzzzzzz0Dz0Dzzzzzy0TzU3zzzzzw0zzk1zzzzzk1zzs0zzzzzU3zzw0Dzzzz07zzy07zzzw0Dzzz00zzzk0TzzzU07zw00zzzzk000001zzzzw000007zzzzz00000Tzzzzzk0001zzzzzzy000Dzzzzzzzs03zzzzU", 1)
 ;拦截扫荡会出现该图标
+FindText().PicLib("|<ESC>*200$61.zzzzzzzzzzzzzzzzzzzzw00Tk0zy03y00DU07w00z007k01y00DU03k00y003k01s00T001sDzw7sDUzUw7zy3w7kTkS3zz1zzsDsD1zzUzzw7zzU0Dk3zy3zzk07s03z1zzs03y00TUzzw01zU07kTzy00zy03sDzz1zzzy0w7zzUzzzzUS3y3kTzsDsD1z1sDzw7w7UzUw7zy3w3kTkS00D001s00D007U01w007U03s00z007k01y00zk07zzzzzzzzzzzzzzzzzzzzw", 1)
 FindText().PicLib("|<点击>*70$64.zzVzzzzy7zzzy3zzzzkTzzzsDzzzz1zzzzU01zzw7zzzy007zzkTzzzs00Tk0007zzU01z0000Tzy3zzw0001zzsDzzk0007zzUzzzzw7zzk000TzzkTzz0001zzz1zzw0007w00007k000Tk0000T3zzVz00000wDzy7w00003kzzsTk0000T0001zzz1zzw0007z1w7kTk000Tw7kT1z0001zkT1w7w0007z1w7kTzzzzTw7kT1z3bXVzkT1w7sAA63z1w7kTVksQ7w0001w73UsTk0007UwC3Uz0000Q3kwD1w0001sT3kw7s0007nwDjtzzzzkS", 1)
 ;判断胜利状态
 FindText().PicLib("|<下一关卡的下一>*200$76.000001zzzzzzw000007zzzzzzk00000Tzzzzzz000001zzzzzzw000007zzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz0zzzzzzzzzzzw0zzzzzzzzzzzk0zzzzzzzzzzz00zzk00000Dzw01zy000000zzk01zs000003zz1U1zU00000Dzw7U3y000000zzkT07zzzzzzzzz1z0Tzzzzzzzzw7y3zzzzzzzzzkTyTzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzy", 1)
@@ -1748,6 +1749,7 @@ EnterToBattle() {
     }
     else {
         BattleActive := 0
+        BattleSkip := 0
         AddLog("无法战斗")
     }
 }
@@ -1780,7 +1782,7 @@ BattleSettlement() {
             checkend := checkend + 1
             ;AddLog("重播的图标已命中，共" checkend "次")
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("点击"), , , , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("ESC"), , , , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             ;AddLog("点击已命中，共" checkend "次")
         }

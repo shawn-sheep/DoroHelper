@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.3"
+currentVersion := "v1.3.4"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -767,7 +767,7 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
-    if GameRatio = 1.778 {
+    if GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("标准的16：9尺寸")
     }
     else MsgBox("请在nikke设置中将画面比例调整为16:9")

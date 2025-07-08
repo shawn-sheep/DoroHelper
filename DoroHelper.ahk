@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.4"
+currentVersion := "v1.3.5"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -317,11 +317,15 @@ FindText().PicLib("|<单人突击·挑战>*200$90.y1zyCTzzzzzzUTzy1zs61zzz0zzUTz
 FindText().PicLib("|<个人突击·进入战斗的进>*200$43.wzzkTVzwDzsDUTw3zw7kDy0zy3s7zUDz1w3zs3zUy1zy0zUD0TzUs0000zsw0000Tyy0000Dzz00007zzk0007zzzkT0zzzzsDUTzzzw7kDy0Ty3s7y07z1w3z03zUy1zU1k0001k0s0000TUQ0000DsC00007w700003y3y0y1zz1zUz0zzUzUTUTzkTkTkDzsDkDs7zw7kDw3zy3s7y1zz1s7z0zzUy3zUTz0DXzkDz03vzwDz00Tzzzz000Tzw00Q00000UTU0000MTw0000CTzU000Djzzs1zz", 1)
 ;tag 剧情模式
 FindText().PicLib("|<SKIP的图标>*200$20.7szky7w7Uz0M3k20Q00100000040030M3kC1wDVz7sznyTy", 1)
-FindText().PicLib("|<1>*200$10.zzzz3kD0zXyDszXyDszXyDszXyDzzzU", 1)
+FindText().PicLib("|<1>*150$38.zzzzzwzzzzzz7zzzzztzzzzzyTzkzzzXzUDzzszU3zzyDk0zzzXw0Dzzsz03zzyDlUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzUzzzXzsDzzszy3zzyDzzzzzXzzzzztzzzzzyTzzzzz7zzzzznU", 1)
 FindText().PicLib("|<2>*150$14.zzzzzU7k0w0D7XzszkDk3s3w7z7zlzw0D03k0zzzzzU", 1)
-FindText().PicLib("|<AUTO>*200$66.z3zXyD00S03y1zXyD00Q01y1zXyD00Q01y1zXyDyDwDkwEzXyDyDwTkwMzXyDyDwTkwMzXyDyDwTksMTXyDyDwTkswTXyDyDwTkswTXyDyDwTkkwTXyDyDwTkk0DXyDyDwTkk0DXyDyDwTkU0DXyDyDwTkVy7XyDyDwTkXz7VwDyDwDkXz7U0DyDw013z3k0DyDy017z3s0zyDz03U", 1)
-FindText().PicLib("|<灰色的星星>5B5D5F-0.90$26.00E000C0007U001w000z000Ds007y001zk0DzzszzzzzzzzxzzzyDzzz0zzzU7zzk0zzs0Dzw03zzU0zzs0Dzy07zzU1zjs0TUy07U7k1U0Q8", 1)
-FindText().PicLib("|<记录播放的播放>*200$53.sTzlztz3zks01zVy7zVk03z3wDz3U0Dz7sTy7W4D00kzk328y0100U601w02010000w7w03VU01wDkMD3U03sTUky7k0Tk01VwC00TU037s08ED000DU0sky480Q0003w8S0w3U07sEw3s700DlVs7wC4ATX3sDsQ00y67kTks01wAD0TVk03sMM0T3V37VkU08700C001UES00SA67Vkw00ysQzb", 1)
+FindText().PicLib("|<白色的AUTO>FFFFFF-0.90$110.03z00Dk0TUzzzw0zzy00zk03w07sDzzz0Tzzk0Dw00z01y3zzzkDzzy07zU0Dk0TUzzzw3zzzk1zs03w07sDzzz1zzzw0Ty00z01y00z00Tk0z0Dzk0Dk0TU0Dk07s0Dk3tw03w07s03w01y03w0yT00z01y00z00TU0z0Tbs0Dk0TU0Dk07s0Dk7ly03w07s03w01y03w1wDU0z01y00z00TU0z0z3s0Dk0TU0Dk07s0DkDUz03w07s03w01y03w3s7k0z01y00z00TU0z1y1w0Dk0TU0Dk07s0DkTUTU3w07s03w01y03w7k7s0z01y00z00TU0z3w0y0Dk0TU0Dk07s0Dkzzzk3w07s03w01y03wDzzw0z01y00z00TU0z3zzz0Dk0TU0Dk07s0Dlzzzs3w07s03w01y03wTzzy0z01y00z00TU0z7k0TUDk0TU0Dk07s0Dnw03w3w07s03w01y03wz00z0Tzzy00z00TzzzDU0Dk7zzzU0Dk07zzzrs01y1zzzk03w00zzzty00TUDzzw00z00DzzyT007s1zzy00Dk01zzzDk01z0Dzy003w007zz2", 1)
+FindText().PicLib("|<灰色的星星>5B5D5F-0.90$41.0008000000s000001k000007k00000DU00000zU00001z000007z00000Ty00000zy00003zy00007zw0000zzy007zzzzz1zzzzzzrzzzzzzrzzzzzz7zzzzzw7zzzzzk7zzzzz07zzzzw07zzzzk07zzzz007zzzw007zzzk007zzz000Tzzz000zzzy001zzzw003zzzs007zzzk00Tzzzk00zzzzU01zyzz003zkTy007y0Dw00Dk07s00y003k00k001U4", 1)
+FindText().PicLib("|<记录播放的播放>*200$93.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzUzzzzbzzszz1zzzw3zzU0Tzw3zs7zzzUS0001zzUTz0zzzw3k0007zw3zk7zzzUT0000zzUDy0zzzw3s000Tzy3zk7zzzUT0M71zzUDy0zzzw3w30kDs003k7zzs03kM61z000Q000z00S10kTs003U007s03k843z000Q000z0000001s0030007s000000Ds3zs000z0000001z0Tz0007zUS0000Dw3zk3k7zw3k0001zUTy0S1zzUTw007zw00U3kDzw3z000zzU000S1zzUTk001zw0001UDzw2s00U7zU000A3zzU00M60Dw0001UTzs0070s1zU00003zw001s7UTs30U00Ty000D0y3z0s6807zk030000zs70v00zy03s0007z0s7w07zk0T0000zs70zU1zz03s0007z0s7w0DzvUT0s60zs70zk3zzw3s71s7z0s7y0TzzUT0000zk70zk1zzw3s0007y1s7w07zzUT0000zkD0z00Tzw3s0007w1s7k01zzUT0000zUD0w007zw3s71s7s3k6000Tz0T0E60z0S0U1U0z07s0007k6000S07s0z0000y0k1U7s1zU7s0007sC0A1zUTw1z0000znk3kTy7zUTs7zs7zT0zDzwzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw", 1)
+FindText().PicLib("|<Bla的图标>*200$116.jzzzzzzzzzzzzzzzzzzkzzzzzzzzzzzzzzzzzzW0zzzzzzzzzzzzzzzzz0k0zzzzzzzzzzzzzzzs0y03zzzzzzzzzzzzzzs0Tk03zzzzzzzzzzzzz00Dy007zzzz000Tzzzy007zk00Tzzz0000zzzy003zy003zzs00000zzz001zzk00Tzk000003zzU00zzy007zs000000Dzs00Tzzk00zs0000000Ts00Dzzy007s00000003y007zzzs00w00000000T003zzzzzsQ000000001s07zzzzzzy000000000Dzzzzzzzzz0000000000zzzzzzzzzU0000000007zzzzzzzzU0000000000zzzzzzzzk00000000007zzzzzzzs00000000000zzzzzzzy000000000007zzzzzzy000000000000zzzzzzzU00000000000Dzzzzzzk000000000001zzzzzzs000000000000Dzzzzzw0000000000003zzzzzz0000000000000TzzzzzU0000000000003zzzzzU0000000000000zzzzzs00000000000007zzzzy000DU0001s0001zzzzzU007s0000z0000Dzzzzs001y0000Dk0003zzzzs000TU0003w0000Tzzzy0007s0000zU0007zzzzU001y0000Ds0001zzzzs000TU0003y0000Dzzzy0007s0000zU0003zzzy0001y0000Ds0000zzzzU000TU0003y0000Dzzzw0007s0000z00001zzzz0001y0000Dk0000Tzzzk000TU0003w00007zzzw0007s0000z00000zzzy0001y0000Ds0000DzzzU000TU0003y00003zzzs0003s0000S00000zzzy000000000000000DzzzU000000000000003zzzs000000000000000zzzy000000000000000DzzzU000000000000003zzzs000000000000000zzzy000000000000000Dzzzk000000000000003zzzw000000000000000zzzz000000000000000Dzzzk000000000000007zzzw000000000000001zzzz000000000000000Tzzzk00000000000000Dzzzy000000000000003zzzzU00000000000000zzzzs00000000000000Dzzzz000000000000007zzzzk00000000000001zzzzy00000000000000TzzzzU0000000000000Dzzzzs00000000000007zzzzz00000000000001zzzzzs0000000000000Tzzzzy0000000000000Dzzzzzk0000000000007zzzzzw0000000000003zzzzzzU000000000000zzzzzzw000000000000Tzzzzzz000000000000Dzzzzzzs000000000003zzzzzzz000000000000zzzzzzzs00000000000Tzzzzzzz00000000000Dzzzzzzzs00000000007zzzzzzzz00000000003zzzzzzzzs0000000001zzzzzzzzzU000000000Tzzzzzzzzw000000000DzzzzzzzzzU000000007zzzzzzzzzz000000003zzzzzzzzzzs00000001zzzzzzzzzzzU0000001zzzzzzzzzzzy0000000zzzzzzzzzzzzs000000Tzzzzzzzzzzzzk00000Dzzzzzzzzzzzzzw0000Dzzzzzzzzzzzzzzzw007zzzzzzzzzzzzzzzzU07zzzzzzzzzzzzzzzzk07zzzzzzzzzzzzzzzzw03zzzzzzzzzzzzzzzzz07zzzzzzzzzzzzzzzzzU3zzzzzzzzzzzzzzzzzk7zzzzzzzzzzzzzzzzzsDzzzzzzzzzzzzzzzzzzDzzzzzzzzy", 1)
+FindText().PicLib("|<WIFI的图标>*200$38.zzzzzzzzzzzzzzy01zzzw003zzs000Dzw0000zw00007y00Q00z03zy03k3s3s1y3k03Uzlk00ATzk001zzs000Dzz0003zzs7y1zzz7Vszzzz07TzzzU0Tzzzs07zzzz03zzzzs1zzzzz0zzzzzsTzzzzzDzzzzzzzzzzzzzzzU", 1)
+FindText().PicLib("|<对话框·对话>*220$58.zzzzzk0003zzzzy0000Dzzzzs0000zzzzzk0003zzzzzU000DzzzzzkC00zzzzzz0s03zzzzzzzU0Dzzzzzzs00zzzzzzz003zzzzzzw00Dzzzzzz000zzzzzzs003zzzzzy000Dzzwzz0000zzznzw0003zzy000000Dzz0000000zzs0000003zy0000000DzU0000000zU00000003s0000000000000000000000000002", 1)
+FindText().PicLib("|<对话框·想法>*150$84.000000000001zz000000000003zz000000000007zz00000000000Dzz00000000000zzz00000000003zzzzs00000Dzzzzzzzs00000Dzzzzzzzs00000Dzzzzzzzs00000Dzzzzzzzs00000Dzzzzzzzw00000Dzzzzzzzw00000Tzzzzzzzw00000Tzzzzzzzy00000Tzzzzzzzy00000zzzzzzzzz00000zzzzzzzzzU0001zzzzzzzzzk0003zzzzzzzzzs0007zzzzzzzzzw000Dzzzzzzzzzy000zzzzzzzzzzzU03zzzzzzzzzzzy0TzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzkDzzzzzzzzzzzy01zzzzzzzzzzzw00Tzzzzzzzzzzs00Tzzzzzzzzzzk00DzzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzzk00Dzzzzzzzzzzk00Dzzzzzzzzzzs00Tzzzzzzzzzzy00zzzzzzzzzzzz03zzzzzzzzzzzzsTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU", 1)
 ;endregion 识图素材
 ;region 运行前提示
 if g_numeric_settings["Username"] != A_Username
@@ -3633,11 +3637,12 @@ AwardRoadToVillain() {
 StoryMode(*) {
     Initialization
     WriteSettings
+    AddLog("===剧情模式开始===")
     while True {
-        while (ok := FindText(&X, &Y, NikkeX + 0.936 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.936 * NikkeW + 0.051 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.025 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("SKIP的图标"), , , , , , , TrueRatio, TrueRatio)) {
-            if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.638 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.638 * NikkeH + 0.282 * NikkeH . " ", 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("1"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X, &Y, NikkeX + 0.936 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.936 * NikkeW + 0.051 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.025 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("SKIP的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.638 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.638 * NikkeH + 0.282 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("1"), , , , , , , TrueRatio, TrueRatio)) {
                 if !g_settings["StoryModeAutoChoose"] {
-                    if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.638 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.638 * NikkeH + 0.282 * NikkeH . " ", 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("2"), , , , , , , TrueRatio, TrueRatio)) {
+                    if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.638 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.638 * NikkeH + 0.282 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("2"), , , , , , , TrueRatio, TrueRatio)) {
                         continue
                     }
                 }
@@ -3645,21 +3650,52 @@ StoryMode(*) {
                 Send "{1}"
                 Sleep 500
             }
-            if (ok := FindText(&X, &Y, NikkeX + 0.785 * NikkeW . " ", NikkeY + 0.004 * NikkeH . " ", NikkeX + 0.785 * NikkeW + 0.213 * NikkeW . " ", NikkeY + 0.004 * NikkeH + 0.071 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("AUTO"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX + 0.785 * NikkeW . " ", NikkeY + 0.004 * NikkeH . " ", NikkeX + 0.785 * NikkeW + 0.213 * NikkeW . " ", NikkeY + 0.004 * NikkeH + 0.071 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的AUTO"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击AUTO")
                 Send "{LShift Down}"
                 Sleep 500
                 Send "{LShift Up}"
                 Click NikkeX + NikkeW, NikkeY + NikkeH, 0
             }
+            if (ok := FindText(&X, &Y, NikkeX + 0.475 * NikkeW . " ", NikkeY + 0.460 * NikkeH . " ", NikkeX + 0.475 * NikkeW + 0.050 * NikkeW . " ", NikkeY + 0.460 * NikkeH + 0.080 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("Bla的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击Bla的图标")
+                Sleep 1000
+                FindText().Click(X, Y, "L")
+                Sleep 500
+            }
+            if (ok := FindText(&X, &Y, NikkeX + 0.366 * NikkeW . " ", NikkeY + 0.091 * NikkeH . " ", NikkeX + 0.366 * NikkeW + 0.012 * NikkeW . " ", NikkeY + 0.091 * NikkeH + 0.020 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("WIFI的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                if (ok := FindText(&X, &Y, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.210 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.210 * NikkeH + 0.700 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·对话"), , , , , , 3, TrueRatio, TrueRatio)) {
+                    AddLog("点击对话")
+                    FindText().Click(X - 100 * TrueRatio, Y - 100 * TrueRatio, "L")
+                    sleep 1000
+                }
+                else {
+                    AddLog("点击对话框的右下角")
+                    UserClick(2382, 1894, TrueRatio)
+                    sleep 1000
+                }
+            }
+            if (ok := FindText(&X, &Y, NikkeX + 0.588 * NikkeW . " ", NikkeY + 0.754 * NikkeH . " ", NikkeX + 0.588 * NikkeW + 0.035 * NikkeW . " ", NikkeY + 0.754 * NikkeH + 0.055 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·想法"), , , , , , 3, TrueRatio, TrueRatio)) {
+                AddLog("点击想法")
+                FindText().Click(X - 100 * TrueRatio, Y - 100 * TrueRatio, "L")
+                sleep 1000
+            }
         }
         if g_settings["StoryModeAutoStar"] {
             Sleep 3000
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.353 * NikkeW . " ", NikkeY + 0.319 * NikkeH . " ", NikkeX + 0.353 * NikkeW + 0.293 * NikkeW . " ", NikkeY + 0.319 * NikkeH + 0.361 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的星星"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.611 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.611 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的星星"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击右下角灰色的星星")
+                FindText().Click(X, Y, "L")
+                Sleep 500
+            }
+            else if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.369 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.369 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的星星"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击左上角灰色的星星")
                 FindText().Click(X, Y, "L")
                 Sleep 500
             }
         }
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.500 * NikkeW . " ", NikkeY + 0.514 * NikkeH . " ", NikkeX + 0.500 * NikkeW + 0.139 * NikkeW . " ", NikkeY + 0.514 * NikkeH + 0.070 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("记录播放的播放"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.500 * NikkeW . " ", NikkeY + 0.514 * NikkeH . " ", NikkeX + 0.500 * NikkeW + 0.139 * NikkeW . " ", NikkeY + 0.514 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("记录播放的播放"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击记录播放")
             FindText().Click(X, Y, "L")
             Sleep 500
             FindText().Click(X, Y, "L")

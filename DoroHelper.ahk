@@ -2350,7 +2350,7 @@ ArenaRookie() {
     Sleep 1000
     AddLog("===新人竞技场任务开始===")
     AddLog("查找新人竞技场")
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("新人"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("新人"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击新人竞技场")
         FindText().Click(X + 20 * TrueRatio, Y, "L")
         Sleep 1000
@@ -2399,7 +2399,7 @@ ArenaRookie() {
 ArenaSpecial() {
     AddLog("===特殊竞技场任务开始===")
     AddLog("查找特殊竞技场")
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.543 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.543 * NikkeH + 0.022 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("特殊"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.543 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.543 * NikkeH + 0.022 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击特殊竞技场")
         FindText().Click(X + 20 * TrueRatio, Y, "L")
         Sleep 1000

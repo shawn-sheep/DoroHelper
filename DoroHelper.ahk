@@ -3709,6 +3709,10 @@ TestMode(BtnTestMode, Info) {
 }
 ^6:: {
     Initialization()
+    AdjustSize(3580, 2014)
+}
+^7:: {
+    Initialization()
     AdjustSize(3840, 2160)
 }
 ^9:: {

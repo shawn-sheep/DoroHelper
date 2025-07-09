@@ -1773,7 +1773,7 @@ BattleSettlement() {
     global RedCircle
     if (BattleActive = 0) {
         AddLog("由于无法战斗，跳过战斗结算")
-        if (ok := FindText(&X := "wait", &Y := 1, , NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.831 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.831 * NikkeH + 0.143 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的进"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.831 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.831 * NikkeH + 0.143 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的进"), , , , , , , TrueRatio, TrueRatio)) {
             Send "{Esc}"
         }
         return

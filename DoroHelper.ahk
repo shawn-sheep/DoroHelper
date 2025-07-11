@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.8"
+currentVersion := "v1.3.9"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1804,7 +1804,7 @@ BattleSettlement() {
             checkend := checkend + 1
             ;AddLog("重播的图标已命中，共" checkend "次")
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("ESC"), , , , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), , , , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             ;AddLog("点击已命中，共" checkend "次")
         }

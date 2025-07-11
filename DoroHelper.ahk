@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.7"
+currentVersion := "v1.3.8"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -784,15 +784,16 @@ Initialization() {
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n识图宽容度是" PicTolerance)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
-    if GameRatio = 1.778 or GameRatio = 1.777 {
+    if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")
     }
     else MsgBox("请在nikke设置中将画面比例调整为16:9")
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+3将游戏尺寸调整为1920*1080尺寸，再根据需要放大")
-            Pause
+            MsgBox("游戏尺寸过小，点确定后将为你自动放大。你可以再根据需要放大")
+            AdjustSize(1920, 1080)
+            Initialization
         }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
             AddLog("标准4K分辨率 (2160p)")
@@ -807,8 +808,9 @@ Initialization() {
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
         if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("请重启程序后，先按ctrl+3将游戏尺寸调整为1920*1080尺寸，再根据需要放大")
-            Pause
+            MsgBox("游戏尺寸过小，点确定后将为你自动放大。你可以再根据需要放大")
+            AdjustSize(1920, 1080)
+            Initialization
         }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
             AddLog("标准2K分辨率 (1440p)")

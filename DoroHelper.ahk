@@ -317,6 +317,7 @@ FindText().PicLib("|<开始匹配的开始>*200$88.zzzzzzzzkTzwDzzzzzzzzzz1zzkTz
 FindText().PicLib("|<普通>*200$112.007001k00000000000003y007w0000000000U00Tw00zs00100Dzzzz001zk07zU00D00zzzzz003zU0Tw001y03zzzzy00Dy03zk00Dw0Dzzzzs3zzzzzzzs1zs0zzzzz0TzzzzzzzU7zk3zzzzs1zzzzzzzy0DzU0DkTz07zzzzzzzs0TzU0znzs0TzzzzzzzU0zz0Dzzy01zzzzzzzy01zw0zzzk07zzzzzzzs03zU1zzy003y7yDwDw007w01zzs00TsTszkzk00DU07zzs01zlzXz3z000Q1zzzzzk3z7yDwDs000U7zzzzz0DwTszlzU0000Tzzzzw0TtzXz7w00001zzzzzk1zbyDwzk00007zzzzz07sTszlz00000TsTsDwTzzzzzzzy0001zUzUznzzzzzzzzwDzs7y7z7zDzzzzzzzzkzzkTzzzzwzzzzzzzzz3zz1zzzzznzzzzzzzzwDzw7zzzzzDzzzzzzzzkzzkTzzzzwzzzzzzzzz3zz1zzzzzk000000000Dzw7y7y3z0000000000zzkTsDsDw0Tzzzzzy003z1zzzzzk1zzzzzzs00Dw7zzzzz07zzzzzzU00zkTzzzzw0Tzzzzzy003z1zzzzzk1zzzzzzs00Dw7zzzzz07zzzzzzU00zkTzzzzw0Tw000Dy003z1zVzUzk1zU000zs00Dw7y3y3z07z0003zU00zkTsDvzw0Tzzzzzy003z1zUzjzk1zzzzzzs00Dw7y3yTz07zzzzzzU00zkTsDtzs0Tzzzzzy003zVzUzbzU1zzzzzzs00zz7y3yTs07zzzzzzU07zyE000w00Ts000Dy00zzz0000001zU000zs0Dzzzk007zk7zzzzzzU1zzzzzzzzz0Tzzzzzy07zXzzzzzzs1zzzzzzs0Dw3zzzzzzU7zzzzzzU0TU7zzzzzy0Tzzzzzy00w07zzzzzs1zzzzzzs03k03zzzzz07z0003zU06000Tzzw00Ts0007y00000000002", 1)
 FindText().PicLib("|<准备>*200$87.zzzzzzzzzyDzzzzzzkT7zzzzUTzzzxzy3UTzzzs3zzzwDzkS1zzzy0zzzz0zw7kDzzzU000zw3zUz0zzzs0001zUTsDw7zzy0000Dy1z1zVzzzU0003zkDk0001zk1zy0zz0y0000Ds07zUDzs7U0001w00Ts3zzUQ0000Dk00w0zzw30TsDzz3k00Dzzlk3z1zzwz003zzyy0TsDzzzy00zzzzU3z1zzzz001zzzs0TsDzzy0000Tzy00000Tk000000zU00003k007U00Dy20000T003zU03zsk0003s07zzk0Tzi3z1zzUDzzzw7zzkTsDzw00000Dzsy3z1zzy00000zz1kTsDzzk00007zkC0000zy00000zy1k0003zk00007zkS0000Ty3z1z0zw3k0003zkTkDs7zUy0000Ty00000zs7kTsDzzk00007z0y3z1zzy00000zkDkTsDzzk00007y1y3z1zzy3y1z0zUDk0001zkTsDs7w3y0000Dy3y1z0zUTk0001zk00007s7y0000Dy00000zkzk0001zk00007zzy3zzzzy00000zzzkTzzzzk00007zzy3zzzzy3zzz1zU", 1)
 ;tag 通行证
+FindText().PicLib("|<通行证·2>*200$49.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzUDzzzzzy00zzzzzs007zzzzs000zzzzk000Dzzzk0003zzzk0Tk1zzzs1zy1zzzs1zzlzzzs3zzzzzzw3zzzzzzw1zzzzDzy1zzzz3zy0zzzz0zz0zzzz0DzUTzzz03zkTzzz00zsDzzz00Dw7zzzy1z007zzz0zk07zzzUTw07zzzkDz07zzzkDzk7zzzs7zw7zzzs3zz7zzzw1zzrzzzw1zzzzzzw1zzzwzzw0zzzwDzw0zzzw1zs0zzzw0000zzzz0000zzzzk000zzzzy000zzzzzU01zzzzzy07zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", 1)
 FindText().PicLib("|<通行证·3+>*200$57.zzzzzzzzDzzzzzzzztzzzzzzzzz7zzzzzzzzwTzzzzzzzzVzzzzzzzzy3zzzzzzzzs7zzzzzzzzkzy3s0000DrzkT00001zzy3s0000DzzkT00001zzy3s0000DzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzkT00001zzy3s0000DzzkT00001zzy3s0000DzzkT00001zzy3s0000DzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzkT00001zzy3s0000DzzkT00001zzy3s0000DzzkT00001zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw", 1)
 FindText().PicLib("|<通行证·任务>**20$71.04001U00s0000T00TU03y0001z0Tv00CM00036zw700szzw0CTw0D03Vzzw0Mw07w0C000Q1ns0T01s000s36zsk0D3zy3UCMylU0w70CC0sk1X00nj1xs1VU3601zrjbU7306A01nXwQ0Q60AM00300k1kA0Mk07y01zzUM0lU1zkC0Tv0zzXznU7zk1bt8001X3z7z77mE0037zbUzwDYU00670Tk0E3Dzszw00lU006M0lU0TzXzzUAk1X00zy3zz0NU3601U000A0n06A03zVzwM1a0AM03z7zwk3A0Mk006A0NU6M0lU00Qs1r0Ak1X001nU3A0Nbz7zUDC06M0nDy7z3stzwk1aM006T7Xzn03Ak00AQS30C06NzzzsTk63s0DnzzzUS0DzU0TU000000000E", 1)
 FindText().PicLib("|<通行证·奖励>**20$70.0TUQ000001k01y3y00000DU1qMAs03zzwq0TNVlzsA00nQ3jaS03sk03Bk7OTU03X00Aq0BdwzyABzznM0zbrTtkq00Bk1qPn1a3Q07ry0tjyAsBzzyDwD6LTr0k04U0nkMAws300G03w1Uk70AwzyTD7a70s0rnztwyyTwD03PA1anTNy3k0Bgz6PBlaly00qnyNgk6Pz003P0Nan0TYU00Bg1aPA00z000qnqNgnzjDzy3PPNinzzwzzwRhhanD00000laqqvAw000036POPAnzzkDzwN99gnBzz0jzVZYarBk0Q3U06KmKMq07bbU0PPNPXM3wzDk1jBbANby7D7zCYy0zaz1sS1wk7k7yNkT0T1nSyTv3XTk0TyDzTjAQDk00DkCtwQzU000000F001s8", 1)
@@ -3386,16 +3387,35 @@ AwardPass() {
             AddLog("3+通行证模式")
             FindText().Click(X, Y, "L")
             Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.986 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.986 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.257 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                t := t + 1
+                AddLog("执行第" t "个通行证")
+                Sleep 1000
+                OneAwardPass()
+            }
+            else {
+                AddLog("通行证已全部收取")
+                break
+            }
         }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.986 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.986 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.257 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            t := t + 1
-            AddLog("执行第" t "个通行证")
-            OneAwardPass()
-        }
-        else {
-            AddLog("通行证已全部收取")
-            break
+        if (ok := FindText(&X, &Y, NikkeX + 0.878 * NikkeW . " ", NikkeY + 0.151 * NikkeH . " ", NikkeX + 0.878 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.151 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("通行证·2"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("2通行证模式")
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                t := t + 1
+                AddLog("执行第" t "个通行证")
+                Sleep 1000
+                OneAwardPass()
+            }
+            else if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.890 * NikkeW . " ", NikkeY + 0.149 * NikkeH . " ", NikkeX + 0.890 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.149 * NikkeH + 0.016 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
+                FindText().Click(X, Y, "L")
+                continue
+            }
+            else {
+                AddLog("通行证已全部收取")
+                break
+            }
         }
         BackToHall()
     }

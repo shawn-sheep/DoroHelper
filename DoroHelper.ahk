@@ -214,11 +214,11 @@ FindText().PicLib("|<不选择的图标>*140$58.000000008030000001k0S000000DU3w0
 FindText().PicLib("|<SPECIAL>*120$61.Uw3k71swDbUC0M30QS7lk30A3U6D3sslX6DlX7UwQMlX7slXkSCAMlXwMlkD76QMlyAMs7XXyAMz7wQ3llz6ATXyC9sszX6Dlz74wQ1lX0szXaSD0M1UQTln77wA1lyDstXXz63sz7wMllzX7wTXyA0szlXyDlr60QQMlz7slX0CCAMzXwMlX776ATlyAMlnXX6Dsz6AMslk37w1U6AQM43Xy0s76SA2", 1)
 FindText().PicLib("|<竞技场>*150$96.zzVzzz3zsTzsTzzzzz0zzz3zsTzsS00TU0003z3zsTzsS00DU0003z3zsTzsS007U0003z3k00DsS00Dk0003z1k00DsS00TzVzVzk0000DsTy0zz1z1zk0000DkTw1z00001k0DE7y03k7z00001k0TsTy03UDz00001z1zsTy0200000001z3zsTy02000zzzzzz3s00TsS000w000Dz1s00DsT000w000Dz0M00DsTEE0w000Dy0M00DsTkkUw7zkDk0ADkTsTUkUwDzsDk0ADkTsTVVVw7zkDs0w7UzsT1VVw000Ds3y3UzsG31Vw000Dz3y31zs033Vw000Dz3z01zk063VzkQ7zz3zU3z00C71zkQDrz3zU7y03Q71zUwDlz3z07z0TsD1z0w7kz3w01z1zkT1s1w00y3U00D7zUS303w01s3U207zz0k307y01s3kDUDzz1k3UTz03s7kzsDzzXk7XzzzzwTvzzTzzzsTU", 1)
 FindText().PicLib("|<左上角的竞技场>*150$91.zz3zzyDz3zy7zzzs0007y7zUzz3k07w0001z3zkTzVs01y0000zVzsDzkw00T0000Tkw007sS00Tz7y7zU6003wDz0Tz1z3zU0001y7z0zzUT0zk0000s0T0zs0000s0TkTw0C0zw0000TUzsDy040060000DkTw7z00001zzzzzsT00DwD000w000zw7U01y7k00y000Dy0k00z3s40T000Dy0M00zVz24DUzy7w0A7kTkz327kzz3y073sDsTVX3s001z0DVsDwDVVVw000zk7sQ7y0Ukky000Ty7w07z00ksT000Dz3z07z00sQDy31zzVzk3y00sS7z3UyTkzk3z0DsC3y1sT7sTk0zUTwD3w1wD3wD003tzwD1U1y01k7000Tzs40s1z00w3UD0Tzw60Q3zk0y1sTsDzz7UTDzzzz7zzzDzzzkz", 1)
-FindText().PicLib("|<新人>*100$59.zbzzzzz3zzwDzwTzy3zzsDy0Tzw7zw01U0TzsDzk0101zzUTzU020zzz0zzU0ADzzy1zzVksTzzw3zz3Vkzzzs7zy63VzzzkDzk010SzzUTzU0200zz0Tz00401zw0zy00803zs0zzwDk07zk1zzkTVUzz03zk0131zy03zU0263zs43z004A7zkQ7z00MMDz0s7zA9UkTw3s7w011Uzs7k7sE071zUTk7VV0C3w0zk7330Q7k3zk3A6UsD0Dzk3UD3kQ0zzk7Uz7Uy3zzkT1zD1wTzzlzzzy7zzzzzU", 1)
+FindText().PicLib("|<蓝色的新人>79A6F4-0.80$59.1s01k00y003k0Tk01w01jnDzk03s03zzTy007U07zwzU00T00Dzts000z00D7Xk001y00SD7U003w00wyD0007s07zzS000Dk0DzyzzU0Tk0Tzxzz01zU0zzvzy03z001s7zs07z003kDD00Ty07zySS00zy0Dzwww03xw0Tztts07lw07xXnk0TXw0Fv7bU0y3w1zzTD03w7s3riwS0Dk7wDDTsw0z07wSSTls7w07wNwDXkTs07yDkS7UzU07wDUQD0w007kS0ES0k0030000Q00000E", 1)
 FindText().PicLib("|<免费>*210$59.zrzzzzySDzz1zzzzkMDzw01zzU000Tk01zz0001zU03zzz3VXy3sDzzy637sDkTzw000DUT0zzk000Q0000zVkkTs0001z100UM0003y0000sDUy7zkC3VsT3wDzUyD3ky7sTw3wQ7VwDkz0Dvwz0001y0Tzvy0003y0007w0007z000Dzw0Dzy000Tzs0zzwDzkzzUlzzszzlzy3XzzlwD3zs77tzXky7z0SDlzL1gzs1wD3zU61z0Ds07k0w0C0zk0S07z06Dzk0y0zzsTzzzzwzzzzk", 1)
 FindText().PicLib("|<ON>*200$53.zk1zzzzzVy00ztzzz3s00Tkzzy7U00TUzzwC0z0T0zzsM7zUy0TzkkTzUw0TzV1zzVs0Tz27zz1k0Ty4Dzz3U0Dw0Tzy71UDs0zzwC3UDk1zzsQ7k7U3zzksDk707zzVkTk64Dzy3Uzk08DzwD1zs0MDzkS3zs0kDz1wDzs1kDw3sTzw3k00Dkzzw7k00zVzzwDk03z3zzyTk0Ty7zzyzy7zyDzzz", 1)
 FindText().PicLib("|<OFF>*120$83.zk1zzk001zU003y00zy0003w0003s00zs0003k0007U00zk0007U000C000z0000S0000M000y0000w0001U7w0w7zzzsDzzz0zy1kDzzzUTzzw3zy1UTzzz0zzzs7zw30003y0007kTzw60007w000DUzzsA000Ds000T1zzkM000Tk000y3zzUk000zU001w7zz1U001z0003sDzy30zzzy1zzzkDzs61zzzw3zzzUTzkA3zzzs7zzzUTz0s7zzzkDzzz0Tw1kDzzzUTzzz0007UTzzz0zzzy000T0zzzy1zzzy000y1zzzw3zzzy007w3zzzs7zzzz00Ts7zzzkDzzzzU3zkDzzzkTzzy", 1)
-FindText().PicLib("|<特殊>*100$59.y7zXzzzzXzwDy3zzzz3zsTw7w03C7wEw00M064DsVs00k088Tl3k01k0E0zU1k03sTU0203y3zkz00407w7z000080000C0000E0U00Q00sTX3U00s03kz67001UkbVyADzsT3U003sTzkw70007k80080000DUE00E0000E0000U0y0D00001Y1w0S071kTw3k0S0T3kzwD00QEy3VzkS00zVw73z1k00z3wC7w30kUy7wwDkA1V1wDy0T0s733sTw0w1sS7Dkzs1wDvwCzVzs7wzzsTz3zlzzzzkzU", 1)
+FindText().PicLib("|<蓝色的特殊>79A6F4-0.80$59.100M0000003k1w0000w07U3s1zwVs3D3zzXztvk7S7zz7znrUCwDzyDzjz0TyDzs7UTzwzw1w0D0zzvzs3s0TzzzrzzzzlzzzzDTDzzXzz7UQwTzz7zwD0tszzySDMS0nk07UwTzzw7U0D1szzzsDnzzbhzzzkTjzzjTjzzjzTzzRz1zkzyzzyPy3zUzsQDU3sDzVzUwD03kTz3D1sS0DVzz0S3sw0S7zz0w3ls1wzDT1s33kDnwSy3k1zUz3sws7U3z3w71skD03w3k43k0S07s3007U0w0A0000D0U", 1)
 FindText().PicLib("|<蓝色的应援>5D85D3-0.50$62.0000000000000000000000000000000007k03k03U001w01wTzw000TU0TDzzU1zzzz7nzzs0Tzzzlwzzy07zzzyzrzD01zzzzzxzrk0TzzzzzTzs07kC3nzzzzU1wbkyTzzzs0TxwDVwzzy07zT3sT7zzU1zvty7nzzw0TyyT1zzzz07zjbkTzzzk1xzvwTzzzw0STTyDzjzw07brzXznzz03tzzkzkzzk0yDhw7wTzw0DXky0T7zy03s0TU7lzzU0y07k1wzzk0TzzzyTTjy07zzzzzzzzy1zzzzzzzzz0Szzzxyzzzk3U000DaD3s00000000000000000000000000000008", 1)
 FindText().PicLib("|<内部的紫色应援>CD98E6-0.70$59.00000000000000000000000000000001w01s03k003s03lzzU007k07bzzU1zzzwD7zz07zzzsSDzy0DzzznzTxw0TzzzbzTvk0zzzzDzzzk1w7UwTzzzU3zj3szrzz07zT7kSDzy0DzyDUwTzy0Tywy1zzzw0yxxw3zzzs1xzvsTzzzk3vzzVzzzzU7rzz3znzy0Dbzw3y7zw0TDXs7sTzk0wQDU3lzzU3s0T07Xzy07zzzwDDzw0Dzzztzzzz0Tzzznzzzz0xzzzbvzzw0vzzzDXDbk0U000C081U00000000000000000002", 1)
 FindText().PicLib("|<晋级赛内部的应援>*150$79.0000000000000000000000000000000000000000001s001w00000003w000y00zy0001z000T7zzz0000zU00DVzzzk0zzzzzk7kzzzs0Tzzzzw3sTzzk0Dzzzzy1w7zly07zzzzzDznvsz03zzzzzbztwyz01zzzzznzwTTT00z010M1zyDjzU0TUDUDUzzTzzy0Dkbs7wTzjzzz07vnw3w0y7zzzU3zxy3y0T3zzzk1zyTVz0DVzzzk0zzDkz07lzzzy0TjrszU3vzzzz0DrvwTk1zzzzzUDvwzDk3zzzzzk7wzTjs7zzzzzs3yTjrs3zwDzz01yDrzw1zy7zzs0z7zzy0zw3zzw0TVyty0Tw3zzw0Dkz1z0Ay1zzy07sS0z00T1ztz03w00zU0DUzzz03y00zU07kzzz01z00Tk03szzzU0zzzzzy3wzrzk0zzzzzzDyzzzzUTzzzzzbzzzzzsDrzzzzlzjzzzs3vzzzzszXvzTw0w00000Tkky1w04000007008040000000000000000000000000000000000000000E", 1)
@@ -2378,7 +2378,7 @@ ArenaRookie() {
     Sleep 1000
     AddLog("===新人竞技场任务开始===")
     AddLog("查找新人竞技场")
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("新人"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("蓝色的新人"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击新人竞技场")
         FindText().Click(X + 20 * TrueRatio, Y, "L")
         Sleep 1000
@@ -2427,7 +2427,7 @@ ArenaRookie() {
 ArenaSpecial() {
     AddLog("===特殊竞技场任务开始===")
     AddLog("查找特殊竞技场")
-    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.543 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.543 * NikkeH + 0.022 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.543 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.543 * NikkeH + 0.022 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("蓝色的特殊"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击特殊竞技场")
         FindText().Click(X + 20 * TrueRatio, Y, "L")
         Sleep 1000
@@ -2476,7 +2476,7 @@ ArenaSpecial() {
 ArenaChampion() {
     AddLog("===冠军竞技场任务开始===")
     AddLog("查找冠军竞技场")
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.567 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.567 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.021 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("蓝色的应援"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.567 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.567 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.021 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("蓝色的应援"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         AddLog("已找到一级应援文本")
         Sleep 1000

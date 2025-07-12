@@ -2361,7 +2361,7 @@ AwardArena() {
 ArenaRookie() {
     EnterToArk()
     AddLog("进入竞技场")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.712 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.712 * NikkeH + 0.030 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.712 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.712 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击竞技场")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
         Sleep 1000

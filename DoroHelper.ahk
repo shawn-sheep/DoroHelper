@@ -2339,7 +2339,7 @@ AwardArena() {
     AddLog("===竞技场收菜任务开始===")
     AddLog("查找奖励")
     foundReward := false
-    while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.552 * NikkeW . " ", NikkeY + 0.493 * NikkeH . " ", NikkeX + 0.552 * NikkeW + 0.075 * NikkeW . " ", NikkeY + 0.493 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("SPECIAL"), , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.552 * NikkeW . " ", NikkeY + 0.493 * NikkeH . " ", NikkeX + 0.552 * NikkeW + 0.075 * NikkeW . " ", NikkeY + 0.493 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("SPECIAL"), , 0, , , , , TrueRatio, TrueRatio)) {
         foundReward := true
         AddLog("点击奖励")
         FindText().Click(X + 30 * TrueRatio, Y, "L")

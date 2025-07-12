@@ -3482,10 +3482,10 @@ AwardCooperate() {
     AddLog("===协同作战任务开始===")
     ;把鼠标移动到活动栏
     UserMove(150, 257, TrueRatio)
-    Text := "|<COOP的P>*40$40.00000Q000001U00000A000001U00000A000001U00000A000001U00000A000003U000Dzw00E0zzU0303zw00Q0C0003k0s000T03U003w0C000Tk0s003z03U00Tw0C003zk0s00Tz03U03zw0Dzzzzk0zzzzz03zzzzw0Dzzzzk0zzzzz03zzzzw0Dzzzzk0zzzzz03zzzzw0Dzzzzk0zzzzz03zzzzw0Dzzzzs"
     while true {
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.074 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.124 * NikkeW . " ", NikkeY + 0.074 * NikkeH + 0.088 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("COOP的P"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            Sleep 500
             break
         }
         else {
@@ -3497,6 +3497,7 @@ AwardCooperate() {
             AddLog("未能找到协同作战")
             return
         }
+        Sleep 500
     }
     AwardCooperateBattle
     AddLog("===协同作战任务结束===")
@@ -3505,7 +3506,7 @@ AwardCooperate() {
 ;tag 协同作战核心
 AwardCooperateBattle() {
     while true {
-        if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.851 * NikkeW . " ", NikkeY + 0.750 * NikkeH . " ", NikkeX + 0.851 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.750 * NikkeH + 0.068 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("开始匹配的开始"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.851 * NikkeW . " ", NikkeY + 0.750 * NikkeH . " ", NikkeX + 0.851 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.750 * NikkeH + 0.068 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("开始匹配的开始"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep 500
         }

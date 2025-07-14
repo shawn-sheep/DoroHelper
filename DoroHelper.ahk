@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.10"
+currentVersion := "v1.3.11"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -339,6 +339,9 @@ FindText().PicLib("|<Bla的图标>*200$116.jzzzzzzzzzzzzzzzzzzkzzzzzzzzzzzzzzzzz
 FindText().PicLib("|<WIFI的图标>*200$38.zzzzzzzzzzzzzzy01zzzw003zzs000Dzw0000zw00007y00Q00z03zy03k3s3s1y3k03Uzlk00ATzk001zzs000Dzz0003zzs7y1zzz7Vszzzz07TzzzU0Tzzzs07zzzz03zzzzs1zzzzz0zzzzzsTzzzzzDzzzzzzzzzzzzzzzU", 1)
 FindText().PicLib("|<对话框·对话>*220$58.zzzzzk0003zzzzy0000Dzzzzs0000zzzzzk0003zzzzzU000DzzzzzkC00zzzzzz0s03zzzzzzzU0Dzzzzzzs00zzzzzzz003zzzzzzw00Dzzzzzz000zzzzzzs003zzzzzy000Dzzwzz0000zzznzw0003zzy000000Dzz0000000zzs0000003zy0000000DzU0000000zU00000003s0000000000000000000000000002", 1)
 FindText().PicLib("|<对话框·想法>*150$84.000000000001zz000000000003zz000000000007zz00000000000Dzz00000000000zzz00000000003zzzzs00000Dzzzzzzzs00000Dzzzzzzzs00000Dzzzzzzzs00000Dzzzzzzzs00000Dzzzzzzzw00000Dzzzzzzzw00000Tzzzzzzzw00000Tzzzzzzzy00000Tzzzzzzzy00000zzzzzzzzz00000zzzzzzzzzU0001zzzzzzzzzk0003zzzzzzzzzs0007zzzzzzzzzw000Dzzzzzzzzzy000zzzzzzzzzzzU03zzzzzzzzzzzy0TzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzkDzzzzzzzzzzzy01zzzzzzzzzzzw00Tzzzzzzzzzzs00Tzzzzzzzzzzk00DzzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzz0003zzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzzU007zzzzzzzzzzk00Dzzzzzzzzzzk00Dzzzzzzzzzzs00Tzzzzzzzzzzy00zzzzzzzzzzzz03zzzzzzzzzzzzsTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU", 1)
+;tag 极速爆裂模式
+FindText().PicLib("|<爆裂·A>*200$24.zzzzzzzzzs7zzs3zzk3zzk3zzk1zzk1zzVVzzVUzzVkzz1kzz3kTz3kTy3sTy00Ty00Dw00Dw00Dw007wDw7sDw7sDy3sTy3kTy3zzzzzzzzU", 1)
+FindText().PicLib("|<爆裂·S>*200$21.zzzzzzzz0DzU0Ds00z007k00y3w7kTky3y7kTzy0Tzk07z00Dw00zs07zy0Tzy3zzkS3y3kTkS003s00T007s00zk0TzzzzzzzU", 1)
 ;endregion 识图素材
 ;region 运行前提示
 if g_numeric_settings["Username"] != A_Username
@@ -607,6 +610,9 @@ doroGui.Tips.SetTip(TextTestModeLabel, "直接执行对应任务")
 TestModeEditControl := doroGui.Add("Edit", "x+10 yp w145 h20")
 doroGui.Tips.SetTip(TestModeEditControl, "输入要执行的任务的函数名")
 BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", TestMode)
+TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "极速爆裂模式")
+doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快。`n默认先A后S。适合凹分时解手")
+BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", QuickBurst)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
@@ -3762,6 +3768,17 @@ TestMode(BtnTestMode, Info) {
     ; 尝试动态调用函数
     Initialization()
     %funcName%() ; 无参数调用
+}
+QuickBurst(*) {
+    Initialization()
+    while true {
+        if (ok := FindText(&X, &Y, NikkeX + 0.920 * NikkeW . " ", NikkeY + 0.458 * NikkeH . " ", NikkeX + 0.920 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.458 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("爆裂·A"), , , , , , , TrueRatio, TrueRatio)) {
+            Send "{A}"
+        }
+        if (ok := FindText(&X, &Y, NikkeX + 0.918 * NikkeW . " ", NikkeY + 0.551 * NikkeH . " ", NikkeX + 0.918 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.551 * NikkeH + 0.028 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("爆裂·S"), , , , , , , TrueRatio, TrueRatio)) {
+            Send "{S}"
+        }
+    }
 }
 ;endregion 妙妙工具
 ;region 快捷键

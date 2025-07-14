@@ -768,6 +768,7 @@ Initialization() {
         AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
         if actualWinTitle = "胜利女神：新的希望" {
             MsgBox ("不支持国服，自动关闭！")
+            MsgBox ("为了各自生活的便利，请不要在公开场合发布本软件国服相关的修改版本，谢谢配合！")
             ExitApp
         }
         ;激活该窗口

@@ -1425,7 +1425,7 @@ ShowSetting(pageName) {
 ;endregion GUI辅助函数
 ;region 消息辅助函数
 MsgSponsor(*) {
-    Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
+    Run("https://p.sda1.dev/25/fe73def4499c92878720eedf6d71367f/fa3c4923-bb2b-4329-a4df-7eb828194b97.jpeg")
 }
 ClickOnHelp(*) {
     msgbox "

@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.3.11"
+currentVersion := "v1.3.12"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1761,7 +1761,7 @@ EnterToBattle() {
             Sleep 500
         }
     }
-    else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
+    else if (ok := FindText(&X, &Y, NikkeX + 0.499 * NikkeW . " ", NikkeY + 0.786 * NikkeH . " ", NikkeX + 0.499 * NikkeW + 0.155 * NikkeW . " ", NikkeY + 0.786 * NikkeH + 0.191 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入战斗")
         BattleActive := 1
         BattleSkip := 1

@@ -616,7 +616,7 @@ BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
-doroGui.AddGroupBox("x600 yp+210 w350 h370 Section", "日志")
+doroGui.AddGroupBox("x600 y320 w350 h370 Section", "日志")
 LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h320 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 ;tag 二级控制

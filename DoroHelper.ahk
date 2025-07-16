@@ -1758,6 +1758,7 @@ EnterToBattle() {
         if (ok := FindText(&X, &Y, NikkeX + 0.470 * NikkeW . " ", NikkeY + 0.733 * NikkeH . " ", NikkeX + 0.470 * NikkeW + 0.157 * NikkeW . " ", NikkeY + 0.733 * NikkeH + 0.073 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("进行战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             BattleActive := 1
+            BattleSkip := 0
             Sleep 500
         }
     }

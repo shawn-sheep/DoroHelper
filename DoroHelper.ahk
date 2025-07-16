@@ -1819,13 +1819,13 @@ BattleSettlement() {
         if (checkend = 3) {
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) and RedCircle {
+        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) and RedCircle {
             checkred := checkred + 1
             if checkred = 3 {
                 AddLog("检测到红圈，尝试打红圈")
                 loop 20 {
                     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
-                        FindText().Click(X + 30 * TrueRatio, Y, 0)
+                        FindText().Click(X + 50 * TrueRatio, Y, 0)
                         Click "Down"
                         Sleep 700
                         Click "Up"

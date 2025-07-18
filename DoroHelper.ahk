@@ -2040,6 +2040,37 @@ BattleSettlement() {
     ;递归结束时清零
     Victory := 0
 }
+;tag 活动挑战
+Challenge() {
+    AddLog("===刷挑战===")
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.346 * NikkeW . " ", NikkeY + 0.821 * NikkeH . " ", NikkeX + 0.346 * NikkeW + 0.092 * NikkeW . " ", NikkeY + 0.821 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("尝试进入对应活动页")
+        FindText().Click(X - 50 * TrueRatio, Y, "L")
+        Sleep 500
+    }
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.063 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("挑战关卡"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("进入挑战关卡页面")
+    }
+    Sleep 1000
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X + 50 * TrueRatio, Y, "L")
+        Sleep 1000
+    }
+    else if (ok := FindText(&X, &Y, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的关卡的循环图标"), , , , , , 3, TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+    }
+    EnterToBattle
+    if BattleSkip = 1 {
+        Skipping
+    }
+    BattleSettlement
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("尝试返回活动主页面")
+        GoBack
+        Sleep 1000
+    }
+    else AddLog("已返回活动主页面")
+}
 ;tag 返回大厅
 BackToHall() {
     AddLog("返回大厅")
@@ -2918,32 +2949,7 @@ EventSmall() {
     AddLog("===小活动任务开始===")
     ;tag 挑战
     if g_settings["EventSmallChallenge"] {
-        AddLog("===刷挑战===")
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.405 * NikkeW . " ", NikkeY + 0.447 * NikkeH . " ", NikkeX + 0.405 * NikkeW + 0.032 * NikkeW . " ", NikkeY + 0.447 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("尝试进入对应活动页")
-            FindText().Click(X - 50 * TrueRatio, Y, "L")
-            Sleep 500
-        }
-        Sleep 1000
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X + 50 * TrueRatio, Y, "L")
-            Sleep 1000
-        }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的关卡的循环图标"), , , , , , 3, TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep 1000
-        }
-        EnterToBattle
-        if BattleSkip = 1 {
-            Skipping
-        }
-        BattleSettlement
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("剧情活动"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("尝试返回活动主页面")
-            GoBack
-            Sleep 1000
-        }
-        else AddLog("已返回活动主页面")
+        Challenge
     }
     ;tag 剧情活动
     AddLog("===剧情活动===")
@@ -3038,34 +3044,7 @@ EventLarge() {
     }
     ;tag 挑战
     if g_settings["EventLargeChallenge"] {
-        AddLog("===刷挑战===")
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.840 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.107 * NikkeW . " ", NikkeY + 0.840 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("挑战"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("尝试进入对应活动页")
-            FindText().Click(X - 50 * TrueRatio, Y, "L")
-            Sleep 500
-        }
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.063 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("挑战关卡"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("进入挑战关卡页面")
-        }
-        Sleep 1000
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的关卡的循环图标"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X + 50 * TrueRatio, Y, "L")
-            Sleep 1000
-        }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.354 * NikkeW . " ", NikkeY + 0.344 * NikkeH . " ", NikkeX + 0.354 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.344 * NikkeH + 0.581 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的关卡的循环图标"), , , , , , 3, TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-        }
-        EnterToBattle
-        if BattleSkip = 1 {
-            Skipping
-        }
-        BattleSettlement
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("尝试返回活动主页面")
-            GoBack
-            Sleep 1000
-        }
-        else AddLog("已返回活动主页面")
+        Challenge
     }
     ;tag 剧情活动
     if g_settings["EventLargeStory"] {

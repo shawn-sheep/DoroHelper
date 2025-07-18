@@ -3706,13 +3706,13 @@ StoryMode(*) {
     AddLog("===剧情模式开始===")
     while True {
         while (ok := FindText(&X, &Y, NikkeX + 0.936 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.936 * NikkeW + 0.051 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.025 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("SKIP的图标"), , , , , , , TrueRatio, TrueRatio)) {
-            if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.638 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.638 * NikkeH + 0.282 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("1"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX + 0.362 * NikkeW . " ", NikkeY + 0.589 * NikkeH . " ", NikkeX + 0.362 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.589 * NikkeH + 0.283 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("1"), , , , , , , TrueRatio, TrueRatio)) {
                 if !g_settings["StoryModeAutoChoose"] {
                     if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.638 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.638 * NikkeH + 0.282 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("2"), , , , , , , TrueRatio, TrueRatio)) {
                         continue
                     }
                 }
-                Sleep 800
+                Sleep 1000
                 Send "{1}"
                 Sleep 500
             }
@@ -3721,7 +3721,7 @@ StoryMode(*) {
                 Send "{LShift Down}"
                 Sleep 500
                 Send "{LShift Up}"
-                Click NikkeX + NikkeW, NikkeY + NikkeH, 0
+                Click NikkeX + NikkeW, NikkeY, 0
             }
             if (ok := FindText(&X, &Y, NikkeX + 0.475 * NikkeW . " ", NikkeY + 0.460 * NikkeH . " ", NikkeX + 0.475 * NikkeW + 0.050 * NikkeW . " ", NikkeY + 0.460 * NikkeH + 0.080 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("Bla的图标"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("点击Bla的图标")

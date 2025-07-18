@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.0"
+currentVersion := "v1.4.1"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -421,7 +421,7 @@ doroGui.Add("Text", "x20 y40 R1 +0x0100", "DoroHelper的版本是：" currentVer
 doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "你的用户组是：")
 TextUserGroup := doroGui.Add("Text", "x+5  R1 +0x0100", UserGroup)
 MirrorInfo := doroGui.Add("Text", "x+35 yp-1 R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮")
+doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
 BtnUpdate := doroGui.Add("Button", "xs R1", "检查更新")
 BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
 AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp-1 R1")
@@ -1500,13 +1500,18 @@ CheckUserGroup() {
     Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
     AddLog("当前设备唯一标识：" Hashed)
     ;用户组识别码
-    GroupArrayAdministrator := ["9d2f462afb7f54bdb7ea4eb013c184553c6d36b2a5d3dc31538a54dc4b020458"]
+    GroupArrayAdministrator := ["9d2f462afb7f54bdb7ea4eb013c184553c6d36b2a5d3dc31538a54dc4b020458"] ;QQ 1204244136
     GroupArrayGoldDoro := [
-        "9d2f462afb7f54bdb7ea4eb013c184553c6d36b2a5d3dc31538a54dc4b020458",
-        20,
-        30,
-        40,
-        50]
+        "2d9b45681f7f129b7586f7ba5676b12617d97551b4c451108cbb5e8771088fab", ;QQ 1572792478
+        "d650a367ab278c573916a1b2325cda481272855e1c825ce098d779f26ba6e8d4", ;QQ 363159291
+        "2cbc4dfec4eb7ba279f42ccb5ca1681d702df3c2892d57072cb6f2687c110aa5", ;QQ 414004429
+        "f677506060fa0fa5b9f2e921181abec02eb8e63fe45ec46d0a38af59b6650593", ;QQ 1290685605
+        "e4b83ba3bb8a56ae5ff063c0af85c1e98c1293052835d250b711fa2fbdb55ae2", ;QQ 1780649169
+        "7cc89e19e64aee59b1c6e71d45051b932ac1e635b24c3714a0dec12afdfd9fde", ;QQ 1922170257
+        "8c7fdb8491a2185cabbe6d5c3eb3c75015ca0b789afffc116ce3fd187484a47c", ;QQ 1282483980
+        "ef48136380d9f7086b28e63d3a91fa838247da1add0577b34e31ef7225785ff2", ;QQ 522389362
+        "3ff7b8b9a05244c3cc919cd845663df9d71af610cea55161ca5dcd429b1be8fe", ;QQ 2806064159
+        "1"]
     ;确定用户组
     for adminSerial in GroupArrayAdministrator {
         if (adminSerial == Hashed) {
@@ -2926,18 +2931,6 @@ InterceptionAnomaly() {
 ;region 小活动
 EventSmall() {
     BackToHall
-    ; if (ok := FindText(&X, &Y, NikkeX + 0.645 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.645 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.131 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
-    ;     FindText().Click(X, Y + 100 * TrueRatio, "L")
-    ; }
-    ; Text := "|<挑战>*200$42.vxrzzyznwrznyPnwrznyPngrTnyT00qTkCT0kkzlyRnkkzns0nwrznsDnwrznyTkwnzVyRUsky0CN3kkSSD3nVqSzD3ndrSzD7ntryzDDntryzCCnnrC0A6nXnC08UXDkST9lU"
-    ; while !(ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, Text, , , , , , , TrueRatio, TrueRatio)) {
-    ;     Confirm
-    ;     Send "{]}"
-    ;     if A_Index > 10 {
-    ;         AddLog("未找到小活动，可能是活动已结束")
-    ;         return
-    ;     }
-    ; }
     while true {
         if (ok := FindText(&X, &Y, NikkeX + 0.677 * NikkeW . " ", NikkeY + 0.835 * NikkeH . " ", NikkeX + 0.677 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.835 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动的标识"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到小活动")

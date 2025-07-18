@@ -1590,7 +1590,7 @@ ShowSetting(pageName) {
 ;region 消息辅助函数
 ;tag 支持
 MsgSponsor(*) {
-    Run("https://p.sda1.dev/25/fe73def4499c92878720eedf6d71367f/fa3c4923-bb2b-4329-a4df-7eb828194b97.jpeg")
+    Run("https://p.sda1.dev/25/bdb72ec267450c7a0dbddbc880970d0f/Beg.jpg")
 }
 ;tag 帮助
 ClickOnHelp(*) {

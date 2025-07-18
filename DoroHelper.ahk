@@ -118,6 +118,11 @@ PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
 RedCircle := 0
 Screenshot := 0
+if A_Username = "12042"
+    UserGroup := "管理员"
+else
+    UserGroup := "普通用户"
+Hashed := ""
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -406,13 +411,17 @@ doroGui.Tips.SetMargins(3, 3, 3, 3)
 doroGui.MarginY := Round(doroGui.MarginY * 1)
 doroGui.SetFont('s12', 'Microsoft YaHei UI')
 ;tag 框
-doroGui.AddGroupBox("x10 y10 w250 h200 ", "更新")
+doroGui.AddGroupBox("x10 y10 w250 h230 ", "更新")
 LinkProject := doroGui.Add("Link", " R1 xp+50 yp", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
 BtnSponsor := doroGui.Add("Button", "x+10 yp-3 w60 h30", "赞助").OnEvent("Click", MsgSponsor)
 BtnHelp := doroGui.Add("Button", "x+5 yp w60 h30", "帮助").OnEvent("Click", ClickOnHelp)
 ;tag 版本
-doroGui.Add("Text", "x20 y40 R1 +0x0100", "DoroHelper的版本是 " currentVersion)
-BtnUpdate := doroGui.Add("Button", "R1", "检查更新")
+doroGui.Add("Text", "x20 y40 R1 +0x0100", "DoroHelper的版本是：" currentVersion)
+doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "你的用户组是：")
+TextUserGroup := doroGui.Add("Text", "x+5  R1 +0x0100", UserGroup)
+MirrorInfo := doroGui.Add("Text", "x+35 yp-1 R1 +0x0100", "❔️")
+doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮")
+BtnUpdate := doroGui.Add("Button", "xs R1", "检查更新")
 BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
 AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp-1 R1")
 AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+20")
@@ -457,14 +466,14 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 }
 ;tag 任务列表
 global g_taskListCheckboxes := []
-doroGui.AddGroupBox("x10 yp+40 w250 h330 ", "任务列表")
-doroGui.SetFont('s10')
+doroGui.AddGroupBox("x10 yp+40 w250 h315 ", "任务列表")
+doroGui.SetFont('s9')
 BtnCheckAll := doroGui.Add("Button", "xp+160 R1", "☑️").OnEvent("Click", CheckAllTasks)
 doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
 BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks)
 doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
 doroGui.SetFont('s14')
-cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+40 Section", true)
+cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+35 Section", true)
 doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
 BtnLogin := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店购买", "xs", true)
@@ -490,7 +499,7 @@ doroGui.Tips.SetTip(cbEvent, "总开关：控制是否执行大小活动的刷�
 BtnEvent := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
 ;tag 启动设置
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x10 yp+50 w250 h130 ", "启动选项")
+doroGui.AddGroupBox("x10 yp+40 w250 h130 ", "启动选项")
 BtnSaveSettings := doroGui.Add("Button", "x180 yp-2 w60 h30", "保存").OnEvent("Click", SaveSettings)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "x20 yp+30 Section")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
@@ -686,6 +695,12 @@ doroGui.Show()
 ;region 点击运行
 ClickOnDoro(*) {
     Initialization
+    CheckUserGroup
+    if g_settings["EventSpecial"] and g_settings["Event"]
+        if UserGroup = "普通用户" {
+            MsgBox("当前用户组不支持特殊活动，请升级到会员组")
+            Pause
+        }
     if g_settings["Login"]
         Login() ;登陆到主界面
     if g_settings["Shop"] {
@@ -761,9 +776,17 @@ ClickOnDoro(*) {
             EventSpecial()
     }
     CalculateAndShowSpan()
-    Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
-    if Result = "Yes"
-        MsgSponsor
+    if UserGroup = "普通用户" {
+        Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", "YesNo")
+        if Result = "Yes"
+            MsgSponsor
+    }
+    if UserGroup = "金Doro会员" {
+        Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
+    }
+    if UserGroup = "管理员" {
+        Result := MsgBox("Doro完成任务！" outputText "`n感谢你的辛苦付出～")
+    }
     if g_settings["OpenBlablalink"]
         Run("https://www.blablalink.com/")
     if g_settings["SelfClosing"] {
@@ -1400,6 +1423,114 @@ DeleteOldFile(*) {
     ; 并且根据要求，此时不会输出任何日志。
 }
 ;endregion 软件更新
+;region 身份辅助函数
+;tag 计算哈希值
+HashSHA256(input) {
+    ; 初始化 Crypt API
+    if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv := 0, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000)
+        throw Error("CryptAcquireContext 失败", -1)
+    ; 创建 SHA-256 哈希对象
+    if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x800C, "Ptr", 0, "UInt", 0, "Ptr*", &hHash := 0)
+        throw Error("CryptCreateHash 失败", -1)
+    ; 更新哈希数据
+    buf := Buffer(StrPut(input, "UTF-8"))
+    StrPut(input, buf, "UTF-8")
+    if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", buf, "UInt", buf.Size, "UInt", 0)
+        throw Error("CryptHashData 失败", -1)
+    ; 获取哈希值
+    hashSize := 32  ; SHA-256 是 32 字节
+    hashBuf := Buffer(hashSize)
+    if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0)
+        throw Error("CryptGetHashParam 失败", -1)
+    ; 转换为十六进制字符串
+    hexHash := ""
+    loop hashSize {
+        hexHash .= Format("{:02x}", NumGet(hashBuf, A_Index - 1, "UChar"))
+    }
+    ; 清理资源
+    DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
+    DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+    return hexHash
+}
+;tag 获取主板序列号的函数
+GetMainBoardSerial() {
+    wmi := ComObjGet("winmgmts:\\.\root\cimv2")
+    query := "SELECT * FROM Win32_BaseBoard"
+    for board in wmi.ExecQuery(query) {
+        ; Mainboard serial is typically in 'SerialNumber'
+        return board.SerialNumber
+    }
+    return "未找到序列号"
+}
+;tag 获取CPU序列号的函数
+GetCpuSerial() {
+    wmi := ComObjGet("winmgmts:\\.\root\cimv2")
+    ; Win32_Processor class contains CPU information
+    query := "SELECT * FROM Win32_Processor"
+    for cpu in wmi.ExecQuery(query) {
+        ; CPU serial is typically in 'ProcessorID' or 'SerialNumber'
+        ; ProcessorID is more commonly available and unique for CPUs
+        return cpu.ProcessorID
+    }
+    return "未找到序列号"
+}
+;tag 获取硬盘序列号的函数
+GetDiskSerial() {
+    wmi := ComObjGet("winmgmts:\\.\root\cimv2")
+    ; Win32_DiskDrive class contains physical disk drive information
+    query := "SELECT * FROM Win32_DiskDrive"
+    for disk in wmi.ExecQuery(query) {
+        ; Disk serial is typically in 'SerialNumber'
+        ; Note: For NVMe drives, this might sometimes be empty or different from what you expect
+        return disk.SerialNumber
+    }
+    return "未找到序列号"
+}
+;tag 确定用户组
+CheckUserGroup() {
+    global TextUserGroup, UserGroup
+    ; 获取主板序列号
+    mainBoardSerial := GetMainBoardSerial()
+    ; 获取CPU序列号
+    cpuSerial := GetCpuSerial()
+    ; 获取硬盘序列号
+    diskSerial := GetDiskSerial()
+    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+    AddLog("当前设备唯一标识：" Hashed)
+    ;用户组识别码
+    GroupArrayAdministrator := ["9d2f462afb7f54bdb7ea4eb013c184553c6d36b2a5d3dc31538a54dc4b020458"]
+    GroupArrayGoldDoro := [
+        "9d2f462afb7f54bdb7ea4eb013c184553c6d36b2a5d3dc31538a54dc4b020458",
+        20,
+        30,
+        40,
+        50]
+    ;确定用户组
+    for adminSerial in GroupArrayAdministrator {
+        if (adminSerial == Hashed) {
+            TextUserGroup.Value := "管理员"
+            UserGroup := "管理员"
+            AddLog("当前用户组：管理员")
+            break
+        }
+    }
+    if (UserGroup != "管理员") {
+        for memberSerial in GroupArrayGoldDoro {
+            if (memberSerial == Hashed) {
+                TextUserGroup.Value := "金Doro会员"
+                UserGroup := "金Doro会员"
+                AddLog("当前用户组：金Doro会员")
+                break
+            }
+        }
+    }
+    if (UserGroup != "管理员" and UserGroup != "金Doro会员") {
+        TextUserGroup.Value := "普通用户"
+        UserGroup := "普通用户"
+        AddLog("当前用户组：普通用户")
+    }
+}
+;endregion 身份辅助函数
 ;region GUI辅助函数
 ;tag 全选任务列表
 CheckAllTasks(*) {

@@ -1959,8 +1959,10 @@ BattleSettlement() {
     AddLog("等待战斗结算")
     while true {
         ; 跳过剧情
-        if A_Index < 10 {
-            Send "{]}"
+        Send "{]}"
+        ; 区域变化的提示
+        if (ok := FindText(&X, &Y, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y + 400 * TrueRatio, "L")
         }
         ; 检测自动战斗和爆裂
         if A_Index = 40 {

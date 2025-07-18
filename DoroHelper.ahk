@@ -212,6 +212,7 @@ FindText().PicLib("|<编队的图标>*200$53.zw3zzz0Tzzk1zzw0Tzy01zzU0Tzs03zz00T
 FindText().PicLib("|<红圈的左边缘黄边>FFFF62-0.90$14.1k0zUDw3z0zkDw7y1zUTs7y1zUTs7w3z0zkDw3z0zkDw3z0zkDw1z000Dw3z0zkDw3z0zkDw3z0zk7w1z0Ts7y1zUTs7y0zUDw3z0zkDw1w8", 1)
 ;tag 模拟室
 FindText().PicLib("|<模拟室>*150$96.wDsS7z3zzzzzzVzzwDsQ7z3szwDzzUzzwD000z3sTwDU0001wD000z3sRwDU0000wD000z3s1wDU0000sD001z3s0wDU000001sQ7s0M0wDU000001zzzs0MEMDVzzzU01001s0MMMDU000001001s0MMMDy000DsD001z3sM8Dy000DsD3z1z3sQ8Dy000Ds7001z3sQ0TzkDUzs7001z3sQsTzUTUTk3001z0MTsTy000Dk11z1y0MTkTw0007k0001s0MTkTw0003U0001s0MTkTy00y7U1001s1sRkTyTVzT0/z1zs3sFUTzzVzz0Dz1zz3s0UDw00070C000z3s00Dw00070C000z3s007w0007YC000z3k307w0007gDw0Dz3kC07zzUzzwDs07z3UQ23zzVzzwDUA1z3Us63U0000wA0S0M3lk73U0000wA0z0w3vsD3U0000wC3zVw7zwTDU0000wDDztwTzzzzzzzzzU", 1)
+FindText().PicLib("|<结束模拟的图标>*100$45.000000A000000Ds000003zU00000Ty000007zk00000zz000007zs00000zz000007zk00001zy003zzzzU00zzzzs00DzzzU003zzzw000zzzzU00DsTzw003y7zy000TVzzU001sTzw00067zzk0001zzz0000Tzzw0007zyTk001zzVz000Tzs7s007zzUS001zzy1U7zzzzs00zzzzzU07zzzjy00zzzszs07zzy3zU0zzzUDy000000zs000003zU00000Dw000000zU000007w000000zU000007w000000zU000007w000000zU000007w000000zU000007w000000zU000003s0U", 1)
 FindText().PicLib("|<开始模拟的开始>*140$73.zzzzzzzDzyzzzzzzzzzVzy3zw00001zUzz1zy00000TkTz0zz00000DsDzUzzU00007w7zUTzk00003y7zkSDzw7y3zy1jkC3zy3z1zw01sD1zz1zUzy00s7kTzUzkTz00Q7s7zkTsDzU0A3y3zsDw7zw64000zw7y3zy70000Ty3z1zz300007z1zUTz1UU000000007UkE0T0000003kMNzzl000001sQDzzzU00000sA7U01zw3z0zw23U00Ty3zUzz01k00Dz1zkTzk1s007zUzsDzw0w003zUTw7zz0S3z1zkDy3zzk73zUzkDz1zzs1VzkTs7zUzzs0EzsDs7zkTzs08Tw7s3zsDzs4ADy3s3zw7zs3C001k3zy3zs3b000s3zz1zw3zU00S3zzUzz3zk00DXzzkTzXzsDw7vzzsDzzzwDz3U", 1)
 FindText().PicLib("|<快速模拟的图标>*200$71.zzzzz00zzzzzzzzz0007zzzzzzzk0001zzzzzzy00000zzzzzzk00000Tzzzzz000000Dzzzzs000000DzzzzU000000Dzzzy00000007zzzs00000007zzzU00000007zzy000000007zzs000000007zzU00000000Dzy000000000Dzs000000000Dzk000000000Dz0000000000Ty0070060000Ts00T00S0000zk01z01y0000z007z07z0001y00Dz0Tz0001w00zz0zz0003k00zz0zz0007U00zz0zz0006000zz0zz000A000Tz0zz000M000Tz0zz000k000Tz0zz000U000Tz0Tz0000000Tz0Tz0000000Tz0Tz0000000Tz0Tz0000000Tz0Tz0000000zz0zy0000001zw3zw0000007zkDzk000000Tz0zz0000001zw3zw0000007zkDzk00E000zz0zz001U003zw3zs003000DzkDzU007000zz0zy000C003zs3zs000Q00DzkDzU001w00zz0zy0003s00zs1zs0007k00zU1zU000Tk00y01y0000zU00s01s0003zU00U01U0007z0000000000Tz0000000000zz0000000003zy000000000Dzy000000000zzy000000003zzy00000000Dzzy00000000Tzzy00000001zzzy0000000Dzzzz0000000zzzzz0000003zzzzz000000TzzzzzU00003zzzzzzs0000Tzzzzzzw0003zzzzzzzz000zzzzzzzzzw1zzzzzk", 1)
 FindText().PicLib("|<跳过增益效果选择的图标>*150$42.E008000w00S000y00T000zU0Tk00zk0Ts00zw0Ty00zy0Tz00zzUTzU0zzkTzs0zzsTzw0zzyTzz0zzzzzzUzzzzzzszzzzzzwzzzzzzyzzzzzzzzzzzzzyzzzzzzwzzzzzzszzzzzzUzzyzzz0zzwzzw0zzkzzs0zzUTzk0zy0Tz00zw0Ty00zk0Ts00zU0Tk00y00T000w00S000U", 1)
@@ -2415,6 +2416,10 @@ SimulationNormal() {
         Sleep 1000
     }
     while true {
+        if (ok := FindText(&X, &Y, NikkeX + 0.897 * NikkeW . " ", NikkeY + 0.063 * NikkeH . " ", NikkeX + 0.897 * NikkeW + 0.102 * NikkeW . " ", NikkeY + 0.063 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("结束模拟的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            MsgBox("请手动结束模拟后重新运行该任务")
+            Pause
+        }
         if (ok := FindText(&X, &Y, NikkeX + 0.442 * NikkeW . " ", NikkeY + 0.535 * NikkeH . " ", NikkeX + 0.442 * NikkeW + 0.118 * NikkeW . " ", NikkeY + 0.535 * NikkeH + 0.101 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("开始模拟的开始"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("点击开始模拟")
             FindText().Click(X + 30 * TrueRatio, Y, "L")

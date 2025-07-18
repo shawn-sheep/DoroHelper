@@ -847,7 +847,7 @@ Initialization() {
     currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
     TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
     GameRatio := Round(NikkeW / NikkeH, 3)
-    AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n识图宽容度是" PicTolerance)
+    AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")
@@ -1588,9 +1588,11 @@ ShowSetting(pageName) {
 }
 ;endregion GUI辅助函数
 ;region 消息辅助函数
+;tag 支持
 MsgSponsor(*) {
     Run("https://p.sda1.dev/25/fe73def4499c92878720eedf6d71367f/fa3c4923-bb2b-4329-a4df-7eb828194b97.jpeg")
 }
+;tag 帮助
 ClickOnHelp(*) {
     msgbox "
     (
@@ -2995,7 +2997,7 @@ EventSmall() {
 EventLarge() {
     BackToHall
     while true {
-        if !(ok := FindText(&X, &Y, NikkeX + 0.677 * NikkeW . " ", NikkeY + 0.835 * NikkeH . " ", NikkeX + 0.677 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.835 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动的标识"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.633 * NikkeW . " ", NikkeY + 0.788 * NikkeH . " ", NikkeX + 0.633 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.788 * NikkeH + 0.105 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("尼尔活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到大活动")
             UserClick(2782, 1816, TrueRatio)
             Sleep 1000
@@ -3024,7 +3026,7 @@ EventLarge() {
     ;tag 签到
     if g_settings["EventLargeSign"] {
         AddLog("===签到===")
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.105 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.105 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·签到"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试进入对应活动页")
             FindText().Click(X - 50 * TrueRatio, Y, "L")
             Sleep 500
@@ -3049,7 +3051,7 @@ EventLarge() {
     ;tag 剧情活动
     if g_settings["EventLargeStory"] {
         AddLog("===刷11关===")
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.795 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.795 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("STORYⅠ"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.795 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.795 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("STORYⅠⅠ"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试进入对应活动页")
             FindText().Click(X - 50 * TrueRatio, Y, "L")
             Sleep 500
@@ -3072,7 +3074,7 @@ EventLarge() {
         ; 到了第三阶段会自动卡死，不用提示
         AddLog("===通用模式===")
         Sleep 1000
-        if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.339 * NikkeW . " ", NikkeY + 0.235 * NikkeH . " ", NikkeX + 0.339 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.235 * NikkeH + 0.671 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·Stage"), , , , , , 3, TrueRatio, TrueRatio)) {
+        if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.337 * NikkeW . " ", NikkeY + 0.234 * NikkeH . " ", NikkeX + 0.337 * NikkeW + 0.340 * NikkeW . " ", NikkeY + 0.234 * NikkeH + 0.627 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")
@@ -3101,10 +3103,6 @@ EventLarge() {
             }
         }
         AwardCooperateBattle
-        ; if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.367 * NikkeW . " ", NikkeY + 0.796 * NikkeH . " ", NikkeX + 0.367 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.796 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的捍卫者"), , , , , , , TrueRatio, TrueRatio)) {
-        ;     FindText().Click(X, Y - 50 * TrueRatio, "L")
-        ;     AwardCooperateBattle
-        ; }
         while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack

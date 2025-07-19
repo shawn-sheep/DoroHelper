@@ -430,7 +430,7 @@ AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "xs y+2 R1")
 AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查会员组", "xs+100 yp-25 R1")
 AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+25")
 ;tag 更新渠道
-doroGui.Add("Text", "Section x20 yp+40 R1 +0x0100", "更新渠道")
+doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
     var := 1
 }

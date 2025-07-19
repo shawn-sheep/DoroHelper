@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.1"
+currentVersion := "v1.4.2"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1516,6 +1516,10 @@ CheckUserGroup() {
         "8c7fdb8491a2185cabbe6d5c3eb3c75015ca0b789afffc116ce3fd187484a47c", ;QQ 1282483980
         "ef48136380d9f7086b28e63d3a91fa838247da1add0577b34e31ef7225785ff2", ;QQ 522389362
         "3ff7b8b9a05244c3cc919cd845663df9d71af610cea55161ca5dcd429b1be8fe", ;QQ 2806064159
+        "e48f4b173538e0e8fb15045ca49f881457a04d84d70938f8a3b09716021b9f7e", ;QQ 469893608
+        "0e574a09b65fe946c4f1c85c64751fb1821381a6534d628b2bd0320621c9fdc2", ;QQ 2673621078
+        "90c7dbb93115959db7147dcfdd6b9e3abd21c31eadd244513ebfcfeb57a38b1c", ;QQ 1433054292
+        "0f2dd1d9d6fdb407e6d46afa7d526f08a8c01741334f64f433330786de4b3f7f", ;QQ 1136895401
         "1"]
     ;确定用户组
     for adminSerial in GroupArrayAdministrator {

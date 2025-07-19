@@ -2059,12 +2059,6 @@ BattleSettlement() {
 }
 ;tag 活动挑战
 Challenge() {
-    AddLog("===刷挑战===")
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.346 * NikkeW . " ", NikkeY + 0.821 * NikkeH . " ", NikkeX + 0.346 * NikkeW + 0.092 * NikkeW . " ", NikkeY + 0.821 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("尝试进入对应活动页")
-        FindText().Click(X - 50 * TrueRatio, Y, "L")
-        Sleep 500
-    }
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.005 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.063 * NikkeW . " ", NikkeY + 0.005 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("挑战关卡"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入挑战关卡页面")
     }
@@ -3053,6 +3047,12 @@ EventLarge() {
     }
     ;tag 挑战
     if g_settings["EventLargeChallenge"] {
+        AddLog("===刷挑战===")
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.840 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.107 * NikkeW . " ", NikkeY + 0.840 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("挑战"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试进入对应活动页")
+            FindText().Click(X - 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
         Challenge
     }
     ;tag 剧情活动
@@ -3259,6 +3259,12 @@ EventSpecial() {
     }
     ;tag 挑战
     if g_settings["EventSpecialChallenge"] {
+        AddLog("===刷挑战===")
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.346 * NikkeW . " ", NikkeY + 0.821 * NikkeH . " ", NikkeX + 0.346 * NikkeW + 0.092 * NikkeW . " ", NikkeY + 0.821 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试进入对应活动页")
+            FindText().Click(X - 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
         Challenge
     }
     ;tag 剧情活动

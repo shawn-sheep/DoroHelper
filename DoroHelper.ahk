@@ -94,6 +94,7 @@ global g_settings := Map(
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,        ;自动检查更新
+    "AutoCheckUserGroup", 1,     ;自动检查会员组
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
     "SelfClosing", 0,            ;完成后自动关闭程序
     "OpenBlablalink", 0,         ;完成后打开Blablalink
@@ -422,12 +423,13 @@ doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "你的用户组是：")
 TextUserGroup := doroGui.Add("Text", "x+5  R1 +0x0100", UserGroup)
 MirrorInfo := doroGui.Add("Text", "x+35 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
-BtnUpdate := doroGui.Add("Button", "xs R1", "检查更新")
+BtnUpdate := doroGui.Add("Button", "w80 h25 xs", "检查更新")
 BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
-AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "x+10 yp-1 R1")
-AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+20")
+AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "xs y+2 R1")
+AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查会员组", "xs+100 yp-25 R1")
+AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+25")
 ;tag 更新渠道
-doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
+doroGui.Add("Text", "Section x20 yp+40 R1 +0x0100", "更新渠道")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
     var := 1
 }
@@ -691,6 +693,8 @@ if g_settings["AutoDeleteOldFile"]
     DeleteOldFile
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
+if g_settings["AutoCheckUserGroup"]
+    CheckUserGroup
 doroGui.Show()
 ;endregion 创建GUI
 ;region 点击运行
@@ -1515,7 +1519,7 @@ CheckUserGroup() {
     ;确定用户组
     for adminSerial in GroupArrayAdministrator {
         if (adminSerial == Hashed) {
-            TextUserGroup.Value := "管理员"
+            try TextUserGroup.Value := "管理员"
             UserGroup := "管理员"
             AddLog("当前用户组：管理员")
             break
@@ -1524,7 +1528,7 @@ CheckUserGroup() {
     if (UserGroup != "管理员") {
         for memberSerial in GroupArrayGoldDoro {
             if (memberSerial == Hashed) {
-                TextUserGroup.Value := "金Doro会员"
+                try TextUserGroup.Value := "金Doro会员"
                 UserGroup := "金Doro会员"
                 AddLog("当前用户组：金Doro会员")
                 break
@@ -1532,7 +1536,7 @@ CheckUserGroup() {
         }
     }
     if (UserGroup != "管理员" and UserGroup != "金Doro会员") {
-        TextUserGroup.Value := "普通用户"
+        try TextUserGroup.Value := "普通用户"
         UserGroup := "普通用户"
         AddLog("当前用户组：普通用户")
     }

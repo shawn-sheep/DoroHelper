@@ -118,6 +118,7 @@ BattleSkip := 0
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
 RedCircle := 0
+EventStory := 0
 Screenshot := 0
 if A_Username = "12042"
     UserGroup := "管理员"
@@ -1960,6 +1961,7 @@ BattleSettlement() {
     global Victory
     global Screenshot
     global RedCircle
+    global EventStory
     if (BattleActive = 0) {
         AddLog("由于无法战斗，跳过战斗结算")
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.831 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.831 * NikkeH + 0.143 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的进"), , , , , , , TrueRatio, TrueRatio)) {
@@ -1971,11 +1973,13 @@ BattleSettlement() {
     checkred := 0
     AddLog("等待战斗结算")
     while true {
-        ; 跳过剧情
-        Send "{]}"
-        ; 区域变化的提示
-        if (ok := FindText(&X, &Y, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y + 400 * TrueRatio, "L")
+        if EventStory {
+            ; 跳过剧情
+            Send "{]}"
+            ; 区域变化的提示
+            if (ok := FindText(&X, &Y, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y + 400 * TrueRatio, "L")
+            }
         }
         ; 检测自动战斗和爆裂
         if A_Index = 40 {
@@ -3082,8 +3086,10 @@ EventLarge() {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")
                 }
+                global EventStory := 1
                 EnterToBattle
                 BattleSettlement
+                global EventStory := 0
             }
         }
         while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -3286,8 +3292,10 @@ EventSpecial() {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")
                 }
+                global EventStory := 1
                 EnterToBattle
                 BattleSettlement
+                global EventStory := 0
             }
         }
         while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {

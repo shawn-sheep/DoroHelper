@@ -783,6 +783,7 @@ ClickOnDoro(*) {
             MsgSponsor
     }
     if UserGroup = "金Doro会员" {
+        try TraySetIcon "icon\GoldDoro.ico"
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
     }
     if UserGroup = "管理员" {

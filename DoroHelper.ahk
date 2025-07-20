@@ -1431,6 +1431,28 @@ DeleteOldFile(*) {
 }
 ;endregion 软件更新
 ;region 身份辅助函数
+;tag 获取当前时间的Unix时间戳
+GetUnixTimestamp() {
+    return DateDiff(A_NowUTC, '19700101', 'Seconds')
+}
+;tag 下载指定URL的内容
+DownloadUrlContent(url) {
+    try {
+        whr := ComObject("WinHttp.WinHttpRequest.5.1")
+        whr.Open("GET", url, false)
+        whr.Send()
+        ; 检查状态码，确保请求成功
+        if (whr.Status = 200) {
+            return whr.ResponseText
+        } else {
+            AddLog("下载 JSON 文件失败，状态码: " whr.Status)
+            return ""
+        }
+    } catch as e {
+        AddLog("下载 JSON 文件时发生错误: " e.Message)
+        return ""
+    }
+}
 ;tag 计算哈希值
 HashSHA256(input) {
     ; 初始化 Crypt API
@@ -1504,42 +1526,67 @@ CheckUserGroup() {
     diskSerial := GetDiskSerial()
     Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
     AddLog("当前设备唯一标识：" Hashed)
-    ;用户组识别码
-    GroupArrayAdministrator := ["9d2f462afb7f54bdb7ea4eb013c184553c6d36b2a5d3dc31538a54dc4b020458"] ;QQ 1204244136
-    GroupArrayGoldDoro := [
-        "2d9b45681f7f129b7586f7ba5676b12617d97551b4c451108cbb5e8771088fab", ;QQ 1572792478
-        "d650a367ab278c573916a1b2325cda481272855e1c825ce098d779f26ba6e8d4", ;QQ 363159291
-        "2cbc4dfec4eb7ba279f42ccb5ca1681d702df3c2892d57072cb6f2687c110aa5", ;QQ 414004429
-        "f677506060fa0fa5b9f2e921181abec02eb8e63fe45ec46d0a38af59b6650593", ;QQ 1290685605
-        "e4b83ba3bb8a56ae5ff063c0af85c1e98c1293052835d250b711fa2fbdb55ae2", ;QQ 1780649169
-        "7cc89e19e64aee59b1c6e71d45051b932ac1e635b24c3714a0dec12afdfd9fde", ;QQ 1922170257
-        "8c7fdb8491a2185cabbe6d5c3eb3c75015ca0b789afffc116ce3fd187484a47c", ;QQ 1282483980
-        "ef48136380d9f7086b28e63d3a91fa838247da1add0577b34e31ef7225785ff2", ;QQ 522389362
-        "3ff7b8b9a05244c3cc919cd845663df9d71af610cea55161ca5dcd429b1be8fe", ;QQ 2806064159
-        "e48f4b173538e0e8fb15045ca49f881457a04d84d70938f8a3b09716021b9f7e", ;QQ 469893608
-        "0e574a09b65fe946c4f1c85c64751fb1821381a6534d628b2bd0320621c9fdc2", ;QQ 2673621078
-        "90c7dbb93115959db7147dcfdd6b9e3abd21c31eadd244513ebfcfeb57a38b1c", ;QQ 1433054292
-        "0f2dd1d9d6fdb407e6d46afa7d526f08a8c01741334f64f433330786de4b3f7f", ;QQ 1136895401
-        "1"]
-    ;确定用户组
-    for adminSerial in GroupArrayAdministrator {
-        if (adminSerial == Hashed) {
-            try TextUserGroup.Value := "管理员"
-            UserGroup := "管理员"
-            AddLog("当前用户组：管理员")
-            break
-        }
+    currentTimeStamp := GetUnixTimestamp()
+    ; 定义 JSON 文件的 URL
+    jsonUrl := "https://cdn.jsdelivr.net/gh/1204244136/DoroHelper@main/group/GroupArray.json?t=" currentTimeStamp
+    ; 下载 JSON 文件内容
+    jsonContent := DownloadUrlContent(jsonUrl)
+    ; 如果下载失败或内容为空，则停止执行或使用默认值
+    if (jsonContent = "") {
+        AddLog("无法获取用户组信息，使用默认设置或退出。")
+        ; 您可以选择在这里设置一个默认用户组，或者直接退出函数
+        try TextUserGroup.Value := "普通用户"
+        UserGroup := "普通用户"
+        return
     }
-    if (UserGroup != "管理员") {
-        for memberSerial in GroupArrayGoldDoro {
-            if (memberSerial == Hashed) {
-                try TextUserGroup.Value := "金Doro会员"
-                UserGroup := "金Doro会员"
-                AddLog("当前用户组：金Doro会员")
+    ; 解析 JSON 内容
+    try {
+        groupData := Json.Load(&jsonContent)
+        if (!groupData) {
+            AddLog("解析 JSON 文件失败。")
+            try TextUserGroup.Value := "普通用户"
+            UserGroup := "普通用户"
+            return
+        }
+    } catch as e {
+        AddLog("解析 JSON 文件时发生错误: " e.Message)
+        try TextUserGroup.Value := "普通用户"
+        UserGroup := "普通用户"
+        return
+    }
+    ; 从解析后的 JSON 数据中获取用户组数组
+    GroupArrayAdministrator := groupData["GroupArrayAdministrator"]
+    GroupArrayGoldDoro := groupData["GroupArrayGoldDoro"]
+    ; 确定用户组
+    ; 检查管理员组
+    if (IsObject(GroupArrayAdministrator)) {
+        for adminSerial in GroupArrayAdministrator {
+            if (adminSerial == Hashed) {
+                try TextUserGroup.Value := "管理员"
+                UserGroup := "管理员"
+                AddLog("当前用户组：管理员")
                 break
             }
         }
+    } else {
+        AddLog("警告: GroupArrayAdministrator 数据无效或为空。")
     }
+    ; 检查金Doro会员组（如果不是管理员）
+    if (UserGroup != "管理员") {
+        if (IsObject(GroupArrayGoldDoro)) {
+            for memberSerial in GroupArrayGoldDoro {
+                if (memberSerial == Hashed) {
+                    try TextUserGroup.Value := "金Doro会员"
+                    UserGroup := "金Doro会员"
+                    AddLog("当前用户组：金Doro会员")
+                    break
+                }
+            }
+        } else {
+            AddLog("警告: GroupArrayGoldDoro 数据无效或为空。")
+        }
+    }
+    ; 如果都不是，则设置为普通用户
     if (UserGroup != "管理员" and UserGroup != "金Doro会员") {
         try TextUserGroup.Value := "普通用户"
         UserGroup := "普通用户"

@@ -701,7 +701,8 @@ doroGui.Show()
 ;region 点击运行
 ClickOnDoro(*) {
     Initialization
-    CheckUserGroup
+    if !g_settings["AutoCheckUserGroup"]
+        CheckUserGroup
     if g_settings["EventSpecial"] and g_settings["Event"]
         if UserGroup = "普通用户" {
             MsgBox("当前用户组不支持特殊活动，请升级到会员组")

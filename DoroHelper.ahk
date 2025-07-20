@@ -1579,6 +1579,7 @@ CheckUserGroup() {
                     try TextUserGroup.Value := "金Doro会员"
                     UserGroup := "金Doro会员"
                     AddLog("当前用户组：金Doro会员")
+                    try TraySetIcon "icon\GoldDoro.ico"
                     break
                 }
             }

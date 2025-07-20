@@ -3395,13 +3395,13 @@ EventSpecial() {
         while true {
             UserClick(1920, 1854, TrueRatio)
             Sleep 500
-            if A_Index = 30 {
+            if A_Index = 100 {
                 AddLog("时间差不多咯")
                 Send "{Esc}"
                 Sleep 1000
                 AddLog("确认结束")
                 UserClick(1932, 1524, TrueRatio)
-                Sleep 3000
+                Sleep 5000
                 AddLog("点击返回")
                 UserClick(1910, 1866, TrueRatio)
                 Sleep 1000

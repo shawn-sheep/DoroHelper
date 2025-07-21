@@ -383,21 +383,21 @@ doroGui.MarginY := Round(doroGui.MarginY * 1)
 doroGui.SetFont('s12', 'Microsoft YaHei UI')
 ;tag 框
 doroGui.AddGroupBox("x10 y10 w250 h230 ", "更新")
-LinkProject := doroGui.Add("Link", " R1 xp+50 yp", '<a href="https://github.com/kyokakawaii/DoroHelper">项目地址</a>')
-BtnSponsor := doroGui.Add("Button", "x+10 yp-3 w60 h30", "赞助").OnEvent("Click", MsgSponsor)
-BtnHelp := doroGui.Add("Button", "x+5 yp w60 h30", "帮助").OnEvent("Click", ClickOnHelp)
+BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
+BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助").OnEvent("Click", MsgSponsor)
+BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", ClickOnHelp)
 ;tag 版本
-doroGui.Add("Text", "x20 y40 R1 +0x0100", "DoroHelper的版本是：" currentVersion)
-doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "你的用户组是：")
-TextUserGroup := doroGui.Add("Text", "x+5  R1 +0x0100", UserGroup)
-MirrorInfo := doroGui.Add("Text", "x+35 yp-1 R1 +0x0100", "❔️")
+doroGui.Add("Text", "x20 y40 R1 +0x0100", "当前版本：" currentVersion)
+cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "x170 yp R1")
+doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度")
+doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
+TextUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", UserGroup)
+MirrorInfo := doroGui.Add("Text", "x+10 yp R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
-BtnUpdate := doroGui.Add("Button", "w80 h25 xs", "检查更新")
-BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
-AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "xs y+2 R1")
-cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查会员组", "xs+100 yp-25 R1")
+cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查", "x170 yp R1")
 doroGui.Tips.SetTip(cbAutoCheckUserGroup, "启动时自动检查用户组`n该功能启用时会略微降低启动速度")
-AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+25")
+cbAutoDeleteOldFile := AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除", "yp+25")
+doroGui.Tips.SetTip(cbAutoDeleteOldFile, "更新后自动删除旧版本")
 ;tag 更新渠道
 doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
@@ -834,7 +834,7 @@ Initialization() {
     currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
     TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
     GameRatio := Round(NikkeW / NikkeH, 3)
-    AddLog("`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`nnikkeX坐标是" NikkeX "`nnikkeY坐标是" NikkeY "`nnikke宽度是" NikkeW "`nnikke高度是" NikkeH "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
+    AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")

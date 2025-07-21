@@ -94,7 +94,7 @@ global g_settings := Map(
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;其他
     "AutoCheckUpdate", 0,        ;自动检查更新
-    "AutoCheckUserGroup", 1,     ;自动检查会员组
+    "AutoCheckUserGroup", 0,     ;自动检查会员组
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
     "SelfClosing", 0,            ;完成后自动关闭程序
     "OpenBlablalink", 0,         ;完成后打开Blablalink

@@ -403,10 +403,13 @@ doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
     var := 1
 }
-else {
+else if g_numeric_settings["UpdateChannels"] = "测试版" {
     var := 2
 }
-cbUpdateChannels := doroGui.Add("DropDownList", "x140 yp w100 Choose" var, ["正式版", "测试版"])
+else {
+    var := 3
+}
+cbUpdateChannels := doroGui.Add("DropDownList", "x140 yp w100 Choose" var, ["正式版", "测试版", "AHK版"])
 cbUpdateChannels.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["UpdateChannels"] := Ctrl.Text)
 PostMessage(0x153, -1, 30, cbUpdateChannels)  ; 设置选区字段的高度.
 PostMessage(0x153, 0, 30, cbUpdateChannels)  ; 设置列表项的高度.
@@ -439,7 +442,7 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 }
 ;tag 任务列表
 global g_taskListCheckboxes := []
-doroGui.AddGroupBox("x10 yp+40 w250 h315 ", "任务列表")
+doroGui.AddGroupBox("x10 y240 w250 h315 ", "任务列表")
 doroGui.SetFont('s9')
 BtnCheckAll := doroGui.Add("Button", "xp+160 R1", "☑️").OnEvent("Click", CheckAllTasks)
 doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
@@ -914,6 +917,29 @@ CheckForUpdate(isManualCheck) {
     local foundNewVersion := false
     local sourceName := ""
     local channelInfo := (g_numeric_settings["UpdateChannels"] == "测试版") ? "测试版" : "正式版"
+    ; ==================== AHK文件 直接下载 =====================
+    if (g_numeric_settings["UpdateChannels"] == "AHK版") {
+        ; 定义目标URL
+        url := "https://github.abskoop.workers.dev/https://github.com/1204244136/DoroHelper/archive/refs/heads/main.zip" ; 替换为实际下载链接
+        ; 获取当前脚本所在目录
+        currentScriptDir := A_ScriptDir
+        ; 获取当前脚本所在目录的上一级目录
+        SplitPath currentScriptDir, , &parentDirOfScript
+        ; 定义本地保存路径，文件名设为 main.zip
+        localFilePath := parentDirOfScript "\main" A_Now ".zip"
+        ; 确保上级目录存在，否则创建
+        if !DirExist(parentDirOfScript)
+            DirCreate(parentDirOfScript)
+        ; 下载文件到上级目录
+        try {
+            AddLog("正在下载AHK版本压缩包，请稍等……")
+            Download(url, localFilePath) ; 保存到上级目录，文件名可自定义
+            MsgBox "文件下载成功！已保存到上级目录: " localFilePath
+        } catch as e {
+            MsgBox "下载失败，错误信息: " e.Message
+        }
+        return
+    }
     ; ==================== Mirror酱 更新检查 ====================
     if (g_numeric_settings["DownloadSource"] == "Mirror酱") {
         latestObj.source := "mirror"

@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.3"
+currentVersion := "v1.4.4"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -108,7 +108,6 @@ global g_numeric_settings := Map(
     "Tolerance", 1,               ;宽容度
     "MirrorCDK", "",              ;Mirror酱的CDK
     "Version", currentVersion,    ;版本号
-    "Username", "12042",           ;用户名
     "UpdateChannels", "正式版",     ;更新渠道
     "DownloadSource", "GitHub"     ;下载源
 )
@@ -373,38 +372,6 @@ FindText().PicLib("|<对话框·想法>*150$84.000000000001zz000000000003zz00000
 FindText().PicLib("|<爆裂·A>*200$24.zzzzzzzzzs7zzs3zzk3zzk3zzk1zzk1zzVVzzVUzzVkzz1kzz3kTz3kTy3sTy00Ty00Dw00Dw00Dw007wDw7sDw7sDy3sTy3kTy3zzzzzzzzU", 1)
 FindText().PicLib("|<爆裂·S>*200$21.zzzzzzzz0DzU0Ds00z007k00y3w7kTky3y7kTzy0Tzk07z00Dw00zs07zy0Tzy3zzkS3y3kTkS003s00T007s00zk0TzzzzzzzU", 1)
 ;endregion 识图素材
-;region 运行前提示
-if g_numeric_settings["Username"] != A_Username
-    ClickOnHelp
-if g_numeric_settings["Username"] != A_Username {
-    N := Random(1, 2)
-    if N = 1 {
-        verify := "你是否想继续程序"
-    }
-    if N = 2 {
-        verify := "你是否想关闭程序"
-    }
-    Result := msgbox(
-        (
-            "你的用户名是" A_Username
-            "`n反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志。"
-            "`n如果什么资料都没有就唐突反馈的话将会被斩首示众，使用本软件视为你已阅读并同意此条目。"
-            "`n==========================="
-            "`n人机检测：" verify
-            "`n可以在配置文件settings.ini中将Username改成自己的用户名永久关闭提示"
-            "`n==========================="
-            "`n鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！"
-            "`n==========================="
-            "`n1080p已做适配，但以下功能由于周期问题暂时无法正常使用："
-            "`n废铁商店、反派之路、普通协同作战、每日免费招募"
-            "`n关闭：ctrl + 1 终止：+ 2（终止后需重启）调整画面尺寸: ctrl+3~6"
-        ), , "YesNo")
-    if (Result = "Yes" and N = 2) or (Result = "No" and N = 1) {
-        msgbox("人机检测失败，你有认真看公告吗？")
-        ExitApp
-    }
-}
-;endregion 运行前提示
 ;region 创建GUI
 ;tag 基础配置
 doroGui := Gui("+Resize", "DoroHelper - " currentVersion)
@@ -702,6 +669,9 @@ if g_settings["AutoCheckUpdate"]
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup
 doroGui.Show()
+if !g_settings["AutoCheckUserGroup"] or UserGroup = "普通用户"
+    if A_Username != "12042"
+        ClickOnHelp
 ;endregion 创建GUI
 ;region 点击运行
 ClickOnDoro(*) {
@@ -710,7 +680,7 @@ ClickOnDoro(*) {
         CheckUserGroup
     if g_settings["EventSpecial"] and g_settings["Event"]
         if UserGroup = "普通用户" {
-            MsgBox("当前用户组不支持特殊活动，请升级到会员组")
+            MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
             Pause
         }
     if g_settings["Login"]
@@ -1673,6 +1643,8 @@ ClickOnHelp(*) {
 4. 游戏语言设置为**简体中文**，设定-画质-开启光晕效果，设定-画质-开启颜色分级，不要使用太亮的大厅背景
 5. 以**管理员身份**运行 DoroHelper
 6. 推荐使用win11操作系统，win10可能有未知bug
+7. 反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志
+8. 鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！
     )"
 }
 ;endregion 消息辅助函数

@@ -52,6 +52,7 @@ global g_settings := Map(
     "Interception", 0,           ;拦截战
     "InterceptionAnomaly", 0,    ;异常拦截战
     "InterceptionShot", 0,       ;拦截截图
+    "InterceptionRedCircle", 0,  ;拦截红圈
     ;常规奖励
     "Award", 0,                  ;奖励领取总开关
     "AwardOutpost", 0,           ;前哨基地收菜
@@ -581,10 +582,13 @@ doroGui.Tips.SetTip(SetTowerUniversal, "勾选后，自动挑战通用无限之�
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
 SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
 DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
-doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用你的编队1去挑战克拉肯`r`n会使用3号位的狙击或发射器角色打红圈")
+doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用你的编队1去挑战克拉肯")
 DropDownListBoss.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBoss"] := Ctrl.Value)
-SetInterceptionShot := AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "x+5 yp+2 R1.2")
+SetInterceptionShot := AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionShot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
+SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
+RedCircleInfo := doroGui.Add("Text", "x+1 yp R1 +0x0100", "❔️")
+doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选")
 ;tag 二级奖励
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")
 SetAwardNormalTitle := doroGui.Add("Text", "R1", "===常规奖励===")
@@ -677,7 +681,7 @@ g_settingPages := Map(
     "SimulationRoom", [SetSimulationTitle, SetSimulationOverClock, SetSimulationNormal],
     "Arena", [SetArenaTitle, SetAwardArena, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
     "Tower", [SetTowerTitle, SetTowerCompany, SetTowerUniversal],
-    "Interception", [SetInterceptionTitle, SetInterceptionAnomaly, DropDownListBoss, SetInterceptionShot],
+    "Interception", [SetInterceptionTitle, SetInterceptionAnomaly, DropDownListBoss, SetInterceptionShot, SetRedCircle, RedCircleInfo],
     "Event", [SetEventTitle, SetEventSmall, SetEventSmallChallenge, SetEventSmallStory,
         SetEventLarge, SetEventLargeSign, SetEventLargeChallenge, SetEventLargeStory, SetEventLargeCooperate, SetEventLargeDaily, SetEventLargeMinigame,
         SetEventSpecial, SetEventSpecialSign, SetEventSpecialChallenge, SetEventSpecialStory, SetEventSpecialCooperate, SetEventSpecialDaily, SetEventSpecialMinigame],
@@ -2966,13 +2970,13 @@ InterceptionAnomaly() {
             Sleep 1000
             Skipping
         }
-        RedCircle := true
+        if g_settings["InterceptionRedCircle"]
+            RedCircle := true
         if g_settings["InterceptionShot"] {
             Screenshot := true
-            BattleSettlement()
-            Screenshot := false
         }
-        else BattleSettlement
+        BattleSettlement
+        Screenshot := false
         RedCircle := false
         Sleep 2000
     }

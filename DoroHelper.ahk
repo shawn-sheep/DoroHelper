@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.2"
+currentVersion := "v1.4.3"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -427,7 +427,8 @@ doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n�
 BtnUpdate := doroGui.Add("Button", "w80 h25 xs", "检查更新")
 BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
 AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "xs y+2 R1")
-AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查会员组", "xs+100 yp-25 R1")
+cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查会员组", "xs+100 yp-25 R1")
+doroGui.Tips.SetTip(cbAutoCheckUserGroup, "启动时自动检查用户组`n该功能启用时会略微降低启动速度")
 AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "yp+25")
 ;tag 更新渠道
 doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
@@ -617,7 +618,7 @@ SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德�
 doroGui.Tips.SetTip(SetAwardRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
 ;tag 二级活动
 SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项====")
-SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关", "R1")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[暂时禁用]", "R1")
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
 SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
 SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[尼尔]", "R1 xs")
@@ -634,7 +635,7 @@ SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊�
 SetEventSpecialChallenge := AddCheckboxSetting(doroGui, "EventSpecialChallenge", "特殊活动挑战", "R1 xs+15")
 SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊活动剧情❔️", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialStory, "部分关卡可能有特殊关，此时需要手动完成任务")
-SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战", "R1 xs+15")
+SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战[暂时禁用]", "R1 xs+15")
 SetEventSpecialMinigame := AddCheckboxSetting(doroGui, "EventSpecialMinigame", "特殊活动小游戏", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")

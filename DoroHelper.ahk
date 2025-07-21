@@ -1432,10 +1432,6 @@ DeleteOldFile(*) {
 }
 ;endregion 软件更新
 ;region 身份辅助函数
-;tag 获取当前时间的Unix时间戳
-GetUnixTimestamp() {
-    return DateDiff(A_NowUTC, '19700101', 'Seconds')
-}
 ;tag 下载指定URL的内容
 DownloadUrlContent(url) {
     try {
@@ -1527,9 +1523,8 @@ CheckUserGroup() {
     diskSerial := GetDiskSerial()
     Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
     AddLog("当前设备唯一标识：" Hashed)
-    currentTimeStamp := GetUnixTimestamp()
     ; 定义 JSON 文件的 URL
-    jsonUrl := "https://cdn.jsdelivr.net/gh/1204244136/DoroHelper@main/group/GroupArray.json?t=" currentTimeStamp
+    jsonUrl := "https://cdn.jsdelivr.net/gh/1204244136/DoroHelper@main/group/GroupArray.json?t=" A_Now
     ; 下载 JSON 文件内容
     jsonContent := DownloadUrlContent(jsonUrl)
     ; 如果下载失败或内容为空，则停止执行或使用默认值

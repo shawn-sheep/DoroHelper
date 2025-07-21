@@ -706,6 +706,10 @@ ClickOnDoro(*) {
     if g_settings["Arena"] {
         if g_settings["AwardArena"] ;竞技场收菜
             AwardArena()
+        if g_settings["ArenaRookie"] or g_settings["ArenaSpecial"] or g_settings["ArenaChampion"] {
+            EnterToArk()
+            EnterToArena()
+        }
         if g_settings["ArenaRookie"] ;新人竞技场
             ArenaRookie()
         if g_settings["ArenaSpecial"] ;特殊竞技场
@@ -2606,12 +2610,11 @@ AwardArena() {
     else AddLog("未找到奖励")
     AddLog("===竞技场收菜任务结束===")
 }
-;tag 新人竞技场
-ArenaRookie() {
-    if !g_settings["AwardArena"] {
-        EnterToArk()
+;tag 进入竞技场
+EnterToArena() {
+    if (ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
+        return
     }
-    AddLog("进入竞技场")
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.712 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.712 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击竞技场")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
@@ -2619,7 +2622,11 @@ ArenaRookie() {
     while !(ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
     }
+    AddLog("进入竞技场")
     Sleep 1000
+}
+;tag 新人竞技场
+ArenaRookie() {
     AddLog("===新人竞技场任务开始===")
     AddLog("查找新人竞技场")
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.372 * NikkeW . " ", NikkeY + 0.542 * NikkeH . " ", NikkeX + 0.372 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.542 * NikkeH + 0.024 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("蓝色的新人"), , , , , , , TrueRatio, TrueRatio)) {

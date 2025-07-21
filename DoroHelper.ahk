@@ -1529,7 +1529,7 @@ CheckUserGroup() {
     Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
     AddLog("当前设备唯一标识：" Hashed)
     ; 定义 JSON 文件的 URL
-    jsonUrl := "https://cdn.jsdelivr.net/gh/1204244136/DoroHelper@main/group/GroupArray.json?t=" A_Now
+    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArray.json"
     ; 下载 JSON 文件内容
     jsonContent := DownloadUrlContent(jsonUrl)
     ; 如果下载失败或内容为空，则停止执行或使用默认值

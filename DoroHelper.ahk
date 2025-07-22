@@ -3464,7 +3464,9 @@ EventSpecial() {
         }
         while !(ok := FindText(&X, &Y, NikkeX + 0.448 * NikkeW . " ", NikkeY + 0.547 * NikkeH . " ", NikkeX + 0.448 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.547 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("特殊活动·已领取"), , , , , , , TrueRatio, TrueRatio)) {
             UserClick(2034, 1246, TrueRatio)
-            Sleep 1000
+            Sleep 500
+            UserClick(2364, 668, TrueRatio)
+            Sleep 500
         }
         while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")

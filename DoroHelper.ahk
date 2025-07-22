@@ -1447,38 +1447,79 @@ DownloadUrlContent(url) {
         if (whr.Status = 200) {
             return whr.ResponseText
         } else {
-            AddLog("下载 JSON 文件失败，状态码: " whr.Status)
+            AddLog("下载文件失败，状态码: " whr.Status)
             return ""
         }
     } catch as e {
-        AddLog("下载 JSON 文件时发生错误: " e.Message)
+        AddLog("下载文件时发生错误: " e.Message)
         return ""
     }
 }
 ;tag 计算哈希值
+/**
+ * 计算一个字符串或一个文件的 SHA-256 哈希值。
+ * 
+ * @param {String} input 要进行哈希计算的源，可以是一个字符串，也可以是文件的完整路径。
+ * @returns {String} 返回计算出的 64 位十六进制哈希字符串。
+ * @throws {Error} 如果在任何加密 API 调用环节失败，则抛出异常。
+ */
 HashSHA256(input) {
-    ; 初始化 Crypt API
-    if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv := 0, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000)
-        throw Error("CryptAcquireContext 失败", -1)
-    ; 创建 SHA-256 哈希对象
-    if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x800C, "Ptr", 0, "UInt", 0, "Ptr*", &hHash := 0)
-        throw Error("CryptCreateHash 失败", -1)
-    ; 更新哈希数据
-    buf := Buffer(StrPut(input, "UTF-8"))
-    StrPut(input, buf, "UTF-8")
-    if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", buf, "UInt", buf.Size, "UInt", 0)
-        throw Error("CryptHashData 失败", -1)
-    ; 获取哈希值
-    hashSize := 32  ; SHA-256 是 32 字节
+    hProv := 0, hHash := 0
+    ;初始化 Windows Cryptography API
+    if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000) {
+        throw Error("CryptAcquireContext 失败", -1, "无法获取加密服务提供者句柄。")
+    }
+    ;创建一个 SHA-256 哈希算法对象
+    if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x800C, "Ptr", 0, "UInt", 0, "Ptr*", &hHash) {
+        DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        throw Error("CryptCreateHash 失败", -1, "无法创建哈希对象。")
+    }
+    ;判断输入是文件还是字符串，并分别进行哈希数据更新
+    if FileExist(input) {
+        ;输入文件路径的情况
+        try {
+            file := FileOpen(input, "r")
+            chunkSize := 8192
+            chunkBuf := Buffer(chunkSize)
+            ; 循环读取文件，直到文件末尾
+            while bytesRead := file.RawRead(chunkBuf, chunkSize) {
+                if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", chunkBuf, "UInt", bytesRead, "UInt", 0) {
+                    throw Error("CryptHashData (文件) 失败", -1, "更新文件哈希数据时出错。")
+                }
+            }
+        } catch as e {
+            DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
+            DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+            throw e
+        } finally {
+            if IsSet(file) && IsObject(file)
+                file.Close()
+        }
+    } else {
+        ;输入文字符串的情况
+        strByteLen := StrPut(input, "UTF-8") - 1
+        if (strByteLen >= 0) {
+            strBuf := Buffer(strByteLen)
+            StrPut(input, strBuf, "UTF-8")
+            if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", strBuf, "UInt", strByteLen, "UInt", 0) {
+                throw Error("CryptHashData (字符串) 失败", -1, "更新字符串哈希数据时出错。")
+            }
+        }
+    }
+    ;获取最终的哈希值
+    hashSize := 32
     hashBuf := Buffer(hashSize)
-    if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0)
-        throw Error("CryptGetHashParam 失败", -1)
-    ; 转换为十六进制字符串
+    if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0) {
+        DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
+        DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        throw Error("CryptGetHashParam 失败", -1, "无法获取最终的哈希值。")
+    }
+    ;将二进制哈希值格式化为十六进制字符串
     hexHash := ""
     loop hashSize {
         hexHash .= Format("{:02x}", NumGet(hashBuf, A_Index - 1, "UChar"))
     }
-    ; 清理资源
+    ;清理并释放资源
     DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash

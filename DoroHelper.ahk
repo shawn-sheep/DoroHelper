@@ -671,6 +671,13 @@ if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup
+SplitPath A_ScriptFullPath, , , &scriptExtension
+scriptExtension := StrLower(scriptExtension)
+if (scriptExtension = "ahk") {
+    MyFileHash := HashSHA256(A_ScriptFullPath)
+    MyFileShortHash := SubStr(MyFileHash, 1, 7)
+    AddLog("当前ahk文件的短哈希值是：" MyFileShortHash)
+}
 doroGui.Show()
 if !g_settings["AutoCheckUserGroup"] or UserGroup = "普通用户"
     if A_Username != "12042"

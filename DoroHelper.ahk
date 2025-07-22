@@ -392,7 +392,7 @@ cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检�
 doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度")
 doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
 TextUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", UserGroup)
-MirrorInfo := doroGui.Add("Text", "x+10 yp R1 +0x0100", "❔️")
+MirrorInfo := doroGui.Add("Text", "x150 yp R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
 cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查", "x170 yp R1")
 doroGui.Tips.SetTip(cbAutoCheckUserGroup, "启动时自动检查用户组`n该功能启用时会略微降低启动速度`n如果你不是会员，开启这个功能对你来说没有意义")

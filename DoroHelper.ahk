@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.5"
+currentVersion := "v1.4.6"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -390,7 +390,7 @@ BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", Clic
 ;tag 版本
 doroGui.Add("Text", "x20 y40 R1 +0x0100", "当前版本：" currentVersion)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "x170 yp R1")
-doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度")
+doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度`nahk版暂时改为下载最新版的压缩包")
 doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
 TextUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", UserGroup)
 MirrorInfo := doroGui.Add("Text", "x150 yp R1 +0x0100", "❔️")
@@ -609,7 +609,7 @@ SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "�
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏[暂时禁用]", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
-SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动总开关[夏活][会员独享]", "R1 xs")
+SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动总开关[夏活][会员专享]", "R1 xs")
 SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊活动签到", "R1 xs+15")
 SetEventSpecialChallenge := AddCheckboxSetting(doroGui, "EventSpecialChallenge", "特殊活动挑战", "R1 xs+15")
 SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊活动剧情❔️", "R1 xs+15")

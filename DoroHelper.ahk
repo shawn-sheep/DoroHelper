@@ -488,7 +488,7 @@ BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+30", "DORO!").OnEvent("Click", Cl
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x280 y10 w300 h680 ", "任务设置")
 ;tag 二级默认
-SetDefault := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "请到左侧「任务列表」处`n对每个任务进行详细设置")
+SetDefault := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "请到左侧「任务列表」处`n对每个任务进行详细设置`n鼠标悬停以查看对应详细信息")
 ;tag 二级登录
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====(暂无)")
 ;tag 二级商店
@@ -602,7 +602,7 @@ SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签
 SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "大活动挑战", "R1 xs+15")
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情❔️", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeStory, "部分关卡可能有特殊关，此时需要手动完成任务")
-SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
+SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战[暂时禁用]", "R1 xs+15")
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏[暂时禁用]", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")

@@ -2835,9 +2835,9 @@ ArenaSpecial() {
 ArenaChampion() {
     AddLog("===冠军竞技场任务开始===")
     AddLog("查找冠军竞技场")
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.567 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.567 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.021 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("蓝色的应援"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.567 * NikkeW . " ", NikkeY + 0.621 * NikkeH . " ", NikkeX + 0.567 * NikkeW + 0.075 * NikkeW . " ", NikkeY + 0.621 * NikkeH + 0.047 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
-        AddLog("已找到一级应援文本")
+        AddLog("已找到红点")
         Sleep 1000
     }
     else {

@@ -99,6 +99,7 @@ global g_settings := Map(
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
     "SelfClosing", 0,            ;完成后自动关闭程序
     "OpenBlablalink", 0,         ;完成后打开Blablalink
+    "CheckEvent", 0,             ;活动结束提醒
     "BluePill", 0                ;万用开关
 )
 ;tag 其他非简单开关
@@ -382,7 +383,7 @@ doroGui.Tips.SetMargins(3, 3, 3, 3)
 doroGui.MarginY := Round(doroGui.MarginY * 1)
 doroGui.SetFont('s12', 'Microsoft YaHei UI')
 ;tag 框
-doroGui.AddGroupBox("x10 y10 w250 h230 ", "更新")
+doroGui.AddGroupBox("x10 y10 w250 h210 ", "更新")
 BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
 BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助").OnEvent("Click", MsgSponsor)
 BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", ClickOnHelp)
@@ -442,7 +443,7 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 }
 ;tag 任务列表
 global g_taskListCheckboxes := []
-doroGui.AddGroupBox("x10 y240 w250 h315 ", "任务列表")
+doroGui.AddGroupBox("x10 y230 w250 h315 ", "任务列表")
 doroGui.SetFont('s9')
 BtnCheckAll := doroGui.Add("Button", "xp+160 R1", "☑️").OnEvent("Click", CheckAllTasks)
 doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
@@ -475,7 +476,7 @@ doroGui.Tips.SetTip(cbEvent, "总开关：控制是否执行大小活动的刷�
 BtnEvent := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
 ;tag 启动设置
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x10 yp+40 w250 h130 ", "启动选项")
+doroGui.AddGroupBox("x10 yp+40 w250 h150 ", "启动选项")
 BtnReload := doroGui.Add("Button", "x110 yp-2 w60 h30", "重启").OnEvent("Click", SaveAndRestart)
 doroGui.Tips.SetTip(BtnReload, "保存设置并重启 DoroHelper")
 BtnSaveSettings := doroGui.Add("Button", "x180 yp w60 h30", "保存").OnEvent("Click", SaveSettings)
@@ -483,6 +484,8 @@ cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成�
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "xs")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
+cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[会员专享]", "xs")
+doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
 BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+30", "DORO!").OnEvent("Click", ClickOnDoro)
 ;tag 二级设置
 doroGui.SetFont('s12')
@@ -690,11 +693,6 @@ ClickOnDoro(*) {
     Initialization
     if !g_settings["AutoCheckUserGroup"]
         CheckUserGroup
-    if g_settings["EventSpecial"] and g_settings["Event"]
-        if UserGroup = "普通用户" {
-            MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
-            Pause
-        }
     if g_settings["Login"]
         Login() ;登陆到主界面
     if g_settings["Shop"] {
@@ -771,9 +769,20 @@ ClickOnDoro(*) {
         if g_settings["EventLarge"]
             EventLarge()
         if g_settings["EventSpecial"]
-            EventSpecial()
+            if UserGroup = "普通用户" {
+                MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
+                Pause
+            }
+        EventSpecial()
         if g_settings["AwardPass"]
             AwardPass()
+    }
+    if g_settings["CheckEvent"] {
+        if UserGroup = "普通用户" {
+            MsgBox("当前用户组不支持活动结束提醒，请点击赞助按钮升级会员组")
+            Pause
+        }
+        CheckEvent()
     }
     CalculateAndShowSpan()
     if UserGroup = "普通用户" {
@@ -1711,6 +1720,16 @@ ShowSetting(pageName) {
 }
 ;endregion GUI辅助函数
 ;region 消息辅助函数
+;tag 检查活动是否结束
+CheckEvent(*) {
+    MyFileShortHash := SubStr(A_Now, 1, 8)
+    if MyFileShortHash = "20250731" {
+        MsgBox "尼尔联动活动将在今天结束，请尽快完成活动！"
+    }
+    if MyFileShortHash = "20250806" {
+        MsgBox "夏活将在今天结束，请尽快完成活动！"
+    }
+}
 ;tag 支持
 MsgSponsor(*) {
     Run("https://p.sda1.dev/25/bdb72ec267450c7a0dbddbc880970d0f/Beg.jpg")

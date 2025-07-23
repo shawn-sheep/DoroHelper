@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.4"
+currentVersion := "v1.4.5"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -476,7 +476,9 @@ BtnEvent := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click"
 ;tag 启动设置
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x10 yp+40 w250 h130 ", "启动选项")
-BtnSaveSettings := doroGui.Add("Button", "x180 yp-2 w60 h30", "保存").OnEvent("Click", SaveSettings)
+BtnReload := doroGui.Add("Button", "x110 yp-2 w60 h30", "重启").OnEvent("Click", SaveAndRestart)
+doroGui.Tips.SetTip(BtnReload, "保存设置并重启 DoroHelper")
+BtnSaveSettings := doroGui.Add("Button", "x180 yp w60 h30", "保存").OnEvent("Click", SaveSettings)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "x20 yp+30 Section")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "xs")
@@ -1645,6 +1647,12 @@ CheckUserGroup() {
 }
 ;endregion 身份辅助函数
 ;region GUI辅助函数
+;tag 保存并重启
+SaveAndRestart(*) {
+    WriteSettings() ; 保存设置到文件
+    AddLog("设置已保存，正在重启 DoroHelper...")
+    Reload() ; 重启脚本
+}
 ;tag 全选任务列表
 CheckAllTasks(*) {
     for cb in g_taskListCheckboxes {

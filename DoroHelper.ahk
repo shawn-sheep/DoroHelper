@@ -3037,12 +3037,9 @@ InterceptionAnomaly() {
             Pause
     }
     AddLog("已切换到对应队伍")
+    Sleep 1000
     while True {
-        if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.879 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.879 * NikkeH + 0.102 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("异常拦截次数已耗尽")
-            break
-        }
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已激活快速战斗")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
         }
@@ -3051,6 +3048,10 @@ InterceptionAnomaly() {
             FindText().Click(X, Y, "L")
             Sleep 1000
             Skipping
+        }
+        else {
+            AddLog("异常拦截次数已耗尽")
+            break
         }
         if g_settings["InterceptionRedCircle"]
             RedCircle := true

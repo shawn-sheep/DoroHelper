@@ -772,6 +772,8 @@ ClickOnDoro(*) {
             EventLarge()
         if g_settings["EventSpecial"]
             EventSpecial()
+        if g_settings["AwardPass"]
+            AwardPass()
     }
     CalculateAndShowSpan()
     if UserGroup = "普通用户" {

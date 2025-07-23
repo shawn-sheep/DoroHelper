@@ -616,7 +616,7 @@ SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊
 doroGui.Tips.SetTip(SetEventSpecialStory, "部分关卡可能有特殊关，此时需要手动完成任务")
 SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战[暂时禁用]", "R1 xs+15")
 SetEventSpecialMinigame := AddCheckboxSetting(doroGui, "EventSpecialMinigame", "特殊活动小游戏", "R1 xs+15")
-doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
+doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认不使用技能，开启蓝色药丸后使用技能")
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")
 ;tag 妙妙工具
 doroGui.SetFont('s12')
@@ -3479,6 +3479,18 @@ EventSpecial() {
         while true {
             UserClick(1920, 1854, TrueRatio)
             Sleep 500
+            if g_settings["BluePill"] {
+                if A_Index = 90 {
+                    Send "{Q}"
+                    Sleep 6000
+                    Send "{E}"
+                    Sleep 10000
+                    Send "{Q}"
+                    Sleep 6000
+                    Send "{E}"
+                    Sleep 10000
+                }
+            }
             if A_Index = 100 {
                 AddLog("时间差不多咯")
                 Send "{Esc}"

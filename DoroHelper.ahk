@@ -786,7 +786,7 @@ ClickOnDoro(*) {
     }
     CalculateAndShowSpan()
     if UserGroup = "普通用户" {
-        Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", "YesNo")
+        Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
         if Result = "Yes"
             MsgSponsor
     }

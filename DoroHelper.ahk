@@ -255,11 +255,6 @@ FindText().PicLib("|<茵迪维利亚的茵>*200$69.zzw0DzzU1zzzzz01zzs0Dzzzzs0Dz
 FindText().PicLib("|<过激派的过>*200$74.zzzzzzzzz03zzzzzzzzzzk0zzzzzzzzzzw0Dzzszzzzzzz03zzw7zzzzzzk0zzw0zzzzzzw0Dzy07zzzzzz03zy00zzzzzzk0zzU07zzzzzw0Dzw00zzzzzz03zzU07zzzzzk0zzw01zzzzzw0DzzU0Dzzzzy01zzw01s00000007zU0C00000001zs03U0000000Tz03s00000007zs1y00000001zz1zU0000000Tzkzs00000007zyTy00000001zzzzU0000000Tzzzs00000007zzzzzzzzw0Dzzzzzzzzzz03zzzzzzzzzzk0zzzzzzzXzzw0DzzzzzzUTzz03zw003zk3zzk0zz000Tk0Tzw0Dzk00Ds07zz03zw003z00zzk0zz000zs07zw0Dzk00Dy00zz03zw003zk0Dzk0zz000zy01zw0Dzk00DzU0Dz03zw003zw03zk0zzzk0zzU0Tw0Dzzw0Dzs03z03zzz01zz01zk0zzzk0Tzs1zw0Dzzw0Dzy1zz03zzz03zzkzzk0zzzk0zzyzzw0Dzzw0Dzzzzz03zzz03zzzzzk0zzzk0zzzzzs0Dzzw0Dzzw0003zzz03zzzU000zzzk0zzzs000Dzzw0Dzzy0003zzz03zzzk001zzzk0zzzw000Tzzw0Dzzz000Dzzw01zzzs007zzy00Dzzy007zzy000zzzU0Dzzz0001zzzzzzzzU0007zzzzzzsk00001zzzzU08000000000000000000000001U00000000000Q07U00000000703y000000003s1zs00000000z0TzU0000000DsDzy00000003y7zzw0000000zlzzzw000000TyzzzzzU00DzzU", 1)
 FindText().PicLib("|<死神的死>*200$73.k00000000000s00000000000Q00000000000C000000000007000000000003U00000000001k00000000000s00000000000Q00000000000C000000000007zz00zzw07zzzzzU0zzy03zzzzzk0Tzz01zzzzzk0DzzU0zzzzzs0Dzzk0Tzzzzw07zzs0Dzzzzw03zzw07zzzzy01zby03zzzzy0000T01zzzzz00001U0zwzzz00000k0TwDzzU0000M0Dw3zzU0000A07w1zzk0000603s0Tzk0000701s07zk00003U0s01zs00001k0M00Ts03z00s00007s03zk0Q0000Dw03zk0S0000Dw03zs0D0000Tw01zw07U000Tw01zy07k000zw01zy03s001zw00lz01w001zzU0kT01y003zzs0s7U0z007zzy0s0U0TU07zzzUM000Tk0DzzzsQ000Ds0DzzzyQ000Dw07zzzzy0007y03zzzzzU003z01zzzzzs003zU0zzzzzy001zk0TzzzzzU01zs0Dzzzzzw01zw07zzzzzy00zy03zzzzzy00zz01zwzzzy00TzU0zy7zzy00Tzk0Ty0Tzy00Tzs0Dz03zy00Dzw07zU1zy00Dzy03zk0zy00Dzz01zs0Tw00DzzU0zs0Tw007zzk07s0Ds007zzs00007k007zzw00003U007zzz00003k007zzzU0001w00Dzzzk0000z00Dzzzw0000zk0Dzzzz0000zw0Dzzzzk000zz0Tzzzzy001zzkzzzzzzzzzzztzzzzzzzzzzs", 1)
 FindText().PicLib("|<异常拦截·向右的箭头>*20$53.z0007zzzzw0003zzzzw0007zzzzw0003zzzzw0003zzzzw0007zzzzw0003zzzzs0003zzzzw0007zzzzw0007zzzzs0003zzzzw0003zzzzw0007zy00w0003zw00s0003zy00w0007zw00w0007zw00w0003zw00w0003zy01w0007zw00w0003zw00w0003zw01w0007zw01w0007zw00w0003zw01w0003zy01w0007zs03s000Dzk07U000Tz00S0001zw01s0007zk07U000Tz00S0001zw01s0007zk07U000Tz00S0001zw01s0007zk07U000Tz00S0001zw01s0007zk07U000Tzk0S0001zzzzs0007zzzzU000Tzzzy0001zzzzs0007zzzzU000Tzzzy0001zzzzs0007zzzzU000Tzzzy0001zzzzs0007zzzzU000Tzzzz0001zzzzU", 1)
-FindText().PicLib("|<01>*100$24.w1y1k0w0k0Q0U0A000A00kDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU1sDU0kDU00DUU0DUU0TUk0zUU", 1)
-FindText().PicLib("|<02>*100$29.s3zUTU3y0C03s0803U0E06000sA301kM603UkA071UM0C30k0Q73U0sDz01kTy03Uzw071zs0C3zk0Q7zU0sDU01kS023Us0471U0MC30TkQ61zUsA3z1kM7y3UkDw71UTsC30zkQ61zUsA3z1kM7y3UkDw71UTs0300E0600k0Q01k1s03", 1)
-FindText().PicLib("|<03>*100$29.s3zUDU3y0C03s0803U0006000sA3U1kM703UkC071UQ0C30s0Q61k0sDzU1kTz03Uzy071zw0C3zs0Q7w00sDk11kTU63Uz0A71y08C3zs0Q7zk0sDzU1kTz03Uzy071zw0C3Us0Q61k0sA3U1kM703UkC071UQ0030000700E0T01k1z07", 1)
-FindText().PicLib("|<04>*100$31.s3zw7s0zw1s0Dw0s03y0Q01z0C3UzU71kTU3UsDk1kQ7s0sC3w0Q71w0C3Uy471kT23UsD11kQ7UUsC3kkQ71kMC3UsA71kQ63UsC71kQ63UsC31kQ71Us63Uk001kM000sA000Q6000C3zkA71zsC3Uzw71kTy3UsDz1kQ7zUs03zkQ01zsD01zw7k1zy3k", 1)
-FindText().PicLib("|<05>*100$29.s3y03U3s0203k0003U0007000sC3z1kQ7y3UsDw71kTsC3UzkQ71zUsC3z1kQ7y3UsDw71kEMC3U0EQ7000sC001kS003Uzy071zw0C3zs0Q7zk0sDzU1kTz03Uzy071zw0C3Us0Q71k0sC3U1kQ703UsC071kQ003U000700E0T01k1z07", 1)
 FindText().PicLib("|<拦截战·进入战斗的进>*200$43.xzzkTUzsTzsDkDs7zw7s7w1zy3w3z0Tz1y1zk7zUz0zw1zkTUTz0M0000Tkw0000Dwy00007zz00003zzU0001zzzUDUTzzzsDkDzzzw7s7zzzy3w3w0Dz1y1y03zUz0z01zkDUTU0s0000E0M00007UA00003s600001w300000y1k0000T0zkTkDzUTkDs7zkDs7w3zs7s7y1zw3w3z0zy1w3zUTz0w1zkDzUS1zs7zUDUzw3zU3szy1zU0zzzzzU03zzzzU003zy00D000000Dk00000Dy000017zk0001rzzk001k", 1)
 FindText().PicLib("|<拦截战·快速战斗的图标>*200$50.00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzw03y01zzy01z00zzz00zU0TzzU0Tk0Dzzk0Ds07zzs07w03zzw03y01zzy01z00zzz00zU0TzzU0Tk0Dzzk0Ds07zzs07w03zzw03y01zzy01z00zzz00zU0TzzU0Tk0Dzzk0Ds07zzs07w03zzw03y01zzzU", 1)
 ;tag 前哨基地
@@ -2968,6 +2963,7 @@ InterceptionAnomaly() {
     }
     AddLog("已进入异常拦截界面")
     loop 5 {
+        t := A_Index
         switch g_numeric_settings["InterceptionBoss"] {
             case 1:
                 if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.438 * NikkeW . " ", NikkeY + 0.723 * NikkeH . " ", NikkeX + 0.438 * NikkeW + 0.119 * NikkeW . " ", NikkeY + 0.723 * NikkeH + 0.061 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("克拉肯的克"), , , , , , , TrueRatio, TrueRatio)) {
@@ -3002,45 +2998,33 @@ InterceptionAnomaly() {
         if (ok := FindText(&X, &Y, NikkeX + 0.584 * NikkeW . " ", NikkeY + 0.730 * NikkeH . " ", NikkeX + 0.584 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.730 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("异常拦截·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X + 10 * TrueRatio, Y, "L")
         }
-        Sleep 1000
+        Sleep 500
     }
     FindText().Click(X, Y + 100 * TrueRatio, "L")
-    Sleep 1000
-    switch g_numeric_settings["InterceptionBoss"] {
-        case 1:
-            if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("01"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-            }
-        case 2:
-            if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("02"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-            }
-        case 3:
-            if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("03"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-            }
-        case 4:
-            if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("04"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-            }
-        case 5:
-            if (ok := FindText(&X, &Y, NikkeX + 0.472 * NikkeW . " ", NikkeY + 0.648 * NikkeH . " ", NikkeX + 0.472 * NikkeW + 0.179 * NikkeW . " ", NikkeY + 0.648 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("05"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-            }
-        default:
-            MsgBox "BOSS选择错误！"
-            Pause
+    if t > 1 {
+        Sleep 2000
+        switch g_numeric_settings["InterceptionBoss"] {
+            case 1:
+                UserClick(1858, 1470, TrueRatio)
+            case 2:
+                UserClick(2014, 1476, TrueRatio)
+            case 3:
+                UserClick(2140, 1482, TrueRatio)
+            case 4:
+                UserClick(2276, 1446, TrueRatio)
+            case 5:
+                UserClick(2414, 1474, TrueRatio)
+            default:
+                MsgBox "BOSS选择错误！"
+                Pause
+        }
+        AddLog("已切换到对应队伍")
     }
-    AddLog("已切换到对应队伍")
     Sleep 1000
     while True {
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已激活快速战斗")
+            Sleep 500
             FindText().Click(X + 50 * TrueRatio, Y, "L")
         }
         else if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.879 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.879 * NikkeH + 0.102 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {

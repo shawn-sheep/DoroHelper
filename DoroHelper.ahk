@@ -331,8 +331,9 @@ FindText().PicLib("|<特殊活动·签到>*200$58.vzxzzzzzzzVzkzzzzzwA7y3zs00Tkk
 FindText().PicLib("|<特殊活动·全部领取的全部>*200$70.zzzzzzzwzzzzzzVzzzz3zzzzzy1zzzw7y03zzk7zzzkTs03zy0Dzz001U0Dzk0Tzw00600zw00zzk00M03zU41zz001UkTw0s1zw00671z07k1zwDUsQ7k1zU3zkQ3Vkw0DzU1z1kS6301zz03w71sMC00000DkM7VVw00001s00207k00007U0080Tw0006y000UUzs000zs00271zzsDzzk00MQ7zzUzzzzzzVsTzy3zzzzzy7Uzk003zk00MS3y000Dz001VsDs000zw0067UzU003zk00MC3z000Dz0y1U0Dzy3zzw7w601zzsDzzkTkM07zzUzzz0y1VUy00001w0066Dk00007k00MTz00000T001Vzw00001w0067zs00007kTUMTzzzzzzzXzzzzs", 1)
 FindText().PicLib("|<特殊活动·挑战>*180$68.000000003s0000000007zw0000000TXzzU000000zwzzw000Tz0Dz67TUTxzzk3XllXk7zTzy0sTwMS1zrz7yC7z73USTklznVzkts77yADws8QDz1kzX3DC073nkwDskVnU1k0Qz3mA8Qs1w07DkU107j3s01nU00E3llz0Dws0U40wQDk7T60A1UTz3zVllk7UMTzkzwMQTXy67zs0T2D7szlVzk03k3ly1wM7w00w0wTUT60T00DUT7s3VU3kz3s7xs1kM0QDky3zQ1k667XwDUrr0M1lnszXsARs60QTyDkw17Dlk77zVsC01nwTVkts0100Qz3sQCC000kD7kw733U04S3lwD3k0sTVjtwz3Uw0S7zzzy7kUTU7zzzzz1kADw7zzzky0Q7rzzzzTk007Xzzzzz00001zzyTz000000Dzz000000003zU000000008", 1)
 FindText().PicLib("|<特殊活动·STORY1>*200$104.z0Tzzzzzzzzzzzzzzz01yzzzzzzzzzzzzzzU0DU1zzzzzzzzzzzzs01s00Dzzzzzzzzzzw3ky003zkzzzzzzzzz1zTw00zk0zzzzzzzzkTzzs4Ds03zXzzzzzw7zzy3zw00Ts0Tzzzz0TzzVzy0s7y01z7zzs1zzsTz0z0zU07kTzz07zw7zkTsDk80y7y3s0zz1zs7y1w7kDUz1zU7zkTy3zkT1z1sDkTw0zw7zUzw7kTkT3sDzkDz1zsDz1w7w7ky3zy3zkTy7zkT1z1w71zzkzw7zVzw7kTUzVkyDsDz1zsTz1w7UDsMD0w3zkzy3zkz007z67k00zsDzUzsDU03zk3y00Ty3zsDy3s01zw0zs0DzUzy1z0y3Uzz0TzkDzsDzkDUTUw7zs7zzzzy3zy007sD1zy3zzzzzkzzk03y3sTzUzzzzzzzzy01zVy3zsDzzzzzzzzk1zsTUzy3zzzzzzzzzzzy7w7zVzzzzzzzzzzzzVz1zsTzzzzzzzzzzzzzsDy7zzzzzzzzzzzzzzzz1zzzzzzzzzzzzzzzzwTy", 1)
-FindText().PicLib("|<特殊活动·时间>*200$62.zzzyDzzzzzzzzzXzXzzzzzzzszsQ00001zyDz300080TzXzszzy2D7zsTyTzzkXlU00zzzzw0wM00Dzzzz0D6003lzzzk3lzy7wS00w8wTzXz7U0D2D7zszlsT3kU1xyDwSDsw00QTXz7XyD0D73szlszXkXlsSDwS7kw8wT7Xz7U0D2D7kszls03kXly6DwSDsw0wTbXz7XyD2D7zszlszXkU1zyDwSDsw00TzXz7U0D007zszls03k3zzyDwTzzw0zzzXz7zzz3zzs0zlzzzkzzy0DwTzzUDzzU7z7zzw7zzzzzlzzz7U", 1)
-FindText().PicLib("|<特殊活动·EVENT>*200$43.3zzzzzzUTzzzzzk3zzzzzs0zzzzzw0Dzzzzy07zzzzzs1zzzzzy0zzzzzzUDzzzzzs7zzzzzw3zzzzzy1zzzzzz0zzzzzzUTzzzzzkDzzzzzs7zzzzzw3w0001y1y0000z0z0000TUTU000DkDk0007s7s0003w3zzzzzy1zzzzzz0zzzzzzUTzzzzzkDzzzzzs7zzzzzw3zzzzzy1zzzzzz0zzzzzzUTzzzzzkDzzzzzs7zzzzzw3zzzzzy1zzzzzz0zzzzzk", 1)
+FindText().PicLib("|<特殊活动·STORY2>*200$102.w0zU00zw0zy03z1zUs0DU00zk0Dy00zVzVk07U00zU07y00DUz1U0DU00z003y00Dkz30yTzUzy1w3y7s7kz31zzzUzy3y1y7w7kS71zzzUzw7z1y7y7sS70zzzUzw7zVy7y7sSDUDzzUzw7zVy7w7wADU3zzUzwDzUy7w7wADk0zzUzwDzUy3kDy0Ts0DzUzwDzUy00Dy0Ty07zUzwDzUy00Tz0zzU7zUzw7zUy00zz0zzs7zUzw7zVy30zzVzzy3zUzw7z1y7UzzVzzy3zUzy3z1y7kTzVzby7zUzy1y3y7kTzVzVs7zUzz0s3y7sDzVz007zUzz007y7sDzVz00DzUzzU0Dy7w7zVzk0TzUzzk0Ty7y3zVzw3zzlzzy1zy7y3zVzU", 1)
+FindText().PicLib("|<特殊活动·时间>*150$55.zzzkznzzzzzzsTUk0000TwDkM0000Dy7w400007y3z00000200DVzzU3U007nzzs1k0031zzw0s001Uk0C0QDw7kM03007z3sA01U027Vw67Uk011ky33kM00UsT1U0A0sMADUk060QA27kM030C713sA01U73k1w67Uk01sky33kM00zsT1U0A00TwDUk0600Dy7kM070Dzy3sDzzU7zk1w7zz0bzs0y3zz0Tzw0z1zzUDzy0zUzzsDzzzzszzzy", 1)
+FindText().PicLib("|<特殊活动·EVENT>*200$93.zzzzzzzzzzzzzzszzzzzzzzzzzzzzy7zzzzzzzzzzzzzzkzzzzzzzzzzzzzzxbzzzzzzzzzzzzzzdzzzzzzzzzzzzzzvbzzzzzzzzzzzzzsQDzzzzzzzzzzzzz33zsDzzyzy3zzszynzw0z1zXz0Dss3zqzy03sDsTk0z00DybzU2T3z3w0nk09zhzs7/sTsz1kS1vDxjz1uT3y7kT3kTTzDzkTHkzlw7qw7vTtTy7sS7wDVy7VyHz3zUy7kzXsDVwDqzkTwDUy7sT1wD3yry7zVsDkz7sD3sTZzUzt03w7oy00y3xDsDw00z1wDk0Dkz3y1z87zkDfw1zw7sTkDt3zw1vT0zzVz3w3yMTz0C807zsDkz0Tb3zk100kzy1y7k3ssTwNUkS7zUTky0SD1z7ADzkTk3y7a3Xs71sXzz0s0Tk1kMzU0T2zzs067y0T0Dy0DsTzzU3kzs7s3zU", 1)
 FindText().PicLib("|<特殊活动·任务>*200$55.zzzzzzrzzzXzwTzkTzzUz07zkTzzk003zk00DkE0Tzk003sM0TzkDs3sDwDzUDy3wDy7zk3y3w7z3zxkQ7w3zVzzw03w1zkzzy01y0zsTy0000UM00703s0EA003kzzwT6001zz7zzXzUzzzVzzlzkzz0003szsTzU001wTwDzk001yDy7zzkTkz7z3zzsTsTXzVzzsDwDlzkzzsDy7ss00DUDy7wQ0070T03yC007kzk3z7zzzxzsTw", 1)
 FindText().PicLib("|<特殊活动·灰色的全部>BBBBBB-0.90$70.00200003000000S0001w000003w0007k1zw00Tk000DU7zs03zU01zzyTzk0TzU07zztzy03zz00TzzbXs0Tly00zzySDU7y7y00wDVsw0zUDw03ky7XkDw0Dw0D3sST3zU0Tw0yD1tszw00zw3tw7bVzzzzzUDbkSy3zzzzw7zztvk4zzzwkTzzbjU3zzzk1zzyST003w007zztsw007k000007Xs00T000000S7U03w000001sS0Tzzs0Dzz7Vs1zzzk0zzwS7U7zzz03zzlsS0Tzzs0Dzz7Xs00z000w1wSzU01w003k7lvy007k00D0T7jk00z000y1wSQ3zzzzw3zzls0DzzzzkDzz7U0zzzzz0zzwS03zzzzw3s7ls0000000D0D1U2", 1)
 FindText().PicLib("|<特殊活动·小游戏>*150$97.0000000000003zz00000000000003zzk0000000000001zxw00000001tzU01sQS00000007zzkDzwA7000000Dzzzvzzy61s00000DznsTzzz3Uw00Ds0DzUwDz03Usy00zw0DbkS2601kS7U0Tz03UQD0300sA1k0C3U1UC001U0Q00s071k0s0000zw400Q01Us0T8007zy001y00kRyDy00Tz720CT00QDzbz0sCD1VUD70Dy3zvzsS01U0w71UTz1szvwDk0s0T3VkDzUsDsC4A0y0TVUs71kQ3s7060zUDk0w7UsD1w3U3kTs7s0S3kQ7UTXk1sTy3y0TlkS3sDzs0w1z0z0DssD1w3zw880T0DUAwQ7Uz1zy600DU3sC6C3sTUTj3007U0s33D1w7sDlVU0TkEs01r1y3w3sEkwDkQE01zUz1z1s8MS7kDE00zkTUvUw8QD3sDs40RkDkRky4CDVyDz7USsDsCRz267kzbzzwTD7A7Dz0330TzXzzz7zy3bzU01kCzkTzz3zz1k1k1UsDA001w0Ty0s0sMkyzU000000s0Q0TDzzzU000000C0C0Dzzzz000000070D03zzw000000003kzU00U0000000000zzU0000000000000Tz000000000000007s0000000000000U", 1)
@@ -3391,7 +3392,7 @@ EventSpecial() {
     ;tag 剧情活动
     if g_settings["EventSpecialStory"] {
         AddLog("===刷11关===")
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.380 * NikkeW . " ", NikkeY + 0.732 * NikkeH . " ", NikkeX + 0.380 * NikkeW + 0.046 * NikkeW . " ", NikkeY + 0.732 * NikkeH + 0.044 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·STORY1"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.371 * NikkeW . " ", NikkeY + 0.779 * NikkeH . " ", NikkeX + 0.371 * NikkeW + 0.054 * NikkeW . " ", NikkeY + 0.779 * NikkeH + 0.038 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·STORY2"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试进入对应活动页")
             FindText().Click(X - 50 * TrueRatio, Y, "L")
             Sleep 500
@@ -3403,8 +3404,8 @@ EventSpecial() {
         }
         else MsgBox("进入剧情活动超时")
         Confirm
-        while (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.454 * NikkeW . " ", NikkeY + 0.748 * NikkeH . " ", NikkeX + 0.454 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.748 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·时间"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
+        while (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.452 * NikkeW . " ", NikkeY + 0.784 * NikkeH . " ", NikkeX + 0.452 * NikkeW + 0.034 * NikkeW . " ", NikkeY + 0.784 * NikkeH + 0.026 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·时间"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y - 50 * TrueRatio, "L")
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.054 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("进入活动关卡页面")
                 Sleep 500
@@ -3414,7 +3415,7 @@ EventSpecial() {
         ; 到了第三阶段会自动卡死，不用提示
         AddLog("===通用模式===")
         Sleep 1000
-        if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.478 * NikkeW . " ", NikkeY + 0.190 * NikkeH . " ", NikkeX + 0.478 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.190 * NikkeH + 0.704 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("特殊活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
+        if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.382 * NikkeW . " ", NikkeY + 0.342 * NikkeH . " ", NikkeX + 0.382 * NikkeW + 0.244 * NikkeW . " ", NikkeY + 0.342 * NikkeH + 0.519 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("特殊活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")

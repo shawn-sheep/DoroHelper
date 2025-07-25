@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.6"
+currentVersion := "v1.4.7"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -3008,14 +3008,19 @@ InterceptionAnomaly() {
         switch g_numeric_settings["InterceptionBoss"] {
             case 1:
                 UserClick(1858, 1470, TrueRatio)
+                AddLog("选中队伍1")
             case 2:
                 UserClick(2014, 1476, TrueRatio)
+                AddLog("选中队伍2")
             case 3:
                 UserClick(2140, 1482, TrueRatio)
+                AddLog("选中队伍3")
             case 4:
                 UserClick(2276, 1446, TrueRatio)
+                AddLog("选中队伍4")
             case 5:
                 UserClick(2414, 1474, TrueRatio)
+                AddLog("选中队伍5")
             default:
                 MsgBox "BOSS选择错误！"
                 Pause
@@ -4078,7 +4083,7 @@ AwardSoloRaid(stage7 := True) {
             return
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.413 * NikkeW . " ", NikkeY + 0.800 * NikkeH . " ", NikkeX + 0.413 * NikkeW + 0.176 * NikkeW . " ", NikkeY + 0.800 * NikkeH + 0.085 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("单人突击·挑战"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("尝试普通战斗")
+            AddLog("快速战斗未激活，尝试普通战斗")
             FindText().Click(X, Y, "L")
             Sleep 1000
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
@@ -4237,6 +4242,13 @@ StoryMode(*) {
             Sleep 500
             FindText().Click(X, Y, "L")
             Sleep 3000
+        }
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.785 * NikkeW . " ", NikkeY + 0.004 * NikkeH . " ", NikkeX + 0.785 * NikkeW + 0.213 * NikkeW . " ", NikkeY + 0.004 * NikkeH + 0.071 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的AUTO"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击AUTO")
+            Send "{LShift Down}"
+            Sleep 500
+            Send "{LShift Up}"
+            Click NikkeX + NikkeW, NikkeY, 0
         }
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"

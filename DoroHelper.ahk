@@ -3500,7 +3500,6 @@ EventSpecial() {
         while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
-            Sleep 1000
         }
         else AddLog("已返回活动主页面")
     }

@@ -3028,6 +3028,7 @@ InterceptionAnomaly() {
             AddLog("已激活快速战斗")
             Sleep 500
             FindText().Click(X + 50 * TrueRatio, Y, "L")
+            Sleep 500
         }
         else if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.879 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.879 * NikkeH + 0.102 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("未激活快速战斗，尝试普通战斗")

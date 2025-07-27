@@ -1716,11 +1716,14 @@ ShowSetting(pageName) {
 }
 ;endregion GUI辅助函数
 ;region 消息辅助函数
-;tag 检查活动是否结束
+;tag 活动结束提醒
 CheckEvent(*) {
     MyFileShortHash := SubStr(A_Now, 1, 8)
-    if MyFileShortHash = "20250731" {
-        MsgBox "尼尔联动活动将在今天结束，请尽快完成活动！"
+    if MyFileShortHash = "20250730" {
+        MsgBox "尼尔联动活动将在今天结束，请尽快完成活动！捡垃圾、搬空商店、抽完活动招募券！"
+    }
+    if MyFileShortHash = "20250730" {
+        MsgBox "单人突击将在今天结束，请没凹的尽快凹分！"
     }
     if MyFileShortHash = "20250806" {
         MsgBox "夏活将在今天结束，请尽快完成活动！"

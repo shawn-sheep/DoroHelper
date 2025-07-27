@@ -2774,6 +2774,7 @@ ArenaRookie() {
     }
     while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
+        Sleep 1000
     }
     AddLog("已返回竞技场页面")
     AddLog("===新人竞技场任务结束===")
@@ -2826,6 +2827,7 @@ ArenaSpecial() {
     }
     while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         GoBack
+        Sleep 1000
     }
     AddLog("已返回竞技场页面")
     AddLog("===特殊竞技场任务结束===")

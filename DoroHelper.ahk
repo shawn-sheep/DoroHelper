@@ -3565,9 +3565,11 @@ AwardOutpost() {
     BackToHall
     AddLog("===前哨基地收菜任务开始===")
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击进入前哨基地")
-        FindText().Click(X, Y, "L")
-        Sleep 1000
+        while (ok := FindText(&X, &Y, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击进入前哨基地")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+        }
     }
     else {
         AddLog("未找到前哨基地！")

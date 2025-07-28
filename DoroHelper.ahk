@@ -3155,13 +3155,12 @@ EventSmall() {
 ;region 大活动
 EventLarge() {
     BackToHall
-    while true {
+    while (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         if (ok := FindText(&X, &Y, NikkeX + 0.633 * NikkeW . " ", NikkeY + 0.788 * NikkeH . " ", NikkeX + 0.633 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.788 * NikkeH + 0.105 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("尼尔活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到大活动")
             UserClick(2782, 1816, TrueRatio)
             Sleep 1000
             Confirm
-            break
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.751 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.751 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.037 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动·切换的图标"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y - 100 * TrueRatio, "L")
@@ -3371,13 +3370,12 @@ EventLarge() {
 ;region 特殊活动
 EventSpecial() {
     BackToHall
-    while true {
+    while (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.633 * NikkeW . " ", NikkeY + 0.788 * NikkeH . " ", NikkeX + 0.633 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.788 * NikkeH + 0.105 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("尼尔活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到特殊活动")
             UserClick(2782, 1816, TrueRatio)
             Sleep 1000
             Confirm
-            break
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.751 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.751 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.037 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动·切换的图标"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y - 100 * TrueRatio, "L")

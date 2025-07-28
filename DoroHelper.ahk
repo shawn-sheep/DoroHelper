@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.8"
+currentVersion := "v1.4.9"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -765,6 +765,7 @@ ClickOnDoro(*) {
         if g_settings["EventLarge"]
             EventLarge()
         if g_settings["EventSpecial"]
+            ;即使有会员功能，代码依旧是开源的，如果您没有能力支付会员费用而依然想使用会员功能，可以删除以下类似的代码，但恳请不要传播
             if UserGroup = "普通用户" {
                 MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
                 Pause
@@ -1731,7 +1732,7 @@ CheckEvent(*) {
 }
 ;tag 支持
 MsgSponsor(*) {
-    Run("https://p.sda1.dev/25/bdb72ec267450c7a0dbddbc880970d0f/Beg.jpg")
+    Run("https://gitee.com/con_sul/DoroHelper#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
 }
 ;tag 帮助
 ClickOnHelp(*) {

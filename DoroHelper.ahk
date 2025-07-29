@@ -948,48 +948,48 @@ Initialization() {
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
-            AddLog("标准4K分辨率 (2160p)")
+            AddLog("显示器是标准4K分辨率 (2160p)")
         } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
-            AddLog("4K 加宽 (21:9 超宽屏)")
+            AddLog("显示器是4K 加宽 (21:9 超宽屏)")
         } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 2400) {
-            AddLog("4K 增高 (16:10 宽屏)")
+            AddLog("显示器是4K 增高 (16:10 宽屏)")
         } else {
-            AddLog("4K 及其它变种分辨率")
+            AddLog("显示器是4K 及其它变种分辨率")
         }
     }
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
-            AddLog("标准2K分辨率 (1440p)")
+            AddLog("显示器是标准2K分辨率 (1440p)")
         } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
-            AddLog("2K 加宽 (21:9 超宽屏)")
+            AddLog("显示器是2K 加宽 (21:9 超宽屏)")
         } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 1440) {
-            AddLog("2K 超宽 (32:9 超级带鱼屏)")
+            AddLog("显示器是2K 超宽 (32:9 超级带鱼屏)")
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1600) {
-            AddLog("2K 增高 (16:10 宽屏)")
+            AddLog("显示器是2K 增高 (16:10 宽屏)")
         } else {
-            AddLog("2K 及其它变种分辨率")
+            AddLog("显示器是2K 及其它变种分辨率")
         }
     }
     ; 尝试归类为1080p 及其变种
     else if (A_ScreenWidth >= 1920 and A_ScreenHeight >= 1080) {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
-            AddLog("标准1080p分辨率")
+            AddLog("显示器是标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
                 MsgBox("尺寸过小，可能出现识图误判，但仍可以运行")
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
-            AddLog("1080p 加宽 (21:9 超宽屏)")
+            AddLog("显示器是1080p 加宽 (21:9 超宽屏)")
         } else if (A_ScreenWidth = 3840 and A_ScreenHeight = 1080) {
-            AddLog("1080p 超宽 (32:9 超级带鱼屏)")
+            AddLog("显示器是1080p 超宽 (32:9 超级带鱼屏)")
         } else if (A_ScreenWidth = 1920 and A_ScreenHeight = 1200) {
-            AddLog("1080p 增高 (16:10 宽屏)")
+            AddLog("显示器是1080p 增高 (16:10 宽屏)")
         } else {
-            AddLog("1080p 及其它变种分辨率")
+            AddLog("显示器是1080p 及其它变种分辨率")
         }
     }
     else {
-        AddLog("不足1080p分辨率")
+        AddLog("显示器不足1080p分辨率")
     }
 }
 ;endregion 初始化
@@ -1666,7 +1666,7 @@ CheckUserGroup() {
     jsonContent := DownloadUrlContent(jsonUrl)
     ; 如果下载失败或内容为空，则停止执行或使用默认值
     if (jsonContent = "") {
-        AddLog("无法获取用户组信息，使用默认设置或退出。")
+        AddLog("无法获取用户组信息，请检查网络后尝试重启程序。")
         ; 您可以选择在这里设置一个默认用户组，或者直接退出函数
         try TextUserGroup.Value := "普通用户"
         UserGroup := "普通用户"
@@ -3771,7 +3771,7 @@ AwardLoveTalking() {
                 }
             }
             else if (ok := FindText(&X, &Y, NikkeX + 0.501 * NikkeW . " ", NikkeY + 0.726 * NikkeH . " ", NikkeX + 0.501 * NikkeW + 0.130 * NikkeW . " ", NikkeY + 0.726 * NikkeH + 0.059 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速咨询的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("图鉴已满，尝试快速咨询")
+                AddLog("尝试快速咨询")
                 FindText().Click(X, Y, "L")
                 Sleep 1000
                 Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"

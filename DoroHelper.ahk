@@ -94,6 +94,8 @@ global g_settings := Map(
     "StoryModeAutoStar", 0,      ;剧情模式自动收藏
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;其他
+    "CloseNoticeHelp", 0,        ;关闭启动提示
+    "CloseNoticeSponsor", 0,     ;关闭赞助提示
     "AutoCheckUpdate", 0,        ;自动检查更新
     "AutoCheckUserGroup", 0,     ;自动检查会员组
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
@@ -441,8 +443,10 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 ;tag 任务列表
 global g_taskListCheckboxes := []
 doroGui.AddGroupBox("x10 y230 w250 h315 ", "任务列表")
+doroGui.SetFont('s12')
+BtnSaveSettings := doroGui.Add("Button", "xp+100 yp w60 h30", "保存").OnEvent("Click", SaveSettings)
 doroGui.SetFont('s9')
-BtnCheckAll := doroGui.Add("Button", "xp+160 R1", "☑️").OnEvent("Click", CheckAllTasks)
+BtnCheckAll := doroGui.Add("Button", "xp+70 R1", "☑️").OnEvent("Click", CheckAllTasks)
 doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
 BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks)
 doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
@@ -473,20 +477,16 @@ doroGui.Tips.SetTip(cbEvent, "总开关：控制是否执行大小活动的刷�
 BtnEvent := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
 ;tag 启动设置
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x10 yp+40 w250 h150 ", "启动选项")
+doroGui.AddGroupBox("x10 yp+40 w250 h100 ", "启动选项")
 BtnReload := doroGui.Add("Button", "x110 yp-2 w60 h30", "重启").OnEvent("Click", SaveAndRestart)
 doroGui.Tips.SetTip(BtnReload, "保存设置并重启 DoroHelper")
-BtnSaveSettings := doroGui.Add("Button", "x180 yp w60 h30", "保存").OnEvent("Click", SaveSettings)
-cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "x20 yp+30 Section")
-doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
-cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "xs")
-doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
-cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[会员专享]", "xs")
-doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
-BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+30", "DORO!").OnEvent("Click", ClickOnDoro)
+doroGui.SetFont('s14')
+BtnArena := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Settings"))
+doroGui.SetFont('s12')
+BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+50", "DORO!").OnEvent("Click", ClickOnDoro)
 ;tag 二级设置
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x280 y10 w300 h680 ", "任务设置")
+doroGui.AddGroupBox("x280 y10 w300 h640 ", "任务设置")
 ;tag 二级默认
 SetDefault := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "请到左侧「任务列表」处`n对每个任务进行详细设置`n鼠标悬停以查看对应详细信息")
 ;tag 二级登录
@@ -615,9 +615,19 @@ SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate",
 SetEventSpecialMinigame := AddCheckboxSetting(doroGui, "EventSpecialMinigame", "特殊活动小游戏", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认不使用技能，开启蓝色药丸后使用技能")
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")
+;tag 二级设置
+SetSettingsTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====设置选项====")
+cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "R1")
+doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
+cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
+doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
+cbCloseNoticeHelp := AddCheckboxSetting(doroGui, "CloseNoticeHelp", "移除启动提示[会员专享]", "R1")
+cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[会员专享]", "R1")
+cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[会员专享]", "R1")
+doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
 ;tag 妙妙工具
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x600 y10 w350 h300 Section", "妙妙工具")
+doroGui.AddGroupBox("x600 y10 w350 h240 Section", "妙妙工具")
 MiaoInfo := doroGui.Add("Text", "xp+70 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(MiaoInfo, "提供一些与日常任务流程无关的额外小功能")
 TextStoryModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "剧情模式")
@@ -636,7 +646,7 @@ BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
-doroGui.AddGroupBox("x600 y320 w350 h370 Section", "日志")
+doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
 LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h320 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 ;tag 二级控制
@@ -663,7 +673,8 @@ g_settingPages := Map(
         SetAwardDaily, SetAwardPass,
         SetLimitedAwardTitle, SetAwardFreeRecruit, SetAwardCooperate, SetAwardSoloRaid,
         SetAwardRoadToVillain
-    ]
+    ],
+    "Settings", [SetSettingsTitle, cbOpenBlablalink, cbSelfClosing, cbCheckEvent, cbCloseNoticeHelp, cbCloseNoticeSponsor],
 )
 HideAllSettings()
 ShowSetting("Default")
@@ -681,9 +692,8 @@ if (scriptExtension = "ahk") {
     AddLog("当前ahk文件的短哈希值是：" MyFileShortHash)
 }
 doroGui.Show()
-if !g_settings["AutoCheckUserGroup"] or UserGroup = "普通用户"
-    if A_Username != "12042"
-        ClickOnHelp
+if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
+    ClickOnHelp
 ;endregion 创建GUI
 ;region 点击运行
 ClickOnDoro(*) {
@@ -783,16 +793,16 @@ ClickOnDoro(*) {
         CheckEvent()
     }
     CalculateAndShowSpan()
-    if UserGroup = "普通用户" {
+    if UserGroup = "普通用户" or !g_settings["CloseNoticeSponsor"] {
         Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
         if Result = "Yes"
             MsgSponsor
     }
-    if UserGroup = "金Doro会员" {
+    if UserGroup = "金Doro会员" and g_settings["CloseNoticeSponsor"] {
         try TraySetIcon "icon\GoldDoro.ico"
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
     }
-    if UserGroup = "管理员" {
+    if UserGroup = "管理员" and g_settings["CloseNoticeSponsor"] {
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的辛苦付出～")
     }
     if g_settings["OpenBlablalink"]

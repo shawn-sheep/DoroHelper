@@ -147,8 +147,7 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
 
 <table>
   <tr>
-<img alt="支付宝收款码" src="./img/alipay.png" width="200" height="200" />
-<img alt="微信收款码" src="./img/weixin.png" width="200" height="200" />
+<img alt="支付宝收款码" src="./img/alipay.png" width="200" height="200" /><img alt="微信收款码" src="./img/weixin.png" width="200" height="200" />
   </tr>
 </table>
 

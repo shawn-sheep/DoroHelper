@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.9"
+currentVersion := "v1.4.10"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -1732,7 +1732,7 @@ CheckEvent(*) {
 }
 ;tag 支持
 MsgSponsor(*) {
-    Run("https://gitee.com/con_sul/DoroHelper#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1")
+    Run("https://p.sda1.dev/26/f275a8b6533d6c688de6d49ce6c3f9d0/Sponsor.png")
 }
 ;tag 帮助
 ClickOnHelp(*) {

@@ -228,6 +228,7 @@ FindText().PicLib("|<开始模拟>*200$185.zzzzzzzzzzzzzzzzwzzzzrzzzzzzzzzzzzzzz
 FindText().PicLib("|<连结等级>*150$86.0300M1U1UA020070s070Q0w7U1lzltzy1kD0DzzkMzwCzzkszz7zzwCDz1bzsCDzniQs30tU0tU7CD0NbC1rCs0Cs3r1k1zzkxniDbzszkw0zzwDsnvtzyDtzw7zz3wAzyTzUwTy03k0D3XXUC0C003zzz3VsMs3k7w00zzzlzTCCzznzTy0070zbn3jzwzrzVzzyDlzks3k41ksTzzn0tsC0s00QC7zzs3yS7k607r3UD1k3zbnzXXDxzs1sQ3znytzznyTy0Cz0wzvwDzwk7zU0DU06MQ0C000kM01k0000U", 1)
 FindText().PicLib("|<对象>*150$40.zzszszzzzXz0DzzyDs0T07sz00w0D3k07k002000z00A003s00sMA8VwDk0006sz0020VXw00Q24D01ksA0w003UE3s00y0aD0E3k3sw0060DXs040NkD08E3z0w01UTw3tkD/zkzz1zU", 1)
 FindText().PicLib("|<不选择的图标>*140$58.000000008030000001k0S000000DU3w000001z0Ts00000Dy3zk00001zwTzU0000Dzvzz00001zzbzz0000DzwDzw0001zzUTzs000Dzw0zzs001zzU1zzk00Dzw03zzU01zzU07zz00Dzw00Dzy01zzU00Tzw0Dzw000zzs1zzU000zzkDzw0003zzVzzU0003zzDzw00007zzzzU0000Dzzzw00000TzzzU00000zzzw000001zzzU000003zzw0000007zzU000000Dzw0000001zzU000000Dzw0000001zzU000000Dzw0000001zzU600000Dzw0w00001zzU7s0000Dzw0zk0001zzU7zU000Dzw0zz0001zzU3zy000Dzw0Dzw001zzU0Tzs00Dzw00zzk01zzU01zzU0Dzw003zz01zzU007zy0Dzw000Dzw1zzU000TzsDzw0000zzlzzU0001zzjzw00003zzTzU00007zszw00000Dz1zU00000Ts3w000000z07U000001s0A00000030U", 1)
+FindText().PicLib("|<模拟室超频·获得>*150$51.yDszzbzzzky7zsM030001y73wM000DVszXy7kzsT00TtzDy7s03rDtjtX7wQFy8zwMzXkDl3z700S3yATks03UTlXwDzzs300D1k01C801kC00DVw0C1zwDwDkzmDzly1w7zlU01UDUzyA000Fw3zlU016D4DyD7lzlklzlsSDyCD7yDXlzV1sDlyCDUETVyDy1w77yDlzkTzzzzzDzDw", 1)
 ;tag 竞技场
 FindText().PicLib("|<SPECIAL>*120$61.Uw3k71swDbUC0M30QS7lk30A3U6D3sslX6DlX7UwQMlX7slXkSCAMlXwMlkD76QMlyAMs7XXyAMz7wQ3llz6ATXyC9sszX6Dlz74wQ1lX0szXaSD0M1UQTln77wA1lyDstXXz63sz7wMllzX7wTXyA0szlXyDlr60QQMlz7slX0CCAMzXwMlX776ATlyAMlnXX6Dsz6AMslk37w1U6AQM43Xy0s76SA2", 1)
 FindText().PicLib("|<竞技场>*150$96.zzVzzz3zsTzsTzzzzz0zzz3zsTzsS00TU0003z3zsTzsS00DU0003z3zsTzsS007U0003z3k00DsS00Dk0003z1k00DsS00TzVzVzk0000DsTy0zz1z1zk0000DkTw1z00001k0DE7y03k7z00001k0TsTy03UDz00001z1zsTy0200000001z3zsTy02000zzzzzz3s00TsS000w000Dz1s00DsT000w000Dz0M00DsTEE0w000Dy0M00DsTkkUw7zkDk0ADkTsTUkUwDzsDk0ADkTsTVVVw7zkDs0w7UzsT1VVw000Ds3y3UzsG31Vw000Dz3y31zs033Vw000Dz3z01zk063VzkQ7zz3zU3z00C71zkQDrz3zU7y03Q71zUwDlz3z07z0TsD1z0w7kz3w01z1zkT1s1w00y3U00D7zUS303w01s3U207zz0k307y01s3kDUDzz1k3UTz03s7kzsDzzXk7XzzzzwTvzzTzzzsTU", 1)
@@ -2607,7 +2608,7 @@ SimulationOverClock() {
         }
     }
     AddLog("===模拟室超频任务开始===")
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.095 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红框中的0"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.095 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红框中的0"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("模拟室超频未完成")
         UserClick(1918, 1637, TrueRatio) ; 点击模拟室超频按钮
         Sleep 1000
@@ -2632,10 +2633,11 @@ SimulationOverClock() {
     }
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.373 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.373 * NikkeW + 0.253 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.058 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("开始模拟"), , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
+        Sleep 3000
     }
     final := false
     while true {
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.448 * NikkeW . " ", NikkeY + 0.698 * NikkeH . " ", NikkeX + 0.448 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.698 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("连结等级"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.365 * NikkeW . " ", NikkeY + 0.552 * NikkeH . " ", NikkeX + 0.365 * NikkeW + 0.269 * NikkeW . " ", NikkeY + 0.552 * NikkeH + 0.239 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("模拟室超频·获得"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
         }
         if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.485 * NikkeW . " ", NikkeY + 0.681 * NikkeH . " ", NikkeX + 0.485 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.681 * NikkeH + 0.048 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio * 1.25, TrueRatio * 1.25)) {
@@ -2650,7 +2652,7 @@ SimulationOverClock() {
         }
         AddLog("模拟室超频第" A_Index "关已通关！")
         while true {
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.371 * NikkeW . " ", NikkeY + 0.323 * NikkeH . " ", NikkeX + 0.371 * NikkeW + 0.257 * NikkeW . " ", NikkeY + 0.323 * NikkeH + 0.467 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("对象"), , , , , , 3, TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.371 * NikkeW . " ", NikkeY + 0.323 * NikkeH . " ", NikkeX + 0.371 * NikkeW + 0.257 * NikkeW . " ", NikkeY + 0.323 * NikkeH + 0.467 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("对象"), , , , , , 3, TrueRatio, TrueRatio)) {
                 AddLog("获取增益")
                 Sleep 1000
                 FindText().Click(X, Y + 100 * TrueRatio, "L")
@@ -2660,10 +2662,7 @@ SimulationOverClock() {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
             }
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.363 * NikkeW . " ", NikkeY + 0.545 * NikkeH . " ", NikkeX + 0.363 * NikkeW + 0.277 * NikkeW . " ", NikkeY + 0.545 * NikkeH + 0.254 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("获得"), , 0, , , , , TrueRatio, TrueRatio)) {
-                break
-            }
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.485 * NikkeW . " ", NikkeY + 0.681 * NikkeH . " ", NikkeX + 0.485 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.681 * NikkeH + 0.048 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio * 1.25, TrueRatio * 1.25)) {
+            if A_Index > 1 {
                 break
             }
         }

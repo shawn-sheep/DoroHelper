@@ -3530,19 +3530,16 @@ EventSpecial() {
             UserClick(2364, 668, TrueRatio)
             Sleep 500
         }
-        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("尝试返回活动主页面")
-            GoBack
-            Sleep 1000
-        }
-        else AddLog("已返回活动主页面")
+        Sleep 2000
+        GoBack
+        Sleep 5000
     }
     ;tag 领取奖励
     if g_settings["EventSpecialDaily"] {
         AddLog("===领取奖励===")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.957 * NikkeW . " ", NikkeY + 0.162 * NikkeH . " ", NikkeX + 0.957 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.162 * NikkeH + 0.091 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·任务"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.957 * NikkeW . " ", NikkeY + 0.162 * NikkeH . " ", NikkeX + 0.957 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.162 * NikkeH + 0.091 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("特殊活动·任务"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
-            Sleep 1000
+            Sleep 2000
         }
         while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("特殊活动·灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
             UserClick(2412, 1905, TrueRatio)

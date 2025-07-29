@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.10"
+currentVersion := "v1.4.11"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -647,7 +647,7 @@ BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs
 doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
-LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h320 ReadOnly")
+LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h340 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 ;tag 二级控制
 g_settingPages := Map(

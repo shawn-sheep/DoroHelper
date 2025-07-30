@@ -3114,8 +3114,9 @@ EventSmall() {
             FindText().Click(X, Y - 100 * TrueRatio, "L")
             Sleep 3000
         }
-        if A_Index > 10 {
+        if A_Index > 1 {
             AddLog("未找到小活动，可能是活动已结束")
+            return
         }
     }
     AddLog("===小活动任务开始===")
@@ -3177,8 +3178,9 @@ EventLarge() {
             FindText().Click(X, Y - 100 * TrueRatio, "L")
             Sleep 3000
         }
-        if A_Index > 10 {
+        if A_Index > 1 {
             AddLog("未找到大活动，可能是活动已结束")
+            return
         }
     }
     AddLog("===大活动任务开始===")
@@ -3394,6 +3396,7 @@ EventSpecial() {
         }
         if A_Index > 10 {
             AddLog("未找到特殊活动，可能是活动已结束")
+            return
         }
     }
     AddLog("===特殊活动任务开始===")

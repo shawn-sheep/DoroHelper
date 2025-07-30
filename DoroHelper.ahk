@@ -2133,11 +2133,11 @@ BattleSettlement() {
             checkend := checkend + 1
             ;AddLog("TAB已命中，共" checkend "次")
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), 0, 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             ;AddLog("重播的图标已命中，共" checkend "次")
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), , , , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), 0, 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             ;AddLog("点击已命中，共" checkend "次")
         }

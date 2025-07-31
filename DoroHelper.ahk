@@ -2181,6 +2181,7 @@ BattleSettlement() {
     checkred := 0
     AddLog("等待战斗结算")
     while true {
+        Sleep 500
         if EventStory {
             ; 跳过剧情
             Send "{]}"
@@ -2193,25 +2194,28 @@ BattleSettlement() {
         if A_Index = 40 {
             CheckAuto
         }
+        ;需要连续三次命中代表战斗结束
+        if (checkend = 3) {
+            break
+        }
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            continue
             ;AddLog("TAB已命中，共" checkend "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), 0, 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            continue
             ;AddLog("重播的图标已命中，共" checkend "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), 0, 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            continue
             ;AddLog("点击已命中，共" checkend "次")
         }
         else {
             ;AddLog("均未命中，重新计数")
             checkend := 0
-        }
-        ;需要连续三次命中代表战斗结束
-        if (checkend = 3) {
-            break
         }
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) and RedCircle {
             checkred := checkred + 1

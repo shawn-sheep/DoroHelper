@@ -1967,6 +1967,7 @@ UserCheckColor(sX, sY, sC, k) {
 }
 ;tag 画面调整
 AdjustSize(TargetX, TargetY) {
+    Initialization()
     WinGetPos(&X, &Y, &Width, &Height, nikkeID)
     WinGetClientPos(&ClientX, &ClientY, &ClientWidth, &ClientHeight, nikkeID)
     ; 计算非工作区（标题栏和边框）的高度和宽度
@@ -4403,29 +4404,18 @@ QuickBurst(*) {
 }
 ;tag 初始化并调整窗口大小
 ^3:: {
-    Initialization()
     AdjustSize(1920, 1080)
 }
 ^4:: {
-    Initialization()
     AdjustSize(2331, 1311)
 }
 ^5:: {
-    Initialization()
     AdjustSize(2560, 1440)
 }
 ^6:: {
-    Initialization()
     AdjustSize(3580, 2014)
 }
 ^7:: {
-    Initialization()
-    AdjustSize(3840, 2160)
-}
-^9:: {
-    ;添加基本的依赖
-    Initialization()
-    ;下面写要调试的函数
     AdjustSize(3840, 2160)
 }
 ;tag 调试指定函数

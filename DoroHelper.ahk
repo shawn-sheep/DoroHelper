@@ -374,6 +374,7 @@ FindText().PicLib("|<爆裂·S>*200$21.zzzzzzzz0DzU0Ds00z007k00y3w7kTky3y7kTzy0T
 ;endregion 识图素材
 ;region 创建GUI
 ;tag 基础配置
+g_settingPages := Map("Default", [], "Login", [], "Shop", [], "SimulationRoom", [], "Arena", [], "Tower", [], "Interception", [], "Event", [], "Award", [], "Settings", [],)
 doroGui := Gui("+Resize", "DoroHelper - " currentVersion)
 doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
 doroGui.Tips.SetBkColor(0xFFFFFF)
@@ -487,144 +488,222 @@ BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+50", "DORO!").OnEvent("Click", Cl
 ;tag 二级设置
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x280 y10 w300 h640 ", "任务设置")
-;tag 二级默认
-SetDefault := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "请到左侧「任务列表」处`n对每个任务进行详细设置`n鼠标悬停以查看对应详细信息")
-;tag 二级登录
+;tag 二级登录Login
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====(暂无)")
-;tag 二级商店
+g_settingPages["Login"].Push(SetLogin)
+;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
+g_settingPages["Shop"].Push(SetShop)
 SetShopCashTitle := doroGui.Add("Text", "R1", "===付费商店===")
+g_settingPages["Shop"].Push(SetShopCashTitle)
 SetShopCash := AddCheckboxSetting(doroGui, "ShopCash", "购买付费商店免费珠宝", "R1 ")
+g_settingPages["Shop"].Push(SetShopCash)
 SetShopNormalTitle := doroGui.Add("Text", "R1", "===普通商店===")
+g_settingPages["Shop"].Push(SetShopNormalTitle)
 SetShopNormal := AddCheckboxSetting(doroGui, "ShopNormal", "总开关（自带白嫖免费商品）", "R1 ")
+g_settingPages["Shop"].Push(SetShopNormal)
 SetShopNormal_Dust := AddCheckboxSetting(doroGui, "ShopNormal_Dust", "用信用点买芯尘盒", "xp+15 yp+30 R1")
 doroGui.Tips.SetTip(SetShopNormal_Dust, "勾选后，在普通商店中如果出现可用信用点购买的芯尘盒，则自动购买")
+g_settingPages["Shop"].Push(SetShopNormal_Dust)
 SetShopNormal_Package := AddCheckboxSetting(doroGui, "ShopNormal_Package", "购买简介个性化礼包", "R1 ")
 doroGui.Tips.SetTip(SetShopNormal_Package, "勾选后，在普通商店中如果出现可用游戏内货币购买的简介个性化礼包，则自动购买")
+g_settingPages["Shop"].Push(SetShopNormal_Package)
 SetShopArenaTitle := doroGui.Add("Text", " R1 xs +0x0100", "===竞技场商店===")
 doroGui.Tips.SetTip(SetShopArenaTitle, "设置与游戏内竞技场商店（使用竞技场代币购买）相关选项")
+g_settingPages["Shop"].Push(SetShopArenaTitle)
 SetShopArena := AddCheckboxSetting(doroGui, "ShopArena", "总开关", "R1")
+g_settingPages["Shop"].Push(SetShopArena)
 SetShopArenaBookFire := AddCheckboxSetting(doroGui, "ShopArenaBookFire", "燃烧", "R1")
 doroGui.Tips.SetTip(SetShopArenaBookFire, "在竞技场商店中自动购买所有的燃烧代码手册")
+g_settingPages["Shop"].Push(SetShopArenaBookFire)
 SetShopArenaBookWater := AddCheckboxSetting(doroGui, "ShopArenaBookWater", "水冷", "R1 X+0.1")
 doroGui.Tips.SetTip(SetShopArenaBookWater, "在竞技场商店中自动购买所有的水冷代码手册")
+g_settingPages["Shop"].Push(SetShopArenaBookWater)
 SetShopArenaBookWind := AddCheckboxSetting(doroGui, "ShopArenaBookWind", "风压", "R1 X+0.1")
 doroGui.Tips.SetTip(SetShopArenaBookWind, "在竞技场商店中自动购买所有的风压代码手册")
+g_settingPages["Shop"].Push(SetShopArenaBookWind)
 SetShopArenaBookElec := AddCheckboxSetting(doroGui, "ShopArenaBookElec", "电击", "R1 X+0.1")
 doroGui.Tips.SetTip(SetShopArenaBookElec, "在竞技场商店中自动购买所有的电击代码手册")
+g_settingPages["Shop"].Push(SetShopArenaBookElec)
 SetShopArenaBookIron := AddCheckboxSetting(doroGui, "ShopArenaBookIron", "铁甲", "R1 X+0.1")
 doroGui.Tips.SetTip(SetShopArenaBookIron, "在竞技场商店中自动购买所有的铁甲代码手册")
+g_settingPages["Shop"].Push(SetShopArenaBookIron)
 SetShopArenaBookBox := AddCheckboxSetting(doroGui, "ShopArenaBookBox", "购买代码手册宝箱", "xs R1.2")
 doroGui.Tips.SetTip(SetShopArenaBookBox, "在竞技场商店中自动购买代码手册宝箱，可随机开出各种属性的代码手册")
+g_settingPages["Shop"].Push(SetShopArenaBookBox)
 SetShopArenaPackage := AddCheckboxSetting(doroGui, "ShopArenaPackage", "购买简介个性化礼包", "R1.2")
 doroGui.Tips.SetTip(SetShopArenaPackage, "在竞技场商店自动购买简介个性化礼包")
+g_settingPages["Shop"].Push(SetShopArenaPackage)
 SetShopArenaFurnace := AddCheckboxSetting(doroGui, "ShopArenaFurnace", "购买公司武器熔炉", "R1.2")
 doroGui.Tips.SetTip(SetShopArenaFurnace, "在竞技场商店中自动购买公司武器熔炉，用于装备转化")
+g_settingPages["Shop"].Push(SetShopArenaFurnace)
 SetShopScrapTitle := doroGui.Add("Text", "R1 xs Section +0x0100", "===废铁商店===")
+g_settingPages["Shop"].Push(SetShopScrapTitle)
 SetShopScrap := AddCheckboxSetting(doroGui, "ShopScrap", "总开关", "R1")
+g_settingPages["Shop"].Push(SetShopScrap)
 SetShopScrapGem := AddCheckboxSetting(doroGui, "ShopScrapGem", "购买珠宝", "R1.2")
 doroGui.Tips.SetTip(SetShopScrapGem, "在废铁商店中自动购买珠宝")
+g_settingPages["Shop"].Push(SetShopScrapGem)
 SetShopScrapVoucher := AddCheckboxSetting(doroGui, "ShopScrapVoucher", "购买全部好感券", "R1.2")
 doroGui.Tips.SetTip(SetShopScrapVoucher, "在废铁商店中自动购买所有好感券，用于提升妮姬好感度")
+g_settingPages["Shop"].Push(SetShopScrapVoucher)
 SetShopScrapResources := AddCheckboxSetting(doroGui, "ShopScrapResources", "购买全部养成资源", "R1.2")
 doroGui.Tips.SetTip(SetShopScrapResources, "在废铁商店中自动购买所有可用的养成资源")
-;tag 二级模拟室
+g_settingPages["Shop"].Push(SetShopScrapResources)
+;tag 二级模拟室SimulationRoom
 SetSimulationTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====模拟室选项====")
+g_settingPages["SimulationRoom"].Push(SetSimulationTitle)
 SetSimulationNormal := AddCheckboxSetting(doroGui, "SimulationNormal", "普通模拟室", "R1")
 doroGui.Tips.SetTip(SetSimulationNormal, "勾选后，自动进行普通模拟室超频挑战`r`n此功能需要你在游戏内已经解锁了快速模拟功能才能正常使用，需要预勾选5C")
+g_settingPages["SimulationRoom"].Push(SetSimulationNormal)
 SetSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频", "R1")
 doroGui.Tips.SetTip(SetSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25")
-;tag 二级竞技场
+g_settingPages["SimulationRoom"].Push(SetSimulationOverClock)
+;tag 二级竞技场Arena
 SetArenaTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====竞技场选项====")
+g_settingPages["Arena"].Push(SetArenaTitle)
 SetAwardArena := AddCheckboxSetting(doroGui, "AwardArena", "竞技场收菜", "R1")
 doroGui.Tips.SetTip(SetAwardArena, "领取竞技场每日奖励")
+g_settingPages["Arena"].Push(SetAwardArena)
 SetArenaRookie := AddCheckboxSetting(doroGui, "ArenaRookie", "新人竞技场", "R1")
 doroGui.Tips.SetTip(SetArenaRookie, "使用五次每日免费挑战次数挑战第三位")
+g_settingPages["Arena"].Push(SetArenaRookie)
 SetArenaSpecial := AddCheckboxSetting(doroGui, "ArenaSpecial", "特殊竞技场", "R1")
 doroGui.Tips.SetTip(SetArenaSpecial, "使用两次每日免费挑战次数挑战第三位")
+g_settingPages["Arena"].Push(SetArenaSpecial)
 SetArenaChampion := AddCheckboxSetting(doroGui, "ArenaChampion", "冠军竞技场", "R1")
 doroGui.Tips.SetTip(SetArenaChampion, "在活动期间进行跟风竞猜")
-;tag 二级无限之塔
+g_settingPages["Arena"].Push(SetArenaChampion)
+;tag 二级无限之塔Tower
 SetTowerTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====无限之塔选项====")
+g_settingPages["Tower"].Push(SetTowerTitle)
 SetTowerCompany := AddCheckboxSetting(doroGui, "TowerCompany", "爬企业塔", "R1")
 doroGui.Tips.SetTip(SetTowerCompany, "勾选后，自动挑战当前可进入的所有企业塔，直到无法通关或每日次数用尽`r`n只要有一个是0/3就会判定为打过了从而跳过该任务")
+g_settingPages["Tower"].Push(SetTowerCompany)
 SetTowerUniversal := AddCheckboxSetting(doroGui, "TowerUniversal", "爬通用塔", "R1")
 doroGui.Tips.SetTip(SetTowerUniversal, "勾选后，自动挑战通用无限之塔，直到无法通关")
-;tag 二级拦截战
+g_settingPages["Tower"].Push(SetTowerUniversal)
+;tag 二级拦截战Interception
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
+g_settingPages["Interception"].Push(SetInterceptionTitle)
 SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
+g_settingPages["Interception"].Push(SetInterceptionAnomaly)
 DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
 doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用你的编队1去挑战克拉肯")
 DropDownListBoss.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBoss"] := Ctrl.Value)
+g_settingPages["Interception"].Push(DropDownListBoss)
 SetInterceptionShot := AddCheckboxSetting(doroGui, "InterceptionShot", "结果截图", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionShot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
+g_settingPages["Interception"].Push(SetInterceptionShot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
+g_settingPages["Interception"].Push(SetRedCircle)
 RedCircleInfo := doroGui.Add("Text", "x+1 yp R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选")
-;tag 二级奖励
+g_settingPages["Interception"].Push(RedCircleInfo)
+;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")
+g_settingPages["Award"].Push(SetAwardTitle)
 SetAwardNormalTitle := doroGui.Add("Text", "R1", "===常规奖励===")
-SetAwardOutpost := AddCheckboxSetting(doroGui, "AwardOutpost", "领取前哨基地防御奖励+1次免费歼灭", "R1  Y+M  Section")
+g_settingPages["Award"].Push(SetAwardNormalTitle)
+SetAwardOutpost := AddCheckboxSetting(doroGui, "AwardOutpost", "领取前哨基地防御奖励+1次免费歼灭", "R1")
 doroGui.Tips.SetTip(SetAwardOutpost, "自动领取前哨基地的离线挂机收益，并执行一次每日免费的快速歼灭以获取额外资源")
+g_settingPages["Award"].Push(SetAwardOutpost)
 SetAwardOutpostExpedition := AddCheckboxSetting(doroGui, "AwardOutpostExpedition", "领取并重新派遣委托", "R1 xs+15")
 doroGui.Tips.SetTip(SetAwardOutpostExpedition, "自动领取已完成的派遣委托奖励，并根据当前可用妮姬重新派遣新的委托任务")
+g_settingPages["Award"].Push(SetAwardOutpostExpedition)
 SetAwardLoveTalking := AddCheckboxSetting(doroGui, "AwardLoveTalking", "咨询妮姬", "R1 xs Section")
 doroGui.Tips.SetTip(SetAwardLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n你可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`r`n会循环直到次数耗尽")
+g_settingPages["Award"].Push(SetAwardLoveTalking)
 SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏", "R1 xs+15")
 doroGui.Tips.SetTip(SetAwardAppreciation, "自动观看并领取花絮鉴赏中当前可领取的奖励")
+g_settingPages["Award"].Push(SetAwardAppreciation)
 SetAwardFriendPoint := AddCheckboxSetting(doroGui, "AwardFriendPoint", "好友点数收取", "R1 xs")
 doroGui.Tips.SetTip(SetAwardFriendPoint, "收取并回赠好友点数")
+g_settingPages["Award"].Push(SetAwardFriendPoint)
 SetAwardMail := AddCheckboxSetting(doroGui, "AwardMail", "邮箱收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardMail, "收取邮箱中所有奖励")
+g_settingPages["Award"].Push(SetAwardMail)
 SetAwardRanking := AddCheckboxSetting(doroGui, "AwardRanking", "方舟排名奖励[暂时禁用]", "R1.2")
 doroGui.Tips.SetTip(SetAwardRanking, "自动领取方舟内各类排名活动（如无限之塔排名、竞技场排名等）的结算奖励")
+g_settingPages["Award"].Push(SetAwardRanking)
 SetAwardDaily := AddCheckboxSetting(doroGui, "AwardDaily", "任务收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardDaily, "收取每日任务、每周任务、主线任务以及成就等已完成任务的奖励")
+g_settingPages["Award"].Push(SetAwardDaily)
 SetAwardPass := AddCheckboxSetting(doroGui, "AwardPass", "通行证收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardPass, "收取当前通行证中所有可领取的等级奖励")
+g_settingPages["Award"].Push(SetAwardPass)
 SetLimitedAwardTitle := doroGui.Add("Text", "R1 Section +0x0100", "===限时奖励===")
 doroGui.Tips.SetTip(SetLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动")
+g_settingPages["Award"].Push(SetLimitedAwardTitle)
 SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动期间每日免费招募", "R1.2")
 doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
+g_settingPages["Award"].Push(SetAwardFreeRecruit)
 SetAwardCooperate := AddCheckboxSetting(doroGui, "AwardCooperate", "协同作战", "R1.2")
 doroGui.Tips.SetTip(SetAwardCooperate, "参与每日三次的普通难度协同作战`r`n也可参与大活动的协同作战")
+g_settingPages["Award"].Push(SetAwardCooperate)
 SetAwardSoloRaid := AddCheckboxSetting(doroGui, "AwardSoloRaid", "单人突击日常", "R1.2")
 doroGui.Tips.SetTip(SetAwardSoloRaid, "参与单人突击，自动对最新的关卡进行战斗或快速战斗")
+g_settingPages["Award"].Push(SetAwardSoloRaid)
 SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德雷克·反派之路[失效]", "R1.2")
 doroGui.Tips.SetTip(SetAwardRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
-;tag 二级活动
+g_settingPages["Award"].Push(SetAwardRoadToVillain)
+;tag 二级活动Event
 SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项====")
+g_settingPages["Event"].Push(SetEventTitle)
 SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[暂时禁用]", "R1")
+g_settingPages["Event"].Push(SetEventSmall)
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventSmallChallenge)
 SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventSmallStory)
 SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[尼尔]", "R1 xs")
+g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventLargeSign)
 SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "大活动挑战", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventLargeChallenge)
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情❔️", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeStory, "部分关卡可能有特殊关，此时需要手动完成任务")
+g_settingPages["Event"].Push(SetEventLargeStory)
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战[暂时禁用]", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventLargeCooperate)
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏[暂时禁用]", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
+g_settingPages["Event"].Push(SetEventLargeMinigame)
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventLargeDaily)
 SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动总开关[夏活][会员专享]", "R1 xs")
+g_settingPages["Event"].Push(SetEventSpecial) ; 遗漏的 Push 语句已补充
 SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊活动签到", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventSpecialSign) ; 遗漏的 Push 语句已补充
 SetEventSpecialChallenge := AddCheckboxSetting(doroGui, "EventSpecialChallenge", "特殊活动挑战", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventSpecialChallenge)
 SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊活动剧情❔️", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialStory, "部分关卡可能有特殊关，此时需要手动完成任务")
+g_settingPages["Event"].Push(SetEventSpecialStory)
 SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战[暂时禁用]", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventSpecialCooperate)
 SetEventSpecialMinigame := AddCheckboxSetting(doroGui, "EventSpecialMinigame", "特殊活动小游戏", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认不使用技能，开启蓝色药丸后使用技能")
+g_settingPages["Event"].Push(SetEventSpecialMinigame)
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")
-;tag 二级设置
+g_settingPages["Event"].Push(SetEventSpecialDaily)
+;tag 二级设置Settings
 SetSettingsTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====设置选项====")
+g_settingPages["Settings"].Push(SetSettingsTitle)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "R1")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
+g_settingPages["Settings"].Push(cbOpenBlablalink)
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
+g_settingPages["Settings"].Push(cbSelfClosing)
 cbCloseNoticeHelp := AddCheckboxSetting(doroGui, "CloseNoticeHelp", "移除启动提示[会员专享]", "R1")
+g_settingPages["Settings"].Push(cbCloseNoticeHelp)
 cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[会员专享]", "R1")
+g_settingPages["Settings"].Push(cbCloseNoticeSponsor)
 cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[会员专享]", "R1")
 doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
+g_settingPages["Settings"].Push(cbCheckEvent)
 ;tag 妙妙工具
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x600 y10 w350 h240 Section", "妙妙工具")
@@ -649,33 +728,6 @@ doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
 LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h340 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ;初始内容
-;tag 二级控制
-g_settingPages := Map(
-    "Default", [SetDefault],
-    "Login", [SetLogin],
-    "Shop", [
-        SetShop,
-        SetShopCashTitle, SetShopCash,
-        SetShopNormalTitle, SetShopNormal, SetShopNormal_Dust, SetShopNormal_Package,
-        SetShopArenaTitle, SetShopArena, SetShopArenaBookFire, SetShopArenaBookWater, SetShopArenaBookWind, SetShopArenaBookElec, SetShopArenaBookIron, SetShopArenaBookBox, SetShopArenaPackage, SetShopArenaFurnace,
-        SetShopScrapTitle, SetShopScrap, SetShopScrapGem, SetShopScrapVoucher, SetShopScrapResources
-    ],
-    "SimulationRoom", [SetSimulationTitle, SetSimulationOverClock, SetSimulationNormal],
-    "Arena", [SetArenaTitle, SetAwardArena, SetArenaRookie, SetArenaSpecial, SetArenaChampion],
-    "Tower", [SetTowerTitle, SetTowerCompany, SetTowerUniversal],
-    "Interception", [SetInterceptionTitle, SetInterceptionAnomaly, DropDownListBoss, SetInterceptionShot, SetRedCircle, RedCircleInfo],
-    "Event", [SetEventTitle, SetEventSmall, SetEventSmallChallenge, SetEventSmallStory,
-        SetEventLarge, SetEventLargeSign, SetEventLargeChallenge, SetEventLargeStory, SetEventLargeCooperate, SetEventLargeDaily, SetEventLargeMinigame,
-        SetEventSpecial, SetEventSpecialSign, SetEventSpecialChallenge, SetEventSpecialStory, SetEventSpecialCooperate, SetEventSpecialDaily, SetEventSpecialMinigame],
-    "Award", [
-        SetAwardTitle, SetAwardNormalTitle, SetAwardOutpost, SetAwardOutpostExpedition, SetAwardLoveTalking,
-        SetAwardAppreciation, SetAwardFriendPoint, SetAwardMail, SetAwardRanking,
-        SetAwardDaily, SetAwardPass,
-        SetLimitedAwardTitle, SetAwardFreeRecruit, SetAwardCooperate, SetAwardSoloRaid,
-        SetAwardRoadToVillain
-    ],
-    "Settings", [SetSettingsTitle, cbOpenBlablalink, cbSelfClosing, cbCheckEvent, cbCloseNoticeHelp, cbCloseNoticeSponsor],
-)
 HideAllSettings()
 ShowSetting("Default")
 if g_settings["AutoDeleteOldFile"]

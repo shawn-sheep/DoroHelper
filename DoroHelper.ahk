@@ -873,11 +873,6 @@ Initialization() {
     else MsgBox("请在nikke设置中将画面比例调整为16:9")
     ; 尝试归类为2160p (4K) 及其变种
     if (A_ScreenWidth >= 3840 and A_ScreenHeight >= 2160) {
-        if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("游戏尺寸过小，点确定后将为你自动放大。你可以再根据需要放大")
-            AdjustSize(1920, 1080)
-            Initialization
-        }
         if (A_ScreenWidth = 3840 and A_ScreenHeight = 2160) {
             AddLog("标准4K分辨率 (2160p)")
         } else if (A_ScreenWidth = 5120 and A_ScreenHeight = 2160) {
@@ -890,11 +885,6 @@ Initialization() {
     }
     ; 尝试归类为1440p (2K) 及其变种
     else if (A_ScreenWidth >= 2560 and A_ScreenHeight >= 1440) {
-        if NikkeW < 1920 and NikkeH < 1080 {
-            MsgBox("游戏尺寸过小，点确定后将为你自动放大。你可以再根据需要放大")
-            AdjustSize(1920, 1080)
-            Initialization
-        }
         if (A_ScreenWidth = 2560 and A_ScreenHeight = 1440) {
             AddLog("标准2K分辨率 (1440p)")
         } else if (A_ScreenWidth = 3440 and A_ScreenHeight = 1440) {
@@ -912,8 +902,7 @@ Initialization() {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
-                MsgBox("尺寸过小！请重启程序后，全屏运行NIKKE")
-                Pause
+                MsgBox("尺寸过小，可能出现识图误判，但仍可以运行")
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("1080p 加宽 (21:9 超宽屏)")

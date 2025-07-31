@@ -214,7 +214,10 @@ FindText().PicLib("|<点击>*70$64.zzVzzzzy7zzzy3zzzzkTzzzsDzzzz1zzzzU01zzw7zzzy
 FindText().PicLib("|<下一关卡的下一>*200$76.000001zzzzzzw000007zzzzzzk00000Tzzzzzz000001zzzzzzw000007zzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz0zzzzzzzzzzzw0zzzzzzzzzzzk0zzzzzzzzzzz00zzk00000Dzw01zy000000zzk01zs000003zz1U1zU00000Dzw7U3y000000zzkT07zzzzzzzzz1z0Tzzzzzzzzw7y3zzzzzzzzzkTyTzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzy", 1)
 FindText().PicLib("|<编队的图标>*200$53.zw3zzz0Tzzk1zzw0Tzy01zzU0Tzs03zz00Tzk0Dzz00TzU0S0D00zy01s0D01zw07U0C01zs0C00C03zk0w00Q07zk1s00w0TzU3U01s0zz07003k3zz0C007U7zz0S00D0TzzUw00S3zzz0s00sDzzs1s03k3zz03s0D01zw03s0y01zk07s7w01z00TU7w01y01w03w03s07k01w07k0D001s0700w001s0C01k001k0Q07U003k0M0C0007U0k0w000701U1s000C0303U000S04070000Q000C0000s000w0001k001s0003k003k0007U007U000D03zz0000Tzzzy0000zzzzs0001zzzzk0003zzU", 1)
 ;红圈
-FindText().PicLib("|<红圈的左边缘黄边>FFFF62-0.90$14.1k0zUDw3z0zkDw7y1zUTs7y1zUTs7w3z0zkDw3z0zkDw3z0zkDw1z000Dw3z0zkDw3z0zkDw3z0zk7w1z0Ts7y1zUTs7y0zUDw3z0zkDw1w8", 1)
+FindText().PicLib("|<红圈的上边缘黄边>FFFF40-0.90$43.00000000000000000000000000000000000000znz000zztzzsDzzwzzzzzzyTzzzzzzDzzzzzzbzzzzzznzzzzzztzzzzy0001zz000000s00000000000000000000000000000000000000000000000000000000000000000000000E", 1)
+FindText().PicLib("|<红圈的下边缘黄边>FFFF40-0.90$44.000000000000000000000000000000000000000000000000000A000000/w00000zzzU00TzzzzyTzzzzzzbzzzzzztzzzzzzyTzzzzzzbzzz7zztzzy01zyTzU0001Y000000000000000000000000000000008", 1)
+FindText().PicLib("|<红圈的左边缘黄边>FFFF40-0.90$27.00zU007y000zk007w001zU00Dw001zU00Dw001z000Ds003z000Ts003z000Ts003z000Ts003z000Ts003z000Ts003y000Tk0000000Tk003z000Ts003y000Tk003z000Ts003z000Ts003z000Ts003y000Ds001z000Ds001z000Ds001z0007w000zk007y0U", 1)
+FindText().PicLib("|<红圈的右边缘黄边>FFFF40-0.90$20.0zU0Ts07y01zU0Ds03z00zk0Dw03z00Tk07w01z00Ts07y01zU0Ts07y01zU0Ts07y01zU0S000001zU0Ts07y01zU0Ts07y01zU0Ts07y01zU0Ts07w02z00Tk03w00z00Dk03w04y01DU0Ns01y0U", 1)
 ;tag 模拟室
 FindText().PicLib("|<模拟室>*150$96.wDsS7z3zzzzzzVzzwDsQ7z3szwDzzUzzwD000z3sTwDU0001wD000z3sRwDU0000wD000z3s1wDU0000sD001z3s0wDU000001sQ7s0M0wDU000001zzzs0MEMDVzzzU01001s0MMMDU000001001s0MMMDy000DsD001z3sM8Dy000DsD3z1z3sQ8Dy000Ds7001z3sQ0TzkDUzs7001z3sQsTzUTUTk3001z0MTsTy000Dk11z1y0MTkTw0007k0001s0MTkTw0003U0001s0MTkTy00y7U1001s1sRkTyTVzT0/z1zs3sFUTzzVzz0Dz1zz3s0UDw00070C000z3s00Dw00070C000z3s007w0007YC000z3k307w0007gDw0Dz3kC07zzUzzwDs07z3UQ23zzVzzwDUA1z3Us63U0000wA0S0M3lk73U0000wA0z0w3vsD3U0000wC3zVw7zwTDU0000wDDztwTzzzzzzzzzU", 1)
 FindText().PicLib("|<结束模拟的图标>*100$45.000000A000000Ds000003zU00000Ty000007zk00000zz000007zs00000zz000007zk00001zy003zzzzU00zzzzs00DzzzU003zzzw000zzzzU00DsTzw003y7zy000TVzzU001sTzw00067zzk0001zzz0000Tzzw0007zyTk001zzVz000Tzs7s007zzUS001zzy1U7zzzzs00zzzzzU07zzzjy00zzzszs07zzy3zU0zzzUDy000000zs000003zU00000Dw000000zU000007w000000zU000007w000000zU000007w000000zU000007w000000zU000007w000000zU000003s0U", 1)
@@ -2182,6 +2185,66 @@ BattleSettlement() {
     AddLog("等待战斗结算")
     while true {
         Sleep 500
+        if RedCircle {
+            if checkred = 2 {
+                AddLog("检测到红圈，尝试打红圈")
+                while true {
+                    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X, Y + 70 * TrueRatio, 0)
+                        Click "Down"
+                        Sleep 700
+                        Click "Up"
+                    }
+                    else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的下边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X, Y - 70 * TrueRatio, 0)
+                        Click "Down"
+                        Sleep 700
+                        Click "Up"
+                    }
+                    else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X + 70 * TrueRatio, Y, 0)
+                        Click "Down"
+                        Sleep 700
+                        Click "Up"
+                    }
+                    else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的右边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X - 70 * TrueRatio, Y, 0)
+                        Click "Down"
+                        Sleep 700
+                        Click "Up"
+                    }
+                    else {
+                        AddLog("红圈打完了")
+                        checkred := 0
+                        break
+                    }
+                }
+            }
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的上边缘黄边")
+                checkred := checkred + 1
+                continue
+            }
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的下边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的下边缘黄边")
+                checkred := checkred + 1
+                continue
+            }
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的左边缘黄边")
+                checkred := checkred + 1
+                continue
+            }
+            else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的右边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+                AddLog("检测到红圈的右边缘黄边")
+                checkred := checkred + 1
+                continue
+            }
+            else {
+                AddLog("没有检测到红圈的边缘黄边，计数清空")
+                checkred := 0
+            }
+        }
         if EventStory {
             ; 跳过剧情
             Send "{]}"
@@ -2216,23 +2279,6 @@ BattleSettlement() {
         else {
             ;AddLog("均未命中，重新计数")
             checkend := 0
-        }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) and RedCircle {
-            checkred := checkred + 1
-            if checkred = 3 {
-                AddLog("检测到红圈，尝试打红圈")
-                loop 20 {
-                    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
-                        FindText().Click(X + 50 * TrueRatio, Y, 0)
-                        Click "Down"
-                        Sleep 700
-                        Click "Up"
-                    }
-                }
-            }
-        }
-        else {
-            checkred := 0
         }
     }
     ;是否需要截图

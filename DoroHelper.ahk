@@ -2186,7 +2186,7 @@ BattleSettlement() {
     while true {
         if RedCircle {
             if checkred = 2 {
-                AddLog("检测到红圈，尝试打红圈")
+                ; AddLog("检测到红圈，尝试打红圈")
                 while true {
                     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
                         FindText().Click(X, Y + 70 * TrueRatio, 0)
@@ -2220,27 +2220,27 @@ BattleSettlement() {
                 }
             }
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("检测到红圈的上边缘黄边")
+                ; AddLog("检测到红圈的上边缘黄边")
                 checkred := checkred + 1
                 continue
             }
             else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的下边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("检测到红圈的下边缘黄边")
+                ; AddLog("检测到红圈的下边缘黄边")
                 checkred := checkred + 1
                 continue
             }
             else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("检测到红圈的左边缘黄边")
+                ; AddLog("检测到红圈的左边缘黄边")
                 checkred := checkred + 1
                 continue
             }
             else if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红圈的右边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
-                AddLog("检测到红圈的右边缘黄边")
+                ; AddLog("检测到红圈的右边缘黄边")
                 checkred := checkred + 1
                 continue
             }
             else {
-                AddLog("没有检测到红圈的边缘黄边，计数清空")
+                ; AddLog("没有检测到红圈的边缘黄边，计数清空")
                 checkred := 0
             }
         }
@@ -3048,23 +3048,6 @@ TowerCompany() {
                     }
                 }
             }
-            ; plan B
-            ; while true {
-            ;     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
-            ;         FindText().Click(X, Y, "L")
-            ;         Sleep 3000
-            ;         if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.426 * NikkeW . " ", NikkeY + 0.405 * NikkeH . " ", NikkeX + 0.426 * NikkeW + 0.025 * NikkeW . " ", NikkeY + 0.405 * NikkeH + 0.024 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , TrueRatio, TrueRatio)) {
-            ;             Sleep 3000
-            ;             break
-            ;         }
-            ;         else {
-            ;             RefuseSale
-            ;             if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
-            ;                 FindText().Click(X, Y, "L")
-            ;             }
-            ;         }
-            ;     }
-            ; }
             Sleep 3000
         }
         AddLog("所有塔都打过了")

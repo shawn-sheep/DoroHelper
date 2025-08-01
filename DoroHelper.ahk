@@ -2184,7 +2184,6 @@ BattleSettlement() {
     checkred := 0
     AddLog("等待战斗结算")
     while true {
-        Sleep 500
         if RedCircle {
             if checkred = 2 {
                 AddLog("检测到红圈，尝试打红圈")
@@ -2280,6 +2279,8 @@ BattleSettlement() {
             ;AddLog("均未命中，重新计数")
             checkend := 0
         }
+        ;间隔500ms
+        Sleep 500
     }
     ;是否需要截图
     if Screenshot {

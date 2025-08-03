@@ -102,7 +102,8 @@ global g_settings := Map(
     "SelfClosing", 0,            ;完成后自动关闭程序
     "OpenBlablalink", 0,         ;完成后打开Blablalink
     "CheckEvent", 0,             ;活动结束提醒
-    "BluePill", 0                ;万用开关
+    "BluePill", 0,               ;万用开关
+    "RedPill", 0                 ;万用开关
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(
@@ -751,6 +752,8 @@ doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度�
 BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", QuickBurst)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
+BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
+doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
 LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h340 ReadOnly")
@@ -3614,30 +3617,35 @@ EventSpecial() {
             Sleep 500
         }
         while true {
-            UserClick(1920, 1854, TrueRatio)
-            Sleep 500
-            if g_settings["BluePill"] {
-                if A_Index = 90 {
-                    Send "{Q}"
-                    Sleep 6000
-                    Send "{E}"
-                    Sleep 10000
-                    Send "{Q}"
-                    Sleep 6000
-                    Send "{E}"
-                    Sleep 10000
+            while true {
+                UserClick(1920, 1854, TrueRatio)
+                Sleep 500
+                if g_settings["BluePill"] {
+                    if A_Index = 90 {
+                        Send "{Q}"
+                        Sleep 6000
+                        Send "{E}"
+                        Sleep 10000
+                        Send "{Q}"
+                        Sleep 6000
+                        Send "{E}"
+                        Sleep 10000
+                    }
+                }
+                if A_Index = 100 {
+                    AddLog("时间差不多咯")
+                    Send "{Esc}"
+                    Sleep 1000
+                    AddLog("确认结束")
+                    UserClick(1932, 1524, TrueRatio)
+                    Sleep 5000
+                    AddLog("点击返回")
+                    UserClick(1910, 1866, TrueRatio)
+                    Sleep 1000
+                    break
                 }
             }
-            if A_Index = 100 {
-                AddLog("时间差不多咯")
-                Send "{Esc}"
-                Sleep 1000
-                AddLog("确认结束")
-                UserClick(1932, 1524, TrueRatio)
-                Sleep 5000
-                AddLog("点击返回")
-                UserClick(1910, 1866, TrueRatio)
-                Sleep 1000
+            if !g_settings["RedPill"] {
                 break
             }
         }

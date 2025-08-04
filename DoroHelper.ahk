@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.12"
+currentVersion := "v1.4.13"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -859,7 +859,7 @@ ClickOnDoro(*) {
             EventLarge()
         if g_settings["EventSpecial"]
             ;即使有会员功能，代码依旧是开源的，如果您没有能力支付会员费用而依然想使用会员功能，可以删除以下类似的代码，但恳请不要传播
-            if UserGroup = "普通用户" {
+            if UserGroup = "普通用户" or UserGroup = "铜Doro会员" {
                 MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
                 Pause
             }
@@ -881,8 +881,7 @@ ClickOnDoro(*) {
         if Result = "Yes"
             MsgSponsor
     }
-    if UserGroup = "金Doro会员" and g_settings["CloseNoticeSponsor"] {
-        try TraySetIcon "icon\GoldDoro.ico"
+    if UserGroup != "普通用户" and UserGroup != "管理员" and g_settings["CloseNoticeSponsor"] {
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
     }
     if UserGroup = "管理员" and g_settings["CloseNoticeSponsor"] {
@@ -1540,18 +1539,33 @@ DeleteOldFile(*) {
 ;tag 下载指定URL的内容
 DownloadUrlContent(url) {
     try {
+        ; 1. 创建 WinHttpRequest COM 对象用于网络请求
         whr := ComObject("WinHttp.WinHttpRequest.5.1")
-        whr.Open("GET", url, false)
+        whr.Open("GET", url, true) ; 使用异步模式
         whr.Send()
-        ; 检查状态码，确保请求成功
-        if (whr.Status = 200) {
-            return whr.ResponseText
-        } else {
-            AddLog("下载文件失败，状态码: " whr.Status)
+        ; 2. 等待请求完成，超时时间为 10 秒
+        whr.WaitForResponse(10)
+        ; 3. 检查 HTTP 状态码是否为 200 (成功)
+        if (whr.Status != 200) {
+            AddLog("下载失败，HTTP状态码: " . whr.Status)
             return ""
         }
+        ; 4. 获取原始的二进制响应体 (ResponseBody)，而不是 ResponseText
+        responseBody := whr.ResponseBody
+        ; 5. 使用 ADODB.Stream 对象来处理二进制流并正确解码
+        stream := ComObject("ADODB.Stream")
+        stream.Type := 1 ; 1 = adTypeBinary
+        stream.Open()
+        stream.Write(responseBody)
+        stream.Position := 0
+        stream.Type := 2 ; 2 = adTypeText
+        stream.Charset := "utf-8" ; << 核心步骤：明确指定使用 UTF-8 解码
+        ; 6. 读取解码后的文本内容并返回
+        content := stream.ReadText()
+        stream.Close()
+        return content
     } catch as e {
-        AddLog("下载文件时发生错误: " e.Message)
+        AddLog("下载发生错误: " . e.Message)
         return ""
     }
 }
@@ -1661,79 +1675,76 @@ GetDiskSerial() {
 ;tag 确定用户组
 CheckUserGroup() {
     global TextUserGroup, UserGroup
-    ; 获取主板序列号
-    mainBoardSerial := GetMainBoardSerial()
-    ; 获取CPU序列号
-    cpuSerial := GetCpuSerial()
-    ; 获取硬盘序列号
-    diskSerial := GetDiskSerial()
-    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
-    AddLog("当前设备唯一标识：" Hashed)
-    ; 定义 JSON 文件的 URL
-    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArray.json"
-    ; 下载 JSON 文件内容
-    jsonContent := DownloadUrlContent(jsonUrl)
-    ; 如果下载失败或内容为空，则停止执行或使用默认值
-    if (jsonContent = "") {
-        AddLog("无法获取用户组信息，请检查网络后尝试重启程序。")
-        ; 您可以选择在这里设置一个默认用户组，或者直接退出函数
-        try TextUserGroup.Value := "普通用户"
-        UserGroup := "普通用户"
+    ; 1. 初始化默认用户组
+    try {
+        TextUserGroup.Value := "普通用户"
+        UserGroup := "普通用户" ; 同样初始化变量
+    }
+    ; 2. 生成设备唯一标识
+    try {
+        mainBoardSerial := GetMainBoardSerial()
+        cpuSerial := GetCpuSerial()
+        diskSerial := GetDiskSerial()
+        Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+        AddLog("当前设备唯一标识：" Hashed)
+    } catch as e {
+        AddLog("获取硬件信息失败: " e.Message)
         return
     }
-    ; 解析 JSON 内容
+    ; 3. 从网络获取用户组数据
+    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV2.json"
+    jsonContent := DownloadUrlContent(jsonUrl)
+    if (jsonContent = "") {
+        AddLog("无法获取用户组信息，请检查网络后尝试重启程序。")
+        return
+    }
+    ; 4. 解析JSON数据
     try {
         groupData := Json.Load(&jsonContent)
-        if (!groupData) {
-            AddLog("解析 JSON 文件失败。")
-            try TextUserGroup.Value := "普通用户"
-            UserGroup := "普通用户"
+        if !IsObject(groupData) {
+            AddLog("解析 JSON 文件失败或格式不正确。")
             return
         }
     } catch as e {
         AddLog("解析 JSON 文件时发生错误: " e.Message)
-        try TextUserGroup.Value := "普通用户"
-        UserGroup := "普通用户"
         return
     }
-    ; 从解析后的 JSON 数据中获取用户组数组
-    GroupArrayAdministrator := groupData["GroupArrayAdministrator"]
-    GroupArrayGoldDoro := groupData["GroupArrayGoldDoro"]
-    ; 确定用户组
-    ; 检查管理员组
-    if (IsObject(GroupArrayAdministrator)) {
-        for adminSerial in GroupArrayAdministrator {
-            if (adminSerial == Hashed) {
-                try TextUserGroup.Value := "管理员"
-                UserGroup := "管理员"
-                AddLog("当前用户组：管理员")
-                break
-            }
-        }
-    } else {
-        AddLog("警告: GroupArrayAdministrator 数据无效或为空。")
-    }
-    ; 检查金Doro会员组（如果不是管理员）
-    if (UserGroup != "管理员") {
-        if (IsObject(GroupArrayGoldDoro)) {
-            for memberSerial in GroupArrayGoldDoro {
-                if (memberSerial == Hashed) {
-                    try TextUserGroup.Value := "金Doro会员"
-                    UserGroup := "金Doro会员"
-                    AddLog("当前用户组：金Doro会员")
-                    try TraySetIcon "icon\GoldDoro.ico"
-                    break
+    ; 5. 校验用户组成员资格
+    CurrentDate := A_YYYY A_MM A_DD
+    if groupData.Has(Hashed) {
+        memberInfo := groupData[Hashed]
+        ; 确保会员信息是对象并且包含有效期和等级键
+        if IsObject(memberInfo) && memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
+            expiryDate := memberInfo["expiry_date"]
+            if (expiryDate >= CurrentDate) {
+                ; 有效期内，根据会员等级设置用户组
+                UserGroup := memberInfo["tier"]
+                TextUserGroup.Value := UserGroup
+                AddLog("验证成功，当前用户组：" UserGroup)
+                AddLog("有效期至" expiryDate)
+                ; 根据用户组设置托盘图标
+                if (UserGroup == "管理员") {
+                    ; 管理员特殊处理逻辑
                 }
+                if (UserGroup == "金Doro会员") {
+                    try TraySetIcon("icon\GoldDoro.ico")
+                }
+                if (UserGroup == "银Doro会员") {
+                    try TraySetIcon("icon\SilverDoro.ico")
+                }
+                if (UserGroup == "铜Doro会员") {
+                    try TraySetIcon("icon\CopperDoro.ico")
+                }
+            } else {
+                ; 有效期已过
+                AddLog("会员已过期 (到期日: " expiryDate ")。已降级为普通用户。")
             }
         } else {
-            AddLog("警告: GroupArrayGoldDoro 数据无效或为空。")
+            AddLog("警告: 在JSON中找到设备ID，但会员信息不完整。")
         }
-    }
-    ; 如果都不是，则设置为普通用户
-    if (UserGroup != "管理员" and UserGroup != "金Doro会员") {
-        try TextUserGroup.Value := "普通用户"
-        UserGroup := "普通用户"
-        AddLog("当前用户组：普通用户")
+    } else {
+        ; 设备识别码不在会员数据中
+        AddLog("当前设备非会员。")
     }
 }
 ;endregion 身份辅助函数
@@ -1815,7 +1826,40 @@ CheckEvent(*) {
 }
 ;tag 支持
 MsgSponsor(*) {
-    Run("https://p.sda1.dev/26/f275a8b6533d6c688de6d49ce6c3f9d0/Sponsor.png")
+    global guiTier, guiDuration
+    guiSponsor := Gui("+Resize", "赞助")
+    guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
+    guiSponsor.Add("Text", "w280 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    guiSponsor.Add("Button", , "赞助详情").OnEvent("Click", (*) => Run("https://p.sda1.dev/26/934fb95927536ca4485514e7431dacc7/Sponsor.jpg"))
+    ; 当按钮被点击时，将调用 MyButtonHandler 函数。
+    guiSponsor.Add("Text", "w280 Wrap", "赞助信息生成器")
+    guiTier := guiSponsor.Add("DropDownList", "Range", ["铜Doro会员", "银Doro会员", "金Doro会员"])
+    guiDuration := guiSponsor.Add("DropDownList", "Range", ["1个月", "3个月", "6个月", "12个月"])
+    guiSponsor.Add("Button", "r1", "我已赞助").OnEvent("Click", CalculateSponsorInfo)
+    guiSponsor.Show("w300 h300")
+}
+CalculateSponsorInfo(thisGuiButton, info) {
+    ; 步骤1：获取设备唯一标识
+    mainBoardSerial := GetMainBoardSerial()
+    cpuSerial := GetCpuSerial()
+    diskSerial := GetDiskSerial()
+    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+    ; 步骤2：获取会员信息
+    tierSelected := guiTier.Text ; 获取选中的文本，例如 "铜Doro会员"
+    durationSelected := guiDuration.Text ; 获取选中的时长文本，例如 "1个月" 或 "12个月"
+    ; 步骤3：计算过期日期
+    Month := StrReplace(durationSelected, "个月")
+    expiryDate := DateAdd(A_Now, 30 * Month, "days")
+    expiryDate := SubStr(expiryDate, 1, 8)
+    ; 步骤4：生成 JSON 字符串
+    jsonString := "  `"" Hashed "`": {" . "`n"
+    jsonString .= "    `"tier`": `"" tierSelected "`"," . "`n"
+    jsonString .= "    `"expiry_date`": `"" expiryDate "`"" . "`n"
+    jsonString .= "  },"
+    ; 步骤5：复制到剪切板
+    A_Clipboard := jsonString
+    ; 给出提示
+    MsgBox("赞助信息已生成并复制到剪贴板：`n请加群(584275905)后将其连同付款截图发送给群主" . jsonString)
 }
 ;tag 帮助
 ClickOnHelp(*) {

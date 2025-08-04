@@ -3066,6 +3066,10 @@ ArenaChampion() {
         Sleep 1000
     }
     AddLog("===冠军竞技场任务结束===")
+    loop 3 {
+        GoBack
+        Sleep 2000
+    }
 }
 ;endregion 竞技场
 ;region 无限之塔

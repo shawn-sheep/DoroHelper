@@ -6,7 +6,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.13"
+currentVersion := "v1.4.14"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -93,7 +93,7 @@ global g_settings := Map(
     ;妙妙工具
     "StoryModeAutoStar", 0,      ;剧情模式自动收藏
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
-    ;其他
+    ;启动/退出相关
     "CloseNoticeHelp", 0,        ;关闭启动提示
     "CloseNoticeSponsor", 0,     ;关闭赞助提示
     "AutoCheckUpdate", 0,        ;自动检查更新
@@ -102,6 +102,7 @@ global g_settings := Map(
     "SelfClosing", 0,            ;完成后自动关闭程序
     "OpenBlablalink", 0,         ;完成后打开Blablalink
     "CheckEvent", 0,             ;活动结束提醒
+    ;其他
     "BluePill", 0,               ;万用开关
     "RedPill", 0                 ;万用开关
 )
@@ -378,6 +379,7 @@ FindText().PicLib("|<对话框·想法>*150$84.000000000001zz000000000003zz00000
 FindText().PicLib("|<爆裂·A>*200$24.zzzzzzzzzs7zzs3zzk3zzk3zzk1zzk1zzVVzzVUzzVkzz1kzz3kTz3kTy3sTy00Ty00Dw00Dw00Dw007wDw7sDw7sDy3sTy3kTy3zzzzzzzzU", 1)
 FindText().PicLib("|<爆裂·S>*200$21.zzzzzzzz0DzU0Ds00z007k00y3w7kTky3y7kTzy0Tzk07z00Dw00zs07zy0Tzy3zzkS3y3kTkS003s00T007s00zk0TzzzzzzzU", 1)
 ;endregion 识图素材
+;region 启动辅助函数
 ;region 创建GUI
 ;tag 基础配置
 g_settingPages := Map("Default", [], "Login", [], "Shop", [], "SimulationRoom", [], "Arena", [], "Tower", [], "Interception", [], "Event", [], "Award", [], "Settings", [],)
@@ -519,6 +521,14 @@ g_settingPages["Default"].Push(Btn4k)
 ;tag 二级登录Login
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====(暂无)")
 g_settingPages["Login"].Push(SetLogin)
+StartupText := doroGui.Add("Text", "R1", "使用脚本启动NIKKE[会员专享]")
+g_settingPages["Login"].Push(StartupText)
+StartupPathText := doroGui.Add("Text", "xs R1 +0x0100", "启动器路径")
+g_settingPages["Login"].Push(StartupPathText)
+StartupPathEdit := doroGui.Add("Edit", "x+10 yp+1 w180 h20")
+StartupPathEdit.Value := g_numeric_settings["StartupPath"]
+StartupPathEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupPath"] := Ctrl.Value)
+g_settingPages["Login"].Push(StartupPathEdit)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
@@ -663,9 +673,6 @@ g_settingPages["Award"].Push(SetAwardPass)
 SetLimitedAwardTitle := doroGui.Add("Text", "R1 Section +0x0100", "===限时奖励===")
 doroGui.Tips.SetTip(SetLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动")
 g_settingPages["Award"].Push(SetLimitedAwardTitle)
-SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动期间每日免费招募", "R1.2")
-doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
-g_settingPages["Award"].Push(SetAwardFreeRecruit)
 SetAwardCooperate := AddCheckboxSetting(doroGui, "AwardCooperate", "协同作战", "R1.2")
 doroGui.Tips.SetTip(SetAwardCooperate, "参与每日三次的普通难度协同作战`r`n也可参与大活动的协同作战")
 g_settingPages["Award"].Push(SetAwardCooperate)
@@ -675,6 +682,9 @@ g_settingPages["Award"].Push(SetAwardSoloRaid)
 SetAwardRoadToVillain := AddCheckboxSetting(doroGui, "AwardRoadToVillain", "德雷克·反派之路[失效]", "R1.2")
 doroGui.Tips.SetTip(SetAwardRoadToVillain, "针对德雷克·反派之路的特殊限时活动，自动领取相关的任务奖励和进度奖励")
 g_settingPages["Award"].Push(SetAwardRoadToVillain)
+SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动期间每日免费招募[失效]", "R1.2")
+doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
+g_settingPages["Award"].Push(SetAwardFreeRecruit)
 ;tag 二级活动Event
 SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项====")
 g_settingPages["Event"].Push(SetEventTitle)
@@ -684,7 +694,7 @@ SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "�
 g_settingPages["Event"].Push(SetEventSmallChallenge)
 SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSmallStory)
-SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[尼尔]", "R1 xs")
+SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[暂时禁用]", "R1 xs")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeSign)
@@ -701,9 +711,9 @@ g_settingPages["Event"].Push(SetEventLargeMinigame)
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeDaily)
 SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动总开关[夏活][会员专享]", "R1 xs")
-g_settingPages["Event"].Push(SetEventSpecial) ; 遗漏的 Push 语句已补充
+g_settingPages["Event"].Push(SetEventSpecial)
 SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊活动签到", "R1 xs+15")
-g_settingPages["Event"].Push(SetEventSpecialSign) ; 遗漏的 Push 语句已补充
+g_settingPages["Event"].Push(SetEventSpecialSign)
 SetEventSpecialChallenge := AddCheckboxSetting(doroGui, "EventSpecialChallenge", "特殊活动挑战", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSpecialChallenge)
 SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊活动剧情❔️", "R1 xs+15")
@@ -777,7 +787,7 @@ doroGui.Show()
 if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
     ClickOnHelp
 ;endregion 创建GUI
-;region 点击运行
+;tag 点击运行
 ClickOnDoro(*) {
     Initialization
     if !g_settings["AutoCheckUserGroup"]
@@ -897,8 +907,7 @@ ClickOnDoro(*) {
         ExitApp
     }
 }
-;endregion 点击运行
-;region 初始化
+;tag 初始化
 Initialization() {
     ;检测管理员身份
     if !A_IsAdmin {
@@ -1000,8 +1009,8 @@ Initialization() {
         AddLog("显示器不足1080p分辨率")
     }
 }
-;endregion 初始化
-;region 软件更新
+;endregion 启动辅助函数
+;region 更新辅助函数
 ;tag 统一检查更新
 CheckForUpdate(isManualCheck) {
     ; 全局变量声明 - 确保这些在函数外部有定义
@@ -1534,7 +1543,7 @@ DeleteOldFile(*) {
     ; 如果foundAnyDeletableFile仍然是false，则意味着没有找到任何符合删除条件的文件，
     ; 并且根据要求，此时不会输出任何日志。
 }
-;endregion 软件更新
+;endregion 更新辅助函数
 ;region 身份辅助函数
 ;tag 下载指定URL的内容
 DownloadUrlContent(url) {
@@ -1835,7 +1844,7 @@ MsgSponsor(*) {
     guiSponsor.Add("Text", "w280 Wrap", "赞助信息生成器")
     guiTier := guiSponsor.Add("DropDownList", "Range", ["铜Doro会员", "银Doro会员", "金Doro会员"])
     guiDuration := guiSponsor.Add("DropDownList", "Range", ["1个月", "3个月", "6个月", "12个月"])
-    guiSponsor.Add("Button", "r1", "我已赞助").OnEvent("Click", CalculateSponsorInfo)
+    guiSponsor.Add("Button", "r1", "我已赞助，生成赞助信息").OnEvent("Click", CalculateSponsorInfo)
     guiSponsor.Show("w300 h300")
 }
 CalculateSponsorInfo(thisGuiButton, info) {
@@ -1859,7 +1868,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     ; 步骤5：复制到剪切板
     A_Clipboard := jsonString
     ; 给出提示
-    MsgBox("赞助信息已生成并复制到剪贴板：`n请加群(584275905)后将其连同付款截图发送给群主" . jsonString)
+    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我。`n可以加入DoroHelper反馈群(584275905)并私信我`n也可以发我的 qq 邮箱(1204244136@qq.com)`n24 小时内我会进行登记并通知，之后重启软件即可")
 }
 ;tag 帮助
 ClickOnHelp(*) {
@@ -2268,7 +2277,7 @@ BattleSettlement() {
                         Click "Up"
                     }
                     else {
-                        AddLog("红圈打完了")
+                        ; AddLog("红圈打完了")
                         checkred := 0
                         break
                     }

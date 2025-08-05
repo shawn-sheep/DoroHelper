@@ -107,12 +107,14 @@ global g_settings := Map(
     "SelfClosing", 0,            ;完成后自动关闭程序
     "OpenBlablalink", 0,         ;完成后打开Blablalink
     "CheckEvent", 0,             ;活动结束提醒
+    "AutoStartNikke", 0,         ;使用脚本启动NIKKE
     ;其他
     "BluePill", 0,               ;万用开关
     "RedPill", 0                 ;万用开关
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(
+    "StartupPath", "",            ;启动路径
     "SleepTime", 1000,            ;默认等待时间
     "InterceptionBoss", 1,        ;拦截战BOSS选择
     "Tolerance", 1,               ;宽容度
@@ -147,7 +149,6 @@ NikkeYP := 0
 NikkeWP := 0
 NikkeHP := 0
 TrueRatio := 1
-currentScale := A_ScreenDPI / 96
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -537,9 +538,9 @@ Btn4k := doroGui.Add("Button", "w60 h30 ", "4k")
 Btn4k.OnEvent("Click", (Ctrl, Info) => AdjustSize(3840, 2160))
 g_settingPages["Default"].Push(Btn4k)
 ;tag 二级登录Login
-SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====(暂无)")
+SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := doroGui.Add("Text", "R1", "使用脚本启动NIKKE[会员专享]")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[会员专享]", "R1 ")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
@@ -811,12 +812,11 @@ ClickOnDoro(*) {
     LogBox.Value := ""
     ;写入设置
     WriteSettings()
-    ;写入宽容度
-    PicTolerance := g_numeric_settings["Tolerance"]
     ;设置窗口标题匹配模式为完全匹配
     SetTitleMatchMode 3
-    AutoStartNikke
-    Sleep 1000
+    if g_settings["Login"]
+        AutoStartNikke() ;登陆到主界面
+    Sleep 200
     Initialization
     if !g_settings["AutoCheckUserGroup"]
         CheckUserGroup
@@ -935,8 +935,55 @@ ClickOnDoro(*) {
         ExitApp
     }
 }
+;tag 脚本启动NIKKE
+AutoStartNikke() {
+    if g_settings["AutoStartNikke"] {
+        if UserGroup = "金Doro会员" or UserGroup = "管理员" or A_Now < 20250806240000 {
+            targetExe := "nikke.exe"
+            if WinExist("ahk_exe " . targetExe) {
+                AddLog("NIKKE已经在运行中，跳过启动")
+                return
+            }
+            while g_numeric_settings["StartupPath"] != "" {
+                SetTitleMatchMode 3
+                targetExe := "nikke_launcher.exe"
+                if WinExist("ahk_exe " . targetExe) {
+                    sleep 10000
+                    winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
+                    actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
+                    AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
+                    ;激活该窗口
+                    WinActivate(winID)
+                    nikkeID := winID
+                    WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
+                    global TrueRatio := NikkeH / stdScreenH
+                    UserClick(594, 1924, TrueRatio)
+                    Sleep 3000
+                    break
+                }
+                else {
+                    AddLog("正在启动NIKKE启动器，请稍等……")
+                    Run(g_numeric_settings["StartupPath"])
+                    sleep 3000
+                }
+            }
+            else {
+                MsgBox("请添加启动器的路径！")
+                Pause
+            }
+        }
+        else {
+            MsgBox("当前用户组不支持使用脚本启动NIKKE，请点击赞助按钮升级会员组")
+            Pause
+        }
+    }
+}
 ;tag 初始化
 Initialization() {
+    global NikkeX
+    global NikkeY
+    global NikkeW
+    global NikkeH
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {
         winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
@@ -960,7 +1007,7 @@ Initialization() {
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
     global TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
     GameRatio := Round(NikkeW / NikkeH, 3)
-    AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
+    AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")

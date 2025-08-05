@@ -4,6 +4,11 @@
 #Include <GuiCtrlTips>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
+;检测管理员身份
+if !A_IsAdmin {
+    MsgBox "请以管理员身份运行Doro"
+    ExitApp
+}
 ;region 设置常量
 try TraySetIcon "doro.ico"
 currentVersion := "v1.4.14"
@@ -130,6 +135,19 @@ if A_Username = "12042"
 else
     UserGroup := "普通用户"
 Hashed := ""
+stdScreenW := 3840
+stdScreenH := 2160
+nikkeID := ""
+NikkeX := 0
+NikkeY := 0
+NikkeW := 0
+NikkeH := 0
+NikkeXP := 0
+NikkeYP := 0
+NikkeWP := 0
+NikkeHP := 0
+TrueRatio := 1
+currentScale := A_ScreenDPI / 96
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -789,6 +807,16 @@ if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
 ;endregion 创建GUI
 ;tag 点击运行
 ClickOnDoro(*) {
+    ;清空文本
+    LogBox.Value := ""
+    ;写入设置
+    WriteSettings()
+    ;写入宽容度
+    PicTolerance := g_numeric_settings["Tolerance"]
+    ;设置窗口标题匹配模式为完全匹配
+    SetTitleMatchMode 3
+    AutoStartNikke
+    Sleep 1000
     Initialization
     if !g_settings["AutoCheckUserGroup"]
         CheckUserGroup
@@ -909,29 +937,6 @@ ClickOnDoro(*) {
 }
 ;tag 初始化
 Initialization() {
-    ;检测管理员身份
-    if !A_IsAdmin {
-        MsgBox "请以管理员身份运行Doro"
-        ExitApp
-    }
-    global stdScreenW := 3840
-    global stdScreenH := 2160
-    global nikkeID := ""
-    global NikkeX := 0
-    global NikkeY := 0
-    global NikkeW := 0
-    global NikkeH := 0
-    global NikkeXP := 0
-    global NikkeYP := 0
-    global NikkeWP := 0
-    global NikkeHP := 0
-    global currentScale := 1
-    global TrueRatio := 1
-    LogBox.Value := ""
-    WriteSettings()
-    PicTolerance := g_numeric_settings["Tolerance"]
-    ;设置窗口标题匹配模式为完全匹配
-    SetTitleMatchMode 3
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {
         winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
@@ -953,8 +958,7 @@ Initialization() {
     nikkeID := winID
     WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
-    currentScale := A_ScreenDPI / 96 ;确定dpi缩放比例，主要影响识图
-    TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
+    global TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`ndpi缩放比例是" currentScale "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
     AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")

@@ -794,7 +794,7 @@ doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没�
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
 LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h340 ReadOnly")
-LogBox.Value := "日志开始...`r`n" ;初始内容
+LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
 doroGui.Show()
@@ -1172,7 +1172,7 @@ CheckForUpdate(isManualCheck) {
         latestObj.source := "mirror"
         latestObj.display_name := "Mirror酱"
         sourceName := "Mirror酱"
-        AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)...")
+        AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
         if Trim(g_numeric_settings["MirrorCDK"]) = "" {
             if (isManualCheck) {
                 MsgBox("Mirror酱 CDK 为空，无法检查更新。", sourceName . "检查更新错误", "IconX")
@@ -1326,7 +1326,7 @@ CheckForUpdate(isManualCheck) {
         latestObj.source := "github"
         latestObj.display_name := "Github"
         sourceName := "Github"
-        AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)...")
+        AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
         try {
             local allReleases := Github.historicReleases(usr, repo) ; 获取所有版本
             if !(allReleases is Array) || !allReleases.Length {
@@ -1347,7 +1347,7 @@ CheckForUpdate(isManualCheck) {
                     return
                 }
             } else {
-                AddLog(sourceName . " 更新检查：正式版优先，正在查找...")
+                AddLog(sourceName . " 更新检查：正式版优先，正在查找……")
                 for release_item in allReleases {
                     if !(IsObject(release_item) && (release_item.HasProp("version") || release_item.HasProp("tag_name"))) {
                         AddLog(sourceName . " DEBUG: 跳过一个无效的或缺少版本信息的 Release 对象")
@@ -1872,7 +1872,7 @@ CheckUserGroup() {
         }
     } else {
         ; 设备识别码不在会员数据中
-        AddLog("当前设备非会员。")
+        AddLog("当前设备非会员")
     }
 }
 ;endregion 身份辅助函数
@@ -1880,7 +1880,7 @@ CheckUserGroup() {
 ;tag 保存并重启
 SaveAndRestart(*) {
     WriteSettings() ; 保存设置到文件
-    AddLog("设置已保存，正在重启 DoroHelper...")
+    AddLog("设置已保存，正在重启 DoroHelper……")
     Reload() ; 重启脚本
 }
 ;tag 全选任务列表

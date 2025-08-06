@@ -3961,6 +3961,7 @@ AwardLoveTalking() {
                 }
                 Sleep 1000
                 while true {
+                    AddLog("随机点击对话框")
                     UserClick(1894, 1440, TrueRatio) ;点击1号位默认位置
                     Sleep 200
                     UserClick(1903, 1615, TrueRatio) ;点击2号位默认位置
@@ -3978,6 +3979,7 @@ AwardLoveTalking() {
             }
         }
         while !(ok := FindText(&X, &Y, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.009 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.009 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("确认咨询结算")
             Confirm
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.970 * NikkeW . " ", NikkeY + 0.403 * NikkeH . " ", NikkeX + 0.970 * NikkeW + 0.024 * NikkeW . " ", NikkeY + 0.403 * NikkeH + 0.067 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询·向右的图标"), , , , , , , TrueRatio, TrueRatio)) {

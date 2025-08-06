@@ -108,12 +108,14 @@ global g_settings := Map(
     "OpenBlablalink", 0,         ;完成后打开Blablalink
     "CheckEvent", 0,             ;活动结束提醒
     "AutoStartNikke", 0,         ;使用脚本启动NIKKE
+    "Timedstart", 0,             ;定时启动
     ;其他
     "BluePill", 0,               ;万用开关
     "RedPill", 0                 ;万用开关
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(
+    "StartupTime", "",            ;定时启动时间
     "StartupPath", "",            ;启动路径
     "SleepTime", 1000,            ;默认等待时间
     "InterceptionBoss", 1,        ;拦截战BOSS选择
@@ -542,12 +544,23 @@ SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项
 g_settingPages["Login"].Push(SetLogin)
 StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[会员专享]", "R1 ")
 g_settingPages["Login"].Push(StartupText)
-StartupPathText := doroGui.Add("Text", "xs R1 +0x0100", "启动器路径")
+StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
-StartupPathEdit := doroGui.Add("Edit", "x+10 yp+1 w180 h20")
+StartupPathEdit := doroGui.Add("Edit", "x+5 yp+1 w180 h20")
 StartupPathEdit.Value := g_numeric_settings["StartupPath"]
 StartupPathEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupPath"] := Ctrl.Value)
 g_settingPages["Login"].Push(StartupPathEdit)
+SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[会员专享]", "xs R1")
+g_settingPages["Login"].Push(SetTimedstart)
+StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
+g_settingPages["Login"].Push(StartupTimeText)
+StartupTimeEdit := doroGui.Add("Edit", "x+5 yp+1 w100 h20")
+StartupTimeEdit.Value := g_numeric_settings["StartupTime"]
+StartupTimeEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupTime"] := Ctrl.Value)
+g_settingPages["Login"].Push(StartupTimeEdit)
+StartupTimeInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
+doroGui.Tips.SetTip(StartupTimeInfo, "填写格式为 HHmmss`n例如：080000 表示早上8点")
+g_settingPages["Login"].Push(StartupTimeInfo)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
@@ -802,10 +815,22 @@ if (scriptExtension = "ahk") {
     MyFileShortHash := SubStr(MyFileHash, 1, 7)
     AddLog("当前ahk文件的短哈希值是：" MyFileShortHash)
 }
-doroGui.Show()
-if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
-    ClickOnHelp
-;endregion 创建GUI
+;tag 定时启动
+if g_settings["Timedstart"] {
+    if UserGroup = "金Doro会员" or UserGroup = "管理员" or A_Now < 20250806240000 {
+        if !g_numeric_settings["StartupTime"] {
+            MsgBox("请设置定时启动时间")
+            Pause
+        }
+        StartDailyTimer()
+        return
+    } else {
+        MsgBox("当前用户组不支持定时启动，请点击赞助按钮升级会员组")
+        Pause
+    }
+}
+;endregion 前置任务
+;region 启动辅助函数
 ;tag 点击运行
 ClickOnDoro(*) {
     ;清空文本
@@ -1059,6 +1084,46 @@ Initialization() {
     else {
         AddLog("显示器不足1080p分辨率")
     }
+}
+;tag 定时启动
+StartDailyTimer() {
+    ; 1. 获取目标时间字符串，例如 "080000"
+    target_time_string := g_numeric_settings["StartupTime"]
+    ; 2. 创建一个表示今天目标时间的时间戳，例如 "20250806080000"
+    today_target_time := A_YYYY . A_MM . A_DD . target_time_string
+    local next_run_time ; 声明为局部变量
+    ; 3. 比较当前时间 A_Now 和今天目标时间
+    if (A_Now > today_target_time) {
+        ; 如果当前时间已过，则将目标设置为明天的同一时间
+        ; 首先，使用 DateAdd 获取 24 小时后的时间戳
+        tomorrow_timestamp := DateAdd(A_Now, 1, "d")
+        ; 然后，提取出明天的日期部分 (YYYYMMDD)
+        tomorrow_date_part := SubStr(tomorrow_timestamp, 1, 8)
+        ; 最后，将明天的日期和目标时间拼接起来
+        next_run_time := tomorrow_date_part . target_time_string
+    } else {
+        ; 如果当前时间未到，则设置定时器到今天
+        next_run_time := today_target_time
+    }
+    ; 4.使用 DateDiff() 精确计算距离下一次执行还有多少秒
+    seconds_until_next_run := DateDiff(next_run_time, A_Now, "Seconds")
+    ; 5. 将秒转换为毫秒
+    milliseconds := seconds_until_next_run * 1000
+    ; 计算小时、分钟和秒
+    local hours_until := seconds_until_next_run // 3600
+    local minutes_until := Mod(seconds_until_next_run, 3600) // 60
+    local seconds_until := Mod(seconds_until_next_run, 60)
+    ; 6. 格式化日志输出，方便阅读和调试
+    AddLog("定时器已设置。下一次执行时间："
+        . SubStr(next_run_time, 1, 4) . "-"
+        . SubStr(next_run_time, 5, 2) . "-"
+        . SubStr(next_run_time, 7, 2) . " "
+        . SubStr(next_run_time, 9, 2) . ":"
+        . SubStr(next_run_time, 11, 2) . ":"
+        . SubStr(next_run_time, 13, 2)
+        . " (在 " . hours_until . " 小时 " . minutes_until . " 分 " . seconds_until . " 秒后)")
+    ; 7. 使用负值来设置一个只执行一次的定时器
+    SetTimer(ClickOnDoro, -milliseconds)
 }
 ;endregion 启动辅助函数
 ;region 更新辅助函数

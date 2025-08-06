@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.0"
+currentVersion := "v1.5.1"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -846,7 +846,7 @@ ClickOnDoro(*) {
     SetTitleMatchMode 3
     if g_settings["Login"]
         AutoStartNikke() ;登陆到主界面
-    Sleep 200
+    Sleep 5000
     Initialization
     if !g_settings["AutoCheckUserGroup"]
         CheckUserGroup

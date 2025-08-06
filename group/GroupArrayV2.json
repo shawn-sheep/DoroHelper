@@ -88,7 +88,7 @@
     "expiry_date": "20251231"
   },
   "2db1eece8849f8a6f19136e716dda34852f94e6dac6ade38fbbe73a65f46bd38": {
-    "tier": "银Doro会员",
+    "tier": "金Doro会员",
     "expiry_date": "20251231"
   },
   "a0dfd045ebb12a6ad238b47899cb154d4430dba00c9b591b3951847c913f0955": {
@@ -210,6 +210,26 @@
   "43fe24a60875ce7db6f3959b4f7f996e85f423d9c8cf55aebe1c3c1e964401e7": {
     "tier": "铜Doro会员",
     "expiry_date": "20250905"
+  },
+  "6d36027a6469126ee07180aa43faddca1126be2cf035878c04d886f6a57f069e": {
+    "tier": "银Doro会员",
+    "expiry_date": "20250905"
+  },
+  "62953f6411039dfdf66c70c209e13d244b3de8c79ab5fc4ff7027a0562fad38b": {
+    "tier": "银Doro会员",
+    "expiry_date": "20250905"
+  },
+  "75154a1cccec14721f4a616812ca9ab15cd58b73983d683eb323f75cbbdcf191": {
+    "tier": "金Doro会员",
+    "expiry_date": "20251104"
+  },
+  "6fc7d270ece490667ecd3ec61a1583ee9f63ba188d1fae8d271d2dc7c55cfa77": {
+    "tier": "银Doro会员",
+    "expiry_date": "20260203"
+  },
+  "9a42de815bd1f0a4622d8ecd6830824a5d9941d7b8207a039c83f855903942c3": {
+    "tier": "银Doro会员",
+    "expiry_date": "20250906"
   },
   "test": {
     "tier": "银Doro会员",

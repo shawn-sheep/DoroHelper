@@ -965,6 +965,10 @@ ClickOnDoro(*) {
 }
 ;tag 脚本启动NIKKE
 AutoStartNikke() {
+    global NikkeX
+    global NikkeY
+    global NikkeW
+    global NikkeH
     if g_settings["AutoStartNikke"] {
         if UserGroup = "金Doro会员" or UserGroup = "管理员" or A_Now < 20250806240000 {
             targetExe := "nikke.exe"
@@ -976,7 +980,7 @@ AutoStartNikke() {
                 SetTitleMatchMode 3
                 targetExe := "nikke_launcher.exe"
                 if WinExist("ahk_exe " . targetExe) {
-                    sleep 10000
+                    sleep 1000
                     winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
                     actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
                     AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
@@ -992,7 +996,7 @@ AutoStartNikke() {
                 else {
                     AddLog("正在启动NIKKE启动器，请稍等……")
                     Run(g_numeric_settings["StartupPath"])
-                    sleep 3000
+                    sleep 10000
                 }
             }
             else {

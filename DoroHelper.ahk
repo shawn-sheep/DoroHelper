@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.4.14"
+currentVersion := "v1.5.0"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -121,8 +121,8 @@ global g_numeric_settings := Map(
     "Tolerance", 1,               ;宽容度
     "MirrorCDK", "",              ;Mirror酱的CDK
     "Version", currentVersion,    ;版本号
-    "UpdateChannels", "正式版",     ;更新渠道
-    "DownloadSource", "GitHub"     ;下载源
+    "UpdateChannels", "正式版",    ;更新渠道
+    "DownloadSource", "GitHub"    ;下载源
 )
 ;tag 其他全局变量
 Victory := 0
@@ -399,7 +399,6 @@ FindText().PicLib("|<对话框·想法>*150$84.000000000001zz000000000003zz00000
 FindText().PicLib("|<爆裂·A>*200$24.zzzzzzzzzs7zzs3zzk3zzk3zzk1zzk1zzVVzzVUzzVkzz1kzz3kTz3kTy3sTy00Ty00Dw00Dw00Dw007wDw7sDw7sDy3sTy3kTy3zzzzzzzzU", 1)
 FindText().PicLib("|<爆裂·S>*200$21.zzzzzzzz0DzU0Ds00z007k00y3w7kTky3y7kTzy0Tzk07z00Dw00zs07zy0Tzy3zzkS3y3kTkS003s00T007s00zk0TzzzzzzzU", 1)
 ;endregion 识图素材
-;region 启动辅助函数
 ;region 创建GUI
 ;tag 基础配置
 g_settingPages := Map("Default", [], "Login", [], "Shop", [], "SimulationRoom", [], "Arena", [], "Tower", [], "Interception", [], "Event", [], "Award", [], "Settings", [],)
@@ -798,12 +797,22 @@ LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h340 ReadOnly")
 LogBox.Value := "日志开始...`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
+doroGui.Show()
+;endregion 创建GUI
+;region 前置任务
+;tag 广告
+if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
+    ClickOnHelp
+;tag 删除旧文件
 if g_settings["AutoDeleteOldFile"]
     DeleteOldFile
+;tag 检查更新
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
+;tag 检查用户组
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup
+;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
 if (scriptExtension = "ahk") {

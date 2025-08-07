@@ -456,7 +456,7 @@ PostMessage(0x153, 0, 30, cbDownloadSource)
 ;tag Mirror酱
 MirrorText := doroGui.Add("Text", "xs R1 +0x0100", "Mirror酱CDK")
 MirrorInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(MirrorInfo, "Mirror酱是一个第三方应用分发平台，让你能在普通网络环境下更新应用`r`n网址：https://mirrorchyan.com/zh/（付费使用）")
+doroGui.Tips.SetTip(MirrorInfo, "Mirror酱是一个第三方应用分发平台，让你能在普通网络环境下更新应用`n网址：https://mirrorchyan.com/zh/（付费使用）`nMirror酱和Doro会员并无任何联系")
 MirrorEditControl := doroGui.Add("Edit", "x140 yp+1 w100 h20")
 MirrorEditControl.Value := g_numeric_settings["MirrorCDK"]
 MirrorEditControl.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["MirrorCDK"] := Ctrl.Value)

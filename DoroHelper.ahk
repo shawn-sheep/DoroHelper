@@ -3216,7 +3216,7 @@ ArenaChampion() {
 TowerCompany() {
     EnterToArk
     AddLog("===企业塔任务开始===")
-    while (ok := FindText(&X, &Y, NikkeX + 0.559 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.559 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔的无限"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.539 * NikkeW . " ", NikkeY + 0.373 * NikkeH . " ", NikkeX + 0.539 * NikkeW + 0.066 * NikkeW . " ", NikkeY + 0.373 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔的无限"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入无限之塔")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
     }
@@ -3268,7 +3268,7 @@ TowerCompany() {
 TowerUniversal() {
     EnterToArk
     AddLog("===通用塔任务开始===")
-    while (ok := FindText(&X, &Y, NikkeX + 0.559 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.559 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔的无限"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.539 * NikkeW . " ", NikkeY + 0.373 * NikkeH . " ", NikkeX + 0.539 * NikkeW + 0.066 * NikkeW . " ", NikkeY + 0.373 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔的无限"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入无限之塔")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
     }

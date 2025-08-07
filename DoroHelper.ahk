@@ -3021,10 +3021,11 @@ AwardArena() {
     AddLog("===竞技场收菜任务开始===")
     AddLog("查找奖励")
     foundReward := false
-    while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.552 * NikkeW . " ", NikkeY + 0.493 * NikkeH . " ", NikkeX + 0.552 * NikkeW + 0.075 * NikkeW . " ", NikkeY + 0.493 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("SPECIAL"), , 0, , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.565 * NikkeW . " ", NikkeY + 0.427 * NikkeH . " ", NikkeX + 0.565 * NikkeW + 0.077 * NikkeW . " ", NikkeY + 0.427 * NikkeH + 0.054 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("SPECIAL"), , 0, , , , , TrueRatio, TrueRatio)) {
         foundReward := true
         AddLog("点击奖励")
         FindText().Click(X + 30 * TrueRatio, Y, "L")
+        Sleep 1000
     }
     if foundReward {
         while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -3044,7 +3045,7 @@ EnterToArena() {
     if (ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         return
     }
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.712 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.712 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.554 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.554 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击竞技场")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
     }

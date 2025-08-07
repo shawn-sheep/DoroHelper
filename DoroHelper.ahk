@@ -2267,8 +2267,7 @@ Confirm() {
 GoBack() {
     AddLog("返回")
     Send "{Esc}"
-    Sleep 500
-    if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
     }
     Send "{]}"
@@ -4601,7 +4600,6 @@ QuickBurst(*) {
 }
 ;tag 暂停程序
 ^2:: {
-    WriteSettings
     Pause
 }
 ;tag 初始化并调整窗口大小

@@ -182,7 +182,7 @@ catch {
 FindText().PicLib("|<白色的叉叉>*220$28.zzzzszzzz1zzzsXzzz77zzsyDzz7wTzszszz7zlzszzXz7zz7szzyD7zzwMzzzs7zzzkzzzz3zzzs7zzz6DzzswTzz7szzszlzz7znzszz7z7zyDszzwT7zzsszzzlDzzzVzzzzc", 1)
 ;tag 登录
 FindText().PicLib("|<一周内不再显示的框>*200$51.000000000000000000000000001zzzzzy00zzzzzzw0Dzzzzzzk3zzzzzzz0Tzzzzzzs7zzzzzzz0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7s00000T0z000003s7zzzzzzz0Tzzzzzzs1zzzzzzy0Dzzzzzzk0zzzzzzw01zzzzzy000000000000000000000000004", 1)
-FindText().PicLib("|<签到·全部领取的全部>*200$76.zzwzzzzszzzzzzzUzzzy3zzzzzzw1zzzs7y03zzzU7zzzkTs03zzw0Dzz001U0DzzU0Tzs00600zzw00zzU00M43zzUA0zy001VkTzs1s1zw00671yy0Dk1zsDUsQ7nk1zU1zkQ7VUyA0DzU1z1kS63k01zz01w61s8D200000Dk87U1yA00001s00007wk0000DU0000Tzw000Cy0001Uzjs000zs00271yzzsDzzzzzsQ7vzzUzzzzzzVsTjzw3zzzzzy7UzzU003zk00MS3zy000Dz001VsDzs000zw0067UzzU003zk00MA3zz000Tz1y1U0Dzzw3zzw7s601yzzsDzzkTUME7zzz0zzz001V0zw00001w0067Tzk00007k00MTzz00000T001Vzzw00001w0067zzs0000DkTkMTzy", 1)
+FindText().PicLib("|<签到·全部领取的全部>*200$68.zznzzzwTzzzzzsDzzy7z0Dzzw7zzzkzk0zzy0zzzk7w07zz03zz00701zzU0Tzk01kkTzkA3zw00QQDzk7UDzkwD73zk3w1zwT3lkzk3zk7z3kwQTU1zy0DksT67k0zzk3yC7lXwU0001s00AMzg0000S0036Dzs001zU00lVzz000zs00AQDzzsTzzzzz73zzy7zzzzzlszzzVzzzzzwSDzk00Dz0077Vzw003zk01lsTz000zw00QS7zk00Dz1w721zzy7zzkzVk0zzzVzzwDsQMDzzsTzz3y767z00007k01lzzU0001y00QTzs0000TU077zy00007s01lzzzzzzzwDsQTzs", 1)
 ;tag 通用
 FindText().PicLib("|<红点>F8541D-0.74$20.07k0Tz0Dzs7zz3zztzzyTzzrzzzzzzzzzzzzxzzzTzzrzzszzyDzzUzzkDzs1zs07s2", 1)
 FindText().PicLib("|<圈中的感叹号>*150$37.zzs7zzzzU0Dzzy001zzy000Dzy1zs3zw3zz0zy3zzsDy3zzy3y7zzzUy3zzzsT3zszy73zwTzXVzyDzklzzzzsEzzzzy8Tzzzz4TzzzzUDzwTzk7zyDzs3zz7zw1zzXzy0Tzlzz0DzszzX7zwTzlVzyDzkkzz7zswTzXzsS7zlzwDVzzzwDkTzzwDw7zzw7z1zzs7zkDzk7zw0T0DzzU00Dzzw00TzzzU1zzk", 1)
@@ -846,7 +846,6 @@ ClickOnDoro(*) {
     SetTitleMatchMode 3
     if g_settings["Login"]
         AutoStartNikke() ;登陆到主界面
-    Sleep 5000
     Initialization
     if !g_settings["AutoCheckUserGroup"]
         CheckUserGroup
@@ -990,7 +989,7 @@ AutoStartNikke() {
                     WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
                     global TrueRatio := NikkeH / stdScreenH
                     UserClick(594, 1924, TrueRatio)
-                    Sleep 3000
+                    Sleep 5000
                     break
                 }
                 else {
@@ -2582,14 +2581,22 @@ Login() {
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             check := check + 1
+            Sleep 1000
             continue
         }
         else check := 0
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.533 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.533 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.059 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.844 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.844 * NikkeH + 0.140 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            Sleep 1000
+        }
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.533 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.533 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.059 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            BackToHall
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.179 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.287 * NikkeW . " ", NikkeY + 0.179 * NikkeH + 0.805 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("一周内不再显示的框"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            Sleep 1000
         }
         ;点击蓝色的确认按钮（如果出现更新提示等消息）
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {

@@ -316,6 +316,7 @@ FindText().PicLib("|<灰色的全部>BBBBBB-0.90$77.002000020000000D0000y0000000
 FindText().PicLib("|<活动·切换的图标>*200$54.zzzU3zzzzzzw00Dzzzzzk003zzzzz0000Tzzzy0000Dzzzw00003zzzs03w01zzzk0TzU0zzzU1zzs0TzzU3zzy1zzz07zzzXzzz0Dzzzrzzz0Tzzzzzzz0Tzzzzzzy0zzzzzvzy0zzzzzlzC0zzzzzUzU0zzzzy0Tk07zzzw0Ds01zzzk07w07zzzU03y0Dzzzz01z0zzzzzU0zVzzzzz0Tznzzzzz0Tzzzzzzz0Tzzzzzzy0Tzzzzzzy0Tzztzzzw0zzzUTzzs0zzz0Dzzk1zzz03zzU1zzzU0Ty03zzzk00007zzzw0000Dzzzy0000TzzzzU001zzzzzs003zzzzzz00TzzU", 1)
 FindText().PicLib("|<作战出击的击>*200$63.zzzzs1zzzzzzzzz03zzzzzzzzs0Tzzzzzzzz03zzzzzzzzs0Tzzzzzzzz03zzzzy0Tzs0Tzzzzk00D03zzzzy00000Dzzzzk000003zzzy00000000zzk00000000Dy000000001zk00000000Dzz00000001zzzzU00000Dzzzzs00001zzzzz01s00Dzzzzs0Tzw1zzzzz03zzzzUTzzs0Tzzzs00Dz03zzzz000000Tzzzs000001zzzz00000001zzs000000000z000000000000000000000U0000000007zk00000000zzzs0000007zzzz000000zzzzs0A0007s0zz03zy00z03zs0Tzzz7s0Tz03zzzzz03zs0Tzzzzs0Tz03zs3zz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs00D03zs0Tz00000Dz03zs000007s0Tz000000003zs00000000Tz000000003zs00000000Tzzk0000003zzzzk00000Tzzzzzs0003zzzzzzzs00Tzzzzzzzz03zzzzzzzzs0TzzzzzzzzU3zzzzzzzzzszU", 1)
 FindText().PicLib("|<前往区域的图标>*155$39.zzznzzzzzyDzzzzzlzzzzzy3zzzzzkTzzzzy0zzzzzU3zs0000Dz00000zs00003z00000Ds00000z000003s00000D000000s00000300000080000000000000000000000000M000007000001s00000T000007s00001z00000Ts00007z00000zs0000Dzzzzk3zzzzy1zzzzzkTzzzzy7zzzzzlzzzzzyTzzzzzrzzw", 1)
+FindText().PicLib("|<0体力>*150$22.w01zU01w003U0047zkEzzU3zz0Dzw0zzk3zz0Dzw0zzk3zz0Dzw0zzk3zz0Dzw0TzVUzw6000w003w00zw0Ds", 1)
 ;tag 小活动
 FindText().PicLib("|<小活动的标识>*200$39.3zzzzzsTzzzzz3zzzzzsTzzzzz1zzzzzsDzzzzU1zzzzw07zzzzU0zzzzw07zzzzU0Tzzzw03zzzzU0Dzzzw01zzzzU07zzzw00zzzzU07zzzw0ETzzzU23zzzw0MDzzzU31zzzw0Q7zzzU3Uzzzw0Q3zzzU3kTzzw0S1zzzU3sDzzw0TUzzzU3w3zzw0TkTzzU3y1zzw0TsDzzU3zUzzw0Tw3zzU3zkDzw0Tz0zzU3zs3zw0TzUTzU3zy1zw0Tzs7zU3zzUDw0Tzy0zU3zzs3w0TzzU7U3zzy0A7zzzs00zzzzk07zzzz00zzzzy07zzzzy0zzzzzy4", 1)
 FindText().PicLib("|<小活动·挑战>*200$81.y7zVkzzzlzzXzzkzwC7zzw7zwDzy7zVkzzzUzzVXzkzwC7zzw7zwADy7zVkzzzUzzVkzkyQC7Xzw7zwD3y7VVksDzUTzVsQ00AC73zw01wDjU0E1ksTzU0DVzw020C67zw01wDzU0s1kUzzUTzVwDUT0C0Dzw7zs01y7w1k1zzUzs00DkzUC0Tzw7y003y7zVkzzzUzk0TzkzwC7zzw7z0Dzy7zVkzzzUzzVwzk3wC7zzw7zyDXy0TVk7zk00TksT03sC0Ty003y7300y1k1zk00Tkks0z0C07y003y67U7k1kkTkzsTk1w0s0C71y7z3y0Dy701kw7kzsTs3zksMS7ly7z3z0zy7b3kyTkzsTs7zkxsS7zy7z3z1zy7y3kzzkzsTsDTkzUy7ly7z3y1sy7w7ky7kzsTUD7kz1y7ky003k0ky7kDky7k00Q00DUw3y3Vy0020k1U70zk0Dk00ED0C1sDz01y7z33s3kDXzw0TkzsTzkS7zzzwTzzzzzzDU", 1)
@@ -3402,6 +3403,8 @@ InterceptionAnomaly() {
 ;region 小活动
 EventSmall() {
     BackToHall
+    ; UserClick(2640, 1810, TrueRatio)
+    ; Sleep 5000
     while true {
         if (ok := FindText(&X, &Y, NikkeX + 0.745 * NikkeW . " ", NikkeY + 0.814 * NikkeH . " ", NikkeX + 0.745 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.814 * NikkeH + 0.018 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到小活动")
@@ -3439,6 +3442,7 @@ EventSmall() {
         Confirm
         UserClick(2345, 1977, TrueRatio)
         AddLog("===通用模式===")
+通用模式:
         Sleep 1000
         if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.337 * NikkeW . " ", NikkeY + 0.234 * NikkeH . " ", NikkeX + 0.337 * NikkeW + 0.340 * NikkeW . " ", NikkeY + 0.234 * NikkeH + 0.627 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {
@@ -3451,9 +3455,12 @@ EventSmall() {
                 global EventStory := 0
             }
         }
-        AddLog("===小活动任务结束===")
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.286 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.286 * NikkeH + 0.015 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("0体力"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("体力已耗尽")
+        }
+        else goto 通用模式
     }
-    BackToHall
+    AddLog("===小活动任务结束===")
 }
 ;endregion 小活动
 ;region 大活动

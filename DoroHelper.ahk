@@ -4247,7 +4247,7 @@ AwardPass() {
                 break
             }
         }
-        if (ok := FindText(&X, &Y, NikkeX + 0.878 * NikkeW . " ", NikkeY + 0.151 * NikkeH . " ", NikkeX + 0.878 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.151 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("通行证·2"), , , , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.878 * NikkeW . " ", NikkeY + 0.151 * NikkeH . " ", NikkeX + 0.878 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.151 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("通行证·2"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("2通行证模式")
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
@@ -4264,6 +4264,13 @@ AwardPass() {
                 AddLog("通行证已全部收取")
                 break
             }
+        }
+        else {
+            AddLog("1通行证模式")
+            UserClick(3824, 288, TrueRatio)
+            Sleep 1000
+            OneAwardPass()
+            break
         }
         BackToHall()
     }

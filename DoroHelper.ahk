@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.1"
+currentVersion := "v1.5.2"
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -545,10 +545,13 @@ StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
-StartupPathEdit := doroGui.Add("Edit", "x+5 yp+1 w180 h20")
+StartupPathEdit := doroGui.Add("Edit", "x+5 yp+1 w160 h20")
 StartupPathEdit.Value := g_numeric_settings["StartupPath"]
 StartupPathEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupPath"] := Ctrl.Value)
 g_settingPages["Login"].Push(StartupPathEdit)
+StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
+doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
+g_settingPages["Login"].Push(StartupPathInfo)
 SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[会员专享]", "xs R1")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
@@ -1071,7 +1074,7 @@ Initialization() {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("显示器是标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
-                MsgBox("尺寸过小，可能出现识图误判，但仍可以运行")
+                MsgBox("NIKKE尺寸过小，能正常运行就偷着乐吧，跑不了也别反馈")
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("显示器是1080p 加宽 (21:9 超宽屏)")
@@ -3424,8 +3427,8 @@ EventSmall() {
         Challenge
     }
     ;tag 剧情活动
-    AddLog("===剧情活动===")
     if g_settings["EventSmallStory"] {
+        AddLog("===剧情活动===")
         while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.939 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.939 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("放大镜的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试进入对应活动页")
             FindText().Click(X, Y - 100 * TrueRatio, "L")

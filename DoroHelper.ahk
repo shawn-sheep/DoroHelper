@@ -924,12 +924,7 @@ ClickOnDoro(*) {
         if g_settings["EventLarge"]
             EventLarge()
         if g_settings["EventSpecial"]
-            ;即使有会员功能，代码依旧是开源的，如果您没有能力支付会员费用而依然想使用会员功能，可以删除以下类似的代码，但恳请不要传播
-            if UserGroup = "普通用户" or UserGroup = "铜Doro会员" {
-                MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
-                Pause
-            }
-        EventSpecial()
+            EventSpecial()
         if g_settings["AwardPass"]
             AwardPass()
     }
@@ -3680,6 +3675,11 @@ EventLarge() {
 ;endregion 大活动
 ;region 特殊活动
 EventSpecial() {
+    ;即使有会员功能，代码依旧是开源的，如果您没有能力支付会员费用而依然想使用会员功能，可以删除以下类似的代码，但恳请不要传播
+    if UserGroup = "普通用户" or UserGroup = "铜Doro会员" {
+        MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
+        Pause
+    }
     BackToHall
     while (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.633 * NikkeW . " ", NikkeY + 0.788 * NikkeH . " ", NikkeX + 0.633 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.788 * NikkeH + 0.105 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("尼尔活动的图标"), , , , , , , TrueRatio, TrueRatio)) {

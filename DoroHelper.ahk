@@ -1021,6 +1021,10 @@ Initialization() {
     if WinExist("ahk_exe " . targetExe) {
         winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
         actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
+        if WinGetCount("ahk_exe " . targetExe) > 1 {
+            MsgBox("本脚本暂不支持多开")
+            ExitApp
+        }
         AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
         if actualWinTitle = "胜利女神：新的希望" {
             MsgBox ("不支持国服，自动关闭！")

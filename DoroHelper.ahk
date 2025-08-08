@@ -2583,7 +2583,6 @@ Login() {
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.533 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.533 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.059 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
             FindText().Click(X, Y, "L")
             Sleep 1000
-            BackToHall
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.179 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.287 * NikkeW . " ", NikkeY + 0.179 * NikkeH + 0.805 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("一周内不再显示的框"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
@@ -2595,7 +2594,7 @@ Login() {
             FindText().Click(X + 50 * TrueRatio, Y, "L")
             Sleep 1000
         }
-        Confirm
+        UserClick(330, 2032, TrueRatio)
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已中止"
             Pause

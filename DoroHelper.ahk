@@ -74,6 +74,7 @@ global g_settings := Map(
     "EventSmall", 0,             ;小活动
     "EventSmallChallenge", 0,    ;小活动挑战
     "EventSmallStory", 0,        ;小活动剧情
+    "EventSmallMission", 0,      ;小活动任务
     ;大活动
     "EventLarge", 0,             ;大活动
     "EventLargeSign", 0,         ;大活动签到
@@ -725,6 +726,8 @@ SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "�
 g_settingPages["Event"].Push(SetEventSmallChallenge)
 SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSmallStory)
+SetEventSmallMission := AddCheckboxSetting(doroGui, "EventSmallMission", "小活动任务", "R1 xs+15")
+g_settingPages["Event"].Push(SetEventSmallMission)
 SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[未开放]", "R1 xs")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
@@ -3458,6 +3461,22 @@ EventSmall() {
             AddLog("体力已耗尽")
         }
         else goto 通用模式
+        GoBack
+    }
+    ;tag 任务
+    if g_settings["EventSmallMission"] {
+        AddLog("===任务领取===")
+        if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.486 * NikkeW . " ", NikkeY + 0.742 * NikkeH . " ", NikkeX + 0.486 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.742 * NikkeH + 0.019 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            AddLog("已进入任务界面")
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.529 * NikkeW . " ", NikkeY + 0.862 * NikkeH . " ", NikkeX + 0.529 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.862 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("签到·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X + 50 * TrueRatio, Y, "L")
+                AddLog("点击全部领取")
+                Sleep 3000
+                Confirm
+            }
+        }
     }
     AddLog("===小活动任务结束===")
 }

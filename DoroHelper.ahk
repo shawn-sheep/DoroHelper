@@ -542,7 +542,7 @@ g_settingPages["Default"].Push(Btn4k)
 ;tag 二级登录Login
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[会员专享]", "R1 ")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro专享]", "R1 ")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
@@ -553,7 +553,7 @@ g_settingPages["Login"].Push(StartupPathEdit)
 StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathInfo)
-SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[会员专享]", "xs R1")
+SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro专享]", "xs R1")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
 g_settingPages["Login"].Push(StartupTimeText)
@@ -718,7 +718,7 @@ SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动�
 doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
 g_settingPages["Award"].Push(SetAwardFreeRecruit)
 ;tag 二级活动Event
-SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项[会员专享]====")
+SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项[银Doro专享]====")
 g_settingPages["Event"].Push(SetEventTitle)
 SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[ABSOLUTE]", "R1")
 g_settingPages["Event"].Push(SetEventSmall)
@@ -769,11 +769,11 @@ g_settingPages["Settings"].Push(cbOpenBlablalink)
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
 g_settingPages["Settings"].Push(cbSelfClosing)
-cbCloseNoticeHelp := AddCheckboxSetting(doroGui, "CloseNoticeHelp", "移除启动提示[会员专享]", "R1")
+cbCloseNoticeHelp := AddCheckboxSetting(doroGui, "CloseNoticeHelp", "移除启动提示[铜Doro专享]", "R1")
 g_settingPages["Settings"].Push(cbCloseNoticeHelp)
-cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[会员专享]", "R1")
+cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro专享]", "R1")
 g_settingPages["Settings"].Push(cbCloseNoticeSponsor)
-cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[会员专享]", "R1")
+cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[铜Doro专享]", "R1")
 doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
 g_settingPages["Settings"].Push(cbCheckEvent)
 ;tag 妙妙工具
@@ -925,6 +925,10 @@ ClickOnDoro(*) {
             AwardSoloRaid()
     }
     if g_settings["Event"] {
+        if UserGroup = "普通用户" UserGroup = "铜Doro会员" {
+            MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
+            Pause
+        }
         if g_settings["EventSmall"]
             EventSmall()
         if g_settings["EventLarge"]
@@ -1081,7 +1085,7 @@ Initialization() {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("显示器是标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
-                MsgBox("NIKKE尺寸过小，能正常运行就偷着乐吧，跑不了也别反馈")
+                MsgBox("NIKKE尺寸过小，请尝试全屏运行。否则的话能正常运行就偷着乐吧，跑不了也别反馈")
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("显示器是1080p 加宽 (21:9 超宽屏)")
@@ -3422,13 +3426,14 @@ EventSmall() {
             Sleep 3000
         }
         if A_Index > 1 {
-            AddLog("未找到小活动，可能是活动已结束")
+            AddLog("未找到小活动，可能是活动已结束或已完成")
             return
         }
     }
     AddLog("===小活动任务开始===")
     ;tag 挑战
     if g_settings["EventSmallChallenge"] {
+        AddLog("===挑战任务开始===")
         UserClick(1674, 1546, TrueRatio)
         sleep 1000
         Challenge
@@ -3570,7 +3575,7 @@ EventLarge() {
             }
         }
         ; 到了第三阶段会自动卡死，不用提示
-        AddLog("===通用模式===")
+        AddLog("===推关模式===")
         Sleep 1000
         if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.337 * NikkeW . " ", NikkeY + 0.234 * NikkeH . " ", NikkeX + 0.337 * NikkeW + 0.340 * NikkeW . " ", NikkeY + 0.234 * NikkeH + 0.627 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {
@@ -3787,7 +3792,7 @@ EventSpecial() {
             }
         }
         ; 到了第三阶段会自动卡死，不用提示
-        AddLog("===通用模式===")
+        AddLog("===推关模式===")
         Sleep 1000
         if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.382 * NikkeW . " ", NikkeY + 0.342 * NikkeH . " ", NikkeX + 0.382 * NikkeW + 0.244 * NikkeW . " ", NikkeY + 0.342 * NikkeH + 0.519 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("特殊活动·EVENT"), , , , , , 3, TrueRatio, TrueRatio)) {
             loop 2 {

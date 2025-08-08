@@ -3449,6 +3449,9 @@ EventSmall() {
                 EnterToBattle
                 BattleSettlement
                 global EventStory := 0
+                if BattleActive = 1 {
+                    break
+                }
             }
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.286 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.286 * NikkeH + 0.015 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("0体力"), , , , , , , TrueRatio, TrueRatio)) {

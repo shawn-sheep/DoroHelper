@@ -3485,10 +3485,10 @@ EventSmall() {
             FindText().Click(X, Y, "L")
             Sleep 1000
             AddLog("已进入任务界面")
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.529 * NikkeW . " ", NikkeY + 0.862 * NikkeH . " ", NikkeX + 0.529 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.862 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("签到·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
+            while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.529 * NikkeW . " ", NikkeY + 0.862 * NikkeH . " ", NikkeX + 0.529 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.862 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("签到·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X + 50 * TrueRatio, Y, "L")
                 AddLog("点击全部领取")
-                Sleep 3000
+                Sleep 2000
                 Confirm
             }
         }

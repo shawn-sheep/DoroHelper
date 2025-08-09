@@ -196,7 +196,7 @@ FindText().PicLib("|<圈中的感叹号>*150$37.zzs7zzzzU0Dzzy001zzy000Dzy1zs3zw
 FindText().PicLib("|<带圈白勾>*200$56.zzzw03zzzzzzs003zzzzzk000zzzzzk000Tzzzzs000Dzzzzs01z7zzzzw07zzzzzzy07zzzzvzz07zzzzwTzU7zzzzy3zk3zzzzz0Ts1zzzzzU7y0zzzzzk3z0Tzzzzs1zUDzzzzw0zs7zzzzy0Tw1zzzzz0Dz0zzzzzU7zkDzzzzk3zs7zzzzs1zy1zzzzw0zzUzzzzy0TzsDzzzz0Dzw3zrzzU7zz0zszzk3zzkDw7zs1zzw3y0zw0zzz0zk7y0TzzkDy0z0Dzy03zk7U7zzU0zy0k3zzs0Dzk01zzw23zy00zzz0Uzzk0Tzzk87zy0Dzzw61zzk7zzy1UTzy3zzzUQ3zzlzzzkD0zzyzzzw3s7zzzzzy0y1zzzzzzUTkDzzzzzk7w1zzzzzs3zUDzzzzw1zw1zzzzy0Tz0Dzzzz0Dzs1zzzzU7zz07zzzU3zzs0TzzU1zzz00zzU0zzzw00000TzzzU0000Tzzzy0000Dzzzzs000DzzzzzU00Tzzzzzzk1zzzy", 1)
 FindText().PicLib("|<灰色空心方框>*200$36.0Tzzy01zzzzU7zzzzkDk007sT0000wS0000Sw0000Cs0000Ds0000Ds00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s00007s0000Ds0000Cw0000SS0000yD0001wDzzzzs3zzzzk1zzzz0U", 1)
 FindText().PicLib("|<方舟的图标>*100$90.0000000s0000000000007zzU00000000003zzzzU000000000zzzzzz000000003zzzzzzU0000000Dzzzzzzs0000000Tzzzzzzy0000001zzzzzzzzU000007zzzzzzzzs00000Dzzzzzzzzy00000zzzzcSDzzzU0001zzzw0S3zzzk0003zzzk0S0zzzs0007zzzU0S0Dzzw000Dzzz00S07zzy000Tzzy00S01zzz000zzzw00S00zzzU01zzzs00S00Tzzk03zzzk00y00Tzzs03zzzk03z00Dzzw07zzzU0Dzk07zzy07zzzU0zzw03zzz0Dzzz01zzy03zzzUDzzz03zzz01zzzUTzzz03zzz01zzzkTzzz07zzzU0zzzszzzz07zzzU0zzzszzzzUDzzzk0zzzwzzzzzzzzzk0zzzwzzzzzzzzzs0zzzyTzzzzzzzzzzzzzyTzzz1zzzzzzzzzzDzzz07zzzzzzzzzDzzz07zzzxzzzzz7zzz07zzzk0zzzz7zzz03zzzk0zzzz3zzz03zzzU0zzzy3zzzU1zzzU0zzzy1zzzU0zzz00zzzw0zzzk0Tzy01zzzw0Tzzk07zw01zzzs0Tzzs01zk03zzzk0Dzzs00z007zzzk07zzw00S007zzzU03zzy00S00Dzzz001zzz00S00Tzzy000zzzU0S00zzzw000Tzzs0S01zzzw000Dzzw0S07zzzk0003zzz0S0DzzzU0001zzzsy1zzzz00000TzzzyDzzzw00000Dzzzzzzzzs000003zzzzzzzzk000000zzzzzzzzU000000Tzzzzzzy00000007zzzzzzU00000000zzzzzy0000000003zzzzk0000000000Dzzz000000000000z9U00000U", 1)
-FindText().PicLib("|<左上角的方舟>*150$59.zz3zzzzUzzzy3zzzy3zzzw7zzzw7zzzwDzzs003zzkDzzk007U0001zU00D00003z000S00007y7jky0000DwCDVzy3zzzsMD3zwDzzzksC7zsTzzzVsQDzk00Ty3tsDz000TU0003y000y00007w003w0000DsDy7s0000TkzwDz1zw7z1zsTy7bsTy3zkzwC3kzsDzVzkQ3VzkTy3zUw33z1zw7z3yC7w3zsTw7ywDUDzUzkTzsS0z01z0zy0y3z07y3zw1yDy0TyDzs3yzw7zzzzsTk", 1)
+FindText().PicLib("|<左上角的方舟>*150$59.zz3zzzzUzzzy3zzzy3zzzw7zzzw7zzzwDzzs003zzkDzzk007U0001zU00D00003z000S00007y7jky0000DwCDVzy3zzzsMD3zwDzzzksC7zsTzzzVsQDzk00Ty3tsDz000TU0003y000y00007w003w0000DsDy7s0000TkzwDz1zw7z1zsTy7bsTy3zkzwC3kzsDzVzkQ3VzkTy3zUw33z1zw7z3yC7w3zsTw7ywDUDz0zkTzsS0z01z0zy0y3z07y3zw1yDy0TyDzs3yzw7zzzzsTk", 1)
 FindText().PicLib("|<确认的白色勾>*200$46.zzzzzzwDzzzzzz0Tzzzzzs0zzzzzz03zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zlzzzs0Dy3zzz01zk7zzs0Dz0Dzz01zw0Tzs0Dzk0zz01zzU1zs0Dzy03z01zzw07s0Dzzs0D01zzzk080DzzzU001zzzz000Dzzzy001zzzzw00Dzzzzw01zzzzzs0Dzzzzzk1zzzzzzUDzzzzzz1zzzzzzyTzzzzU", 1)
 ;tag 商店
 ;tag 付费商店
@@ -2573,7 +2573,7 @@ EnterToArk() {
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X + 50 * TrueRatio, Y, "L") ;找得到就尝试进入
         }
-        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.014 * NikkeW . " ", NikkeY + 0.026 * NikkeH . " ", NikkeX + 0.014 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.026 * NikkeH + 0.021 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已进入方舟")
             break
         }
@@ -3067,7 +3067,7 @@ AwardArena() {
             FindText().Click(X + 50 * TrueRatio, Y, "L")
         }
         AddLog("尝试确认并返回方舟大厅")
-        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.058 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.014 * NikkeW . " ", NikkeY + 0.026 * NikkeH . " ", NikkeX + 0.014 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.026 * NikkeH + 0.021 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
     }

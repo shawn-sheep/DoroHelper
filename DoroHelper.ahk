@@ -11,7 +11,13 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.2"
+currentVersion := "v1.5.3"
+;tag 检查脚本哈希
+SplitPath A_ScriptFullPath, , , &scriptExtension
+scriptExtension := StrLower(scriptExtension)
+if (scriptExtension = "ahk") {
+    currentVersion := currentVersion . "beta"
+}
 usr := "1204244136"
 repo := "DoroHelper"
 ;endregion 设置常量
@@ -417,7 +423,7 @@ BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新").OnEvent
 BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助").OnEvent("Click", MsgSponsor)
 BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", ClickOnHelp)
 ;tag 版本
-doroGui.Add("Text", "x20 y40 R1 +0x0100", "当前版本：" currentVersion)
+doroGui.Add("Text", "x20 y40 R1 +0x0100", "版本号：" currentVersion)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "x170 yp R1")
 doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度`nahk版暂时改为下载最新版的压缩包")
 doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")

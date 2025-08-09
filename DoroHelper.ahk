@@ -2560,10 +2560,10 @@ EnterToArk() {
     AddLog("尝试进入方舟")
     while True {
         Sleep 1000
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X + 50 * TrueRatio, Y, "L") ;找得到就尝试进入
         }
-        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.058 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.010 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.052 * NikkeW . " ", NikkeY + 0.010 * NikkeH + 0.058 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的方舟"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已进入方舟")
             break
         }

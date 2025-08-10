@@ -157,6 +157,10 @@ NikkeYP := 0
 NikkeWP := 0
 NikkeHP := 0
 TrueRatio := 1
+if (scriptExtension = "ahk") {
+    MyFileHash := HashSHA256(A_ScriptFullPath)
+    global MyFileShortHash := SubStr(MyFileHash, 1, 7)
+}
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
@@ -829,8 +833,6 @@ if g_settings["AutoCheckUpdate"]
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
 if (scriptExtension = "ahk") {
-    MyFileHash := HashSHA256(A_ScriptFullPath)
-    global MyFileShortHash := SubStr(MyFileHash, 1, 7)
     AddLog("当前ahk文件的短哈希值是：" MyFileShortHash)
 }
 ;tag 定时启动
@@ -1175,7 +1177,7 @@ CheckForUpdate(isManualCheck) {
         try {
             AddLog("正在下载最新AHK版本，请稍等……")
             Download(url, localFilePath) ; 保存到当前目录，文件名可自定义
-            MsgBox "文件下载成功！已保存到当前目录: " localFilePath
+            AddLog "文件下载成功！已保存到当前目录: " localFilePath
         } catch as e {
             MsgBox "下载失败，错误信息: " e.Message
         }
@@ -1183,11 +1185,13 @@ CheckForUpdate(isManualCheck) {
         NewFileShortHash := SubStr(NewFileHash, 1, 7)
         AddLog("最新ahk文件的短哈希值是：" NewFileShortHash)
         if (NewFileShortHash != MyFileShortHash) {
-            MsgBox("发现新版本！请手动替换脚本文件")
             AddLog("发现新版本！请手动替换脚本文件")
+            MsgBox("发现新版本！请手动替换脚本文件")
         } else {
-            MsgBox("当前已是最新版本，无需更新。即将删除校验文件")
-            AddLog("当前已是最新版本，无需更新。即将删除校验文件")
+            if (isManualCheck) {
+                MsgBox("当前已是最新版本，无需更新，即将删除校验文件")
+            }
+            AddLog("当前已是最新版本，无需更新，即将删除校验文件")
             FileDelete localFilePath
         }
         return

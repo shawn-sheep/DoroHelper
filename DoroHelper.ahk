@@ -1055,7 +1055,7 @@ Initialization() {
     global TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
-    AddLog("如有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
+    AddLog("如有问题请先尝试将更新渠道切换至AHK版并进行更新（需要优质网络）。如果无法更新或仍有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")
     }
@@ -1184,8 +1184,10 @@ CheckForUpdate(isManualCheck) {
         AddLog("最新ahk文件的短哈希值是：" NewFileShortHash)
         if (NewFileShortHash != MyFileShortHash) {
             MsgBox("发现新版本！请手动替换脚本文件")
+            AddLog("发现新版本！请手动替换脚本文件")
         } else {
             MsgBox("当前已是最新版本，无需更新。即将删除校验文件")
+            AddLog("当前已是最新版本，无需更新。即将删除校验文件")
             FileDelete localFilePath
         }
         return

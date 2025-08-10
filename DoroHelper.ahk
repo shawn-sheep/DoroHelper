@@ -1166,7 +1166,7 @@ CheckForUpdate(isManualCheck) {
     ; ==================== AHK文件 直接下载 =====================
     if (g_numeric_settings["UpdateChannels"] == "AHK版") {
         ; 定义目标URL
-        url := "https://github.abskoop.workers.dev/https://github.com/1204244136/DoroHelper/archive/refs/heads/main.zip" ; 替换为实际下载链接
+        url := "https://github.com/1204244136/DoroHelper/archive/refs/heads/main.zip" ; 替换为实际下载链接
         ; 获取当前脚本所在目录
         currentScriptDir := A_ScriptDir
         ; 获取当前脚本所在目录的上一级目录

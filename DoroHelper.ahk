@@ -830,7 +830,7 @@ SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
 if (scriptExtension = "ahk") {
     MyFileHash := HashSHA256(A_ScriptFullPath)
-    MyFileShortHash := SubStr(MyFileHash, 1, 7)
+    global MyFileShortHash := SubStr(MyFileHash, 1, 7)
     AddLog("当前ahk文件的短哈希值是：" MyFileShortHash)
 }
 ;tag 定时启动
@@ -1166,23 +1166,27 @@ CheckForUpdate(isManualCheck) {
     ; ==================== AHK文件 直接下载 =====================
     if (g_numeric_settings["UpdateChannels"] == "AHK版") {
         ; 定义目标URL
-        url := "https://github.com/1204244136/DoroHelper/archive/refs/heads/main.zip" ; 替换为实际下载链接
+        url := "https://raw.githubusercontent.com/1204244136/DoroHelper/refs/heads/main/DoroHelper.ahk" ; 替换为实际下载链接
         ; 获取当前脚本所在目录
         currentScriptDir := A_ScriptDir
-        ; 获取当前脚本所在目录的上一级目录
-        SplitPath currentScriptDir, , &parentDirOfScript
         ; 定义本地保存路径，文件名设为 main.zip
-        localFilePath := parentDirOfScript "\main" A_Now ".zip"
-        ; 确保上级目录存在，否则创建
-        if !DirExist(parentDirOfScript)
-            DirCreate(parentDirOfScript)
-        ; 下载文件到上级目录
+        localFilePath := currentScriptDir "\DoroHelper" A_Now ".ahk"
+        ; 下载文件到脚本所在目录
         try {
-            AddLog("正在下载AHK版本压缩包，请稍等……")
-            Download(url, localFilePath) ; 保存到上级目录，文件名可自定义
-            MsgBox "文件下载成功！已保存到上级目录: " localFilePath
+            AddLog("正在下载最新AHK版本，请稍等……")
+            Download(url, localFilePath) ; 保存到当前目录，文件名可自定义
+            MsgBox "文件下载成功！已保存到当前目录: " localFilePath
         } catch as e {
             MsgBox "下载失败，错误信息: " e.Message
+        }
+        NewFileHash := HashSHA256(localFilePath)
+        NewFileShortHash := SubStr(NewFileHash, 1, 7)
+        AddLog("最新ahk文件的短哈希值是：" NewFileShortHash)
+        if (NewFileShortHash != MyFileShortHash) {
+            MsgBox("发现新版本！请手动替换脚本文件")
+        } else {
+            MsgBox("当前已是最新版本，无需更新。即将删除校验文件")
+            FileDelete localFilePath
         }
         return
     }

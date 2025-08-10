@@ -2639,6 +2639,7 @@ Login() {
             Sleep 1000
         }
         UserClick(330, 2032, TrueRatio)
+        Sleep 1000
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已中止"
             Pause

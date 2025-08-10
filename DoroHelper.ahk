@@ -813,6 +813,9 @@ ShowSetting("Default")
 doroGui.Show()
 ;endregion 创建GUI
 ;region 前置任务
+;tag 检查用户组
+if g_settings["AutoCheckUserGroup"]
+    CheckUserGroup
 ;tag 广告
 if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
     ClickOnHelp
@@ -822,9 +825,6 @@ if g_settings["AutoDeleteOldFile"]
 ;tag 检查更新
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
-;tag 检查用户组
-if g_settings["AutoCheckUserGroup"]
-    CheckUserGroup
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)

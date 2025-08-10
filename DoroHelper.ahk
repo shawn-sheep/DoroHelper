@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.4"
+currentVersion := "v1.5.5"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -3471,6 +3471,7 @@ EventSmall() {
     ;tag 挑战
     if g_settings["EventSmallChallenge"] {
         AddLog("===挑战任务开始===")
+        sleep 1000
         UserClick(1674, 1546, TrueRatio)
         sleep 1000
         Challenge

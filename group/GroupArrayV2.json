@@ -1,4 +1,16 @@
 {
+  "f20bd61939cac481641326c918db15d15128416f181ca9aefc6bdab1cd195570": {
+    "tier": "金Doro会员",
+    "expiry_date": "20251109"
+  },
+  "da96b14682c68080faf45c028a8b769c767619a714be5065438f68f8cca7c790": {
+    "tier": "铜Doro会员",
+    "expiry_date": "20251109"
+  },
+  "0f8a0e109f8ca826f81d0c77975e9a0b4a5bab913f5d7d7e7806cf1091031504": {
+    "tier": "金Doro会员",
+    "expiry_date": "20250909"
+  },
   "04e0171aa03fc00dc8b2a4054c12ad520845f47034fc1a71ca08801515c0bafc": {
     "tier": "管理员",
     "expiry_date": "20351231"

@@ -1034,8 +1034,7 @@ Initialization() {
         winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
         actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
         if WinGetCount("ahk_exe " . targetExe) > 1 {
-            MsgBox("本脚本暂不支持多开")
-            ExitApp
+            MsgBox("金Doro会员支持多开自动运行")
         }
         AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
         if actualWinTitle = "胜利女神：新的希望" {
@@ -2563,11 +2562,10 @@ BackToHall() {
         UserClick(333, 2041, TrueRatio)
         Sleep 500
         Send "{]}"
-        Sleep 500
-        if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.127 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep 500
-        }
+        ; if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.127 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
+        ;     FindText().Click(X, Y, "L")
+        ;     Sleep 500
+        ; }
     }
     if !WinActive(nikkeID) {
         MsgBox "窗口未聚焦，程序已中止"

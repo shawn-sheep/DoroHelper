@@ -105,7 +105,7 @@ global g_settings := Map(
     "StoryModeAutoStar", 0,      ;剧情模式自动收藏
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;启动/退出相关
-    "CloseNoticeHelp", 0,        ;关闭启动提示
+    "CloseAdvertisement", 0,        ;关闭启动提示
     "CloseNoticeSponsor", 0,     ;关闭赞助提示
     "AutoCheckUpdate", 0,        ;自动检查更新
     "AutoCheckUserGroup", 0,     ;自动检查会员组
@@ -434,7 +434,7 @@ doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
 TextUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", UserGroup)
 MirrorInfo := doroGui.Add("Text", "x150 yp R1 +0x0100", "❔️")
 try doroGui.Add("Text", "x20 y90 R1 +0x0100", "哈希值：" MyFileShortHash)
-doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时更新`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
+doroGui.Tips.SetTip(MirrorInfo, "用户组会在你正式运行Doro时检查，也可以勾选右边的自动检查在每次启动时检查`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
 cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查", "x170 ys R1")
 doroGui.Tips.SetTip(cbAutoCheckUserGroup, "启动时自动检查用户组`n该功能启用时会略微降低启动速度`n如果你不是会员，开启这个功能对你来说没有意义")
 cbAutoDeleteOldFile := AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除", "yp+25")
@@ -780,8 +780,8 @@ g_settingPages["Settings"].Push(cbOpenBlablalink)
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
 g_settingPages["Settings"].Push(cbSelfClosing)
-cbCloseNoticeHelp := AddCheckboxSetting(doroGui, "CloseNoticeHelp", "移除启动提示[铜Doro专享]", "R1")
-g_settingPages["Settings"].Push(cbCloseNoticeHelp)
+cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动提示[铜Doro专享]", "R1")
+g_settingPages["Settings"].Push(cbCloseAdvertisement)
 cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro专享]", "R1")
 g_settingPages["Settings"].Push(cbCloseNoticeSponsor)
 cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[铜Doro专享]", "R1")
@@ -822,8 +822,8 @@ doroGui.Show()
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup
 ;tag 广告
-if UserGroup = "普通用户" or !g_settings["CloseNoticeHelp"]
-    ClickOnHelp
+if UserGroup = "普通用户" or !g_settings["CloseAdvertisement"]
+    Advertisement
 ;tag 删除旧文件
 if g_settings["AutoDeleteOldFile"]
     DeleteOldFile
@@ -2026,10 +2026,6 @@ CalculateSponsorInfo(thisGuiButton, info) {
 ClickOnHelp(*) {
     msgbox "
     (
-    =========================================
-    这段内容也属于广告的一部分，可以通过开通会员的方式使其不在启动时显示。
-    广告位招租
-    =========================================
 1. 游戏分辨率需要设置成 **16:9** 的分辨率，小于1080p 可能有问题，暂不打算特殊支持
 2. 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**
    - 多显示器请支持的显示器作为主显示器，将游戏放在主显示器内
@@ -2047,6 +2043,23 @@ ClickOnHelp(*) {
 8. 鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！
 9. ctrl+1关闭程序、ctrl+2暂停程序、ctrl+3~7调整游戏大小
     )"
+}
+;tag 广告
+Advertisement(*) {
+    msgbox "
+    (
+    ====广告位招租====
+    可以通过赞助免除启动时的广告，启动选项-设置-移除启动提示
+    详情见左上角的「赞助」按钮
+    ====Nikke CDK Tool====
+    一个用于管理《胜利女神：NIKKE》CDK 的现代化工具网站，支持支持国际服、国服、港澳台服多服务器、多账号的CDK一键兑换
+    https://nikke.hayasa.link/
+    ===Mirror酱===
+    Mirror酱是一个第三方应用分发平台，可以让你更方便地下载和更新应用
+    现已支持 DoroHelper 的自动更新下载，和DoroHelper本身的会员功能无关
+    https://mirrorchyan.com/
+    ============
+    )", "广告"
 }
 ;endregion 消息辅助函数
 ;region 数据辅助函数

@@ -3301,9 +3301,6 @@ TowerCompany() {
                 EnterToBattle
                 BattleSettlement
             }
-            if (A_Index = count) {
-                break
-            }
             ;点向右的箭头
             if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
                 Sleep 3000
@@ -3323,6 +3320,9 @@ TowerCompany() {
                         }
                     }
                 }
+            }
+            if (A_Index = count) {
+                break
             }
             Sleep 3000
         }

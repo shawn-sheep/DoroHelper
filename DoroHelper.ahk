@@ -2470,7 +2470,14 @@ BattleSettlement() {
         if (checkend = 3) {
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+        ;无限之塔的位置
+        if (ok := FindText(&X, &Y, NikkeX + 0.855 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.855 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            checkend := checkend + 1
+            continue
+            ;AddLog("TAB已命中，共" checkend "次")
+        }
+        ; 新人竞技场+模拟室+异常拦截的位置
+        else if (ok := FindText(&X, &Y, NikkeX + 0.954 * NikkeW . " ", NikkeY + 0.913 * NikkeH . " ", NikkeX + 0.954 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.913 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             continue
             ;AddLog("TAB已命中，共" checkend "次")
@@ -2519,7 +2526,7 @@ BattleSettlement() {
             AddLog("共胜利" Victory "次")
         }
         FindText().Click(X, Y + 20 * TrueRatio, "L")
-        Sleep 1000
+        Sleep 5000
         BattleSettlement
     }
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）

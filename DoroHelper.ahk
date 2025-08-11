@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.5"
+currentVersion := "v1.5.6"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2477,18 +2477,24 @@ BattleSettlement() {
             continue
             ;AddLog("TAB已命中，共" checkend "次")
         }
+        ; 无限之塔失败的位置
+        else if (ok := FindText(&X, &Y, NikkeX + 0.784 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.784 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.078 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            checkend := checkend + 1
+            continue
+            ;AddLog("TAB已命中，共" checkend "次")
+        }
         ; 新人竞技场+模拟室+异常拦截的位置
         else if (ok := FindText(&X, &Y, NikkeX + 0.954 * NikkeW . " ", NikkeY + 0.913 * NikkeH . " ", NikkeX + 0.954 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.913 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             continue
             ;AddLog("TAB已命中，共" checkend "次")
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), 0, 0, , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             continue
             ;AddLog("重播的图标已命中，共" checkend "次")
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.453 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.453 * NikkeW + 0.094 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), 0, 0, , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.116 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
             continue
             ;AddLog("点击已命中，共" checkend "次")

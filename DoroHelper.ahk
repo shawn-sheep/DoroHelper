@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.6"
+currentVersion := "v1.5.7"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -641,7 +641,7 @@ SetSimulationNormal := AddCheckboxSetting(doroGui, "SimulationNormal", "普通�
 doroGui.Tips.SetTip(SetSimulationNormal, "勾选后，自动进行普通模拟室超频挑战`r`n此功能需要你在游戏内已经解锁了快速模拟功能才能正常使用，需要预勾选5C")
 g_settingPages["SimulationRoom"].Push(SetSimulationNormal)
 SetSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频", "R1")
-doroGui.Tips.SetTip(SetSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25")
+doroGui.Tips.SetTip(SetSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25，且需要勾选「禁止无关人员进入」和「好战型战术」")
 g_settingPages["SimulationRoom"].Push(SetSimulationOverClock)
 ;tag 二级竞技场Arena
 SetArenaTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====竞技场选项====")
@@ -780,7 +780,7 @@ g_settingPages["Settings"].Push(cbOpenBlablalink)
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
 g_settingPages["Settings"].Push(cbSelfClosing)
-cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动提示[铜Doro专享]", "R1")
+cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动广告[铜Doro专享]", "R1")
 g_settingPages["Settings"].Push(cbCloseAdvertisement)
 cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro专享]", "R1")
 g_settingPages["Settings"].Push(cbCloseNoticeSponsor)
@@ -2047,7 +2047,7 @@ Advertisement(*) {
     msgbox "
     (
     ====广告位招租====
-    可以通过赞助免除启动时的广告，启动选项-设置-移除启动提示
+    可以通过赞助免除启动时的广告，启动选项-设置-移除启动广告
     详情见左上角的「赞助」按钮
     ====Nikke CDK Tool====
     一个用于管理《胜利女神：NIKKE》CDK 的现代化工具网站，支持支持国际服、国服、港澳台服多服务器、多账号的CDK一键兑换
@@ -2057,7 +2057,7 @@ Advertisement(*) {
     现已支持 DoroHelper 的自动更新下载，和DoroHelper本身的会员功能无关
     https://mirrorchyan.com/
     ============
-    )", "广告"
+    )"
 }
 ;endregion 消息辅助函数
 ;region 数据辅助函数
@@ -2489,30 +2489,30 @@ BattleSettlement() {
         ;无限之塔的位置
         if (ok := FindText(&X, &Y, NikkeX + 0.855 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.855 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            AddLog("无限之塔的TAB已命中，共" checkend "次")
             continue
-            ;AddLog("TAB已命中，共" checkend "次")
         }
         ; 无限之塔失败的位置
         else if (ok := FindText(&X, &Y, NikkeX + 0.784 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.784 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.078 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            AddLog("无限之塔失败TAB已命中，共" checkend "次")
             continue
-            ;AddLog("TAB已命中，共" checkend "次")
         }
         ; 新人竞技场+模拟室+异常拦截的位置
         else if (ok := FindText(&X, &Y, NikkeX + 0.954 * NikkeW . " ", NikkeY + 0.913 * NikkeH . " ", NikkeX + 0.954 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.913 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            AddLog("新人竞技场+模拟室+异常拦截TAB已命中，共" checkend "次")
             continue
-            ;AddLog("TAB已命中，共" checkend "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            AddLog("重播的图标已命中，共" checkend "次")
             continue
-            ;AddLog("重播的图标已命中，共" checkend "次")
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.116 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
             checkend := checkend + 1
+            AddLog("ESC已命中，共" checkend "次")
             continue
-            ;AddLog("点击已命中，共" checkend "次")
         }
         else {
             ;AddLog("均未命中，重新计数")

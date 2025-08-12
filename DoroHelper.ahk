@@ -202,6 +202,7 @@ FindText().PicLib("|<灰色空心方框>*200$36.0Tzzy01zzzzU7zzzzkDk007sT0000wS0
 FindText().PicLib("|<方舟的图标>*100$90.0000000s0000000000007zzU00000000003zzzzU000000000zzzzzz000000003zzzzzzU0000000Dzzzzzzs0000000Tzzzzzzy0000001zzzzzzzzU000007zzzzzzzzs00000Dzzzzzzzzy00000zzzzcSDzzzU0001zzzw0S3zzzk0003zzzk0S0zzzs0007zzzU0S0Dzzw000Dzzz00S07zzy000Tzzy00S01zzz000zzzw00S00zzzU01zzzs00S00Tzzk03zzzk00y00Tzzs03zzzk03z00Dzzw07zzzU0Dzk07zzy07zzzU0zzw03zzz0Dzzz01zzy03zzzUDzzz03zzz01zzzUTzzz03zzz01zzzkTzzz07zzzU0zzzszzzz07zzzU0zzzszzzzUDzzzk0zzzwzzzzzzzzzk0zzzwzzzzzzzzzs0zzzyTzzzzzzzzzzzzzyTzzz1zzzzzzzzzzDzzz07zzzzzzzzzDzzz07zzzxzzzzz7zzz07zzzk0zzzz7zzz03zzzk0zzzz3zzz03zzzU0zzzy3zzzU1zzzU0zzzy1zzzU0zzz00zzzw0zzzk0Tzy01zzzw0Tzzk07zw01zzzs0Tzzs01zk03zzzk0Dzzs00z007zzzk07zzw00S007zzzU03zzy00S00Dzzz001zzz00S00Tzzy000zzzU0S00zzzw000Tzzs0S01zzzw000Dzzw0S07zzzk0003zzz0S0DzzzU0001zzzsy1zzzz00000TzzzyDzzzw00000Dzzzzzzzzs000003zzzzzzzzk000000zzzzzzzzU000000Tzzzzzzy00000007zzzzzzU00000000zzzzzy0000000003zzzzk0000000000Dzzz000000000000z9U00000U", 1)
 FindText().PicLib("|<左上角的方舟>*150$59.zz3zzzzUzzzy3zzzy3zzzw7zzzw7zzzwDzzs003zzkDzzk007U0001zU00D00003z000S00007y7jky0000DwCDVzy3zzzsMD3zwDzzzksC7zsTzzzVsQDzk00Ty3tsDz000TU0003y000y00007w003w0000DsDy7s0000TkzwDz1zw7z1zsTy7bsTy3zkzwC3kzsDzVzkQ3VzkTy3zUw33z1zw7z3yC7w3zsTw7ywDUDz0zkTzsS0z01z0zy0y3z07y3zw1yDy0TyDzs3yzw7zzzzsTk", 1)
 FindText().PicLib("|<确认的白色勾>*200$46.zzzzzzwDzzzzzz0Tzzzzzs0zzzzzz03zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zlzzzs0Dy3zzz01zk7zzs0Dz0Dzz01zw0Tzs0Dzk0zz01zzU1zs0Dzy03z01zzw07s0Dzzs0D01zzzk080DzzzU001zzzz000Dzzzy001zzzzw00Dzzzzw01zzzzzs0Dzzzzzk1zzzzzzUDzzzzzz1zzzzzzyTzzzzU", 1)
+FindText().PicLib("|<黄色的小时>FFC700-0.90$135.0000Dz00000000000000zk00001zs00000000000007y00000Dz00000000000000zk00001zs00000000000007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU001zs00001zs000001zzzwDzzzzz0000Dz000000Dw1zVzzzzzs0001zs000001zUDwDzzzzz0000Dz000000Dw1zVzzzzzs0k01zs07U001zUDwDzzzzz07y0Dz07w000Dw1zVzzzzzs1zs1zs3zk001zUDwDzzzzz0Dz0Dz0Ty000Dw1zVzzzzzs1zs1zs1zs001zUDwDzzzzy0Dz0Dz0Dz000Dw1zU000zs01zk1zs1zw001zUDw0007y00Ty0Dz07zU00Dy1zU000zk03zk1zs0zy001zzzw0007y00Ty0Dz03zk00DzzzU000zk07zU1zs0Tz001zzzw0Q07y00zw0Dz01zs00DzzzUDU0zk07zU1zs0Dz001zzzw7y07y00zs0Dz00zw00DzzzVzs0zk0Dz01zs07zU01zzzwDz07y01zs0Dz00zy00Dy1zUzw0zk0Dz01zs03zk01zUDw3zk7y03zk0Dz00Ty00Dw1zUTz0zk0Ty01zs01zs01zUDw1zs7y07zk0Dz00Dz00Dw1zU7zUzk0zw01zs01zw01zUDw0zy7y0DzU0Dz007zU0Dw1zU3zkzk1zs01zs00zw01zUDw0Dz7y0Tz00Dz007zk0Dw1zU1zkzk3zs01zs00Ty01zUDw07s7y0zy00Dz003zk0Dw1zU0w0zk7zk01zs00Tz01zkDw0207y0Dw00Dz003zs0DzzzU000zk0T001zs00Dz01zzzw0007y00s00Dz001z00DzzzU000zk02001zs00DU01zzzw0007y00000Dz001U00DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zk000007y00000Dz000000Dw000000zk00001zs000001zU00000Dy000A0zz000000Dw0001zzzk000zzzs000001zU0007zzy0007zzy000000000000zzzk000zzzk000000000003zzy0003zzy000000000000TzzU000TzzU000000000003zzs0001zzs000000000000Dzy0000Dzw0000000000001zw00001zs000000000000000004", 1)
 ;tag 商店
 ;tag 付费商店
 FindText().PicLib("|<付费商店的图标>7EBBED-0.80$24.0UVU1VkU13sE27s807w44Dy68Tz2EzzVlzzkVzzk3zzs7zzwDzzyDzzyTzzwDzzw7zzs3zzk3zzkVzzVEzz2MTy48DyA4Dw827sE13kU1VkU0UV0U", 1)
@@ -2328,13 +2329,14 @@ Recruit() {
 }
 ;tag 点掉推销
 RefuseSale() {
-    sleep 3000
-    AddLog("尝试关闭可能的推销页面")
-    Confirm
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-        FindText().Click(X, Y, "L")
+    if (ok := FindText(&X, &Y, NikkeX + 0.438 * NikkeW . " ", NikkeY + 0.853 * NikkeH . " ", NikkeX + 0.438 * NikkeW + 0.124 * NikkeW . " ", NikkeY + 0.853 * NikkeH + 0.048 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的小时"), , , , , , , TrueRatio, TrueRatio)) {
+        UserClick(333, 2041, TrueRatio)
+        Sleep 500
+        if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.127 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 500
+        }
     }
-    sleep 1000
 }
 ;tag 判断是否开启自动
 CheckAuto() {
@@ -2577,10 +2579,7 @@ BackToHall() {
         UserClick(333, 2041, TrueRatio)
         Sleep 500
         Send "{]}"
-        ; if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.127 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
-        ;     FindText().Click(X, Y, "L")
-        ;     Sleep 500
-        ; }
+        RefuseSale
     }
     if !WinActive(nikkeID) {
         MsgBox "窗口未聚焦，程序已中止"
@@ -3313,11 +3312,11 @@ TowerCompany() {
                         break
                     }
                     else {
-                        RefuseSale
-                        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
-                            Sleep 3000
-                            FindText().Click(X, Y, "L")
+                        while !(ok := FindText(&X, &Y, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+                            Sleep 1000
+                            RefuseSale
                         }
+                        else FindText().Click(X, Y, "L")
                     }
                 }
             }
@@ -3347,7 +3346,10 @@ TowerUniversal() {
         FindText().Click(X + 100 * TrueRatio, Y, "L")
         EnterToBattle
         BattleSettlement
-        RefuseSale
+        while !(ok := FindText(&X, &Y, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+            Sleep 1000
+            RefuseSale
+        }
     }
     AddLog("===通用塔任务结束===")
 }

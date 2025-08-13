@@ -813,7 +813,8 @@ BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0
 doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
-LogBox := doroGui.Add("Edit", "xp+10 yp+30 w330 h340 ReadOnly")
+doroGui.Add("Button", "xp+260 yp w80 h30", "导出日志").OnEvent("Click", CopyLog)
+LogBox := doroGui.Add("Edit", "xs+10 ys+30 w330 h340 ReadOnly")
 LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
@@ -2065,6 +2066,12 @@ Advertisement(*) {
     https://mirrorchyan.com/
     ============
     )"
+}
+;tag 复制日志
+CopyLog(*) {
+    A_Clipboard := LogBox.Value
+    ; 给出提示
+    MsgBox("日志内容已复制到剪贴板，请将其连同录屏发到群里")
 }
 ;endregion 消息辅助函数
 ;region 数据辅助函数

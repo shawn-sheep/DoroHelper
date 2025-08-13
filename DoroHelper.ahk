@@ -566,6 +566,7 @@ StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathInfo)
 SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro专享]", "xs R1")
+doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
 g_settingPages["Login"].Push(StartupTimeText)
@@ -823,8 +824,13 @@ doroGui.Show()
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup
 ;tag 广告
-if UserGroup = "普通用户" or !g_settings["CloseAdvertisement"]
+if !g_settings["CloseAdvertisement"] or UserGroup = "普通用户" {
+    if UserGroup = "普通用户" {
+        MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
+    }
+    ClickOnHelp
     Advertisement
+}
 ;tag 删除旧文件
 if g_settings["AutoDeleteOldFile"]
     DeleteOldFile

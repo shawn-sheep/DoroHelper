@@ -2511,6 +2511,7 @@ BattleSettlement() {
     }
     ;是否需要截图
     if Screenshot {
+        Sleep 1000
         TimeString := FormatTime(, "yyyyMMdd_HHmmss")
         FindText().SavePic(A_ScriptDir "\截图\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
     }

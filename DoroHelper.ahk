@@ -4,6 +4,8 @@
 #Include <GuiCtrlTips>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
+;退出时保存设置
+OnExit(WriteSettings)
 ;检测管理员身份
 if !A_IsAdmin {
     MsgBox "请以管理员身份运行Doro"

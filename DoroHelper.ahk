@@ -11,7 +11,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.7"
+currentVersion := "v1.5.8"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -1990,7 +1990,7 @@ MsgSponsor(*) {
     guiSponsor := Gui("+Resize", "赞助")
     guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
     guiSponsor.Add("Text", "w280 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    guiSponsor.Add("Button", , "赞助详情").OnEvent("Click", (*) => Run("https://p.sda1.dev/26/934fb95927536ca4485514e7431dacc7/Sponsor.jpg"))
+    guiSponsor.Add("Button", , "赞助详情").OnEvent("Click", (*) => Run("https://p.sda1.dev/26/7a0bf8d6c0bbdf632f814c711d917391/Sponsor.jpg"))
     ; 当按钮被点击时，将调用 MyButtonHandler 函数。
     guiSponsor.Add("Text", "w280 Wrap", "赞助信息生成器")
     guiTier := guiSponsor.Add("DropDownList", "Range", ["铜Doro会员", "银Doro会员", "金Doro会员"])

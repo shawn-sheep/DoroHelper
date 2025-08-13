@@ -2502,7 +2502,7 @@ BattleSettlement() {
             AddLog("重播的图标已命中")
             break
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.116 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
+        else if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.116 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("ESC已命中")
             break
         }

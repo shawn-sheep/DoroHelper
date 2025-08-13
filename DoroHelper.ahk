@@ -1002,7 +1002,7 @@ AutoStartNikke() {
                     WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
                     global TrueRatio := NikkeH / stdScreenH
                     UserClick(594, 1924, TrueRatio)
-                    Sleep 5000
+                    Sleep 10000
                     break
                 }
                 else {

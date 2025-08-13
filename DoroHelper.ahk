@@ -3463,6 +3463,7 @@ InterceptionAnomaly() {
         if g_settings["InterceptionShot"] {
             Screenshot := true
         }
+        global BattleActive := 1
         BattleSettlement
         Screenshot := false
         RedCircle := false

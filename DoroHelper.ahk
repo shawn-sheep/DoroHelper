@@ -2624,7 +2624,6 @@ EnterToArk() {
 ;tag 推关模式
 AdvanceMode(Picture) {
     AddLog("===推关模式===")
-    Send "{]}" ;防止最后一关剧情卡死
     Sleep 500
     if (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.305 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.305 * NikkeW + 0.388 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.691 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(Picture), , , , , , 3, TrueRatio, TrueRatio)) {
         loop 2 {
@@ -2638,12 +2637,12 @@ AdvanceMode(Picture) {
             if BattleActive = 1 {
                 break
             }
+            if BattleActive = 2 {
+                return
+            }
         }
     }
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.286 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.286 * NikkeH + 0.015 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("0体力"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("体力已耗尽")
-    }
-    else AdvanceMode(Picture)
+    AdvanceMode(Picture)
 }
 ;endregion 流程辅助函数
 ;region 登录

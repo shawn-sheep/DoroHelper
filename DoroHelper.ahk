@@ -208,6 +208,7 @@ FindText().PicLib("|<方舟的图标>*100$90.0000000s0000000000007zzU00000000003
 FindText().PicLib("|<左上角的方舟>*150$59.zz3zzzzUzzzy3zzzy3zzzw7zzzw7zzzwDzzs003zzkDzzk007U0001zU00D00003z000S00007y7jky0000DwCDVzy3zzzsMD3zwDzzzksC7zsTzzzVsQDzk00Ty3tsDz000TU0003y000y00007w003w0000DsDy7s0000TkzwDz1zw7z1zsTy7bsTy3zkzwC3kzsDzVzkQ3VzkTy3zUw33z1zw7z3yC7w3zsTw7ywDUDz0zkTzsS0z01z0zy0y3z07y3zw1yDy0TyDzs3yzw7zzzzsTk", 1)
 FindText().PicLib("|<确认的白色勾>*200$46.zzzzzzwDzzzzzz0Tzzzzzs0zzzzzz03zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zlzzzs0Dy3zzz01zk7zzs0Dz0Dzz01zw0Tzs0Dzk0zz01zzU1zs0Dzy03z01zzw07s0Dzzs0D01zzzk080DzzzU001zzzz000Dzzzy001zzzzw00Dzzzzw01zzzzzs0Dzzzzzk1zzzzzzUDzzzzzz1zzzzzzyTzzzzU", 1)
 FindText().PicLib("|<黄色的小时>FFC700-0.90$135.0000Dz00000000000000zk00001zs00000000000007y00000Dz00000000000000zk00001zs00000000000007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU001zs00001zs000001zzzwDzzzzz0000Dz000000Dw1zVzzzzzs0001zs000001zUDwDzzzzz0000Dz000000Dw1zVzzzzzs0k01zs07U001zUDwDzzzzz07y0Dz07w000Dw1zVzzzzzs1zs1zs3zk001zUDwDzzzzz0Dz0Dz0Ty000Dw1zVzzzzzs1zs1zs1zs001zUDwDzzzzy0Dz0Dz0Dz000Dw1zU000zs01zk1zs1zw001zUDw0007y00Ty0Dz07zU00Dy1zU000zk03zk1zs0zy001zzzw0007y00Ty0Dz03zk00DzzzU000zk07zU1zs0Tz001zzzw0Q07y00zw0Dz01zs00DzzzUDU0zk07zU1zs0Dz001zzzw7y07y00zs0Dz00zw00DzzzVzs0zk0Dz01zs07zU01zzzwDz07y01zs0Dz00zy00Dy1zUzw0zk0Dz01zs03zk01zUDw3zk7y03zk0Dz00Ty00Dw1zUTz0zk0Ty01zs01zs01zUDw1zs7y07zk0Dz00Dz00Dw1zU7zUzk0zw01zs01zw01zUDw0zy7y0DzU0Dz007zU0Dw1zU3zkzk1zs01zs00zw01zUDw0Dz7y0Tz00Dz007zk0Dw1zU1zkzk3zs01zs00Ty01zUDw07s7y0zy00Dz003zk0Dw1zU0w0zk7zk01zs00Tz01zkDw0207y0Dw00Dz003zs0DzzzU000zk0T001zs00Dz01zzzw0007y00s00Dz001z00DzzzU000zk02001zs00DU01zzzw0007y00000Dz001U00DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zk000007y00000Dz000000Dw000000zk00001zs000001zU00000Dy000A0zz000000Dw0001zzzk000zzzs000001zU0007zzy0007zzy000000000000zzzk000zzzk000000000003zzy0003zzy000000000000TzzU000TzzU000000000003zzs0001zzs000000000000Dzy0000Dzw0000000000001zw00001zs000000000000000004", 1)
+FindText().PicLib("|<公告的图标>*150$44.zzzszzzzzzw7zzzzzy1zzzzzzUDzzzzzs3zzzzzs0Tzzzzs01zzzzs007zzzw000Tzzy0003zzz0000TzzU0003zzs0000zzw00007zy00001zzU0000Dzs00003zw00000zz00000Dzk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zs00000Dw000001y000000D0000001U000000000000000000000UsM3VokTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw01zzzzz00zzzzzs0Tzzzzz0Dzzzzzw7zzy", 1)
 ;tag 商店
 ;tag 付费商店
 FindText().PicLib("|<付费商店的图标>7EBBED-0.80$24.0UVU1VkU13sE27s807w44Dy68Tz2EzzVlzzkVzzk3zzs7zzwDzzyDzzyTzzwDzzw7zzs3zzk3zzkVzzVEzz2MTy48DyA4Dw827sE13kU1VkU0UV0U", 1)
@@ -2599,16 +2600,28 @@ Challenge() {
 ;tag 返回大厅
 BackToHall() {
     AddLog("返回大厅")
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-        ; 点左下角的小房子的位置
-        UserClick(333, 2041, TrueRatio)
-        Sleep 500
-        Send "{]}"
-        RefuseSale
-    }
-    if !WinActive(nikkeID) {
-        MsgBox "窗口未聚焦，程序已中止"
-        Pause
+    while true {
+        if !WinActive(nikkeID) {
+            MsgBox "窗口未聚焦，程序已中止"
+            Pause
+        }
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            ; 点右上角的公告图标
+            UserClick(3568, 90, TrueRatio)
+            Sleep 500
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.082 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.082 * NikkeH + 0.042 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("公告的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("已返回大厅")
+                UserClick(333, 2041, TrueRatio)
+                Sleep 500
+                break
+            }
+            else RefuseSale
+        } else {
+            ; 点左下角的小房子的位置
+            UserClick(333, 2041, TrueRatio)
+            Sleep 500
+            Send "{]}"
+        }
     }
     Sleep 1000
 }

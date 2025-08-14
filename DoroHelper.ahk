@@ -695,7 +695,7 @@ g_settingPages["Interception"].Push(SetInterceptionShot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
 g_settingPages["Interception"].Push(SetRedCircle)
 RedCircleInfo := doroGui.Add("Text", "x+1 yp R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选")
+doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选。只对克拉肯有效")
 g_settingPages["Interception"].Push(RedCircleInfo)
 ;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")
@@ -2007,7 +2007,7 @@ MsgSponsor(*) {
     global guiTier, guiDuration
     guiSponsor := Gui("+Resize", "赞助")
     guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
-    guiSponsor.Add("Text", "w280 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    guiSponsor.Add("Text", "w280 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下。`n会员请勾选左上角的「自动检查」令会员功能生效")
     guiSponsor.Add("Button", , "赞助详情").OnEvent("Click", (*) => Run("https://p.sda1.dev/26/7a0bf8d6c0bbdf632f814c711d917391/Sponsor.jpg"))
     ; 当按钮被点击时，将调用 MyButtonHandler 函数。
     guiSponsor.Add("Text", "w280 Wrap", "赞助信息生成器")
@@ -2510,25 +2510,25 @@ BattleSettlement() {
         }
         ;无限之塔的位置
         if (ok := FindText(&X, &Y, NikkeX + 0.855 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.855 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("无限之塔的TAB已命中")
+            AddLog("[无限之塔胜利]TAB已命中")
             break
         }
         ; 无限之塔失败的位置
         else if (ok := FindText(&X, &Y, NikkeX + 0.784 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.784 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.078 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("无限之塔失败TAB已命中")
+            AddLog("[无限之塔失败]TAB已命中")
             break
         }
         ; 新人竞技场+模拟室+异常拦截的位置
         else if (ok := FindText(&X, &Y, NikkeX + 0.954 * NikkeW . " ", NikkeY + 0.913 * NikkeH . " ", NikkeX + 0.954 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.913 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("新人竞技场+模拟室+异常拦截TAB已命中")
+            AddLog("[新人竞技场+模拟室+异常拦截]TAB已命中")
             break
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("重播的图标已命中")
+            AddLog("[竞技场快速战斗失败]重播的图标已命中")
             break
         }
-        else if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.110 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.116 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("ESC已命中")
+        else if (ok := FindText(&X, &Y, NikkeX + 0.485 * NikkeW . " ", NikkeY + 0.890 * NikkeH . " ", NikkeX + 0.485 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.890 * NikkeH + 0.031 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("[扫荡|活动推关]ESC已命中")
             break
         }
         ;间隔500ms
@@ -3537,7 +3537,7 @@ InterceptionAnomaly() {
             AddLog("异常拦截次数已耗尽")
             break
         }
-        if g_settings["InterceptionRedCircle"]
+        if g_settings["InterceptionRedCircle"] and g_numeric_settings["InterceptionBoss"] = 1
             RedCircle := true
         if g_settings["InterceptionShot"] {
             Screenshot := true

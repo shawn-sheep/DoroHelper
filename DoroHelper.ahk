@@ -3180,6 +3180,7 @@ ArenaRookie() {
             break
         }
         if skip = false {
+            Sleep 1000
             if (ok := FindText(&X, &Y, NikkeX + 0.393 * NikkeW . " ", NikkeY + 0.815 * NikkeH . " ", NikkeX + 0.393 * NikkeW + 0.081 * NikkeW . " ", NikkeY + 0.815 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ON"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("快速战斗已开启")
                 skip := true
@@ -3187,7 +3188,6 @@ ArenaRookie() {
             else if (ok := FindText(&X, &Y, NikkeX + 0.393 * NikkeW . " ", NikkeY + 0.815 * NikkeH . " ", NikkeX + 0.393 * NikkeW + 0.081 * NikkeW . " ", NikkeY + 0.815 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("OFF"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("有笨比没开快速战斗，帮忙开了！")
                 FindText().Click(X, Y, "L")
-                Sleep 1000
             }
         }
         EnterToBattle
@@ -3233,6 +3233,7 @@ ArenaSpecial() {
             break
         }
         if skip = false {
+            Sleep 1000
             if (ok := FindText(&X, &Y, NikkeX + 0.393 * NikkeW . " ", NikkeY + 0.815 * NikkeH . " ", NikkeX + 0.393 * NikkeW + 0.081 * NikkeW . " ", NikkeY + 0.815 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("ON"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("快速战斗已开启")
                 skip := true
@@ -3240,7 +3241,6 @@ ArenaSpecial() {
             else if (ok := FindText(&X, &Y, NikkeX + 0.393 * NikkeW . " ", NikkeY + 0.815 * NikkeH . " ", NikkeX + 0.393 * NikkeW + 0.081 * NikkeW . " ", NikkeY + 0.815 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("OFF"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("有笨比没开快速战斗，帮忙开了！")
                 FindText().Click(X, Y, "L")
-                Sleep 1000
             }
         }
         EnterToBattle

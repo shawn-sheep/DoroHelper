@@ -13,7 +13,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.8"
+currentVersion := "v1.5.9"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -31,10 +31,12 @@ global g_settings := Map(
     ;商店
     "Shop", 0,                   ;商店总开关
     "ShopCash", 1,               ;付费商店
+    "ShopCashFree", 0,           ;付费商店免费物品
+    "ShopCashFreePackage", 0,     ;付费商店免费STEPUP
     "ShopNormal", 1,             ;普通商店
-    "ShopNormalFree", 0,        ;普通商店：免费物品
-    "ShopNormalDust", 0,        ;普通商店：芯尘盒
-    "ShopNormalPackage", 0,     ;普通商店：简介个性化礼包
+    "ShopNormalFree", 0,         ;普通商店：免费物品
+    "ShopNormalDust", 0,         ;普通商店：芯尘盒
+    "ShopNormalPackage", 0,      ;普通商店：简介个性化礼包
     "ShopArena", 1,              ;竞技场商店
     "ShopArenaBookFire", 0,      ;竞技场商店：燃烧手册
     "ShopArenaBookWater", 0,     ;竞技场商店：水冷手册
@@ -211,6 +213,8 @@ FindText().PicLib("|<黄色的小时>FFC700-0.90$135.0000Dz00000000000000zk00001
 FindText().PicLib("|<付费商店的图标>7EBBED-0.80$24.0UVU1VkU13sE27s807w44Dy68Tz2EzzVlzzkVzzk3zzs7zzwDzzyDzzyTzzwDzzw7zzs3zzk3zzkVzzVEzz2MTy48DyA4Dw827sE13kU1VkU0UV0U", 1)
 FindText().PicLib("|<礼物的下半>*150$51.s007z000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000z000Tk007s003y000zU00zs00Dzzzzzzzzzzzzzzzzzzzzzzzzzw", 1)
 FindText().PicLib("|<商店的图标>*240$69.0000w0000000001zs000000000TzU00000000zzz00000001zzzw0000000zzzzk0Dzw00zzs7zDzzzU07zy0Tzzzzy00zw01zzzzzs0Dw003zzzzzU1y000Dzz07y0Dk000zk00Tk1w01k3y001z0DU0D0TU00Ds3s33w7w000zUT0TzVz0003w3s7zwDs030Dkz1zzXy0kQ1z7kDzwTUDzs7ty0zz7w3zz0TDk7zsz0Tzs3ty0TyDk3zz0TTU0zly0Tzk7vw00wTU3zw0zTk003y0Dz0Dvz000Ds0zk3zDw001zU3w0Tszs007y0707z3zU03zk001zzzy00zz000Dzzzs1zzs003zzzzlzzzU00Tzzzzzzzw007zzzzzzzzk07zzU", 1)
+FindText().PicLib("|<付费商店·沙漏>*100$37.zzzzzztzzzzzsw0001wS0000SD0000D7U0007XwDzsTky7zwDsD3zy7w7kk67y1sA33z0S633zUDVX1zk3kP1zs0w71zw0T3Vzy07klzz03sMzzU1sADzs1wC3zzzw7VzzzwDsTzzw7y7zzy771zzy60kzzz20ADzz3zy7zzVzz3zz0000DzU0007zk0003zs0001zzzzzzzzzzzzzzzzzzz", 1)
+FindText().PicLib("|<付费商店·免费>*200$87.zyDzzzzzzy7kTzzzU7zzzzzzUS1zzzw0zzzzz000001zz000Tzzs00000Dzs001zzz000001zy0003zzs00000DzU000zzzzw3kC1zs0007zzzzUS1kDy0Ds1zzzU00001zU3z0Tzzw00000Ds0zk3zzzU00001y07w0S1zw00000D0000007zUw3kDzs000000zs0000010000007z000000A000000zs000001k000007z000000D0Ds3y1zzs0y1w1w1z0zkDzy0DkD0DkDs7y1zy03y1k3y1z0zkDw00zkC0TkDk7y1zU0Dz3s7y00000Dy03zzz7zk00000zs00000zy000007z000007zU00000zz00000zw000007zs00007zry007xzz00000zzzs01zzzs7zzs7zzy0kDzzz0zzz0zzzU61zzzs7s7s7zzs1kDxzz0y0z0zzy0C1z3zs7kDs7zz03kDs7z0s1z0zzk0y1z0zs60M0zzk0DkDs7zs0607zk03y060zs01k03w01zk00D000S001U0Ty001s00Dy0060Dzs00DU07zz01s7zz003y07zzz0T7zzz01zkDzzzz3U", 1)
 ;tag 普通商店
 FindText().PicLib("|<左上角的百货商店>*150$121.zzzzzzVkzzzzUzzzzsTzU0003zUsT7zzkTzzzw7zk0001zUw41y6000zzy3zs0000z0S00y0000DU00040000T0C01y00007k0001zs7zy0007z00003s0000zw7zzU20TXzkT1zw0000Ty3zzs10DkzsDUzy3zzzzy0zzzUw00zw7kzz1z3zz0007zkT00Ty3kDzUzUzzU003zsDU0TU000DkTkTzk001zw7y0zk0007sDs01sDzUzzzzzzs0003w7w00wDzsTy000DwD73Vy7y00S7zwDz0007y63Ukz3z1zz3zy7zU003z01k0TVzUzzU003zk001zU3w0DkzkTzk001zsTzkzk0w07sM007s000zwD3sTsE013wA003w000Ty7UwDwA01Vy6001y7zwDz3kS7y67Vky3000z3zy7zVsT3z33ssT1VzsTVzz3zks8DzVU0QDVkzwDk001zzk43zkk0C7ksDw7s000zz040DsM073kQ003w000Tk0D01wADvVsC001y000Ds0Tw0y7zw0wD000z3zy7y0zzkz3zz0z7UzkTVzz3zbzzyzVzzVzzlzyD", 1)
 FindText().PicLib("|<简介个性化礼包>*150$222.100U0003000000003k00006000010000080003s0w0007U0000s007k0y007lw007UDU00T0007s1y000Dk0001y007kyy00Dlw00DkDU00T0007ztzz00Tk0003w007kyy00DVw007kDU00z000Dzvzz00zs0007y007kyy00TVw003kDU00zzzsTzzzz01zw000Dz007kyy00T1w703kDU01zzzwTTDrs07zz000TzU07wyy00z1wDVzyDU03zzzwyD7Xs0Dwzk00zzs0Tyzzy1y1wTlzyDU07zzzwSD3Xk0zsTw03zDw0Tzzzy1y1wzVzyDU0Dzzzw5y11U7zUDzkDy7z0zzzzy3y1xz1zyDU0Tk01w3tzzyDz07zkzw1zkzzzzy7y1zy01wDU0zk01w3vzzyDy01zXztszwzzsy0Dy1zy01wDU0zzzVw1zzzy7s00TXzVsTwznsy0Dy1zw03sDU0DzzVw1tzzy7U0071z1s7szlky07y1zs07sDU05zzVwDU00y27k7k0w1s3kzkky03y1zk0DsDU01zzVsD7zsy07k7k0E1s0kTkOy03y3zU0TwDU01wDVsD7zsy07k7k001s007kzzw0y7y01zyDU01wDVsD7zsy07k7k003s007kzzw0yDw03zzDU01zzXsD7zsy07k7k003s007kzzw0zzw03zzDU01zzXsD7Vsy07k7k001s007kTzw0zzw01zzDU01zzzsD7zsy0DU7k001s007k0y00zzw31rqDUU1zzjsD7zsy0DU7k001s007k0y00yzw3lbmDUw1w0DkD7zsy0DU7k001s007k0y00yFw7k7kDUw1w0DUD7Vsy0TU7k001s007k0y00y1w7k7kDUw1w00AD7zsy0z07k001s007k0y00y1w7k7kDUw1w00TD7zsy1z07k001s007nzzz0y1yDk7kDVw1w00zD7zwy3y07k001s007nzzz0y1zzU7kDzw1zzzzD00Dy7y07k001s007nzzz0y1zzU7k7zs0zzzyD007w3w07k001s007nzzz0y0zz07k7zs0zzzwD007s0s07k001s007nzzz0y0Ty07k1zU0DzzsD00000007k001s003k0000S00003k00000000U", 1)
@@ -500,8 +504,8 @@ doroGui.SetFont('s14')
 cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+35 Section", true)
 doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
 BtnLogin := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
-cbShop := AddCheckboxSetting(doroGui, "Shop", "商店购买", "xs", true)
-doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店购买相关的任务`r`n具体的购买项目请在右侧详细设置")
+cbShop := AddCheckboxSetting(doroGui, "Shop", "商店", "xs", true)
+doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店相关的任务`r`n具体的购买项目请在右侧详细设置")
 BtnShop := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Shop"))
 cbSimulationRoom := AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "xs", true)
 doroGui.Tips.SetTip(cbSimulationRoom, "总开关：控制是否执行模拟室相关的任务")
@@ -586,11 +590,13 @@ SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项=
 g_settingPages["Shop"].Push(SetShop)
 SetShopCashTitle := doroGui.Add("Text", "R1", "===付费商店===")
 g_settingPages["Shop"].Push(SetShopCashTitle)
-SetShopCash := AddCheckboxSetting(doroGui, "ShopCash", "购买付费商店免费珠宝", "R1 ")
-g_settingPages["Shop"].Push(SetShopCash)
+SetShopCashFree := AddCheckboxSetting(doroGui, "ShopCashFree", "购买付费商店免费珠宝", "R1 ")
+g_settingPages["Shop"].Push(SetShopCashFree)
+SetShopCashFreePackage := AddCheckboxSetting(doroGui, "ShopCashFreePackage", "购买付费商店免费礼包[金Doro专享]", "R1 ")
+g_settingPages["Shop"].Push(SetShopCashFreePackage)
 SetShopNormalTitle := doroGui.Add("Text", "R1", "===普通商店===")
 g_settingPages["Shop"].Push(SetShopNormalTitle)
-SetShopNormalFree := AddCheckboxSetting(doroGui, "ShopNormalFree", "白嫖免费商品", "R1 ")
+SetShopNormalFree := AddCheckboxSetting(doroGui, "ShopNormalFree", "购买普通商店免费商品", "R1 ")
 g_settingPages["Shop"].Push(SetShopNormalFree)
 SetShopNormalDust := AddCheckboxSetting(doroGui, "ShopNormalDust", "用信用点买芯尘盒", "R1")
 doroGui.Tips.SetTip(SetShopNormalDust, "勾选后，在普通商店中如果出现可用信用点购买的芯尘盒，则自动购买")
@@ -2704,45 +2710,74 @@ ShopCash() {
         AddLog("点击付费商店")
         FindText().Click(X, Y, "L")
         Sleep 2000
-        while true {
-            if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.386 * NikkeW . " ", NikkeY + 0.632 * NikkeH . " ", NikkeX + 0.386 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.632 * NikkeH + 0.025 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色空心方框"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("发现日服特供的框")
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
-                    AddLog("点击确认")
+        if g_settings["ShopCashFree"] {
+            while true {
+                if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.386 * NikkeW . " ", NikkeY + 0.632 * NikkeH . " ", NikkeX + 0.386 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.632 * NikkeH + 0.025 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色空心方框"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("发现日服特供的框")
                     FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击确认")
+                        FindText().Click(X, Y, "L")
+                    }
                 }
+                else if (ok := FindText(&X, &Y, NikkeX + 0.040 * NikkeW . " ", NikkeY + 0.178 * NikkeH . " ", NikkeX + 0.040 * NikkeW + 0.229 * NikkeW . " ", NikkeY + 0.178 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("礼物的下半"), , , , , , , TrueRatio, TrueRatio)) {
+                    Sleep 500
+                    AddLog("点击一级页面")
+                    FindText().Click(X + 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                    Sleep 500
+                }
+                else break
             }
-            else if (ok := FindText(&X, &Y, NikkeX + 0.040 * NikkeW . " ", NikkeY + 0.178 * NikkeH . " ", NikkeX + 0.040 * NikkeW + 0.229 * NikkeW . " ", NikkeY + 0.178 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("礼物的下半"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 500
-                AddLog("点击一级页面")
-                FindText().Click(X + 20 * TrueRatio, Y + 20 * TrueRatio, "L")
-                Sleep 500
-            }
-            else break
-        }
-        while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.259 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.351 * NikkeW . " ", NikkeY + 0.259 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击二级页面")
-            FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
-            Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.089 * NikkeW . " ", NikkeY + 0.334 * NikkeH . " ", NikkeX + 0.089 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.334 * NikkeH + 0.034 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , 5, TrueRatio, TrueRatio)) {
-                AddLog("点击三级页面")
+            while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.259 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.351 * NikkeW . " ", NikkeY + 0.259 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击二级页面")
                 FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                 Sleep 1000
-                Confirm
-                Sleep 500
-                Confirm
+                if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.089 * NikkeW . " ", NikkeY + 0.334 * NikkeH . " ", NikkeX + 0.089 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.334 * NikkeH + 0.034 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , 5, TrueRatio, TrueRatio)) {
+                    AddLog("点击三级页面")
+                    FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                    Sleep 1000
+                    Confirm
+                    Sleep 500
+                    Confirm
+                }
+                if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白色的叉叉"), , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                    AddLog("检测到白色叉叉，尝试重新执行任务")
+                    BackToHall
+                    ShopCash
+                }
             }
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("白色的叉叉"), , , , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                AddLog("检测到白色叉叉，尝试重新执行任务")
-                BackToHall
-                ShopCash
+            else {
+                AddLog("奖励已全部领取")
             }
         }
-        else {
-            AddLog("奖励已全部领取")
+        if g_settings["ShopCashFreePackage"] {
+            if UserGroup = "金Doro会员" or UserGroup = "管理员" {
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.180 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.266 * NikkeW . " ", NikkeY + 0.180 * NikkeH + 0.077 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击一级页面")
+                    FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                    Sleep 1000
+                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.259 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.351 * NikkeW . " ", NikkeY + 0.259 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击二级页面")
+                        FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                        Sleep 1000
+                        ;把鼠标移动到商品栏
+                        UserMove(1918, 1060, TrueRatio)
+                        Send "{WheelUp 3}"
+                        Sleep 1000
+                    }
+                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.332 * NikkeW . " ", NikkeY + 0.443 * NikkeH . " ", NikkeX + 0.332 * NikkeW + 0.327 * NikkeW . " ", NikkeY + 0.443 * NikkeH + 0.466 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击三级页面")
+                        FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                        Sleep 1000
+                    }
+                }
+            }
+            else {
+                MsgBox("当前用户组不支持该任务，请点击赞助按钮升级会员组")
+                Pause
+            }
         }
     }
     AddLog("===付费商店任务结束===")

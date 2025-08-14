@@ -30,11 +30,12 @@ global g_settings := Map(
     "Login", 0,                  ;登录游戏总开关
     ;商店
     "Shop", 0,                   ;商店总开关
-    "ShopCash", 0,               ;付费商店
-    "ShopNormal", 0,             ;普通商店
-    "ShopNormal_Dust", 0,        ;普通商店：芯尘盒
-    "ShopNormal_Package", 0,     ;普通商店：简介个性化礼包
-    "ShopArena", 0,              ;竞技场商店
+    "ShopCash", 1,               ;付费商店
+    "ShopNormal", 1,             ;普通商店
+    "ShopNormalFree", 0,        ;普通商店：免费物品
+    "ShopNormalDust", 0,        ;普通商店：芯尘盒
+    "ShopNormalPackage", 0,     ;普通商店：简介个性化礼包
+    "ShopArena", 1,              ;竞技场商店
     "ShopArenaBookFire", 0,      ;竞技场商店：燃烧手册
     "ShopArenaBookWater", 0,     ;竞技场商店：水冷手册
     "ShopArenaBookWind", 0,      ;竞技场商店：风压手册
@@ -43,7 +44,7 @@ global g_settings := Map(
     "ShopArenaBookBox", 0,       ;竞技场商店：手册宝箱
     "ShopArenaPackage", 0,       ;竞技场商店：简介个性化礼包
     "ShopArenaFurnace", 0,       ;竞技场商店：公司武器熔炉
-    "ShopScrap", 0,              ;废铁商店
+    "ShopScrap", 1,              ;废铁商店
     "ShopScrapGem", 0,           ;废铁商店：珠宝
     "ShopScrapVoucher", 0,       ;废铁商店：好感券
     "ShopScrapResources", 0,     ;废铁商店：养成资源
@@ -589,19 +590,19 @@ SetShopCash := AddCheckboxSetting(doroGui, "ShopCash", "购买付费商店免费
 g_settingPages["Shop"].Push(SetShopCash)
 SetShopNormalTitle := doroGui.Add("Text", "R1", "===普通商店===")
 g_settingPages["Shop"].Push(SetShopNormalTitle)
-SetShopNormal := AddCheckboxSetting(doroGui, "ShopNormal", "总开关（自带白嫖免费商品）", "R1 ")
-g_settingPages["Shop"].Push(SetShopNormal)
-SetShopNormal_Dust := AddCheckboxSetting(doroGui, "ShopNormal_Dust", "用信用点买芯尘盒", "xp+15 yp+30 R1")
-doroGui.Tips.SetTip(SetShopNormal_Dust, "勾选后，在普通商店中如果出现可用信用点购买的芯尘盒，则自动购买")
-g_settingPages["Shop"].Push(SetShopNormal_Dust)
-SetShopNormal_Package := AddCheckboxSetting(doroGui, "ShopNormal_Package", "购买简介个性化礼包", "R1 ")
-doroGui.Tips.SetTip(SetShopNormal_Package, "勾选后，在普通商店中如果出现可用游戏内货币购买的简介个性化礼包，则自动购买")
-g_settingPages["Shop"].Push(SetShopNormal_Package)
+SetShopNormalFree := AddCheckboxSetting(doroGui, "ShopNormalFree", "白嫖免费商品", "R1 ")
+g_settingPages["Shop"].Push(SetShopNormalFree)
+SetShopNormalDust := AddCheckboxSetting(doroGui, "ShopNormalDust", "用信用点买芯尘盒", "R1")
+doroGui.Tips.SetTip(SetShopNormalDust, "勾选后，在普通商店中如果出现可用信用点购买的芯尘盒，则自动购买")
+g_settingPages["Shop"].Push(SetShopNormalDust)
+SetShopNormalPackage := AddCheckboxSetting(doroGui, "ShopNormalPackage", "购买简介个性化礼包", "R1 ")
+doroGui.Tips.SetTip(SetShopNormalPackage, "勾选后，在普通商店中如果出现可用游戏内货币购买的简介个性化礼包，则自动购买")
+g_settingPages["Shop"].Push(SetShopNormalPackage)
 SetShopArenaTitle := doroGui.Add("Text", " R1 xs +0x0100", "===竞技场商店===")
 doroGui.Tips.SetTip(SetShopArenaTitle, "设置与游戏内竞技场商店（使用竞技场代币购买）相关选项")
 g_settingPages["Shop"].Push(SetShopArenaTitle)
-SetShopArena := AddCheckboxSetting(doroGui, "ShopArena", "总开关", "R1")
-g_settingPages["Shop"].Push(SetShopArena)
+; SetShopArena := AddCheckboxSetting(doroGui, "ShopArena", "总开关", "R1")
+; g_settingPages["Shop"].Push(SetShopArena)
 SetShopArenaBookFire := AddCheckboxSetting(doroGui, "ShopArenaBookFire", "燃烧", "R1")
 doroGui.Tips.SetTip(SetShopArenaBookFire, "在竞技场商店中自动购买所有的燃烧代码手册")
 g_settingPages["Shop"].Push(SetShopArenaBookFire)
@@ -628,8 +629,8 @@ doroGui.Tips.SetTip(SetShopArenaFurnace, "在竞技场商店中自动购买公�
 g_settingPages["Shop"].Push(SetShopArenaFurnace)
 SetShopScrapTitle := doroGui.Add("Text", "R1 xs Section +0x0100", "===废铁商店===")
 g_settingPages["Shop"].Push(SetShopScrapTitle)
-SetShopScrap := AddCheckboxSetting(doroGui, "ShopScrap", "总开关", "R1")
-g_settingPages["Shop"].Push(SetShopScrap)
+; SetShopScrap := AddCheckboxSetting(doroGui, "ShopScrap", "总开关", "R1")
+; g_settingPages["Shop"].Push(SetShopScrap)
 SetShopScrapGem := AddCheckboxSetting(doroGui, "ShopScrapGem", "购买珠宝", "R1.2")
 doroGui.Tips.SetTip(SetShopScrapGem, "在废铁商店中自动购买珠宝")
 g_settingPages["Shop"].Push(SetShopScrapGem)
@@ -2766,15 +2767,15 @@ ShopNormal() {
     PurchaseItems := Map(
         "免费商品", {
             Text: FindText().PicLib("红点"),
-            Setting: true,
+            Setting: g_settings["ShopNormalFree"],
             Tolerance: 0.4 * PicTolerance },
         "芯尘盒", {
             Text: FindText().PicLib("芯尘盒"),
-            Setting: g_settings["ShopNormal_Dust"],
+            Setting: g_settings["ShopNormalDust"],
             Tolerance: 0.2 * PicTolerance },
         "简介个性化礼包", {
             Text: FindText().PicLib("简介个性化礼包"),
-            Setting: g_settings["ShopNormal_Package"],
+            Setting: g_settings["ShopNormalPackage"],
             Tolerance: 0.2 * PicTolerance }
     )
     loop 2 {

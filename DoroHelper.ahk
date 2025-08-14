@@ -2380,8 +2380,8 @@ Skipping() {
 }
 ;tag 进入战斗
 EnterToBattle() {
-    global BattleActive
-    global BattleSkip
+    global BattleActive ;是否能进入战斗，0表示根本没找到进入战斗的图标，1表示能，2表示能但次数耗尽
+    global BattleSkip ;是否能跳过动画
     AddLog("尝试进入战斗")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击快速战斗")
@@ -2394,7 +2394,6 @@ EnterToBattle() {
         if (ok := FindText(&X, &Y, NikkeX + 0.470 * NikkeW . " ", NikkeY + 0.733 * NikkeH . " ", NikkeX + 0.470 * NikkeW + 0.157 * NikkeW . " ", NikkeY + 0.733 * NikkeH + 0.073 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("进行战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             BattleActive := 1
-            BattleSkip := 0
             Sleep 500
         }
     }
@@ -2405,9 +2404,11 @@ EnterToBattle() {
         FindText().Click(X + 50 * TrueRatio, Y, "L")
         Sleep 500
     }
+    else if (ok := FindText(&X, &Y, NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.831 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.831 * NikkeH + 0.143 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的进"), , , , , , , TrueRatio, TrueRatio)) {
+        BattleActive := 2
+    }
     else {
         BattleActive := 0
-        BattleSkip := 0
         AddLog("无法战斗")
     }
 }
@@ -2418,9 +2419,9 @@ BattleSettlement() {
     global RedCircle
     global EventStory
     checkred := 0
-    if (BattleActive = 0) {
+    if (BattleActive = 0 or BattleActive = 2) {
         AddLog("由于无法战斗，跳过战斗结算")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.831 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.831 * NikkeH + 0.143 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的进"), , , , , , , TrueRatio, TrueRatio)) {
+        if BattleActive = 2 {
             Send "{Esc}"
         }
         return

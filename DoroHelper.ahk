@@ -4149,8 +4149,12 @@ AwardLoveTalking() {
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.818 * NikkeW . " ", NikkeY + 0.089 * NikkeH . " ", NikkeX + 0.818 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.089 * NikkeH + 0.056 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
+        AddLog("已进入好感度咨询界面")
     }
-    AddLog("已进入好感度咨询界面")
+    else {
+        AddLog("未找到好感度咨询图标")
+        Pause
+    }
     ; 花絮鉴赏会
     if g_settings["AwardAppreciation"] {
         AwardAppreciation

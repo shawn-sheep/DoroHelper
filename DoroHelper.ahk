@@ -2714,7 +2714,6 @@ Login() {
 ;region 商店
 ;tag 付费商店
 ShopCash() {
-    BackToHall
     AddLog("===付费商店任务开始===")
     AddLog("寻找付费商店")
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.250 * NikkeW . " ", NikkeY + 0.599 * NikkeH . " ", NikkeX + 0.250 * NikkeW + 0.027 * NikkeW . " ", NikkeY + 0.599 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("付费商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2797,7 +2796,6 @@ ShopCash() {
 ;tag 普通商店
 ShopNormal() {
     AddLog("===普通商店任务开始===")
-    BackToHall
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.236 * NikkeW . " ", NikkeY + 0.633 * NikkeH . " ", NikkeX + 0.236 * NikkeW + 0.118 * NikkeW . " ", NikkeY + 0.633 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击商店图标")
         FindText().Click(X + 20 * TrueRatio, Y - 20 * TrueRatio, "L")
@@ -3555,7 +3553,6 @@ InterceptionAnomaly() {
 ;endregion 拦截战
 ;region 小活动
 EventSmall() {
-    BackToHall
     ; UserClick(2640, 1810, TrueRatio)
     ; Sleep 5000
     while true {
@@ -3638,7 +3635,6 @@ EventSmall() {
 ;endregion 小活动
 ;region 大活动
 EventLarge() {
-    BackToHall
     while (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         if (ok := FindText(&X, &Y, NikkeX + 0.633 * NikkeW . " ", NikkeY + 0.788 * NikkeH . " ", NikkeX + 0.633 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.788 * NikkeH + 0.105 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("尼尔活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到大活动")
@@ -4059,7 +4055,6 @@ EventSpecial() {
 ;region 前哨基地
 ;tag 前哨基地收菜
 AwardOutpost() {
-    BackToHall
     AddLog("===前哨基地收菜任务开始===")
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
         while (ok := FindText(&X, &Y, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -4153,7 +4148,6 @@ AwardOutpostExpedition() {
 ;region 咨询
 ;tag 好感度咨询
 AwardLoveTalking() {
-    BackToHall
     UserClick(1493, 1949, TrueRatio)
     AddLog("点击妮姬的图标，进入好感度咨询")
     Sleep 1000
@@ -4298,7 +4292,6 @@ AwardAppreciation() {
 ;endregion 咨询
 ;region 好友点数收取
 AwardFriendPoint() {
-    BackToHall
     AddLog("===好友点数任务开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.956 * NikkeW . " ", NikkeY + 0.211 * NikkeH . " ", NikkeX + 0.956 * NikkeW + 0.033 * NikkeW . " ", NikkeY + 0.211 * NikkeH + 0.068 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("好友的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击好友")
@@ -4316,7 +4309,6 @@ AwardFriendPoint() {
 ;endregion 好友点数收取
 ;region 邮箱收取
 AwardMail() {
-    BackToHall
     AddLog("===邮箱任务开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.962 * NikkeW . " ", NikkeY + 0.017 * NikkeH . " ", NikkeX + 0.962 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.017 * NikkeH + 0.015 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击邮箱")
@@ -4338,7 +4330,6 @@ AwardMail() {
 ;endregion 邮箱收取
 ;region 每日任务收取
 AwardDaily() {
-    BackToHall
     AddLog("===每日任务奖励领取开始===")
     while (ok := FindText(&X, &Y, NikkeX + 0.874 * NikkeW . " ", NikkeY + 0.073 * NikkeH . " ", NikkeX + 0.874 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.073 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
@@ -4363,7 +4354,6 @@ AwardDaily() {
 ;region 通行证收取
 ;tag 查找通行证
 AwardPass() {
-    BackToHall()
     AddLog("===通行证任务开始===")
     t := 0
     while true {
@@ -4440,7 +4430,6 @@ OneAwardPass() {
 ;region 招募
 ;tag 每日免费招募
 AwardFreeRecruit() {
-    BackToHall()
     AddLog("===每日免费招募开始===")
     Text每天免费 := "|<每天免费>*156$64.wzzzzzbzz9zU0s03w1z00S01U0DU7zmNnzzyTwQzk0601ztzU07Abs07zby00Q00t6S00QttwNna9s01nba3aE01z3z00Q03167wDw03s0DgNzUTz9zbAw03wMzsbSNnk07Xky6Qt0TztsTVUs20kTyDbzbDUMTsU"
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , 0, , , , , TrueRatio, TrueRatio)) {
@@ -4469,7 +4458,6 @@ AwardFreeRecruit() {
 ;region 协同作战
 ;tag 协同作战入口
 AwardCooperate() {
-    BackToHall
     AddLog("===协同作战任务开始===")
     ;把鼠标移动到活动栏
     UserMove(150, 257, TrueRatio)
@@ -4532,7 +4520,6 @@ AwardCooperateBattle() {
 ;endregion 协同作战
 ;region 单人突击
 AwardSoloRaid(stage7 := True) {
-    BackToHall
     if stage7 {
         AddLog("===单人突击任务开始===")
     }

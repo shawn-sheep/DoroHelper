@@ -343,6 +343,7 @@ FindText().PicLib("|<小活动的标识>*200$39.3zzzzzsTzzzzz3zzzzzsTzzzzz1zzzzz
 FindText().PicLib("|<小活动·挑战>*150$70.wDwADzzVzsTzkzkkzzy7zVnz3z33zzsTy67wDwADzzVzsMTkykktzy7zVkz3V33VzsTy71U04AA7zU0sSQ000kkzy03Vzk0E303zs0D7z01UA0TzU3w07ky0k3zy7w00T3s30DzsTU01wDoA5zzVz00zkzkkzzy7w0zz2T33zzsTz3Xw1wA3zk03wC7U7kk7z007ksk0S30Dw00T3307UA0Tk01w4A0w0k0z3y7s1k30311wTsTU7wA0AC3lzVy0zkkUkwT7y7s7z3a73vwTsTUTwDsQDzlzVy3jkz1kwT7y7kCD3sD3kwDkS0swD0wD3k01k13ks7kQD00400830zU1w00081UA7y07kzV1k61szs0z7y6TUsDrzs7zzzzz3U", 1)
 FindText().PicLib("|<小活动·放大镜的图标>*150$31.zsDzzzU0zzzU0Dzz001zzUzUzzUzwDzUzz3zkzzVzszzsTsTzwDwDzy7y7zzXz3zzlzVzzkzkzzsTwDzsTy7zwDzVzwDzkTw7zw1k3zz000Tzk067zz0T1zzzzkTzzzw7zzzz1zzzzkTzzzw7zzzz1zzzzlzzzzxk", 1)
 FindText().PicLib("|<小活动·关卡图标>*150$31.00000000000000000000000000000000000007y0003zU001zk000zs000Tw0001y0000z0000TU000Dk0007s0003w0001y0000z0000TU000Dk0007s0003w0001y0000z0000TbzU0Dnzk07tzs03wzw01yTy00z0000TU000Dk0007s0003w0001y0000z0000TU000Dk0007s0003w0001y0000z0000TU000Dk0007s0003w0001y000000000000000000000000000000000E", 1)
+FindText().PicLib("|<小活动·关卡图标2>3F4044-0.90$111.zw00000000000000007zk1zy0000000000000Ty0Dzy07zU000000003zs0Tzs0zz000000000Dzk3zy03zw00001z000zz0Dzk0Dzs0ty0Dy007zw0zz00TzU3zs0zw00Tzk3zz01zy0Dzk3zk00zz0Tzw07zs0zz0Tz0007w1zzk0TzU3zw1zwT007U20000zw0TzU7zU4", 1)
 ;tag 大活动
 FindText().PicLib("|<活动地区>*150$121.tzzsTzzz1zy7zkzzzzzzwDz07zzzUzz3zsTy0000A1U01w03kTzVzwDz000060k01y01sDzky67zU0003ks0Dz00w7zsT33zk0001ww0Dzk0S3zwDVV3sTzzzzzy7zzzs01w3kk0wDzyDzzz3zzzw00s0MM0S7bz1zzz0zzzy00Q0A00D3Uz1wT000A0000C06007VUD1y3U00600Q6703033kw30y0E00300C73wC01VsT00zUQ003U073Vy600kwDk0zwDz3zz3zVkz3UMMS7w0zzjzVzzVzksTVkAAD3z0TzzzkzzUlsQDkw667Vz03zzs00TkkwC7sT323ky00zwQ007sQA73w1VU3sS0UDy6003sS67Vy0kk1wA0s3y3001wA33ky08MFy00y0y3VzUy001sQ0AADz31zUz1kzkS000wC0S7zjVlzsz1sTsD000w70z3zVkzzzzUwDw7UDkS3lzVzksDzzzUy003lzk03zzk00Q00000z001zzs81zzs00S00008TU00zzyC0zzy00D00007Tk00Tzzb0zzzU0DU0003zsTwTzzzzzzzzzzzzzzz", 1)
 FindText().PicLib("|<大活动·签到>*120$70.1U0600000000Dk0y0000007kz03s01Tbs0T3zyTzsDzzs1wTzvzzUzzzjbnzzzzy3zzyyTDzzzzsDzzvtxzy3nw03tsDbzlwy7k0TbkyTz7rsTU1wT3tws9zUk0DkyDbk0Dz001zzwyT03zz007zzntw1ztz00TzzjbkTy3zU0zzwyTDzk7zs3k13tzzzzzzk0T0Dbrzzzzy01w0yTDXzzbk07k3twkDzy30TzzDbk00M201zzwyT0w7UT07zzntw7sT1w0TzzDbkTlwDU01w0yT0z3sy007k3tw3yDXs00T0Dbk7kST001wy0T0Q11w007zs1w000Dk0TzzU7rzzzzy3zzyDzTzzzzsDzzUzxzzzzzUTy01zbzzzzy1w007y0000000000T2", 1)
@@ -2392,7 +2393,7 @@ Skipping() {
 }
 ;tag 进入战斗
 EnterToBattle() {
-    global BattleActive ;是否能进入战斗，0表示根本没找到进入战斗的图标，1表示能，2表示能但次数耗尽
+    global BattleActive ;是否能进入战斗，0表示根本没找到进入战斗的图标，1表示能，2表示能但次数耗尽（灰色的进入战斗）
     global BattleSkip ;是否能跳过动画
     AddLog("尝试进入战斗")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2646,7 +2647,7 @@ EnterToArk() {
     Sleep 2000
 }
 ;tag 推关模式
-AdvanceMode(Picture) {
+AdvanceMode(Picture, Picture2?) {
     AddLog("===推关模式===")
     Sleep 500
     while true {
@@ -2664,6 +2665,26 @@ AdvanceMode(Picture) {
                 }
             }
         }
+        else {
+            try {
+                if (ok2 := FindText(&X := "wait", &Y := 1, NikkeX + 0.305 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.305 * NikkeW + 0.388 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.691 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(Picture2), , , , , , 3, TrueRatio, TrueRatio)) {
+                    loop 2 {
+                        try {
+                            FindText().Click(ok2[A_Index].X, ok2[A_Index].Y, "L")
+                        }
+                        global EventStory := 1
+                        EnterToBattle
+                        BattleSettlement
+                        global EventStory := 0
+                        if BattleActive = 2 {
+                            return
+                        }
+                    }
+                }
+            }
+        }
+        Sleep 3000
+        Send "{]}" ;防止最后一关剧情卡死
     }
 }
 ;endregion 流程辅助函数
@@ -3600,6 +3621,12 @@ EventSmall() {
             sleep 1000
             Confirm
         }
+        while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("尝试返回活动主页面")
+            GoBack
+            Sleep 1000
+        }
+        else AddLog("已返回活动主页面")
     }
     ;tag 剧情活动
     if g_settings["EventSmallStory"] {
@@ -3611,9 +3638,8 @@ EventSmall() {
         }
         Sleep 1000
         Confirm
-        AdvanceMode("小活动·关卡图标")
+        AdvanceMode("小活动·关卡图标", "小活动·关卡图标2")
         Sleep 1000
-        Send "{]}" ;防止最后一关剧情卡死
         GoBack
     }
     ;tag 任务

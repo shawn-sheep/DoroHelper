@@ -836,8 +836,12 @@ doroGui.Show()
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup
 ;tag 广告
-if !g_settings["CloseAdvertisement"] or UserGroup = "普通用户" {
-    if UserGroup = "普通用户" {
+; 如果满足以下任一条件，则显示广告：
+; 1. 未勾选关闭广告 (无论用户是谁)
+; 2. 是普通用户 (无论是否勾选了关闭广告，因为普通用户无法关闭)
+if (!g_settings["CloseAdvertisement"] OR UserGroup = "普通用户") {
+    ; 额外判断，如果用户是普通用户且勾选了关闭广告，则弹窗提示
+    if (g_settings["CloseAdvertisement"] and UserGroup = "普通用户") {
         MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
     }
     ClickOnHelp

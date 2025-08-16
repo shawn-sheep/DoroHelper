@@ -3653,7 +3653,8 @@ EventSmall() {
                 FindText().Click(X + 50 * TrueRatio, Y, "L")
                 AddLog("点击全部领取")
                 Sleep 2000
-                Confirm
+                FindText().Click(X + 50 * TrueRatio, Y, "L")
+                Sleep 500
             }
         }
         else {

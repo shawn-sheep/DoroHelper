@@ -3080,8 +3080,10 @@ SimulationNormal() {
     EnterToBattle
     BattleSettlement
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.364 * NikkeW . " ", NikkeY + 0.323 * NikkeH . " ", NikkeX + 0.364 * NikkeW + 0.272 * NikkeW . " ", NikkeY + 0.323 * NikkeH + 0.558 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("模拟结束的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        Sleep 500
         AddLog("点击模拟结束")
+        Sleep 500
+        FindText().Click(X + 50 * TrueRatio, Y, "L")
+        Sleep 500
         FindText().Click(X + 50 * TrueRatio, Y, "L")
     }
     while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {

@@ -13,7 +13,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.9"
+currentVersion := "v1.5.10"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -244,7 +244,7 @@ FindText().PicLib("|<确认>*200$87.zzzyDzzzzzzy7zzzzzVzzzzDzzkzzk03wDzzzkTzy7zw
 FindText().PicLib("|<进入战斗的进>*150$53.zTzzUTkDzsDzy0z0TzUDzw1y0zy0Dzs3w1zw0Dzk7s3zw0DzUDk7zw0Dz0TUDzw0Dy0z0Tzw0Q00000zw0k00000zw3U00001zwD000003zsy000007zzw00000Dzzs00000Tzzzs1s01zzzzk7s3zzzzzUDk7zzzzz0TUDz00Ty0z0Ty00zw1y0zs01zs3w1zk03k00001U0700000100C00000300Q000007y0s00000Dw1k00000Ts3U00000zk7000003zUDw0zUDzz0Ts1z0Tzy0zk3y0zzw1z0Dw1zzs3w0Ts3zzk7s1zk7zzUDU3zUDzz0S0Dz0Tzy0w0Ty0zzs0w1zw0zz00w7zs1zw00QTzk7zk00Bzzzzv0000DzU000000000000s000000E3w000000kDy000001kTz000003VzzU0000Dbzzz000Tw", 1)
 FindText().PicLib("|<灰色的进>8A8886-0.90$58.0U00TUDU007001y0z001y007s7w00Dw00TUTk00Ts01y1z000zk07s7w001zU0TUTk003z03y1z0007yDzzzzw00Dkzzzzzk00S3zzzzz001kDzzzzw0000zzzzzk0003zzzzz0000Dzzzzw00000zUTk000001y0z0000007s3w000000TUTk01zz01y1z007zw07s7w00Tzk0zUDk01zz03z1zUU7zwTzzzzy0Tzlzzzzzs01z7zzzzzU07wTzzzzy00Tlzzzzzs01z7zzzzzU07w0Tk7w000Tk1y0Tk001z0Ds1z0007w0zU7w000Tk7w0Tk001z0Tk1z0007w3z07w000TkTs0Tk001z3z01z0007w7w07w000zkDU0Tk007zkQ01z001zzUU00000Dzzk000001zzzy007zkDyDzzzzzz1zkDzzzzzw5y0TzzzzzU3k0Tzzzzy0700Dzzzzs0M001zzzk08", 1)
 FindText().PicLib("|<灰色的AUTO图标>7F8586-0.90$39.003z00003zz0001zzy100zzzwQ0DzzzrU7zUDzw1zk0DzUDs00Ty3y001zkz000Ty7s007zly001zzDU001zvw0000zT00000Ps00000T000003s0000Sy00003zk0000Ty00003vs0000T300003s00000Tk00003vs0000zTs0007nzw001yTzU00DVzs003wDy000z1zk00Ts7zU07y0zz03zU7zzzzs0tzzzw023zzz0007zzU0007zU04", 1)
-FindText().PicLib("|<灰色的射击图标>7F8787-0.90$56.0000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0000001VyC000001sTXs00001y7szU0000zVyDw0000TsTVzU000Dw7sDw0007w1y0zU003y0TU7w000z07s0z000TU1y07s007k0TU0y003w07s0Dk00y00001w00000000000000000000000000000000000000Dzzw00Dzzzzzz003zzzzzzk00zzzzzzw00Dzzzzzz003zzzzzzk00zzzk00000000000000000000000000003k00003k00y00001w00Dk0TU0z001w07s0DU00TU1y07s003w0TU3w000zU7s1z0007w1y0zU000zkTUzk0007y7sTs0000zlyDw00007wTXy00000T7sy000001lyC0000000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0002", 1)
+FindText().PicLib("|<灰色的射击图标>8F8F8D-0.90$56.0000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0000001VyC000001sTXs00001y7szU0000zlyDw0000TsTVzU000Dw7sDw0007w1y0zU003y0TU7w000z07s0z000TU1y07s007k0TU0y003w07s0Dk00y00001w00000000000000000000000000000000000000Dzzw00Dzzzzzz003zzzzzzk00zzzzzzw00Dzzzzzz003zzzzzzk00zzzk00000000000000000000000000003k00003k00y00001w00Dk0TU0z001w07s0DU00TU1y07s003w0TU3w000zU7s1z0007w1y0zU000zkTUzk0007y7sTs0000zlyDw00007wTXy00000T7sy000001lyC0000000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0002", 1)
 FindText().PicLib("|<灰色的锁>434343-0.90$35.007k0001zw000Dzy000zzy003zzy007yDw00Tk3w00y03s03w07s07k07k0DU0DU0T00T00y00z01w00y03s01w07U03s0000000000007zzzzszzzzztzzzzzrzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzlzzzzz1zzzzw1zzzzs3zzzzk7zzzzkDzzzzkzzzzzXzzzzz7zzzzyDzzzzwTzzzzszzzzzzzzzzzzzzzzzzzzjzzzzzTzzzzwTzzzzkTzzzz4", 1)
 ;普通战斗、无限塔胜利或失败会出现该图标
 FindText().PicLib("|<TAB的图标>*200$49.01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzzzzy03zzzzzz01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzzzzy03zzzzzz01z00zzzU0zU0Tzzk0Tk0Dzzs0Ds07zzw07w03zzy03y01zzz01z00zzzU0zU0Tzzk0Tk0Dzzs0Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z00zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU0000000000000000000000000000000000000000U", 1)
@@ -2372,10 +2372,12 @@ RefuseSale() {
 }
 ;tag 判断是否开启自动
 CheckAuto() {
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.043 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的AUTO图标"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.043 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的AUTO图标"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("检测到未开启自动爆裂，已开启")
         Send "{Tab}"
     }
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.043 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的射击图标"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的射击图标"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("检测到未开启自动射击，已开启")
         Send "{LShift}"
     }
 }
@@ -2514,9 +2516,7 @@ BattleSettlement() {
             }
         }
         ; 检测自动战斗和爆裂
-        if A_Index = 40 {
-            CheckAuto
-        }
+        CheckAuto
         ;无限之塔的位置
         if (ok := FindText(&X, &Y, NikkeX + 0.855 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.855 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("[无限之塔胜利]TAB已命中")

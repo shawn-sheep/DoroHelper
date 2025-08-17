@@ -845,7 +845,6 @@ if (!g_settings["CloseAdvertisement"] OR UserGroup = "普通用户") {
     if (g_settings["CloseAdvertisement"] and UserGroup = "普通用户") {
         MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
     }
-    ClickOnHelp
     Advertisement
 }
 ;tag 删除旧文件
@@ -2067,21 +2066,25 @@ ClickOnHelp(*) {
     )"
 }
 ;tag 广告
-Advertisement(*) {
-    msgbox "
-    (
-    ====广告位招租====
-    可以通过赞助免除启动时的广告，启动选项-设置-移除启动广告
-    详情见左上角的「赞助」按钮
-    ====Nikke CDK Tool====
-    一个用于管理《胜利女神：NIKKE》CDK 的现代化工具网站，支持支持国际服、国服、港澳台服多服务器、多账号的CDK一键兑换
-    https://nikke.hayasa.link/
-    ===Mirror酱===
-    Mirror酱是一个第三方应用分发平台，可以让你更方便地下载和更新应用
-    现已支持 DoroHelper 的自动更新下载，和DoroHelper本身的会员功能无关
-    https://mirrorchyan.com/
-    ============
-    )"
+Advertisement() {
+    adTitle := "AD"
+    MyAd := Gui(, adTitle)
+    MyAd.SetFont('s10', 'Microsoft YaHei UI')
+    MyAd.Add("Text", "w300", "====帮助====")
+    MyAd.Add("Text", , "第一次运行请先点击左上角的帮助")
+    MyAd.Add("Text", "w300", "====广告位招租====")
+    MyAd.Add("Text", , "可以通过赞助免除启动时的广告，启动选项-设置-移除启动广告")
+    MyAd.Add("Text", , "详情见左上角的「赞助」按钮")
+    MyAd.Add("Link", , '<a href="https://nikke.hayasa.link/">====Nikke CDK Tool====</a>')
+    MyAd.Add("Text", "w500", "一个用于管理《胜利女神：NIKKE》CDK 的现代化工具网站，支持支持国际服、国服、港澳台服多服务器、多账号的CDK一键兑换")
+    MyAd.Add("Link", , '<a href="https://mirrorchyan.com/">===Mirror酱===</a>')
+    MyAd.Add("Text", "w500", "Mirror酱是一个第三方应用分发平台，可以让你更方便地下载和更新应用现已支持 DoroHelper 的自动更新下载，和DoroHelper本身的会员功能无关")
+    MyAd.Show()
+    Sleep 500
+    if not WinExist(adTitle) {
+        MsgBox("警告：广告窗口已被拦截或阻止！请关闭您的广告拦截软件，以确保程序正常运行。", "警告")
+        ExitApp
+    }
 }
 ;tag 复制日志
 CopyLog(*) {

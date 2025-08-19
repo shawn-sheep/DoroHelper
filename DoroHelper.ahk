@@ -50,6 +50,9 @@ global g_settings := Map(
     "ShopScrapGem", 0,           ;废铁商店：珠宝
     "ShopScrapVoucher", 0,       ;废铁商店：好感券
     "ShopScrapResources", 0,     ;废铁商店：养成资源
+    "ShopScrapTeamworkBox", 0,   ;废铁商店：团队合作宝箱
+    "ShopScrapKitBox", 0,        ;废铁商店：保养工具箱
+    "ShopScrapArms", 0,          ;废铁商店：企业精选武装
     ;模拟室
     "SimulationRoom", 0,         ;模拟室
     "SimulationNormal", 0,       ;普通模拟室
@@ -237,6 +240,9 @@ FindText().PicLib("|<珠宝>*150$69.0007k000DU00000y0001y00zzbrk000Dk07zwyy0001z
 FindText().PicLib("|<黄色的礼物图标>*175$36.07U1w00Ts7y00zwDz00sST7U1kDQ3U1k7w3U1k7s3U0s3k7UTzwDzyTzwDzzzzwDzzzzwDzzzzwDzzzzwDzzzzwDzzzzwDzzzzwDzzzzwDzzzzwDzzzzwDzzTzwDzy0000000000000000000000003zwDzs3zwDzs3zwDzs3zwDzs3zwDzs3zwDzs3zwDzs3zwDzs3zwDzs3zwDzs1zwDzkU", 1)
 FindText().PicLib("|<资源的图标>*190$45.zk000007s000000y1zk0007Uzzk000sDzz00067zTw000VzYzk004Dltz0003tzns000QzzbU007DzzA000sTzVk0070zli001s1sxk00D00Ti001s0Dxk00D03zi000s0Txk00703zi000s0TtU00303ww000S0SDU00Vw37s004Dw3y000kzvzU0033zzs000A7zy0000kDz0000U", 1)
 FindText().PicLib("|<黄色的信用点图标>E5C99C-0.61$26.0k000TzU07zy0AzzsDzzz1zzzUDzbk3zw01zD00Tls1ryT0zznsTyyS7zbnlzswSTy7brzVwxxwD7zT1szrsDDsz1vy7wTz1zzzsDzzz1zzvUDzyE0TzUU", 1)
+FindText().PicLib("|<团队合作宝箱图标>*130$123.0000000007zU00000000000000000DzzU0000000000000000DzDzU0000000000000007w03z0000000000000000s001s000000000000000Dk00TU00000000000000DzVwzzU0000000000000DyDkzzzU000000000000Dy0S3s7zU00000000000Tw03kS07zk0000000000Dw07y3y03zk000000000zw07z0Ty03zw00000001zs0Dz000y03zw0000000zs0Dy0000S01zs00001yzk0Dl00004T00zvy003zzk0DUE00000T01zzy00zbk0D0E01400UD01y7w0T060D0E00EU000D0207s700MT00000s00007U00DVk0TT0000000000077U0SM0Dz6000000000027tU1z00Hm000000000000A00Dz0z70000000000006703zwTs8011000004800Uz1zzrzU0000000000008AwTzxw7Y00000000000181zzzz07s00000000000w07zzzk07k0000000000y00zzzy007U000000000S00Dzzzy007U00000000S00Dzzzzy00Dy0000007z00Dzzzzzw00Dy000007z00Dzzzzzzw00Ty02403zU0Dzzzzzzzw00Ts0101zU0Dzzzzzyzzs00TU000TU07zzzzzy3zzs00TU00Dk07zzzzzzkTzzk00T007k07zzzzzzy3zzzk00zETk07zzzzzzzkTzzzk01y3s03zzzzzzzy3zzzzk0zsz07zzzzzzzTUTzzzzkC0063zzzzzzzlU3zzzzzXU00FzzzzzzzyA0TzzzzzQ001TzzzzzzzlU3bzzzzzU00DzzzzzzzyA0Q7zzzzzk0RzzzzzvzzlU3UDzzzzz07zzzzzwzzyA0M0DzzzzzzzzzzzwPzzlU300Tzz7zzzzzzzyDzzyA0M00Tzsbzzzzzzz9jzzlU3000Tz4Tzzzzzz09zzyA0M000zsVzzzzzz0DDzzlU30001z43zzzzzX3zzzyA0M0001sUDzzzzUjzzzzlU30000140zzzzVDzzzzyU", 1)
+FindText().PicLib("|<保养工具箱图标>*150$70.08000007U3k01xzzz00y0TU07rzzw03w1y00zTzzk7zzzzU3tzzz0zzzzz0Tbzzw3zzzzw1wT07k7zzzzkDlw0T0Tzzzy1y7k1w007w007sT07k3zzzz0zVzzz0Dzzzw7y7zzw0zzzzkzsTzzk1zzzy3zVzzz007s00Dy07s07zzzzyTs0DU0TzzzztzU1y01zzzzzWyTzzz7zzzzy3tzzzw7zkDy0DbzzzkTy0Tw0yTzzz7zk0zy3tzzzsTzkTzwDU7zk0zz1zzUy0zzU3vw7tw3s7zz06DkTVUDUzzy00z1y00y7zzw07s7s03tzDjs0TUTU0DzwyTk7y1y00zzXsz1zk7s03twDVsDy0TU0DXUy30Tk1y00y03s00y07s01s0DU01U0DU2", 1)
+FindText().PicLib("|<企业精选武装图标>*150$70.000T200D07k0DztwQ01w0T01zzbvs3bk1w07zyTjkTT0Dk0TztyTVzxzzzUzzbty3zrzzy000TXU7TTzzs001y609xzzzbzzzzy07k3w0Tzzzzs0T07k1zzzzzUDw0T07zzzzy3zk3w0TzzzzszzDzzs000y03zwzzzU1w3s07rnzzy07kDU0MTDzzkST0y001wC001xzvs003ns007rzjU000Dk00TTyy03zzzzzlxzvw0Dzzzzz7rzbk0zzzzzwTT0T01zzzzzVxw1w803zT3s7rk7kk0zsyTkTT0TXlzy3zy1xzwyTDzs7zU7zzntwTzUTw1zzzDrkzyzzsDzzwTy07zszyzzzVzs0zzVzxzy03zU3zy3zbw007w0Dw01wE000DU0w000m", 1)
 ;tag 招募
 FindText().PicLib("|<招募·SKIP的图标>*210$32.DzvzzlzwDzwDz1zz0zk7zk3w0zw0T03z03k0Tk0A03w0100D00001k000040000000000E0000A0100D00k07k0Q03w0T03z0Dk3zkDw1zw7z0zz7zkzznzyTzy", 1)
 FindText().PicLib("|<确认>*200$87.zzzyDzzzzzzy7zzzzzVzzzzDzzkzzk03wDzzzkTzy7zw00D1zzzy1zzkzzU03s00zzs7zy7zw00T007zzUTzkzzz3zk00zzy1zy7zzsTw7sDzzsDzkzzz3zVz1zzzVzy7zzkzsTkTzzyTzkzzy7y3y7zzzzzy7zzkzU000Tzzzzkzzy7s0003zzzzy7zzVz0000TzzzzkzzwDk0003s07zy7zzVy0T3wTU0zzUzzs033sTXs07zy7zz00sT3wTU0zzUzzs073sT3zy7zw3zy00s000TzkzzUTzkT70003zy7zw3zw3ss000TzkzzUDz0T71sT3zy7zs1zs3ssT3wTzkzz0DzUT73sTXzy7zs0zw3ssT3wTzkzz27zwT73sT3zy7zkEzzXss000Tzkzy23zwT70003zy7zksTzXss000Tzksw71zwT60003zy67UwDzVskz3wTzk0sDUzw067sTXzy061y7zU0kz3wTzk3kTkTw047sTXzw0w7z1zU01z3wTzUT0zs7wTsDsTXzs7kDzUTXz3z30Dz1w3zy1wTkTsE3zwz0zzs7ry7z20Tzzw7zzVzztzzk7zzznzzyA", 1)
@@ -643,11 +649,15 @@ SetShopScrapGem := AddCheckboxSetting(doroGui, "ShopScrapGem", "购买珠宝", "
 doroGui.Tips.SetTip(SetShopScrapGem, "在废铁商店中自动购买珠宝")
 g_settingPages["Shop"].Push(SetShopScrapGem)
 SetShopScrapVoucher := AddCheckboxSetting(doroGui, "ShopScrapVoucher", "购买全部好感券", "R1.2")
-doroGui.Tips.SetTip(SetShopScrapVoucher, "在废铁商店中自动购买所有好感券，用于提升妮姬好感度")
 g_settingPages["Shop"].Push(SetShopScrapVoucher)
 SetShopScrapResources := AddCheckboxSetting(doroGui, "ShopScrapResources", "购买全部养成资源", "R1.2")
-doroGui.Tips.SetTip(SetShopScrapResources, "在废铁商店中自动购买所有可用的养成资源")
 g_settingPages["Shop"].Push(SetShopScrapResources)
+SetScrapTeamworkBox := AddCheckboxSetting(doroGui, "ShopScrapTeamworkBox", "购买团队协作宝箱", "R1.2")
+g_settingPages["Shop"].Push(SetScrapTeamworkBox)
+SetShopScrapKitBox := AddCheckboxSetting(doroGui, "ShopScrapKitBox", "购买保养工具箱", "R1.2")
+g_settingPages["Shop"].Push(SetShopScrapKitBox)
+SetShopScrapArmsBox := AddCheckboxSetting(doroGui, "ShopScrapArms", "购买企业精选武装", "R1.2")
+g_settingPages["Shop"].Push(SetShopScrapArmsBox)
 ;tag 二级模拟室SimulationRoom
 SetSimulationTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====模拟室选项====")
 g_settingPages["SimulationRoom"].Push(SetSimulationTitle)
@@ -2993,6 +3003,18 @@ ShopScrap() {
         "信用点", {
             Text: FindText().PicLib("黄色的信用点图标"),
             Setting: g_settings["ShopScrapResources"],
+            Tolerance: 0.3 * PicTolerance },
+        "团队合作宝箱", {
+            Text: FindText().PicLib("团队合作宝箱图标"),
+            Setting: g_settings["ShopScrapTeamworkBox"],
+            Tolerance: 0.25 * PicTolerance },
+        "保养工具箱", {
+            Text: FindText().PicLib("保养工具箱图标"),
+            Setting: g_settings["ShopScrapKitBox"],
+            Tolerance: 0.3 * PicTolerance },
+        "企业精选武装", {
+            Text: FindText().PicLib("企业精选武装图标"),
+            Setting: g_settings["ShopScrapArms"],
             Tolerance: 0.3 * PicTolerance }
     )
     ; 遍历并购买所有物品

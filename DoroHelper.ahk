@@ -600,7 +600,7 @@ SetShopCashTitle := doroGui.Add("Text", "R1", "===付费商店===")
 g_settingPages["Shop"].Push(SetShopCashTitle)
 SetShopCashFree := AddCheckboxSetting(doroGui, "ShopCashFree", "购买付费商店免费珠宝", "R1 ")
 g_settingPages["Shop"].Push(SetShopCashFree)
-SetShopCashFreePackage := AddCheckboxSetting(doroGui, "ShopCashFreePackage", "购买付费商店免费礼包[金Doro专享]", "R1 ")
+SetShopCashFreePackage := AddCheckboxSetting(doroGui, "ShopCashFreePackage", "购买付费商店免费礼包", "R1 ")
 g_settingPages["Shop"].Push(SetShopCashFreePackage)
 SetShopNormalTitle := doroGui.Add("Text", "R1", "===普通商店===")
 g_settingPages["Shop"].Push(SetShopNormalTitle)
@@ -2823,30 +2823,24 @@ ShopCash() {
             }
         }
         if g_settings["ShopCashFreePackage"] {
-            if UserGroup = "金Doro会员" or UserGroup = "管理员" {
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.180 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.266 * NikkeW . " ", NikkeY + 0.180 * NikkeH + 0.077 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                    AddLog("点击一级页面")
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.180 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.266 * NikkeW . " ", NikkeY + 0.180 * NikkeH + 0.077 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击一级页面")
+                FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                Sleep 1000
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.259 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.351 * NikkeW . " ", NikkeY + 0.259 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击二级页面")
                     FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                     Sleep 1000
-                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.259 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.351 * NikkeW . " ", NikkeY + 0.259 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                        AddLog("点击二级页面")
-                        FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
-                        Sleep 1000
-                        ;把鼠标移动到商品栏
-                        UserMove(1918, 1060, TrueRatio)
-                        Send "{WheelUp 3}"
-                        Sleep 1000
-                    }
-                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.332 * NikkeW . " ", NikkeY + 0.443 * NikkeH . " ", NikkeX + 0.332 * NikkeW + 0.327 * NikkeW . " ", NikkeY + 0.443 * NikkeH + 0.466 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                        AddLog("点击三级页面")
-                        FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
-                        Sleep 1000
-                    }
+                    ;把鼠标移动到商品栏
+                    UserMove(1918, 1060, TrueRatio)
+                    Send "{WheelUp 3}"
+                    Sleep 1000
                 }
-            }
-            else {
-                MsgBox("当前用户组不支持该任务，请点击赞助按钮升级会员组")
-                Pause
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.332 * NikkeW . " ", NikkeY + 0.443 * NikkeH . " ", NikkeX + 0.332 * NikkeW + 0.327 * NikkeW . " ", NikkeY + 0.443 * NikkeH + 0.466 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击三级页面")
+                    FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+                    Sleep 1000
+                }
             }
         }
     }

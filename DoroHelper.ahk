@@ -1202,12 +1202,13 @@ CheckForUpdate(isManualCheck) {
         url := "https://raw.githubusercontent.com/1204244136/DoroHelper/refs/heads/main/DoroHelper.ahk" ; 替换为实际下载链接
         ; 获取当前脚本所在目录
         currentScriptDir := A_ScriptDir
-        ; 定义本地保存路径，文件名设为 main.zip
-        localFilePath := currentScriptDir "\DoroHelper" A_Now ".ahk"
+        ; 定义本地保存路径
+        NewFileName := "DoroHelper" A_Now ".ahk"
+        localFilePath := currentScriptDir "\" NewFileName
         ; 下载文件到脚本所在目录
         try {
             AddLog("正在下载最新AHK版本，请稍等……")
-            Download(url, localFilePath) ; 保存到当前目录，文件名可自定义
+            Download(url, localFilePath)
             AddLog "文件下载成功！已保存到当前目录: " localFilePath
         } catch as e {
             MsgBox "下载失败，错误信息: " e.Message
@@ -1216,8 +1217,23 @@ CheckForUpdate(isManualCheck) {
         NewFileShortHash := SubStr(NewFileHash, 1, 7)
         AddLog("最新ahk文件的短哈希值是：" NewFileShortHash)
         if (NewFileShortHash != MyFileShortHash) {
-            AddLog("发现新版本！请手动替换脚本文件")
-            MsgBox("发现新版本！请手动替换脚本文件")
+            MsgBox("发现新版本！已下载至同目录下，软件即将退出")
+            OldName := "DoroHelperOld" A_Now ".ahk"
+            ; 检查是否已经在新名称下运行（避免重复重命名）
+            if !InStr(A_ScriptFullPath, OldName) {
+                try {
+                    ; 构建新路径
+                    newPath := A_ScriptDir "\" OldName
+                    ; 重命名文件
+                    FileMove A_ScriptFullPath, newPath
+                    FileMove localFilePath, "DoroHelper.ahk"
+                    ExitApp
+                } catch as e {
+                    MsgBox "重命名失败: " e.Message
+                }
+            } else {
+                MsgBox "脚本已经在重命名后的状态下运行"
+            }
         } else {
             if (isManualCheck) {
                 MsgBox("当前已是最新版本，无需更新，即将删除校验文件")

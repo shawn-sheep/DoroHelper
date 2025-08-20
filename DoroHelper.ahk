@@ -18,7 +18,7 @@ currentVersion := "v1.5.11"
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
 if (scriptExtension = "ahk") {
-    currentVersion := currentVersion . "beta"
+    currentVersion := currentVersion . "-beta"
 }
 usr := "1204244136"
 repo := "DoroHelper"

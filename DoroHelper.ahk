@@ -1198,6 +1198,10 @@ CheckForUpdate(isManualCheck) {
     local channelInfo := (g_numeric_settings["UpdateChannels"] == "测试版") ? "测试版" : "正式版"
     ; ==================== AHK文件 直接下载 =====================
     if (g_numeric_settings["UpdateChannels"] == "AHK版") {
+        if (scriptExtension = "exe") {
+            MsgBox "exe版本不可直接更新至ahk版本，请查看群公告下载完整的ahk版本文件"
+            return
+        }
         ; 定义目标URL
         url := "https://raw.githubusercontent.com/1204244136/DoroHelper/refs/heads/main/DoroHelper.ahk" ; 替换为实际下载链接
         ; 获取当前脚本所在目录

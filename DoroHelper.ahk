@@ -298,7 +298,7 @@ FindText().PicLib("|<内部的紫色应援>CD98E6-0.70$59.0000000000000000000000
 FindText().PicLib("|<晋级赛内部的应援>*150$79.0000000000000000000000000000000000000000001s001w00000003w000y00zy0001z000T7zzz0000zU00DVzzzk0zzzzzk7kzzzs0Tzzzzw3sTzzk0Dzzzzy1w7zly07zzzzzDznvsz03zzzzzbztwyz01zzzzznzwTTT00z010M1zyDjzU0TUDUDUzzTzzy0Dkbs7wTzjzzz07vnw3w0y7zzzU3zxy3y0T3zzzk1zyTVz0DVzzzk0zzDkz07lzzzy0TjrszU3vzzzz0DrvwTk1zzzzzUDvwzDk3zzzzzk7wzTjs7zzzzzs3yTjrs3zwDzz01yDrzw1zy7zzs0z7zzy0zw3zzw0TVyty0Tw3zzw0Dkz1z0Ay1zzy07sS0z00T1ztz03w00zU0DUzzz03y00zU07kzzz01z00Tk03szzzU0zzzzzy3wzrzk0zzzzzzDyzzzzUTzzzzzbzzzzzsDrzzzzlzjzzzs3vzzzzszXvzTw0w00000Tkky1w04000007008040000000000000000000000000000000000000000E", 1)
 ;tag 无限之塔
 FindText().PicLib("|<无限之塔的无限>*135$63.s0003s0A00S0000T00003k0003s0000S0000T01U03k0003sAADkTzkDzz3VUy3zy3zzsMQ00TzkTzz33U03zy3zzsMQ00TzkDzz33Uy300000sMQDkM0000733U0300000sQA00M000073VU03zw0DzsQA00TzU1zz3VV1rzs0DzsQAAATz01zz3VVU1zk0Dzs0AA0Dy31zz21Vk3zUMDnsMQC0zs71y737VsDy0sDUsTwD0z0D1w73z007k3s00sTs0U80z0073z0600Ds01sTk0sA7zU0T3z0DVnzz07sTsTyQ", 1)
-FindText().PicLib("|<每日通关>*150$93.yzzzzzzzzzzzzzzzVzzzzzzzy01zXz7w00Ds00TXk0DyDkz000z003wDX3zlyDs007szsTkw0zyDVyDzzzDzXzDkDy001VzzztzwTzk0Dk008003zDzXzy00y001Y00TtzwTznX7zsTzW3Xz7zXsC8Mzz3zwsQTs00T1k07zsTz31Xz003sC8Ew0000003szsTtnX70000000TDzXzC00w000sksTtzwTtk07zkDz77bzDzXzCQMzy1zssMTtzwTtnW7zU7z000z7zXz6QEzsQDk007s00TULzzw7UTzy7z003s0zww1z0zzkzs00T70030zw7zsDzDzXxy00wTzsU", 1)
+FindText().PicLib("|<无限之塔·OPEN>*200$95.zwDzzzzzzzzzzzzzy03zw00zw00DkDz3s01zs00Ts00TUTy7U01zk00Tk00z0TwC001zU00TU01y0zsM3w3z1z0T0zzw0zkkTw3y3z0y3zzs0zV0zw7w7z1w7zzk1z23zs7sDy3sDzzU1y07zsDkTw7kTzz13w0DzkTUzsDUzzy23s0zzUz1zkT00Dw67k1zz1y3z0y00DsA7U3zy3w3s3w00TkQD07zw7s00Ds00zUsC0DzsDk00zk03z1sQ0TzkTU03zUzzy3kM0TzUz01zz1zzw7kk0zz1y1zzy3zzsDUV1zw3w7zzw7zzkTU21zsDsDzzsDzzUzU63zUTkTzzkTzz1z0A1y1zUzzzUTzy3z0Q003z1zzz001w7y0w00Dy3zzy003sDy1w01zw7zzw007kTw3y07zsDzzs00DUzw7zXzzzzzzzzzzzzzs", 1)
 FindText().PicLib("|<STAGE>*90$66.s3s1y7zUDk103k0w3y07U003k0w3y07k001U0w3y07k001U0Q1y03k01zw3w1y3zkT3zw7s1y3zkT3zw7s1y3zkT3zw7s1y3zkT3zw7s0y3zkT1zw7s0y3zkT03w7s0y3Vk/01w7k0y3Vk101w7kEy3Vk101w7kky3Vk1y1w7kkS3Vk1z1w7kkS3VkTz1w7UkS3VkTz1w7UkS3VkTz1w7U0S3VkTz1w7U0C3VkTy1w7U0C31kT01w7U0C01k001w70sC01k001w71sC01k0U3w71sD01k1U", 1)
 FindText().PicLib("|<无限之塔·向右的箭头>*100$21.0Tzs3zz0Tzw1zzUDzy0zzk7zy0zzs3zz0Tzs3zzUDzw1zzUDzy0zzk7zz0Tzs3zz0Tzw1zzUDzw1zzk7zy0zzs3zz0Tzs3zzUDzw1zzUDzy0zzk7zy0zzs3zz0Tzw1zzUDzw1zzk7zw1zzUDzs3zz0Tzs3zy0zzk7zy0zzUDzw1zzUDzs3zz0Tzk7zy0zzk7zw1zzUDzw1zz0Tzs3zy0Tzk7zy0zzUDzw1zzUDzs3zz0Tzs3zy0zzk7zw1zzUDzw1zz0Tzs3zz0Tzw", 1)
 FindText().PicLib("|<塔内的无限之塔>*200$106.00000000001U00kC300000Dwzz00D003UsS3zzzUzvzw00w00CTzzDzzy3zjzk01s00tzzwzzzsCSs7007U03bzzk0w00tnUQ7zzz0C7Xs03k03bDzkTzzy3yCrU0D00Cwzz1zzzsTszw00w00vXzw3zzz1zUz0Tzzz3iC1k003s7y7z3zzzyCws7000DU7VwyDzzzstnzw001w0CTVzzzzzXbDzk00DU0vzzw0Tk0CSzz001w03jzzU1z00svbA00TU0CNzk0Dw03XiQs03w00s0000zk0CytzU0TU03tzz07j00vnXw03s00Drzw0yw33jCDU0z003zTzk7nkCC0sy0Ts00TtkD0yD1ss3Xs3z001y70wDkzzXUTvsTz0Db0Q3ny1zyC1zjnvzzy01zzDk7zks7yT73zzs07zwQ0Dy3US0MM3zz00Tzk0000C0000000001k68", 1)
@@ -3438,16 +3438,41 @@ TowerCompany() {
         AddLog("进入无限之塔")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
     }
-    Sleep 3000
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.353 * NikkeW . " ", NikkeY + 0.827 * NikkeH . " ", NikkeX + 0.353 * NikkeW + 0.290 * NikkeW . " ", NikkeY + 0.827 * NikkeH + 0.029 * NikkeH . " ", 0.5 * PicTolerance, 0.5 * PicTolerance, FindText().PicLib("每日通关"), , , , , , 5, TrueRatio, TrueRatio)) {
-        count := ok.Length
-        AddLog("今天有" count "座塔要打")
+    if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+        AddLog("已进入无限之塔")
         Sleep 1000
-        FindText().Click(X, Y, "L")
+    }
+    else {
+        AddLog("进入无限之塔失败，跳过任务")
+        AddLog("===企业塔任务结束===")
+        return
+    }
+    TowerArray := []
+    loop 4 {
+        if (ok := FindText(&X, &Y, NikkeX + 0.356 * NikkeW + 270 * TrueRatio * (A_Index - 1) . " ", NikkeY + 0.521 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.070 * NikkeW + 270 * TrueRatio * (A_Index - 1) . " ", NikkeY + 0.521 * NikkeH + 0.034 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·OPEN"), , , , , , , TrueRatio, TrueRatio)) {
+            Status := "开放中"
+        }
+        else Status := "未开放"
+        switch A_Index {
+            case 1: Tower := "极乐净土之塔"
+            case 2: Tower := "米西利斯之塔"
+            case 3: Tower := "泰特拉之塔"
+            case 4: Tower := "朝圣者/超标准之塔"
+        }
+        if Status = "开放中" {
+            TowerArray.Push(Tower)
+        }
+        AddLog(Tower "-" Status)
+    }
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.357 * NikkeW . " ", NikkeY + 0.518 * NikkeH . " ", NikkeX + 0.357 * NikkeW + 0.287 * NikkeW . " ", NikkeY + 0.518 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·OPEN"), , , , , , 1, TrueRatio, TrueRatio)) {
+        count := ok.Length
+        Sleep 1000
+        FindText().Click(X, Y + 100 * TrueRatio, "L")
         Sleep 1000
         loop count {
             if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.426 * NikkeW . " ", NikkeY + 0.405 * NikkeH . " ", NikkeX + 0.426 * NikkeW + 0.025 * NikkeW . " ", NikkeY + 0.405 * NikkeH + 0.024 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("已进入塔的内部，打第" A_Index "座塔")
+                Tower := TowerArray[A_Index]
+                AddLog("已进入" Tower "的内部")
                 Sleep 1000
                 FindText().Click(X + 100 * TrueRatio, Y, "L")
                 EnterToBattle

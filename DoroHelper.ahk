@@ -3270,7 +3270,7 @@ ArenaRookie() {
     AddLog("检测免费次数")
     skip := false
     while True {
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.565 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.565 * NikkeW + 0.082 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.101 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("免费"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.578 * NikkeW . " ", NikkeY + 0.804 * NikkeH . " ", NikkeX + 0.578 * NikkeW + 0.059 * NikkeW . " ", NikkeY + 0.804 * NikkeH + 0.045 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("免费"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("有免费次数，尝试进入战斗")
             FindText().Click(X, Y + 10 * TrueRatio, "L")
         }
@@ -3322,7 +3322,7 @@ ArenaSpecial() {
     AddLog("检测免费次数")
     skip := false
     while True {
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.565 * NikkeW . " ", NikkeY + 0.775 * NikkeH . " ", NikkeX + 0.565 * NikkeW + 0.082 * NikkeW . " ", NikkeY + 0.775 * NikkeH + 0.101 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("免费"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.578 * NikkeW . " ", NikkeY + 0.804 * NikkeH . " ", NikkeX + 0.578 * NikkeW + 0.059 * NikkeW . " ", NikkeY + 0.804 * NikkeH + 0.045 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("免费"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("有免费次数，尝试进入战斗")
             FindText().Click(X, Y + 10 * TrueRatio, "L")
             Sleep 1000

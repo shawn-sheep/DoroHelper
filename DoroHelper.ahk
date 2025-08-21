@@ -4249,16 +4249,16 @@ AwardOutpostExpedition() {
 AwardLoveTalking() {
     UserClick(1493, 1949, TrueRatio)
     AddLog("点击妮姬的图标，进入好感度咨询")
-    Sleep 1000
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.818 * NikkeW . " ", NikkeY + 0.089 * NikkeH . " ", NikkeX + 0.818 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.089 * NikkeH + 0.056 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    Sleep 3000
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.818 * NikkeW . " ", NikkeY + 0.089 * NikkeH . " ", NikkeX + 0.818 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.089 * NikkeH + 0.056 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
-        AddLog("已进入好感度咨询界面")
+        if A_Index > 10 {
+            MsgBox("未找到好感度咨询图标")
+            Pause
+        }
     }
-    else {
-        AddLog("未找到好感度咨询图标")
-        Pause
-    }
+    AddLog("已进入好感度咨询界面")
     ; 花絮鉴赏会
     if g_settings["AwardAppreciation"] {
         AwardAppreciation

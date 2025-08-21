@@ -13,7 +13,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.11"
+currentVersion := "v1.5.12"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2095,6 +2095,7 @@ ClickOnHelp(*) {
 8. 鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！
 9. ctrl+1关闭程序、ctrl+2暂停程序、ctrl+3~7调整游戏大小
 10. 如果遇到启动了但毫无反应的情况，请检查杀毒软件(如360、火绒等)是否拦截了 DoroHelper 的运行，请将其添加信任
+11. 如果遇到ACE安全中心提示，请尝试卸载wegame
     )"
 }
 ;tag 广告

@@ -1088,7 +1088,7 @@ Initialization() {
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
     global TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
     GameRatio := Round(NikkeW / NikkeH, 3)
-    AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`n图片缩放系数是" Round(TrueRatio, 3) "`n用户名是" A_Username)
+    AddLog("项目地址https://github.com/1204244136/DoroHelper`n当前的doro版本是" currentVersion "`n屏幕宽度是" A_ScreenWidth "`n屏幕高度是" A_ScreenHeight "`n游戏画面比例是" GameRatio "`n图片缩放系数是" Round(TrueRatio, 3))
     AddLog("如有问题请先尝试将更新渠道切换至AHK版并进行更新（需要优质网络）。如果无法更新或仍有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")
@@ -3529,7 +3529,7 @@ TowerUniversal() {
         }
         ; 循环等待箭头消失或处理广告
         while true {
-            if !(ok := FindText(&X := "wait0", &Y := 3, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait0", &Y := 3, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
                 break
             }
             RefuseSale

@@ -4709,6 +4709,7 @@ AwardSoloRaid(stage7 := True) {
         }
         if stage7 {
             AddLog("第七关未开放")
+            BackToHall
             AwardSoloRaid(stage7 := false)
             return
         }
@@ -4719,8 +4720,6 @@ AwardSoloRaid(stage7 := True) {
             return
         }
     }
-    AddLog("===单人突击任务结束===")
-    BackToHall
 }
 ;endregion 单人突击
 ;region 其他限时活动

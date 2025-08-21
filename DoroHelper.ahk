@@ -3418,7 +3418,7 @@ ArenaChampion() {
         Sleep 1000
     }
     AddLog("===冠军竞技场任务结束===")
-    loop 3 {
+    loop 2 {
         GoBack
         Sleep 2000
     }

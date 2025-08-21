@@ -941,10 +941,11 @@ ClickOnDoro(*) {
             TowerUniversal()
         GoBack
     }
-    if g_settings["Interception"]
+    if g_settings["Interception"] {
         if g_settings["InterceptionAnomaly"]
             InterceptionAnomaly()
-    BackToHall
+        BackToHall
+    }
     if g_settings["Award"] {
         if g_settings["AwardOutpost"] ;使用键名检查 Map
             AwardOutpost()
@@ -978,8 +979,8 @@ ClickOnDoro(*) {
             EventLarge()
         if g_settings["EventSpecial"]
             EventSpecial()
+        BackToHall
     }
-    BackToHall
     if g_settings["CheckEvent"] {
         if UserGroup = "普通用户" {
             MsgBox("当前用户组不支持活动结束提醒，请点击赞助按钮升级会员组")

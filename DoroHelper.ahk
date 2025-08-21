@@ -2661,6 +2661,7 @@ BackToHall() {
             UserClick(333, 2041, TrueRatio)
             Sleep 500
             Send "{]}"
+            RefuseSale
         }
     }
     Sleep 1000

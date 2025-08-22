@@ -925,14 +925,14 @@ ClickOnDoro(*) {
         if g_settings["ArenaRookie"] or g_settings["ArenaSpecial"] or g_settings["ArenaChampion"] {
             EnterToArk()
             EnterToArena()
+            if g_settings["ArenaRookie"] ;新人竞技场
+                ArenaRookie()
+            if g_settings["ArenaSpecial"] ;特殊竞技场
+                ArenaSpecial()
+            if g_settings["ArenaChampion"] ;冠军竞技场
+                ArenaChampion()
+            GoBack
         }
-        if g_settings["ArenaRookie"] ;新人竞技场
-            ArenaRookie()
-        if g_settings["ArenaSpecial"] ;特殊竞技场
-            ArenaSpecial()
-        if g_settings["ArenaChampion"] ;冠军竞技场
-            ArenaChampion()
-        GoBack
     }
     if g_settings["Tower"] {
         if g_settings["TowerCompany"]

@@ -2050,7 +2050,7 @@ MsgSponsor(*) {
     guiTier := guiSponsor.Add("DropDownList", "Range", ["铜Doro会员", "银Doro会员", "金Doro会员"])
     guiDuration := guiSponsor.Add("DropDownList", "Range", ["1个月", "3个月", "6个月", "12个月"])
     guiSponsor.Add("Button", "r1", "我已赞助，生成赞助信息").OnEvent("Click", CalculateSponsorInfo)
-    guiSponsor.Show("w300 h300")
+    guiSponsor.Show()
 }
 CalculateSponsorInfo(thisGuiButton, info) {
     ; 步骤1：获取设备唯一标识

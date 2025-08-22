@@ -944,8 +944,8 @@ ClickOnDoro(*) {
     if g_settings["Interception"] {
         if g_settings["InterceptionAnomaly"]
             InterceptionAnomaly()
-        BackToHall
     }
+    BackToHall
     if g_settings["Award"] {
         if g_settings["AwardOutpost"] ;使用键名检查 Map
             AwardOutpost()

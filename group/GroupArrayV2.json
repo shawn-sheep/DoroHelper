@@ -1,4 +1,16 @@
 {
+  "eb5e4f5f7eec3958c0079d0eb0d80512ee114848de7f3ab195727952a7f58a61": {
+    "tier": "铜Doro会员",
+    "expiry_date": "20250921"
+  },
+  "89a3b1a706b1e0ce3f526bc3b66b50efe8fff4c35f47d11b1f04e404d37cdc1e": {
+    "tier": "金Doro会员",
+    "expiry_date": "20250921"
+  },
+  "b74b90ad40b96cee066dd351bf0bf163e229c48548de2ef300bc4995629a5c3c": {
+    "tier": "银Doro会员",
+    "expiry_date": "20250921"
+  },
   "57485c2c8d65fe4128a5b2a0bca5acaad6950387cc8bdff3e13c142e56c7ebc0": {
     "tier": "银Doro会员",
     "expiry_date": "20250920"

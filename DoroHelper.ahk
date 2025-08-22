@@ -13,7 +13,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.12"
+currentVersion := "v1.5.13"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -325,7 +325,7 @@ FindText().PicLib("|<白底蓝色右箭头>*200$57.zzzzszzzzzzzz007zzzzzz0007zzz
 ;tag 咨询
 FindText().PicLib("|<咨询的图标>*150$51.zyDzzzXzzzUzzzsDzzs7zzz0zzz0zzzs7zzs7zzz0zzz0zzzs7zzs7zzz0zw70s00s71Us70070s070s00s700s70070s070s00s700s70070s07zs00zz00zz007zs07zs00zz0000000000000000000000000000000000000000000000000000000000000Tzzzzzzs3zzzzzzz0Tzzzzzzs3zzzzzzz0Tzzszzzs3zzz7zzz0TzzkTzzs3zzw1zzz0Tzs00zzs3zz007zz0Tzw01zzs3zzU0Dzz0Tzy03zzs3zzs0zzz0Tzz07zzs3zzs0zzz0Tzz07zzs3zztwzzz0Tzzzzzzs3zzzzzzz0Tzzzzzzs3zzzzzzz0Tzzzzzzs3zzzzzzz0Tzzzzzzs00000000000000000U0000000600000003U", 1)
 FindText().PicLib("|<》》》>*200$58.3U03U03U00zU0zU0zU07z07z07z00zy0zy0zy03zw3zw3zw0DzkDzkDzk0zzUzzUzzU3zy3zz3zy0DzwDzwDzw0TzsTzsTzs0zzkzzkzzk3zz3zz3zz07zy7zy7zy0DzsDzsDzs0zzkzzkzzk1zzVzzVzzU3zz3zz3zz0DzwDzwDzw0TzsTzsTzs1zzlzzlzzk3zz7zz3zz0DzwTzwDzw1zzlzzlzzk7zy7zy7zy0zzkzzkzzk3zz3zz3zz0TzsTzsTzs3zz3zz3zz0DzsDzsDzs1zzVzzVzzUDzwDzyDzw0zzkzzkzzk7zy7zy7zy0zzkTzkzzk3zz3zz3zy0DzsDzsDzs0zz0zz1zz03zw3zw3zw0DzUDzUDzU0Tw0Tw0Tw00zU0zU0zU01w01w01w00U", 1)
-FindText().PicLib("|<红色的20进度>FF392B-0.90$9.y7wzrzzzzzzzzzzzzzzryz4", 1)
+FindText().PicLib("|<红色的20进度>FE3829-0.90$11.000007UDkTkzlzXz7yDwTszlzXz7wDsT0000004", 1)
 FindText().PicLib("|<咨询·MAX>*200$72.00000000D00Tk00600U0Dk0zs00C01k0Dk1yw00S01k07s3wz00y03s03w3wzU3y03s01y7szk7z07w01yDkzwDz07w00zTUzyzz0Dy00TzUzzzz0Dy00Dz0wzyT0Tz00Dy0wTwT0TT007w0wDsT0yDU07w0w3kT1yDU07y0w10T1w7k0Dz0w00T3w7k0Tz0w00T3s3s0zzUw00T7s3w0zDkw00T7k1w1y7sw00TDk1y3w7ww00TDU0y7s3ww00TTU0z7s1yw00STU0TDk0zw00ST00TDU0TU", 1)
 FindText().PicLib("|<红色的收藏图标>FD2F1A-0.80$46.zzzwTzzzzzzVzzzzzzy3zzzzzzkDzzzzzz0Tzzzzzs1zzzzzzU3zzzzzw07zzzzzk0Tzzzzy00zzzzzs03zzzzz007zzzzs00Dzzzy000Dzzk00000zk0000004000000000000000U00000020000000Q0000003s000000Tk000003zU00000Tz000003zy00000Tzw00003zzs0000Tzzk0001zzz00007zzw0000Tzzk0001zzz00007zzs0000TzzU0001zzy00007zzs0000TzzU0000zzy00E03zzk0Dk0Dzz03zk0zzw0zzk3zzk7zzkDzzXzzzkzs", 1)
 FindText().PicLib("|<快速咨询的图标>*200$47.01z00zzz01z00zzz01z01zzz01z00zzz01z01zzz01z00zzz01z00zzz01z01zzz01z00zzz01z00zzz01z01zzz01z00zzz01z00zzz01z01zzz01z00zzz01z00zzz01z01zzz01z00zzz01z01zzw07w07zzk0Tk0Tzz01z01zzw07w07zzk0Tk0Tzz01z01zzw07w07zzk0Tk0Tzz01z01zzw07w07zzk0Tk0Tzz01z01zzw07w07zzk0Tk0Tzz01z01zzw07w07zzk0Tk0Tzz01z01zzz", 1)
@@ -4300,7 +4300,7 @@ AwardLoveTalking() {
             AddLog("妮姬咨询任务已超过20次，结束任务")
             break
         }
-        if (ok := FindText(&X, &Y, NikkeX + 0.635 * NikkeW . " ", NikkeY + 0.658 * NikkeH . " ", NikkeX + 0.635 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.658 * NikkeH + 0.034 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红色的20进度"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.637 * NikkeW . " ", NikkeY + 0.672 * NikkeH . " ", NikkeX + 0.637 * NikkeW + 0.004 * NikkeW . " ", NikkeY + 0.672 * NikkeH + 0.013 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的20进度"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("图鉴已满")
             if (ok := FindText(&X, &Y, NikkeX + 0.541 * NikkeW . " ", NikkeY + 0.637 * NikkeH . " ", NikkeX + 0.541 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.637 * NikkeH + 0.028 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("咨询·MAX"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("好感度也已满，跳过")
@@ -4313,7 +4313,6 @@ AwardLoveTalking() {
                 AddLog("尝试快速咨询")
                 FindText().Click(X, Y, "L")
                 Sleep 1000
-                Text := "|<确认的图标>*184$34.zy03zzzU07zzs00zzz0Tzzzs7zzvz1zzz7sDzzsD1zzz1wDzzsDVzzz1y7zzsDkzzz1z3zzsDwDzz1zlyTsDz7kz1zwT1sDzly31zk7w0Dz0Ts1zw0zkDzl3zVzz6DzDzsMTzzzXkzzzwD3zzzVy7zzw7wDzzUzkDzw7zkDz0zzU007zz001zzz00TzzzkDzy"
                 if (ok := FindText(&X, &Y, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.600 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.125 * NikkeW . " ", NikkeY + 0.600 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(X, Y, "L")
                     AddLog("已咨询" A_Index "次")

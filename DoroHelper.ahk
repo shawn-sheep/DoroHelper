@@ -4660,6 +4660,7 @@ AwardSoloRaid(stage7 := True) {
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.417 * NikkeW . " ", NikkeY + 0.806 * NikkeH . " ", NikkeX + 0.417 * NikkeW + 0.164 * NikkeW . " ", NikkeY + 0.806 * NikkeH + 0.073 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的挑战"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("不在单人突击活动时间")
         AddLog("===单人突击任务结束===")
+        BackToHall
         return
     }
     if stage7 {

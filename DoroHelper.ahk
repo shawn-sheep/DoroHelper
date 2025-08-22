@@ -707,7 +707,7 @@ g_settingPages["Interception"].Push(SetInterceptionShot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
 g_settingPages["Interception"].Push(SetRedCircle)
 RedCircleInfo := doroGui.Add("Text", "x+1 yp R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选。只对克拉肯有效")
+doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选`n务必在设置-战斗-全部中勾选「同步游标与准星」`n只对克拉肯有效")
 g_settingPages["Interception"].Push(RedCircleInfo)
 ;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")

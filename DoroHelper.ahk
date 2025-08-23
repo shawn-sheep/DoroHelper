@@ -13,7 +13,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.13"
+currentVersion := "v1.5.14"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -340,6 +340,7 @@ FindText().PicLib("|<咨询·N图标>FE522E-0.90$40.03zzz001zzzzU0DzzzzU1zzzzy07
 ;tag 奖励
 FindText().PicLib("|<好友的图标>*200$46.000Dk000003zs00000zzk00007zzk0000zzz00007zzy0000Tzzw0003zzzk000DzzzU000zzzy0003zzzs000DzzzU000zzzy0003zzzs000DzzzU000zzzw0001zzzk0007zzz0000Dzzs0000Tzz00000zzs00001zz000001zU00000000000000000000000000000000000000000000000000000000003zz00003zzzk001zzzzs00Tzzzzw07zzzzzs0zzzzzzs7zzzzzzkzzzzzzzXzzzzzzyTzzzzzzxzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzTzzzzzzy", 1)
 FindText().PicLib("|<灰色的全部>BBBBBB-0.90$77.002000020000000D0000y0000000z0001w0Tz0003y0001w0zz000Dy007zztzz000zy00Dzznzy003zz00Tzzbns00Dtz00zzzD7k41zVz00zzwSDUM7y1zU0y7kwS1kzs1zk1wDVtw7bz00zs1wT3nsTzw00zw3tw7bUyzzzzzs7nsDT0wzzzzzVzzySw0lrzzzy3zzyxw00Dzzz07zzxtw1UDzzy0Dzzvns300Dk000007Xs600TU00000D7kA00z000000S7U03zzz01zzswD007zzz03zzlsS00Dzzy07zzXkw00Tzzw0Dzz7Xs000TU00T0yDzk400z000y1wSzUM01y001w3sxy0E03w003s7lvs07zzzzs7zzXm00DzzzzkDzz7U00TzzzzUTzyD000zzzzz0zzwS000zzzzy1w3sw008", 1)
+FindText().PicLib("|<每日任务·MISSION>*200$205.zU0Ts07zk1zs003zw001w0Tzw00zzzy01zz003k00zs0zk001zs000y0Dzk007zzs00Dz000k00Dw0Tk000zk000T07zk000zzs001z0008003y0Dk000Ts000DU3zk000Dzs000T0000000z07k000Ds0007k1zU0003zs000DU000000DU3k0007w0003s0zk0000zs0003U0000007k1s0003w0001w0Tk0000Ts0000k0000001s0w0001y0000y0Dk00007w0000E0000000w0S0000z0000T07s00003y000080Tk0Ds0S0C07zzz03zzzU3s03z00z03y000Tw0Dw0D0703zzzU3zzzk1w07zk0T03zU00Dy07z07U3U3zzzk1zzzs0y07zw0DU1zs007zU3zU3k1k1zzzs0zzzw0T07zz03k1zw003zk1zk1s0s0Tzzw0Tzzy0D03zzU1s0zy001zs0zs0w0Q0Dzzy07zzz07U1zzs0w0Tz000zw0Tw0S0D000zzU00zzU3k1zzw0S0DzU00Ty0Dy0D07U003zk001zk1s0zzy0D07zk00Dz07z07U3k000Ts000Ds0w0Tzz07U3zs007zU3zU3k1s0007y0003w0S0DzzU3k1zw003zk1zk1s0y0001z0000y0D07zzs1s0zy001zs0zs0w0TU000zk000D07U3zzw0w0Tz000zw0Tw0S0Ds000Dw0007U3k1zzw0S0DzU00Ty0Dy0D07y0007z0003k1s0zzy0D07zk00Dz07z07U3zk003zs000s0w0Tzz07U3zs007zU3zU3k3zzzU0zzzk0Q0S07zzU3k1zw003zk1zk1s1zzzs0Tzzw0C0D03zzk1s0zy001zs0zs0w0zzzy0Dzzz0707k1zzk0w0Tz000zw0Tw0S0Tzzz07zzzU3U3s0Tzs0S0DzU00Ty0Dy0D0DzzzU3zzzk1k1w07zs0T07zk00Dz07z07U7zzzU1zzzs0s0y01zs0DU3zs007zU3zU3k3zzzU0zzzk0Q0TU0Dk07k1zw003zk1zk1s1s0000w0000C0Dk00007s0zy001zs0zs0w0y0000S0000D07w00003w0Tz000zw0Tw0S0T0000DU0007U3y00003y0DzU00Ty0Dy0D0DU000Dk0007k1zU0003z07zk00Dz07z07U7k0007s0003s0zs0003zU3zs007zU3zU3k3s0007w0003w0Ty0003zk1zw003zk1zk1s1w0007y0003y0Dzk003zs0zy001zs0zs0w0y000Dz0007z07zy007zw0Tz000zw0Tw0S0T000zzU00TzU3zzw0zzy0DzU2", 1)
 ;tag 活动·通用
 FindText().PicLib("|<活动·切换的图标>*200$54.zzzU3zzzzzzw00Dzzzzzk003zzzzz0000Tzzzy0000Dzzzw00003zzzs03w01zzzk0TzU0zzzU1zzs0TzzU3zzy1zzz07zzzXzzz0Dzzzrzzz0Tzzzzzzz0Tzzzzzzy0zzzzzvzy0zzzzzlzC0zzzzzUzU0zzzzy0Tk07zzzw0Ds01zzzk07w07zzzU03y0Dzzzz01z0zzzzzU0zVzzzzz0Tznzzzzz0Tzzzzzzz0Tzzzzzzy0Tzzzzzzy0Tzztzzzw0zzzUTzzs0zzz0Dzzk1zzz03zzU1zzzU0Ty03zzzk00007zzzw0000Dzzzy0000TzzzzU001zzzzzs003zzzzzz00TzzU", 1)
 FindText().PicLib("|<作战出击的击>*200$63.zzzzs1zzzzzzzzz03zzzzzzzzs0Tzzzzzzzz03zzzzzzzzs0Tzzzzzzzz03zzzzy0Tzs0Tzzzzk00D03zzzzy00000Dzzzzk000003zzzy00000000zzk00000000Dy000000001zk00000000Dzz00000001zzzzU00000Dzzzzs00001zzzzz01s00Dzzzzs0Tzw1zzzzz03zzzzUTzzs0Tzzzs00Dz03zzzz000000Tzzzs000001zzzz00000001zzs000000000z000000000000000000000U0000000007zk00000000zzzs0000007zzzz000000zzzzs0A0007s0zz03zy00z03zs0Tzzz7s0Tz03zzzzz03zs0Tzzzzs0Tz03zs3zz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs00D03zs0Tz00000Dz03zs000007s0Tz000000003zs00000000Tz000000003zs00000000Tzzk0000003zzzzk00000Tzzzzzs0003zzzzzzzs00Tzzzzzzzz03zzzzzzzzs0TzzzzzzzzU3zzzzzzzzzszU", 1)
@@ -4468,14 +4469,15 @@ AwardDaily() {
     while (ok := FindText(&X, &Y, NikkeX + 0.874 * NikkeW . " ", NikkeY + 0.073 * NikkeH . " ", NikkeX + 0.874 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.073 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         AddLog("点击每日任务图标")
-        Sleep 3000
-        while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
-            UserClick(2412, 1905, TrueRatio)
-            AddLog("点击全部领取")
-            Sleep 2000
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.466 * NikkeW . " ", NikkeY + 0.093 * NikkeH . " ", NikkeX + 0.466 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.093 * NikkeH + 0.035 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("每日任务·MISSION"), , , , , , , TrueRatio, TrueRatio)) {
+            while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
+                UserClick(2412, 1905, TrueRatio)
+                AddLog("点击全部领取")
+                Sleep 2000
+            }
+            Sleep 1000
+            BackToHall
         }
-        Sleep 1000
-        BackToHall
     }
     else {
         AddLog("每日任务奖励已领取")

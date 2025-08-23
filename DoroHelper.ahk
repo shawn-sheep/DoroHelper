@@ -2425,6 +2425,8 @@ Skipping() {
         Sleep 500
         if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
+            Sleep 500
+            FindText().Click(X, Y, "L")
             AddLog("跳过动画")
             break
         }

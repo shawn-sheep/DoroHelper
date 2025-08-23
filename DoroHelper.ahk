@@ -2669,11 +2669,11 @@ BackToHall() {
             MsgBox "窗口未聚焦，程序已中止"
             Pause
         }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             ; 点右上角的公告图标
             UserClick(3568, 90, TrueRatio)
             Sleep 500
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.082 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.082 * NikkeH + 0.042 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("公告的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.082 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.082 * NikkeH + 0.042 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("公告的图标"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("已返回大厅")
                 UserClick(333, 2041, TrueRatio)
                 Sleep 500

@@ -894,8 +894,15 @@ ClickOnDoro(*) {
     WriteSettings()
     ;设置窗口标题匹配模式为完全匹配
     SetTitleMatchMode 3
-    if g_settings["Login"]
-        AutoStartNikke() ;登陆到主界面
+    if g_settings["Login"] {
+        if g_settings["AutoStartNikke"] {
+            if UserGroup != "金Doro会员" and UserGroup != "管理员" {
+                MsgBox("当前用户组不支持使用脚本启动NIKKE，请点击赞助按钮升级会员组")
+                Pause
+            }
+            AutoStartNikke() ;登陆到主界面
+        }
+    }
     Initialization
     if !g_settings["AutoCheckUserGroup"]
         CheckUserGroup
@@ -1016,44 +1023,70 @@ AutoStartNikke() {
     global NikkeY
     global NikkeW
     global NikkeH
-    if g_settings["AutoStartNikke"] {
-        if UserGroup = "金Doro会员" or UserGroup = "管理员" or A_Now < 20250806240000 {
-            targetExe := "nikke.exe"
-            if WinExist("ahk_exe " . targetExe) {
-                AddLog("NIKKE已经在运行中，跳过启动")
-                return
+    targetExe := "nikke.exe"
+    if WinExist("ahk_exe " . targetExe) {
+        AddLog("NIKKE已经在运行中，跳过启动")
+        return
+    }
+    while g_numeric_settings["StartupPath"] != "" {
+        SetTitleMatchMode 2 ; 使用部分匹配模式
+        targetExe := "nikke_launcher.exe"
+        gameExe := "nikke.exe" ; 游戏主进程
+        ; 尝试找到标题包含"NIKKE"的主窗口
+        mainWindowID := WinExist("NIKKE ahk_exe " . targetExe)
+        if mainWindowID {
+            AddLog("找到了NIKKE主窗口！ID: " mainWindowID)
+            actualWinTitle := WinGetTitle(mainWindowID)
+            AddLog("实际窗口标题是: " actualWinTitle)
+            ; 激活该窗口
+            WinActivate(mainWindowID)
+            WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, mainWindowID
+            TrueRatio := NikkeH / stdScreenH
+            ; 设置超时时间（例如2分钟）
+            startTime := A_TickCount
+            timeout := 120000
+            ; 循环点击直到游戏启动或超时
+            while (A_TickCount - startTime < timeout) {
+                ; 检查游戏是否已经启动
+                if ProcessExist(gameExe) {
+                    AddLog("检测到游戏进程 " gameExe " 已启动，停止点击")
+                    Sleep 5000 ; 等待游戏稳定
+                    break 2 ; 跳出两层循环
+                }
+                ; 执行点击启动按钮
+                AddLog("点击启动按钮...")
+                UserClick(594, 1924, TrueRatio)
+                ; 等待一段时间再次点击（例如3-5秒）
+                Sleep 3000
             }
-            while g_numeric_settings["StartupPath"] != "" {
-                SetTitleMatchMode 3
-                targetExe := "nikke_launcher.exe"
-                if WinExist("ahk_exe " . targetExe) {
-                    sleep 1000
-                    winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
-                    actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
-                    AddLog("找到了进程为 '" . targetExe . "' 的窗口！`n实际窗口标题是: " . actualWinTitle)
-                    ;激活该窗口
-                    WinActivate(winID)
-                    nikkeID := winID
-                    WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
-                    global TrueRatio := NikkeH / stdScreenH
-                    UserClick(594, 1924, TrueRatio)
-                    Sleep 10000
+            ; 检查是否超时
+            if (A_TickCount - startTime >= timeout) {
+                AddLog("启动超时，未能检测到游戏进程")
+            }
+            break
+        }
+        else if WinExist("ahk_exe " . targetExe) {
+            AddLog("启动器已运行但未找到主窗口，等待主窗口出现...")
+            ; 等待主窗口出现
+            startTime := A_TickCount
+            timeout := 30000 ; 等待30秒
+            while (A_TickCount - startTime < timeout) {
+                if WinExist("NIKKE ahk_exe " . targetExe) {
+                    AddLog("主窗口出现，重新检测")
                     break
                 }
-                else {
-                    AddLog("正在启动NIKKE启动器，请稍等……")
-                    Run(g_numeric_settings["StartupPath"])
-                    sleep 10000
-                }
+                Sleep 1000
             }
-            else {
-                MsgBox("请添加启动器的路径！")
-                Pause
+            if (A_TickCount - startTime >= timeout) {
+                AddLog("等待主窗口超时，尝试重新启动启动器")
+                Run(g_numeric_settings["StartupPath"])
+                sleep 5000
             }
         }
         else {
-            MsgBox("当前用户组不支持使用脚本启动NIKKE，请点击赞助按钮升级会员组")
-            Pause
+            AddLog("正在启动NIKKE启动器，请稍等……")
+            Run(g_numeric_settings["StartupPath"])
+            sleep 5000
         }
     }
 }

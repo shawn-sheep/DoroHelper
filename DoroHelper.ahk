@@ -72,6 +72,7 @@ global g_settings := Map(
     "InterceptionAnomaly", 0,    ;异常拦截战
     "InterceptionShot", 0,       ;拦截截图
     "InterceptionRedCircle", 0,  ;拦截红圈
+    "InterceptionExit7", 0,      ;满7退出
     ;常规奖励
     "Award", 0,                  ;奖励领取总开关
     "AwardOutpost", 0,           ;前哨基地收菜
@@ -113,7 +114,7 @@ global g_settings := Map(
     "StoryModeAutoStar", 0,      ;剧情模式自动收藏
     "StoryModeAutoChoose", 0,    ;剧情模式自动选择
     ;启动/退出相关
-    "CloseAdvertisement", 0,        ;关闭启动提示
+    "CloseAdvertisement", 0,     ;关闭启动提示
     "CloseNoticeSponsor", 0,     ;关闭赞助提示
     "AutoCheckUpdate", 0,        ;自动检查更新
     "AutoCheckUserGroup", 0,     ;自动检查会员组
@@ -146,6 +147,7 @@ BattleSkip := 0
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
 RedCircle := 0
+Exit7 := 0
 EventStory := 0
 Screenshot := 0
 if A_Username = "12042" {
@@ -257,6 +259,7 @@ FindText().PicLib("|<灰色的进>8A8886-0.90$58.0U00TUDU007001y0z001y007s7w00Dw
 FindText().PicLib("|<灰色的AUTO图标>7F8586-0.90$39.003z00003zz0001zzy100zzzwQ0DzzzrU7zUDzw1zk0DzUDs00Ty3y001zkz000Ty7s007zly001zzDU001zvw0000zT00000Ps00000T000003s0000Sy00003zk0000Ty00003vs0000T300003s00000Tk00003vs0000zTs0007nzw001yTzU00DVzs003wDy000z1zk00Ts7zU07y0zz03zU7zzzzs0tzzzw023zzz0007zzU0007zU04", 1)
 FindText().PicLib("|<灰色的射击图标>8F8F8D-0.90$56.0000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0000001VyC000001sTXs00001y7szU0000zlyDw0000TsTVzU000Dw7sDw0007w1y0zU003y0TU7w000z07s0z000TU1y07s007k0TU0y003w07s0Dk00y00001w00000000000000000000000000000000000000Dzzw00Dzzzzzz003zzzzzzk00zzzzzzw00Dzzzzzz003zzzzzzk00zzzk00000000000000000000000000003k00003k00y00001w00Dk0TU0z001w07s0DU00TU1y07s003w0TU3w000zU7s1z0007w1y0zU000zkTUzk0007y7sTs0000zlyDw00007wTXy00000T7sy000001lyC0000000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0002", 1)
 FindText().PicLib("|<灰色的锁>434343-0.90$35.007k0001zw000Dzy000zzy003zzy007yDw00Tk3w00y03s03w07s07k07k0DU0DU0T00T00y00z01w00y03s01w07U03s0000000000007zzzzszzzzztzzzzzrzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzlzzzzz1zzzzw1zzzzs3zzzzk7zzzzkDzzzzkzzzzzXzzzzz7zzzzyDzzzzwTzzzzszzzzzzzzzzzzzzzzzzzzjzzzzzTzzzzwTzzzzkTzzzz4", 1)
+FindText().PicLib("|<放弃战斗的图标>*200$44.zzzzzy1zzzzzz07zzzzzU1zzzzzs0Dzzzzy03zzzzzU0zzzzzs0Dzzzzy03zzzzz00zzw0000Tzy0000Dzz0000DzzU000Tzzk0007zzs3k03zzw1s01zzz0w00zzzsS00DzzzD001zzzzU00Tzzzk003zzzs010Tzzw00s3zzy00T0Tzz003sTzzU00TDw00003zz00000Tzk000U3zw000Q0Tz000DU3zk007w0TzzzzzU3zzzzzw0zzzzzzUDzzzzzw3zzzzzz0zzzzzzkDzzzzzw3zzzzzz0zzzzzzkDzzzzzw3zzzzzz0zzzzzzkDzzzzzw3zzzzzz0zs", 1)
 ;普通战斗、无限塔胜利或失败会出现该图标
 FindText().PicLib("|<TAB的图标>*200$49.01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzzzzy03zzzzzz01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzzzzy03zzzzzz01z00zzzU0zU0Tzzk0Tk0Dzzs0Ds07zzw07w03zzy03y01zzz01z00zzzU0zU0Tzzk0Tk0Dzzs0Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z00zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU0000000000000000000000000000000000000000U", 1)
 ;特殊竞技场快速战斗会出现该图标
@@ -318,6 +321,7 @@ FindText().PicLib("|<死神的死>*200$73.k00000000000s00000000000Q00000000000C0
 FindText().PicLib("|<异常拦截·向右的箭头>*20$53.z0007zzzzw0003zzzzw0007zzzzw0003zzzzw0003zzzzw0007zzzzw0003zzzzs0003zzzzw0007zzzzw0007zzzzs0003zzzzw0003zzzzw0007zy00w0003zw00s0003zy00w0007zw00w0007zw00w0003zw00w0003zy01w0007zw00w0003zw00w0003zw01w0007zw01w0007zw00w0003zw01w0003zy01w0007zs03s000Dzk07U000Tz00S0001zw01s0007zk07U000Tz00S0001zw01s0007zk07U000Tz00S0001zw01s0007zk07U000Tz00S0001zw01s0007zk07U000Tzk0S0001zzzzs0007zzzzU000Tzzzy0001zzzzs0007zzzzU000Tzzzy0001zzzzs0007zzzzU000Tzzzy0001zzzzs0007zzzzU000Tzzzz0001zzzzU", 1)
 FindText().PicLib("|<拦截战·进入战斗的进>*200$43.xzzkTUzsTzsDkDs7zw7s7w1zy3w3z0Tz1y1zk7zUz0zw1zkTUTz0M0000Tkw0000Dwy00007zz00003zzU0001zzzUDUTzzzsDkDzzzw7s7zzzy3w3w0Dz1y1y03zUz0z01zkDUTU0s0000E0M00007UA00003s600001w300000y1k0000T0zkTkDzUTkDs7zkDs7w3zs7s7y1zw3w3z0zy1w3zUTz0w1zkDzUS1zs7zUDUzw3zU3szy1zU0zzzzzU03zzzzU003zy00D000000Dk00000Dy000017zk0001rzzk001k", 1)
 FindText().PicLib("|<拦截战·快速战斗的图标>*200$50.00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzz00zU0Tzzs07w03zzw03y01zzy01z00zzz00zU0TzzU0Tk0Dzzk0Ds07zzs07w03zzw03y01zzy01z00zzz00zU0TzzU0Tk0Dzzk0Ds07zzs07w03zzw03y01zzy01z00zzz00zU0TzzU0Tk0Dzzk0Ds07zzs07w03zzw03y01zzzU", 1)
+FindText().PicLib("|<拦截战·红色框的7>B83900-0.90$53.00Tzzzw0001zzzzs0007zzzzs000Dzzzzs000zzzzzk001zzzzzk007zzzzzU00DzzzzzU00zzzzzzU03zzzzzz007zzzzzz00Tzzzzzy00zzy1zzy03zzs1zzw0Dzzk3zzw0Tzzk7zzw1zzzwTzzs3zzzszzzsDzzzlzzzkTzzz3zzzlzzzy7zzzbzzzwDzzzjzzzszzzzzzzzVzzzyTzzz3zzzwzzzy7zzzkzzzwTzzz0zzzszzzy1zzzlzzzs1zzz3zzzk3zzy7zzz03zzzzzzy07zzzzzzs07zzzzzzU07zzzzzz00Dzzzzzw00Dzzzzzs00TzzzzzU00Tzzzzy000Tzzzzw000zzzzzk000zzzzzU001zzzzy0001zzzzw0003zzzzk0003zzzz008", 1)
 ;tag 前哨基地
 FindText().PicLib("|<前哨基地的图标>*100$47.Q0TUw1UCQ0TXk60sA0Dj0M3UC0Dw1UC0C07s60s0707sM3k0707tUD10703y0w3U7U3w3k7U3U3yD0DU3U1yw0DU1U1zk0Dk1k1zU0Dk1k0zk0Dk1k0zk0Dk0s0Tk07s0s0Tk0Ds0s0Tk0zs0w0Ds3vs0w0DsD3s0Q0Dsw3w0S07nk7w0S07jUBw0C07y0ly0C03", 1)
 FindText().PicLib("|<溢出资源的图标>*100$34.zzyzzzzzUzzzzs0zzzy7UzzzVzUzzkTzUzw7zzVzVzzzVsTzzzV3zzzz03zzzs03zzy003zzUk03zsD003y3w003Uzk000Dz0003zw000Tzk001zz0007zw000Tzk001zz0007zw000Tzk001zw8007z3s00Tkzs01wDzs073zzs0ETzzs0Dzzzw3zzzzwzzy", 1)
@@ -711,10 +715,11 @@ SetInterceptionShot := AddCheckboxSetting(doroGui, "InterceptionShot", "结果�
 doroGui.Tips.SetTip(SetInterceptionShot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
 g_settingPages["Interception"].Push(SetInterceptionShot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
+doroGui.Tips.SetTip(SetRedCircle, "勾选后，在异常拦截中遇到克拉肯时会自动进行红圈攻击`n请务必在设置-战斗-全部中勾选「同步游标与准星」`n只对克拉肯有效")
 g_settingPages["Interception"].Push(SetRedCircle)
-RedCircleInfo := doroGui.Add("Text", "x+1 yp R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(RedCircleInfo, "会使用3号位的狙击或发射器角色打红圈，如果未配置请勿勾选`n务必在设置-战斗-全部中勾选「同步游标与准星」`n只对克拉肯有效")
-g_settingPages["Interception"].Push(RedCircleInfo)
+SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro会员限时独占]", "R1.2")
+doroGui.Tips.SetTip(SetInterceptionExit7, "免责声明：如果遇到任何问题导致提前退出请自行承担损失")
+g_settingPages["Interception"].Push(SetInterceptionExit7)
 ;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")
 g_settingPages["Award"].Push(SetAwardTitle)
@@ -2520,6 +2525,7 @@ BattleSettlement() {
     global Victory
     global Screenshot
     global RedCircle
+    global Exit7
     global EventStory
     checkred := 0
     if (BattleActive = 0 or BattleActive = 2) {
@@ -2530,11 +2536,26 @@ BattleSettlement() {
         return
     }
     AddLog("等待战斗结算")
-    ; RedCircle := true
-    if RedCircle {
-        AddLog("红圈有概率误判")
+    if RedCircle or Exit7 {
+        AddLog("有概率误判，请谨慎开启该功能")
     }
     while true {
+        ; Exit7 := true
+        if Exit7 {
+            if (ok := FindText(&X, &Y, NikkeX + 0.512 * NikkeW . " ", NikkeY + 0.072 * NikkeH . " ", NikkeX + 0.512 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.072 * NikkeH + 0.035 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·红色框的7"), , , , , , , TrueRatio, TrueRatio)) {
+                Send "{Esc}"
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.382 * NikkeW . " ", NikkeY + 0.890 * NikkeH . " ", NikkeX + 0.382 * NikkeW + 0.113 * NikkeW . " ", NikkeY + 0.890 * NikkeH + 0.067 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("放弃战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                    Sleep 500
+                    FindText().Click(X, Y, "L")
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                        Sleep 500
+                        FindText().Click(X, Y, "L")
+                    }
+                    AddLog("满7自动退出")
+                }
+            }
+        }
+        ; RedCircle := true
         if RedCircle {
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("检测到红圈的上边缘黄边")
@@ -3578,6 +3599,7 @@ TowerUniversal() {
 ;tag 异常拦截
 InterceptionAnomaly() {
     global RedCircle
+    global Exit7
     global Screenshot
     EnterToArk
     AddLog("===异常拦截任务开始===")
@@ -3683,10 +3705,14 @@ InterceptionAnomaly() {
         if g_settings["InterceptionShot"] {
             Screenshot := true
         }
+        if g_settings["InterceptionExit7"] and UserLevel >= 3 {
+            Exit7 := true
+        }
         global BattleActive := 1
         BattleSettlement
         Screenshot := false
         RedCircle := false
+        Exit7 := false
         Sleep 2000
     }
     AddLog("===异常拦截任务结束===")

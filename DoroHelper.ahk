@@ -4491,51 +4491,46 @@ AwardPass() {
     AddLog("===通行证任务开始===")
     t := 0
     while true {
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.879 * NikkeW . " ", NikkeY + 0.150 * NikkeH . " ", NikkeX + 0.879 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.150 * NikkeH + 0.037 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("通行证·3+"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.879 * NikkeW . " ", NikkeY + 0.150 * NikkeH . " ", NikkeX + 0.879 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.150 * NikkeH + 0.037 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("通行证·3+"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("3+通行证模式")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.986 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.986 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.257 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                t := t + 1
-                AddLog("执行第" t "个通行证")
-                Sleep 1000
-                OneAwardPass()
-            }
-            else {
-                AddLog("通行证已全部收取")
-                break
-            }
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.878 * NikkeW . " ", NikkeY + 0.151 * NikkeH . " ", NikkeX + 0.878 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.151 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("通行证·2"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("2通行证模式")
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.018 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                t := t + 1
-                AddLog("执行第" t "个通行证")
-                Sleep 1000
-                OneAwardPass()
-            }
-            else if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.890 * NikkeW . " ", NikkeY + 0.149 * NikkeH . " ", NikkeX + 0.890 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.149 * NikkeH + 0.016 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
-                FindText().Click(X, Y, "L")
-                continue
-            }
-            else {
-                AddLog("通行证已全部收取")
-                break
-            }
+            FindText().Click(X, Y, "L")
+            Sleep 1000
         }
         else {
             AddLog("1通行证模式")
             UserClick(3824, 288, TrueRatio)
             Sleep 1000
             OneAwardPass()
+            AddLog("===通行证任务结束===")
+            BackToHall()
+            return
+        }
+        ; 检查红点并执行通行证
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.986 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.986 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.257 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            t := t + 1
+            AddLog("执行第" t "个通行证")
+            Sleep 1000
+            OneAwardPass()
+            BackToHall()
+            continue
+        }
+        else if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.890 * NikkeW . " ", NikkeY + 0.149 * NikkeH . " ", NikkeX + 0.890 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.149 * NikkeH + 0.016 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
+            FindText().Click(X, Y, "L")
+            BackToHall()
+            continue
+        }
+        else {
+            AddLog("通行证已全部收取")
             break
         }
-        BackToHall()
     }
     AddLog("===通行证任务结束===")
-    BackToHall()
 }
 ;tag 执行一次通行证
 OneAwardPass() {

@@ -148,10 +148,15 @@ g_settingPages := Map()
 RedCircle := 0
 EventStory := 0
 Screenshot := 0
-if A_Username = "12042"
+if A_Username = "12042" {
     UserGroup := "管理员"
-else
+    ;0是普通用户，1是铜Doro会员，2是银Doro会员，3是金Doro会员，10是管理员
+    UserLevel := 10
+}
+else {
     UserGroup := "普通用户"
+    UserLevel := 0
+}
 Hashed := ""
 stdScreenW := 3840
 stdScreenH := 2160
@@ -852,9 +857,9 @@ if g_settings["AutoCheckUserGroup"]
 ; 如果满足以下任一条件，则显示广告：
 ; 1. 未勾选关闭广告 (无论用户是谁)
 ; 2. 是普通用户 (无论是否勾选了关闭广告，因为普通用户无法关闭)
-if (!g_settings["CloseAdvertisement"] OR UserGroup = "普通用户") {
+if (!g_settings["CloseAdvertisement"] OR UserLevel < 1) {
     ; 额外判断，如果用户是普通用户且勾选了关闭广告，则弹窗提示
-    if (g_settings["CloseAdvertisement"] and UserGroup = "普通用户") {
+    if (g_settings["CloseAdvertisement"] and UserLevel < 1) {
         MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
     }
     Advertisement
@@ -873,7 +878,7 @@ if (scriptExtension = "ahk") {
 }
 ;tag 定时启动
 if g_settings["Timedstart"] {
-    if UserGroup = "金Doro会员" or UserGroup = "管理员" or A_Now < 20250806240000 {
+    if UserLevel >= 3 {
         if !g_numeric_settings["StartupTime"] {
             MsgBox("请设置定时启动时间")
             Pause
@@ -897,11 +902,13 @@ ClickOnDoro(*) {
     SetTitleMatchMode 3
     if g_settings["Login"] {
         if g_settings["AutoStartNikke"] {
-            if UserGroup != "金Doro会员" and UserGroup != "管理员" {
+            if UserLevel >= 3 {
+                AutoStartNikke() ;登陆到主界面
+            }
+            else {
                 MsgBox("当前用户组不支持使用脚本启动NIKKE，请点击赞助按钮升级会员组")
                 Pause
             }
-            AutoStartNikke() ;登陆到主界面
         }
     }
     Initialization
@@ -977,7 +984,7 @@ ClickOnDoro(*) {
             AwardSoloRaid()
     }
     if g_settings["Event"] {
-        if UserGroup = "普通用户" UserGroup = "铜Doro会员" {
+        if UserLevel < 2 {
             MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
             Pause
         }
@@ -990,22 +997,22 @@ ClickOnDoro(*) {
         BackToHall
     }
     if g_settings["CheckEvent"] {
-        if UserGroup = "普通用户" {
+        if UserLevel < 1 {
             MsgBox("当前用户组不支持活动结束提醒，请点击赞助按钮升级会员组")
             Pause
         }
         CheckEvent()
     }
     CalculateAndShowSpan()
-    if UserGroup = "普通用户" or !g_settings["CloseNoticeSponsor"] {
+    if UserLevel < 1 or !g_settings["CloseNoticeSponsor"] {
         Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
         if Result = "Yes"
             MsgSponsor
     }
-    if UserGroup != "普通用户" and UserGroup != "管理员" and g_settings["CloseNoticeSponsor"] {
+    if UserLevel > 0 and UserLevel < 10 and g_settings["CloseNoticeSponsor"] {
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
     }
-    if UserGroup = "管理员" and g_settings["CloseNoticeSponsor"] {
+    if UserLevel = 10 and g_settings["CloseNoticeSponsor"] {
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的辛苦付出～")
     }
     if g_settings["OpenBlablalink"]
@@ -1972,16 +1979,20 @@ CheckUserGroup() {
                 AddLog("有效期至" expiryDate)
                 ; 根据用户组设置托盘图标
                 if (UserGroup == "管理员") {
+                    global UserLevel := 10
                     ; 管理员特殊处理逻辑
                 }
                 if (UserGroup == "金Doro会员") {
                     try TraySetIcon("icon\GoldDoro.ico")
+                    global UserLevel := 3
                 }
                 if (UserGroup == "银Doro会员") {
                     try TraySetIcon("icon\SilverDoro.ico")
+                    global UserLevel := 2
                 }
                 if (UserGroup == "铜Doro会员") {
                     try TraySetIcon("icon\CopperDoro.ico")
+                    global UserLevel := 1
                 }
             } else {
                 ; 有效期已过
@@ -3988,12 +3999,6 @@ EventLarge() {
 ;endregion 大活动
 ;region 特殊活动
 EventSpecial() {
-    ;即使有会员功能，代码依旧是开源的，如果您没有能力支付会员费用而依然想使用会员功能，可以删除以下类似的代码，但恳请不要传播
-    if UserGroup = "普通用户" or UserGroup = "铜Doro会员" {
-        MsgBox("当前用户组不支持特殊活动，请点击赞助按钮升级会员组")
-        Pause
-    }
-    BackToHall
     while (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.633 * NikkeW . " ", NikkeY + 0.788 * NikkeH . " ", NikkeX + 0.633 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.788 * NikkeH + 0.105 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("尼尔活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到特殊活动")

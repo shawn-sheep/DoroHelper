@@ -3488,36 +3488,34 @@ TowerCompany() {
         Sleep 1000
         FindText().Click(X, Y + 100 * TrueRatio, "L")
         Sleep 1000
-        loop count {
+        ; 添加变量跟踪当前关卡
+        TowerIndex := 1
+        ; 修改循环条件
+        while (TowerIndex <= count) {
             if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.426 * NikkeW . " ", NikkeY + 0.405 * NikkeH . " ", NikkeX + 0.426 * NikkeW + 0.025 * NikkeW . " ", NikkeY + 0.405 * NikkeH + 0.024 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("STAGE"), , , , , , , TrueRatio, TrueRatio)) {
-                Tower := TowerArray[A_Index]
+                Tower := TowerArray[TowerIndex]
                 AddLog("已进入" Tower "的内部")
                 Sleep 1000
                 FindText().Click(X + 100 * TrueRatio, Y, "L")
                 EnterToBattle
                 BattleSettlement
+                ; 成功完成当前关卡后，才增加索引
+                TowerIndex++
             }
-            ; 点向右的箭头
-            if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
+            else {
+                RefuseSale
+                ; 这里不使用continue，保持当前关卡索引不变，下次循环继续尝试
+            }
+            ; 检查是否已完成所有关卡
+            if (TowerIndex > count) {
+                break
+            }
+            ; 点向右的箭头进入下一关
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
                 Sleep 3000
                 FindText().Click(X, Y, "L")
             }
-            ; 循环等待箭头消失或处理广告
-            while true {
-                if (ok := FindText(&X := "wait0", &Y := 3, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
-                    break
-                }
-                RefuseSale
-                Sleep 1000
-                if (ok := FindText(&X, &Y, NikkeX + 0.569 * NikkeW . " ", NikkeY + 0.833 * NikkeH . " ", NikkeX + 0.569 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.833 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("无限之塔·向右的箭头"), , , , , , , TrueRatio, TrueRatio)) {
-                    Sleep 3000
-                    FindText().Click(X, Y, "L")
-                }
-            }
-            if (A_Index = count) {
-                break
-            }
-            Sleep 3000
+            Sleep 1000
         }
         AddLog("所有塔都打过了")
     }

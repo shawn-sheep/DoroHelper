@@ -1264,6 +1264,7 @@ CheckForUpdate(isManualCheck) {
             AddLog "文件下载成功！已保存到当前目录: " localFilePath
         } catch as e {
             MsgBox "下载失败，错误信息: " e.Message
+            return
         }
         NewFileHash := HashSHA256(localFilePath)
         NewFileShortHash := SubStr(NewFileHash, 1, 7)

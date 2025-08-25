@@ -2076,11 +2076,11 @@ CheckEvent(*) {
     if MyFileShortHash = "20250730" {
         MsgBox "尼尔联动活动将在今天结束，请尽快完成活动！捡垃圾、搬空商店、抽完活动招募券！"
     }
-    if MyFileShortHash = "20250730" {
+    if MyFileShortHash = "20250827" {
         MsgBox "单人突击将在今天结束，请没凹的尽快凹分！"
     }
-    if MyFileShortHash = "20250806" {
-        MsgBox "夏活将在今天结束，请尽快完成活动！"
+    if MyFileShortHash = "20250903" {
+        MsgBox "小活动ABSOLUTE将在今天结束，请尽快搬空商店！"
     }
 }
 ;tag 支持

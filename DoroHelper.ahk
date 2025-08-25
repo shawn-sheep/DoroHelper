@@ -2557,7 +2557,7 @@ BattleSettlement() {
         }
         ; RedCircle := true
         if RedCircle {
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.12 * PicTolerance, 0.12 * PicTolerance, FindText().PicLib("红圈的上边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("检测到红圈的上边缘黄边")
                 FindText().Click(X, Y + 70 * TrueRatio, 0)
                 Sleep 100
@@ -2566,7 +2566,7 @@ BattleSettlement() {
                 Click "up left"
                 Sleep 100
             }
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("红圈的下边缘黄边"), 0, 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.12 * PicTolerance, 0.12 * PicTolerance, FindText().PicLib("红圈的下边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("检测到红圈的下边缘黄边")
                 FindText().Click(X, Y - 70 * TrueRatio, 0)
                 Sleep 100
@@ -2575,7 +2575,7 @@ BattleSettlement() {
                 Click "up left"
                 Sleep 100
             }
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), 0, 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.12 * PicTolerance, 0.12 * PicTolerance, FindText().PicLib("红圈的左边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("检测到红圈的左边缘黄边")
                 FindText().Click(X + 70 * TrueRatio, Y, 0)
                 Sleep 100
@@ -2584,7 +2584,7 @@ BattleSettlement() {
                 Click "up left"
                 Sleep 100
             }
-            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.1 * PicTolerance, 0.1 * PicTolerance, FindText().PicLib("红圈的右边缘黄边"), 0, 0, , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.12 * PicTolerance, 0.12 * PicTolerance, FindText().PicLib("红圈的右边缘黄边"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("检测到红圈的右边缘黄边")
                 FindText().Click(X - 70 * TrueRatio, Y, 0)
                 Sleep 100

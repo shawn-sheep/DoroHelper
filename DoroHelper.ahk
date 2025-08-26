@@ -181,14 +181,9 @@ g_default_numeric_settings := g_numeric_settings.Clone()
 SetWorkingDir A_ScriptDir
 try {
     LoadSettings()
-    if currentVersion = "v1.5.15" and g_numeric_settings["Version"] != currentVersion {
+    if InStr(currentVersion, "v1.5.15") and g_numeric_settings["Version"] != currentVersion {
         MsgBox("该版本的「自动打红圈」选项被重置了，请重新勾选")
-        ; 使用之前保存的副本恢复默认设置
-        g_settings := g_default_settings.Clone()
-        g_numeric_settings := g_default_numeric_settings.Clone()
-        ; 恢复默认设置后，再将版本号更新为当前最新版本
         g_numeric_settings["Version"] := currentVersion
-        ; 将重置后的默认设置写入新的 settings.ini 文件
     }
 }
 catch {
@@ -555,7 +550,7 @@ doroGui.AddGroupBox("x280 y10 w300 h640 ", "任务设置")
 ;tag 二级默认Default
 SetNotice := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====提示====")
 g_settingPages["Default"].Push(SetNotice)
-SetDefault := doroGui.Add("Text", "R1 +0x0100", "请到左侧「任务列表」处`n对每个任务进行详细设置`n鼠标悬停以查看对应详细信息")
+SetDefault := doroGui.Add("Text", "R1 +0x0100", "请到左侧「任务列表」处`n对每个任务进行详细设置`n鼠标悬停以查看对应详细信息`n有问题先点左上角的帮助")
 g_settingPages["Default"].Push(SetDefault)
 SetSize := doroGui.Add("Text", "R1 +0x0100", "====游戏尺寸设置====")
 g_settingPages["Default"].Push(SetSize)
@@ -713,7 +708,7 @@ g_settingPages["Interception"].Push(SetInterceptionScreenshot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
 doroGui.Tips.SetTip(SetRedCircle, "勾选后，在异常拦截中遇到克拉肯时会自动进行红圈攻击`n请务必在设置-战斗-全部中勾选「同步游标与准星」`n只对克拉肯有效")
 g_settingPages["Interception"].Push(SetRedCircle)
-SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro会员限时独占]", "R1.2")
+SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro限时独占]", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionExit7, "免责声明：如果遇到任何问题导致提前退出请自行承担损失")
 g_settingPages["Interception"].Push(SetInterceptionExit7)
 ;tag 二级奖励Award
@@ -2081,7 +2076,7 @@ CheckEvent(*) {
     if MyFileShortHash = "20250730" {
         MsgBox "尼尔联动活动将在今天结束，请尽快完成活动！捡垃圾、搬空商店、抽完活动招募券！"
     }
-    if MyFileShortHash = "20250827" {
+    if MyFileShortHash = "20250831" {
         MsgBox "单人突击将在今天结束，请没凹的尽快凹分！"
     }
     if MyFileShortHash = "20250903" {
@@ -2140,7 +2135,6 @@ ClickOnHelp(*) {
     MyHelp.Add("Text", "w600", "- 软件层面：各种驱动的色彩滤镜，部分笔记本的真彩模式")
     MyHelp.Add("Text", "w600", "- 设备层面：显示器的护眼模式、色彩模式、色温调节、HDR等。")
     MyHelp.Add("Text", "w600", "- 游戏语言设置为**简体中文**，设定-画质-开启光晕效果，设定-画质-开启颜色分级，不要使用太亮的大厅背景")
-    MyHelp.Add("Text", "w600", "- 以**管理员身份**运行DoroHelper")
     MyHelp.Add("Text", "w600", "- 推荐使用win11操作系统，win10可能有未知bug")
     MyHelp.Add("Text", "w600", "- 反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志")
     MyHelp.Add("Text", "w600", "- 鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！")
@@ -2408,8 +2402,8 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
         outputText .= spanMinutes " 分 "
     }
     outputText .= remainingSeconds " 秒"
-    if (spanSeconds = 0) {
-        MsgBox("刚运行就结束了，是不是没有进行详细的任务设置呢？")
+    if (spanSeconds < 10) {
+        MsgBox("没怎么运行就结束了，任务列表勾了吗？还是没有进行详细的任务设置呢？")
     }
     ;添加到日志
     AddLog(outputText)
@@ -2547,9 +2541,6 @@ BattleSettlement(modes*) {
         return
     }
     AddLog("等待战斗结算")
-    if RedCircle or Exit7 {
-        AddLog("有概率误判，请谨慎开启该功能")
-    }
     while true {
         if Exit7 {
             if (ok := FindText(&X, &Y, NikkeX + 0.512 * NikkeW . " ", NikkeY + 0.072 * NikkeH . " ", NikkeX + 0.512 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.072 * NikkeH + 0.035 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·红色框的7"), , , , , , , TrueRatio, TrueRatio)) {
@@ -2847,6 +2838,7 @@ ShopCash() {
         FindText().Click(X, Y, "L")
         Sleep 2000
         if g_settings["ShopCashFree"] {
+            AddLog("领取免费珠宝")
             while true {
                 if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.386 * NikkeW . " ", NikkeY + 0.632 * NikkeH . " ", NikkeX + 0.386 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.632 * NikkeH + 0.025 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色空心方框"), , , , , , , TrueRatio, TrueRatio)) {
                     AddLog("发现日服特供的框")
@@ -2889,7 +2881,7 @@ ShopCash() {
             }
         }
         if g_settings["ShopCashFreePackage"] {
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.180 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.266 * NikkeW . " ", NikkeY + 0.180 * NikkeH + 0.077 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("领取免费礼包")
                 AddLog("点击一级页面")
                 FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                 Sleep 1000
@@ -2908,6 +2900,7 @@ ShopCash() {
                     Sleep 1000
                 }
             }
+            AddLog("奖励已全部领取")
         }
     }
     AddLog("===付费商店任务结束===")
@@ -3224,7 +3217,7 @@ SimulationOverClock() {
         Sleep 1000
     }
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.376 * NikkeW . " ", NikkeY + 0.236 * NikkeH . " ", NikkeX + 0.376 * NikkeW + 0.047 * NikkeW . " ", NikkeY + 0.236 * NikkeH + 0.078 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("蓝色的25"), , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("难度正确，如果卡死请勾选「禁止无关人员进入」和「好战型战术」")
+        AddLog("难度正确")
     }
     else {
         AddLog("难度不是25，跳过")
@@ -3264,6 +3257,10 @@ SimulationOverClock() {
             if A_Index > 1 {
                 break
             }
+        }
+        if A_Index > 10 {
+            MsgBox("循环次数异常！请勾选「禁止无关人员进入」和「好战型战术」")
+            ExitApp
         }
     }
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.364 * NikkeW . " ", NikkeY + 0.323 * NikkeH . " ", NikkeX + 0.364 * NikkeW + 0.272 * NikkeW . " ", NikkeY + 0.323 * NikkeH + 0.558 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("模拟结束的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -3714,6 +3711,9 @@ InterceptionAnomaly() {
         if g_settings["InterceptionExit7"] and UserLevel >= 3
             modes.Push("Exit7")
         global BattleActive := 1
+        if g_settings["InterceptionRedCircle"] or g_settings["InterceptionExit7"] {
+            AddLog("有概率误判，请谨慎开启该功能")
+        }
         BattleSettlement(modes*)  ; 使用*展开数组为多个参数
         Sleep 2000
     }
@@ -4271,6 +4271,7 @@ AwardOutpost() {
         FindText().Click(X, Y, "L")
         Sleep 1000
     }
+    else AddLog("没有可收取的资源")
     AddLog("尝试返回前哨基地主页面")
     while !(ok := FindText(&X, &Y, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm

@@ -2882,6 +2882,7 @@ ShopCash() {
         }
         if g_settings["ShopCashFreePackage"] {
             AddLog("领取免费礼包")
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.180 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.266 * NikkeW . " ", NikkeY + 0.180 * NikkeH + 0.077 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("点击一级页面")
                 FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                 Sleep 1000

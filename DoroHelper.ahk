@@ -13,7 +13,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.5.15"
+currentVersion := "v1.5.16"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -445,8 +445,7 @@ doroGui.AddGroupBox("x10 y10 w250 h210 ", "更新")
 BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
 BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助").OnEvent("Click", MsgSponsor)
 BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", ClickOnHelp)
-;tag 版本
-doroGui.Add("Text", "x20 y40 R1 +0x0100", "版本号：" currentVersion)
+doroGui.Add("Text", "x20 y40 R1 +0x0100", "版本：" currentVersion)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "x170 yp R1")
 doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度`nahk版暂时改为下载最新版的压缩包")
 doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
@@ -839,7 +838,9 @@ doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没�
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
 doroGui.Add("Button", "xp+260 yp w80 h30", "导出日志").OnEvent("Click", CopyLog)
-LogBox := doroGui.Add("Edit", "xs+10 ys+30 w330 h340 ReadOnly")
+doroGui.SetFont('s10', 'Microsoft YaHei UI')
+LogBox := RichEdit(doroGui, "xs+10 ys+30 w330 h340")
+LogBox.WordWrap(true)
 LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
@@ -2217,7 +2218,6 @@ LoadSettings() {
 SaveSettings(*) {
     WriteSettings()
     MsgBox "设置已保存！"
-    AddLog("设置已保存！", true)
 }
 IsCheckedToString(foo) {
     if foo
@@ -2335,15 +2335,12 @@ AdjustSize(TargetX, TargetY) {
 ;endregion 坐标辅助函数
 ;region 日志辅助函数
 ;tag 添加日志
-AddLog(text, forceOutput := false) {  ;默认参数设为false
+AddLog(text) {
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
         return
     }
     static lastText := ""  ;静态变量保存上一条内容
     global LogBox
-    ;如果内容与上一条相同且不强制输出，则跳过
-    if (text = lastText && !forceOutput)
-        return
     lastText := text  ;保存当前内容供下次比较
     timestamp := FormatTime(, "HH:mm:ss")
     LogBox.Value .= timestamp " - " text "`r`n"

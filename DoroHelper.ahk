@@ -2,6 +2,7 @@
 #Include <github>
 #Include <FindText>
 #Include <GuiCtrlTips>
+#Include <RichEdit>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;退出时保存设置
@@ -142,6 +143,7 @@ global g_numeric_settings := Map(
     "DownloadSource", "GitHub"    ;下载源
 )
 ;tag 其他全局变量
+outputText := ""
 Victory := 0
 BattleActive := 1
 BattleSkip := 0
@@ -836,10 +838,10 @@ doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没
 BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
 doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 ;tag 日志
-doroGui.AddGroupBox("x600 y260 w350 h390 Section", "日志")
-doroGui.Add("Button", "xp+260 yp w80 h30", "导出日志").OnEvent("Click", CopyLog)
-doroGui.SetFont('s10', 'Microsoft YaHei UI')
-LogBox := RichEdit(doroGui, "xs+10 ys+30 w330 h340")
+doroGui.AddGroupBox("x600 y260 w400 h390 Section", "日志")
+doroGui.Add("Button", "xp+320 yp-5 w80 h30", "导出日志").OnEvent("Click", CopyLog)
+doroGui.SetFont('s10')
+LogBox := RichEdit(doroGui, "xs+10 ys+30 w380 h340 -HScroll +0x80 ReadOnly")
 LogBox.WordWrap(true)
 LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
@@ -2173,7 +2175,7 @@ Advertisement() {
 }
 ;tag 复制日志
 CopyLog(*) {
-    A_Clipboard := LogBox.Value
+    A_Clipboard := LogBox.GetText()
     ; 给出提示
     MsgBox("日志内容已复制到剪贴板，请将其连同录屏发到群里")
 }
@@ -2335,16 +2337,57 @@ AdjustSize(TargetX, TargetY) {
 ;endregion 坐标辅助函数
 ;region 日志辅助函数
 ;tag 添加日志
-AddLog(text) {
+AddLog(text, color := "black") {
+    ; 确保 LogBox 控件存在
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
         return
     }
-    static lastText := ""  ;静态变量保存上一条内容
-    global LogBox
+    ;静态变量保存上一条内容
+    static lastText := ""
+    ;如果内容与上一条相同则跳过
+    if (text = lastText)
+        return
     lastText := text  ;保存当前内容供下次比较
+    ; 将光标移到文本末尾
+    LogBox.SetSel(-1, -1)
+    ; 保存当前选择位置
+    sel := LogBox.GetSel()
+    start := sel.S
+    ; 插入时间戳
     timestamp := FormatTime(, "HH:mm:ss")
-    LogBox.Value .= timestamp " - " text "`r`n"
-    SendMessage(0x0115, 7, 0, LogBox) ;自动滚动到底部
+    timestamp_text := timestamp "  "
+    LogBox.ReplaceSel(timestamp_text)
+    ; 设置时间戳为灰色
+    sel_before := LogBox.GetSel()
+    LogBox.SetSel(start, start + StrLen(timestamp_text))
+    font_gray := {}
+    font_gray.Color := "gray"
+    LogBox.SetFont(font_gray)
+    LogBox.SetSel(sel_before.S, sel_before.S) ; 恢复光标位置
+    ; 保存时间戳后的位置
+    text_start := sel_before.S
+    ; 插入文本内容
+    LogBox.ReplaceSel(text "`r`n")
+    ; 计算文本内容的长度
+    text_length := StrLen(text)
+    ; 只选择文本内容部分（不包括时间戳）
+    LogBox.SetSel(text_start, text_start + text_length)
+    ; 使用库提供的 SetFont 方法设置文本颜色
+    font := {}
+    font.Color := color
+    LogBox.SetFont(font)
+    ; 设置悬挂缩进 - 使用段落格式
+    ; 创建一个 PARAFORMAT2 对象来设置悬挂缩进
+    PF2 := RichEdit.PARAFORMAT2()
+    PF2.Mask := 0x05 ; PFM_STARTINDENT | PFM_OFFSET
+    PF2.StartIndent := 0   ; 总缩进量（缇单位，1缇=1/1440英寸）
+    PF2.Offset := 1100       ; 悬挂缩进量（负值表示悬挂）
+    ; 应用段落格式到选中的文本
+    SendMessage(0x0447, 0, PF2.Ptr, LogBox.Hwnd) ; EM_SETPARAFORMAT
+    ; 取消选择并将光标移到底部
+    LogBox.SetSel(-1, -1)
+    ; 自动滚动到底部
+    LogBox.ScrollCaret()
 }
 ;tag 日志的时间戳转换
 TimeToSeconds(timeStr) {
@@ -2369,46 +2412,44 @@ TimeToSeconds(timeStr) {
 ;tag 读取日志框内容 根据 HH:mm:ss 时间戳推算跨度，输出到日志框
 CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     global outputText
-    local logContent := LogBox.Value
-    local lines := StrSplit(logContent, "`n")  ;按换行符分割
+    local logContent := LogBox.GetText()
+    ; 使用正则表达式直接提取所有时间戳
     local timestamps := []
+    local pos := 1
     local match := ""
-    ;提取所有时间戳（格式 HH:mm:ss）
-    for line in lines {
-        if (RegExMatch(line, "^\d{2}:\d{2}:\d{2}(?=\s*-\s*)", &match)) {
-            timestamps.Push(match[])
-        }
+    while (pos := RegExMatch(logContent, "(?<time>\d{2}:\d{2}:\d{2})\s{2,}", &match, pos)) {
+        timestamps.Push(match["time"])
+        pos += match.Len  ; 移动到匹配结束的位置
     }
-    ;直接取最早（正式运行时的第1个）和最晚（最后1个）时间戳（日志已按时间顺序追加）
-    earliestTimeStr := timestamps[1]
-    latestTimeStr := timestamps[timestamps.Length]
-    ;转换为秒数
-    earliestSeconds := TimeToSeconds(earliestTimeStr)
-    latestSeconds := TimeToSeconds(latestTimeStr)
-    ;检查转换是否有效
+    ; 检查是否有足够的时间戳
+    if (timestamps.Length < 2) {
+        AddLog("推算跨度失败：需要至少两个时间戳")
+        return
+    }
+    local earliestTimeStr := timestamps[1]
+    local latestTimeStr := timestamps[timestamps.Length]
+    local earliestSeconds := TimeToSeconds(earliestTimeStr)
+    local latestSeconds := TimeToSeconds(latestTimeStr)
     if (earliestSeconds = -1 || latestSeconds = -1) {
         AddLog("推算跨度失败：日志时间格式错误")
         return
     }
-    ;处理跨午夜情况（如 23:59:59 → 00:00:01）
+    ; 处理跨天情况
     if (latestSeconds < earliestSeconds) {
-        latestSeconds += 24 * 3600  ;加上一天的秒数（86400）
+        latestSeconds += 24 * 3600
     }
-    ;计算总时间差（秒）
-    spanSeconds := latestSeconds - earliestSeconds
-    spanMinutes := Floor(spanSeconds / 60)
-    remainingSeconds := Mod(spanSeconds, 60)
-    ;格式化输出
+    local spanSeconds := latestSeconds - earliestSeconds
+    local spanMinutes := Floor(spanSeconds / 60)
+    local remainingSeconds := Mod(spanSeconds, 60)
     outputText := "已帮你节省时间: "
     if (spanMinutes > 0) {
         outputText .= spanMinutes " 分 "
     }
     outputText .= remainingSeconds " 秒"
+    AddLog(outputText)
     if (spanSeconds < 10) {
         MsgBox("没怎么运行就结束了，任务列表勾了吗？还是没有进行详细的任务设置呢？")
     }
-    ;添加到日志
-    AddLog(outputText)
 }
 ;endregion 日志辅助函数
 ;region 流程辅助函数

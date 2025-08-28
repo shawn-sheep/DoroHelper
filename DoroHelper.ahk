@@ -213,6 +213,7 @@ FindText().PicLib("|<左上角的方舟>*150$59.zz3zzzzUzzzy3zzzy3zzzw7zzzw7zzzw
 FindText().PicLib("|<确认的白色勾>*200$46.zzzzzzwDzzzzzz0Tzzzzzs0zzzzzz03zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zzzzzs0Dzzzzz01zlzzzs0Dy3zzz01zk7zzs0Dz0Dzz01zw0Tzs0Dzk0zz01zzU1zs0Dzy03z01zzw07s0Dzzs0D01zzzk080DzzzU001zzzz000Dzzzy001zzzzw00Dzzzzw01zzzzzs0Dzzzzzk1zzzzzzUDzzzzzz1zzzzzzyTzzzzU", 1)
 FindText().PicLib("|<黄色的小时>FFC700-0.90$135.0000Dz00000000000000zk00001zs00000000000007y00000Dz00000000000000zk00001zs00000000000007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU001zs00001zs000001zzzwDzzzzz0000Dz000000Dw1zVzzzzzs0001zs000001zUDwDzzzzz0000Dz000000Dw1zVzzzzzs0k01zs07U001zUDwDzzzzz07y0Dz07w000Dw1zVzzzzzs1zs1zs3zk001zUDwDzzzzz0Dz0Dz0Ty000Dw1zVzzzzzs1zs1zs1zs001zUDwDzzzzy0Dz0Dz0Dz000Dw1zU000zs01zk1zs1zw001zUDw0007y00Ty0Dz07zU00Dy1zU000zk03zk1zs0zy001zzzw0007y00Ty0Dz03zk00DzzzU000zk07zU1zs0Tz001zzzw0Q07y00zw0Dz01zs00DzzzUDU0zk07zU1zs0Dz001zzzw7y07y00zs0Dz00zw00DzzzVzs0zk0Dz01zs07zU01zzzwDz07y01zs0Dz00zy00Dy1zUzw0zk0Dz01zs03zk01zUDw3zk7y03zk0Dz00Ty00Dw1zUTz0zk0Ty01zs01zs01zUDw1zs7y07zk0Dz00Dz00Dw1zU7zUzk0zw01zs01zw01zUDw0zy7y0DzU0Dz007zU0Dw1zU3zkzk1zs01zs00zw01zUDw0Dz7y0Tz00Dz007zk0Dw1zU1zkzk3zs01zs00Ty01zUDw07s7y0zy00Dz003zk0Dw1zU0w0zk7zk01zs00Tz01zkDw0207y0Dw00Dz003zs0DzzzU000zk0T001zs00Dz01zzzw0007y00s00Dz001z00DzzzU000zk02001zs00DU01zzzw0007y00000Dz001U00DzzzU000zk00001zs000001zzzw0007y00000Dz000000DzzzU000zk00001zs000001zk000007y00000Dz000000Dw000000zk00001zs000001zU00000Dy000A0zz000000Dw0001zzzk000zzzs000001zU0007zzy0007zzy000000000000zzzk000zzzk000000000003zzy0003zzy000000000000TzzU000TzzU000000000003zzs0001zzs000000000000Dzy0000Dzw0000000000001zw00001zs000000000000000004", 1)
 FindText().PicLib("|<公告的图标>*150$44.zzzszzzzzzw7zzzzzy1zzzzzzUDzzzzzs3zzzzzs0Tzzzzs01zzzzs007zzzw000Tzzy0003zzz0000TzzU0003zzs0000zzw00007zy00001zzU0000Dzs00003zw00000zz00000Dzk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zs00000Dw000001y000000D0000001U000000000000000000000UsM3VokTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw01zzzzz00zzzzzs0Tzzzzz0Dzzzzzw7zzy", 1)
+FindText().PicLib("|<黄色的遗失物品的图标>FF9900-0.80$78.zzzzzzzzzzzzzzzzzzzzzzzzzzTzzzzzzzzzzzzTzzzzzzzzzzzyDzzzzzzzzzzzyDzzzzzzzzzzzw7zzzw0Tzzzzzs3zzzk03zzzzzs3zzzU01zzzzzk1zzz000zzzzzk1zzy000TzzzzU0zzw0z0TzzzzU0zzw3zkDzzzz00Tzw7zsDzzzy00Dzs7zw7zzzy00DzsDzw7zzzy007zsDzw7zzzw007zsDzw7zzzs003zsDzw7zzzs001zsDzw7zzzk001zsDzw7zzzk000zs7zw7zzzU000zw7zsDzzz0000Tw3zkDzzz0000Dy1zUTzzy0000Dy000Dzzy00007z0007zzw00007zU003zzs00003zs041zzs00001zw0S0zzk00001zzzz0Tzk00000zzzzUDzU00000zzzzk7z000000Tzzzs3z000000Tzzzw1y000000Dzzzy3y0000007zzzz3w0000007zzzzbs0000003zzzzzs0000003zzzzzk0000001zzzzzk0000000zzzzzU0000000zzzzzU0000000zzzzz00000000Tzzzy00000000Dzzzy00000000Dzzzw000000007zzzw000000007zzzs000000003zzzk000000001zzzk000000001s07U000000000k03U000000000s030000000000M020000000000A060000000000A0A000000000060A000000000060M000000000030E000000000010k00000000001UU00000000000VU00000000000l000000000000S000000000000S000000000000A0000000000004000000U", 1)
 ;tag 商店
 ;tag 付费商店
 FindText().PicLib("|<付费商店的图标>7EBBED-0.80$24.0UVU1VkU13sE27s807w44Dy68Tz2EzzVlzzkVzzk3zzs7zzwDzzyDzzyTzzwDzzw7zzs3zzk3zzkVzzVEzz2MTy48DyA4Dw827sE13kU1VkU0UV0U", 1)
@@ -433,6 +434,11 @@ FindText().PicLib("|<对话框·想法>*150$84.000000000001zz000000000003zz00000
 ;tag 极速爆裂模式
 FindText().PicLib("|<爆裂·A>*200$24.zzzzzzzzzs7zzs3zzk3zzk3zzk1zzk1zzVVzzVUzzVkzz1kzz3kTz3kTy3sTy00Ty00Dw00Dw00Dw007wDw7sDw7sDy3sTy3kTy3zzzzzzzzU", 1)
 FindText().PicLib("|<爆裂·S>*200$21.zzzzzzzz0DzU0Ds00z007k00y3w7kTky3y7kTzy0Tzk07z00Dw00zs07zy0Tzy3zzkS3y3kTkS003s00T007s00zk0TzzzzzzzU", 1)
+;tag 推图模式
+FindText().PicLib("|<推图·放大镜>*200$51.zzzy03zzzzzy003zzzzz0007zzzzk000Dzzzw0000zzzy0Dz01zzzU7zz07zzs3zzy0Tzz0zzzw1zzkDzzzkDzw3zzzz0zzUzz3zw7zsDzsTzUTz1zz3zy3zkTzsTzsDy3zz3zz1zkzzsTzsDw7zz3zzVzUzzsTzw7w7zz3zzUzUz0003w7wDs000TUzVz0003w7w7s000TUzUzzkTzw7w7zz3zzUzUzzsTzwDy7zz3zz1zkTzsTzsDy3zz3zz1zsDzsTzkTz1zz3zw3zw7zsTzUzzUTzzzs7zy1zzzy1zzs7zzzUTzz0Tzzs3zzk0zzw0zzw01zy0Dzz000s07zzk60001zzw1s000zzz0Tk00Tzzk7zs0Tzzw1zzzzzzz0Tzzzzzzk7zzzzzzw1zzzzzzz0Tzzzzzzs7zzzzzzzVzzzzzzzyTzzzzzzzU", 1)
+FindText().PicLib("|<推图·缩小镜>*200$51.zzzzk7zzzzzzU03zzzzzU007zzzzk000Dzzzw0000zzzz07zU1zzzk3zzU7zzw1zzz0Tzz0zzzw3zzkDzzzkDzy3zzzz0zzUzzzzw7zs7zzzzkTz1zzzzy3zsDzzzzsDy3zzzzz1zkTzzzzwDy7zzzzzUzkzzzzzw7w7zzzzzUzUz0003y7w7s000TkzUz0003y7w7s000TkzUzU003y7w7zzzzzUzkzzzzzw7y3zzzzzUzkTzzzzsDy3zzzzz1zsDzzzzsDz1zzzzy3zw7zzzzUTzUTzzzs7zy1zzzz1zzs7zzzUDzz0Tzzs3zzk0zzy0zzw01zz0Dzz001y03zzk60001zzw1w000Tzz0Tk00Dzzk7zk0Dzzw1zzzzzzz0Tzzzzzzk7zzzzzzw1zzzzzzz0Tzzzzzzs7zzzzzzzVzzzzzzzyTzzzzzzzU", 1)
+FindText().PicLib("|<推图·红色的三角>DF8DAB-0.925$42.00000M000000M000007s000007s00000Ts00000Ts00001zs00001zs00007zy00007zy0000Tzy0000Tzy0001zzy0001zzy0001zzy000Tzzy000Tzzy001zzzzU01zzzzU07zzzzU07zzzzU0zzzzzU0zzzzzU3zzzzzU3zzzzzUDzzzzzsDzzzzzszzzzzzszzzzzzs0zzzzzs0zzzzzs000Tzzs000Tzzs00007zs00007zs000000T000000TU", 1)
+FindText().PicLib("|<推图·地图的指针>*200$40.zzw0zzzzy00Tzzz000Dzzs000Tzy0000Tzk0000zy00001zk00003z00000Ds00000TU00000w000003k000006007s00M01zs01U0Dzk0600zz00007zy0000Tzs0001zzU0007zy0000Tzs0001zzU0803zw00U0Dzk0600Ty00M00TU01k000007000000w000003s00000TU00001z000007w00000zs00003zU0000Tz00001zw0000Dzs0001zzU0007zz0000zzy0003zzs000Tzzk003zzzU00Dzzy001zzzw00Dzzzs00zzzzU07zzzz00zzzzy07zzzzw0Tzzzzk3zzzzzUTzzzzz3zzzzzyTzzs", 1)
 ;endregion 识图素材
 ;region 创建GUI
 ;tag 基础配置
@@ -821,6 +827,9 @@ BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("
 TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "极速爆裂模式")
 doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快。`n默认先A后S。适合凹分时解手")
 BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", QuickBurst)
+TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta[金Doro专属]")
+doroGui.Tips.SetTip(TextAutoAdvance, "视野调到最大。在地图中靠近怪海的地方启动，之后心怀希望")
+BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
@@ -2715,7 +2724,7 @@ BattleSettlement(modes*) {
         }
         ; 新人竞技场+模拟室+异常拦截的位置
         else if (ok := FindText(&X, &Y, NikkeX + 0.954 * NikkeW . " ", NikkeY + 0.913 * NikkeH . " ", NikkeX + 0.954 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.913 * NikkeH + 0.080 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("[新人竞技场+模拟室+异常拦截]TAB已命中")
+            AddLog("[新人竞技场|模拟室|异常拦截|推图]TAB已命中")
             break
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -4872,6 +4881,7 @@ StoryMode(*) {
         }
     }
 }
+;tag 调试模式
 TestMode(BtnTestMode, Info) {
     ; 1. 获取输入
     fullCallString := Trim(TestModeEditControl.Value)
@@ -4917,6 +4927,7 @@ TestMode(BtnTestMode, Info) {
         MsgBox("执行函数 '" FuncName "' 时出错:`n`n" e.Message "`n`n行号: " e.Line "`n文件: " e.File)
     }
 }
+;tag 快速爆裂
 QuickBurst(*) {
     Initialization()
     while true {
@@ -4929,6 +4940,73 @@ QuickBurst(*) {
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"
             Pause
+        }
+    }
+}
+;tag 自动推图
+AutoAdvance(*) {
+    if UserLevel < 3 {
+        MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
+        return
+    }
+    Initialization()
+    k := 9
+    if (ok := FindText(&X, &Y, NikkeX + 0.013 * NikkeW . " ", NikkeY + 0.074 * NikkeH . " ", NikkeX + 0.013 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.074 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·地图的指针"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+    }
+    loop {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击小地图")
+            FindText().Click(X, Y, "L")
+        }
+        ; else {
+        ;     MsgBox("查找小地图失败")
+        ;     return
+        ; }
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.359 * NikkeW . " ", NikkeY + 0.251 * NikkeH . " ", NikkeX + 0.359 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.251 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·缩小镜"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("已进入小地图")
+            Sleep 1000
+        }
+        ; else {
+        ;     MsgBox("进入小地图失败")
+        ;     return
+        ; }
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.360 * NikkeW . " ", NikkeY + 0.254 * NikkeH . " ", NikkeX + 0.360 * NikkeW + 0.280 * NikkeW . " ", NikkeY + 0.254 * NikkeH + 0.495 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("推图·红色的三角"), , , , , , k, TrueRatio * 0.8, TrueRatio * 0.8)) {
+            Confirm
+            AddLog("找到敌人")
+            FindText().Click(X + (k - 9) * Random(-100, 100) * TrueRatio, Y + (k - 9) * Random(-100, 100) * TrueRatio, "L")
+        }
+        ; else {
+        ;     MsgBox("未找到敌人")
+        ;     return
+        ; }
+        k := 9
+        EnterToBattle
+        if BattleActive = 1 {
+            modes := ["EventStory"]
+            if BattleSettlement(modes*) = False {
+                MsgBox("本日の勝敗結果：`nDoroの敗北")
+                return
+            }
+            else {
+                while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
+                    Confirm
+                }
+            }
+        }
+        else {
+            k := k + 2
+            if k > 9
+                k := k - 9
+        }
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的遗失物品的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 500
+                FindText().Click(X, Y, "L")
+            }
         }
     }
 }

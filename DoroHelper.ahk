@@ -1932,6 +1932,7 @@ CheckUserGroup() {
     try {
         TextUserGroup.Value := "普通用户"
         UserGroup := "普通用户" ; 同样初始化变量
+        expiryDate := "19991231"
     }
     ; 2. 生成设备唯一标识
     try {
@@ -2003,6 +2004,8 @@ CheckUserGroup() {
         ; 设备识别码不在会员数据中
         AddLog("当前设备非会员")
     }
+    UserGroupInfo := { MembershipType: UserGroup, ExpirationTime: expiryDate }
+    return UserGroupInfo
 }
 ;endregion 身份辅助函数
 ;region GUI辅助函数
@@ -2081,18 +2084,54 @@ CheckEvent(*) {
         MsgBox "小活动ABSOLUTE将在今天结束，请尽快搬空商店！"
     }
 }
-;tag 支持
 MsgSponsor(*) {
-    global guiTier, guiDuration
+    global guiTier, guiDuration, guiSponsor, guiPriceText
     guiSponsor := Gui("+Resize", "赞助")
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
     guiSponsor.Add("Text", "w280 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
     guiSponsor.Add("Button", , "赞助详情").OnEvent("Click", (*) => Run("https://p.sda1.dev/26/7a0bf8d6c0bbdf632f814c711d917391/Sponsor.jpg"))
     guiSponsor.Add("Text", "w280 Wrap", "赞助信息生成器")
-    guiTier := guiSponsor.Add("DropDownList", "Range", ["铜Doro会员", "银Doro会员", "金Doro会员"])
-    guiDuration := guiSponsor.Add("DropDownList", "Range", ["1个月", "3个月", "6个月", "12个月"])
-    guiSponsor.Add("Button", "r1", "我已赞助，生成赞助信息").OnEvent("Click", CalculateSponsorInfo)
+    ; 添加 Choose1 确保默认选中
+    guiTier := guiSponsor.Add("DropDownList", "Choose1 w120", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
+    guiDuration := guiSponsor.Add("DropDownList", "Choose1 w120", ["1个月", "3个月", "6个月", "12个月"])
+    guiSponsor.Add("Text", "r1", "需要赞助：")
+    guiPriceText := guiSponsor.Add("Text", "x+5 w60", "")
+    guiSponsor.Add("Button", "xm", "我已赞助，生成赞助信息").OnEvent("Click", CalculateSponsorInfo)
+    ; 确保回调函数正确绑定
+    guiTier.OnEvent("Change", UpdateSponsorPrice)
+    guiDuration.OnEvent("Change", UpdateSponsorPrice)
+    ; 初始化价格显示
+    UpdateSponsorPrice()
     guiSponsor.Show()
+}
+UpdateSponsorPrice(*) {
+    ; 获取当前选中的值
+    tierSelected := guiTier.Text
+    durationSelected := guiDuration.Text
+    ; 检查是否为空值
+    if (tierSelected = "" or durationSelected = "") {
+        guiPriceText.Text := "赞助金额：请选择选项"
+        return
+    }
+    ; 定义价格映射
+    priceMap := Map(
+        "铜Doro会员", 6,
+        "银Doro会员", 18,
+        "金Doro会员", 30,
+        "管理员", 999
+    )
+    ; 从 durationSelected 中提取月份数
+    monthsText := StrReplace(durationSelected, "个月")
+    if (monthsText = "" or !IsNumber(monthsText)) {
+        guiPriceText.Text := "赞助金额：无效时长"
+        return
+    }
+    months := Integer(monthsText)
+    ; 计算总价格
+    pricePerMonth := priceMap[tierSelected]
+    totalPrice := pricePerMonth * months . "元"
+    ; 更新文本控件的内容
+    guiPriceText.Text := totalPrice
 }
 CalculateSponsorInfo(thisGuiButton, info) {
     ; 步骤1：获取设备唯一标识
@@ -2101,17 +2140,31 @@ CalculateSponsorInfo(thisGuiButton, info) {
     diskSerial := GetDiskSerial()
     Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
     ; 步骤2：获取会员信息
-    tierSelected := guiTier.Text ; 获取选中的文本，例如 "铜Doro会员"
-    durationSelected := guiDuration.Text ; 获取选中的时长文本，例如 "1个月" 或 "12个月"
+    tierSelected := guiTier.Text
+    durationSelected := guiDuration.Text
     ; 步骤3：计算过期日期
     Month := StrReplace(durationSelected, "个月")
-    expiryDate := DateAdd(A_Now, 30 * Month, "days")
-    expiryDate := SubStr(expiryDate, 1, 8)
+    UserGroupInfo := CheckUserGroup() ; 获取用户的会员信息
+    ; 检查用户是否已是会员且未过期
+    ; 注意：这里需要将过期时间补全至完整格式进行比较
+    if (UserGroupInfo.MembershipType != "免费用户" && UserGroupInfo.ExpirationTime . "000000" > A_Now) {
+        ; 如果是续费，检查续费类型是否与原有类型一致
+        if (UserGroupInfo.MembershipType != tierSelected) {
+            MsgBox("您已经是" . UserGroupInfo.MembershipType . "。如果想续费，请选择和现有会员类型一致的选项。")
+            return ; 终止函数
+        }
+        ; 从原有过期日期开始计算
+        expiryDate := DateAdd(UserGroupInfo.ExpirationTime . "000000", 30 * Month, "days")
+    } else {
+        ; 如果是新用户或已过期，则从今天开始计算
+        expiryDate := DateAdd(A_Now, 30 * Month, "days")
+    }
     ; 步骤4：生成 JSON 字符串
-    jsonString := "  `"" Hashed "`": {" . "`n"
-    jsonString .= "    `"tier`": `"" tierSelected "`"," . "`n"
-    jsonString .= "    `"expiry_date`": `"" expiryDate "`"" . "`n"
-    jsonString .= "  },"
+    ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
+    jsonString := "  `"" Hashed "`": {" . "`n"
+    jsonString .= "    `"tier`": `"" tierSelected "`"," . "`n"
+    jsonString .= "    `"expiry_date`": `"" SubStr(expiryDate, 1, 8) "`"" . "`n"
+    jsonString .= "  },"
     ; 步骤5：复制到剪切板
     A_Clipboard := jsonString
     ; 给出提示

@@ -255,6 +255,7 @@ FindText().PicLib("|<灰色的AUTO图标>7F8586-0.90$39.003z00003zz0001zzy100zzz
 FindText().PicLib("|<灰色的射击图标>8F8F8D-0.90$56.0000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0000001VyC000001sTXs00001y7szU0000zlyDw0000TsTVzU000Dw7sDw0007w1y0zU003y0TU7w000z07s0z000TU1y07s007k0TU0y003w07s0Dk00y00001w00000000000000000000000000000000000000Dzzw00Dzzzzzz003zzzzzzk00zzzzzzw00Dzzzzzz003zzzzzzk00zzzk00000000000000000000000000003k00003k00y00001w00Dk0TU0z001w07s0DU00TU1y07s003w0TU3w000zU7s1z0007w1y0zU000zkTUzk0007y7sTs0000zlyDw00007wTXy00000T7sy000001lyC0000000TU00000007s00000001y00000000TU00000007s00000001y00000000TU00000007s0002", 1)
 FindText().PicLib("|<灰色的锁>434343-0.90$35.007k0001zw000Dzy000zzy003zzy007yDw00Tk3w00y03s03w07s07k07k0DU0DU0T00T00y00z01w00y03s01w07U03s0000000000007zzzzszzzzztzzzzzrzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzlzzzzz1zzzzw1zzzzs3zzzzk7zzzzkDzzzzkzzzzzXzzzzz7zzzzyDzzzzwTzzzzszzzzzzzzzzzzzzzzzzzzjzzzzzTzzzzwTzzzzkTzzzz4", 1)
 FindText().PicLib("|<放弃战斗的图标>*200$44.zzzzzy1zzzzzz07zzzzzU1zzzzzs0Dzzzzy03zzzzzU0zzzzzs0Dzzzzy03zzzzz00zzw0000Tzy0000Dzz0000DzzU000Tzzk0007zzs3k03zzw1s01zzz0w00zzzsS00DzzzD001zzzzU00Tzzzk003zzzs010Tzzw00s3zzy00T0Tzz003sTzzU00TDw00003zz00000Tzk000U3zw000Q0Tz000DU3zk007w0TzzzzzU3zzzzzw0zzzzzzUDzzzzzw3zzzzzz0zzzzzzkDzzzzzw3zzzzzz0zzzzzzkDzzzzzw3zzzzzz0zzzzzzkDzzzzzw3zzzzzz0zs", 1)
+FindText().PicLib("|<LV.>*200$71.1zzzs7zzzkDy3zzzs7zzz0zw7zzzk7zzy1zsDzzzkDzzs7zkTzzzUDzzkDzUzzzzUTzz0zz1zzzz0Tzw1zy3zzzz0zzs7zw7zzzy0zzUDzsDzzzy1zz0zzkTzzzw1zw1zzUzzzzw3zs7zz1zzzzs3zUDzy3zzzzs7z0zzw7zzzzk7w1zzsDzzzzkDs7zzkTzzzzUDUDzzUzzzzzUT0zzz1zzzzz0Q1zzy3zzzzz0s7zzw7zzzzy0UDzzsDzzzzy00zzzkTzzzzw01zzzUzzzzzw07zzz1zzzzzs0Dzzy1zzzzzs0zzzw3zzzzzs1zzzs3zzzzzk7zzzs3zzzzzkDzzzk0001zzUzzzzk0001zzVzzz1k0003zz7zzy3k0007zzDzzw7s000DzyzzzsDw000TzzzzzkE", 1)
 ;普通战斗、无限塔胜利或失败会出现该图标
 FindText().PicLib("|<TAB的图标>*200$49.01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzzzzy03zzzzzz01zzzzzzU0zzzzzzk0Tzzzzzs0Dzzzzzw07zzzzzy03zzzzzz01z00zzzU0zU0Tzzk0Tk0Dzzs0Ds07zzw07w03zzy03y01zzz01z00zzzU0zU0Tzzk0Tk0Dzzs0Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z0001z00zU000zU0Tk000Tk0Ds000Ds07w0007w03y0003y01z00zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU0000000000000000000000000000000000000000U", 1)
 ;特殊竞技场快速战斗会出现该图标
@@ -2734,6 +2735,10 @@ BattleSettlement(modes*) {
         else if (ok := FindText(&X, &Y, NikkeX + 0.485 * NikkeW . " ", NikkeY + 0.890 * NikkeH . " ", NikkeX + 0.485 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.890 * NikkeH + 0.031 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("[扫荡|活动推关]ESC已命中")
             break
+        }
+        ; 基地防御等级提升的页面
+        if (ok := FindText(&X, &Y, NikkeX + 0.424 * NikkeW . " ", NikkeY + 0.424 * NikkeH . " ", NikkeX + 0.424 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.424 * NikkeH + 0.030 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("LV."), , , , , , , TrueRatio, TrueRatio)) {
+            Confirm
         }
         ;间隔500ms
         Sleep 500

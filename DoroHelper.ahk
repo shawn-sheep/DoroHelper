@@ -4355,9 +4355,11 @@ AwardOutpostExpedition() {
 ;region 咨询
 ;tag 好感度咨询
 AwardLoveTalking() {
-    UserClick(1493, 1949, TrueRatio)
-    AddLog("点击妮姬的图标，进入好感度咨询")
-    Sleep 3000
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.009 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.009 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , , , , , , TrueRatio, TrueRatio)) {
+        UserClick(1493, 1949, TrueRatio)
+        AddLog("点击妮姬的图标，进入好感度咨询")
+    }
+    Sleep 2000
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.818 * NikkeW . " ", NikkeY + 0.089 * NikkeH . " ", NikkeX + 0.818 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.089 * NikkeH + 0.056 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000

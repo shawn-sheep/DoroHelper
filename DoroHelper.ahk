@@ -4847,16 +4847,49 @@ StoryMode(*) {
     }
 }
 TestMode(BtnTestMode, Info) {
-    ; 获取 TestModeEditControl 文本框中的内容
-    funcName := TestModeEditControl.Value
-    ; 检查函数名是否为空
-    if (funcName = "") {
-        MsgBox("请输入要执行的函数名！")
+    ; 1. 获取输入
+    fullCallString := Trim(TestModeEditControl.Value)
+    if (fullCallString = "") {
+        MsgBox("请输入要执行的函数调用，例如: MyFunc(`"param1`", 123)")
         return
     }
-    ; 尝试动态调用函数
+    ; 2. 正则表达式解析 (允许函数名中带连字符)
+    if RegExMatch(fullCallString, "i)^([\w-]+)\s*\((.*)\)$", &Match) {
+        FuncName := Match[1]
+        ParamString := Match[2]
+    } else {
+        MsgBox("无效的输入格式。`n`n请使用 '函数名(参数1, 参数2, ...)' 的格式。")
+        return
+    }
+    ; 3. 获取函数引用
+    try {
+        fn := %FuncName%
+    } catch {
+        MsgBox("错误: 函数 '" FuncName "' 不存在。")
+        return
+    }
+    ; 4. 解析参数 (简化版 - 直接传递变量名作为字符串)
+    ParamsArray := []
+    if (Trim(ParamString) != "") {
+        ParamList := StrSplit(ParamString, ",")
+        for param in ParamList {
+            cleanedParam := Trim(param)
+            ; 直接作为字符串传递，不进行任何引号处理
+            ParamsArray.Push(cleanedParam)
+        }
+    }
+    ; 5. 初始化并执行
     Initialization()
-    %funcName%() ; 无参数调用
+    try {
+        Result := fn.Call(ParamsArray*)
+        if (Result != "") {
+            MsgBox("函数 '" FuncName "' 执行完毕。`n返回值: " Result)
+        } else {
+            MsgBox("函数 '" FuncName "' 执行完毕。")
+        }
+    } catch Error as e {
+        MsgBox("执行函数 '" FuncName "' 时出错:`n`n" e.Message "`n`n行号: " e.Line "`n文件: " e.File)
+    }
 }
 QuickBurst(*) {
     Initialization()

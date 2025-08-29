@@ -132,6 +132,8 @@ global g_settings := Map(
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(
+    "doroGuiX", 200,                ;DoroHelper窗口X坐标
+    "doroGuiY", 200,                ;DoroHelper窗口Y坐标
     "StartupTime", "",            ;定时启动时间
     "StartupPath", "",            ;启动路径
     "SleepTime", 1000,            ;默认等待时间
@@ -832,7 +834,7 @@ LogBox.WordWrap(true)
 LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
-doroGui.Show()
+doroGui.Show("x" g_numeric_settings["doroGuiX"] " y" g_numeric_settings["doroGuiY"])
 ;endregion 创建GUI
 ;region 前置任务
 ;tag 检查用户组
@@ -2225,6 +2227,12 @@ CopyLog(*) {
 ;region 数据辅助函数
 ;tag 写入数据
 WriteSettings(*) {
+    ; 写入当前坐标
+    try {
+        WinGetPos(&x, &y, &w, &h)
+        g_numeric_settings["doroGuiX"] := x
+        g_numeric_settings["doroGuiY"] := y
+    }
     ;从 g_settings Map 写入开关设置
     for key, value in g_settings {
         IniWrite(value, "settings.ini", "Toggles", key)

@@ -905,7 +905,7 @@ ClickOnDoro(*) {
     if g_settings["Login"]
         Login() ;登陆到主界面
     if g_settings["Shop"] {
-        if g_settings["ShopCash"]
+        if g_settings["ShopCashFree"]
             ShopCash()
         if g_settings["ShopNormal"]
             ShopNormal()

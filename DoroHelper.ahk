@@ -2601,11 +2601,27 @@ BattleSettlement(modes*) {
     EventStory := false
     for mode in modes {
         switch mode {
-            case "Screenshot": Screenshot := true
-            case "RedCircle": RedCircle := true
-            case "Exit7": Exit7 := true
-            case "EventStory": EventStory := true
-            default: MsgBox "格式输入错误"
+            case "Screenshot":
+            {
+                Screenshot := true
+                AddLog("截图功能已启用", "Green")
+            }
+            case "RedCircle":
+            {
+                RedCircle := true
+                AddLog("红圈功能已启用", "Green")
+            }
+            case "Exit7":
+            {
+                Exit7 := true
+                AddLog("满7自动退出功能已启用", "Green")
+            }
+            case "EventStory":
+            {
+                EventStory := true
+                AddLog("剧情跳过功能已启用", "Green")
+            }
+            default: MsgBox "格式输入错误，你输入的是" mode
         }
     }
     if (BattleActive = 0 or BattleActive = 2) {

@@ -568,7 +568,7 @@ g_settingPages["Default"].Push(Btn1080)
 ;tag 二级登录Login
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro专享]", "R1 ")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro]", "R1 ")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
@@ -579,7 +579,7 @@ g_settingPages["Login"].Push(StartupPathEdit)
 StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathInfo)
-SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro专享]", "xs R1")
+SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro]", "xs R1")
 doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
@@ -704,7 +704,7 @@ g_settingPages["Interception"].Push(SetInterceptionScreenshot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
 doroGui.Tips.SetTip(SetRedCircle, "勾选后，在异常拦截中遇到克拉肯时会自动进行红圈攻击`n请务必在设置-战斗-全部中勾选「同步游标与准星」`n只对克拉肯有效")
 g_settingPages["Interception"].Push(SetRedCircle)
-SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro限时独占]", "R1.2")
+SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro]", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionExit7, "免责声明：如果遇到任何问题导致提前退出请自行承担损失")
 g_settingPages["Interception"].Push(SetInterceptionExit7)
 ;tag 二级奖励Award
@@ -752,7 +752,7 @@ SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动�
 doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
 g_settingPages["Award"].Push(SetAwardFreeRecruit)
 ;tag 二级活动Event
-SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项[银Doro专享]====")
+SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项[银Doro]====")
 g_settingPages["Event"].Push(SetEventTitle)
 SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[ABSOLUTE]", "R1")
 g_settingPages["Event"].Push(SetEventSmall)
@@ -803,11 +803,11 @@ g_settingPages["Settings"].Push(cbOpenBlablalink)
 cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
 doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
 g_settingPages["Settings"].Push(cbSelfClosing)
-cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动广告[铜Doro专享]", "R1")
+cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动广告[铜Doro]", "R1")
 g_settingPages["Settings"].Push(cbCloseAdvertisement)
-cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro专享]", "R1")
+cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro]", "R1")
 g_settingPages["Settings"].Push(cbCloseNoticeSponsor)
-cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[铜Doro专享]", "R1")
+cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[铜Doro]", "R1")
 doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
 g_settingPages["Settings"].Push(cbCheckEvent)
 ;tag 妙妙工具
@@ -2246,15 +2246,30 @@ MsgSponsor(*) {
     global guiTier, guiDuration, guiSponsor, guiPriceText
     guiSponsor := Gui("+Resize", "赞助")
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
-    guiSponsor.Add("Text", "w280 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    guiSponsor.Add("Button", , "赞助详情").OnEvent("Click", (*) => Run("https://p.sda1.dev/26/7a0bf8d6c0bbdf632f814c711d917391/Sponsor.jpg"))
-    guiSponsor.Add("Text", "w280 Wrap", "赞助信息生成器")
+    guiSponsor.Add("Text", "w400 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    guiSponsor.Add("Text", "xm w400 Wrap", "需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
+    LV := guiSponsor.Add("ListView", "w400 h200", ["　　　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
+    LV.Add(, "每月（30天）价格", "免费", "10元", "20元", "30元")
+    LV.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
+    LV.Add(, "移除广告和赞助提示", "", "✅️", "✅️", "✅️")
+    LV.Add(, "活动结束提醒", "", "✅️", "✅️", "✅️")
+    LV.Add(, "轮换活动", "", "", "✅️", "✅️", "✅️")
+    LV.Add(, "路径和定时启动", "", "", "", "✅️", "✅️")
+    LV.Add(, "自动推图", "", "", "", "✅️", "✅️")
+    picUrl1 := "https://www.helloimg.com/i/2025/08/29/68b1b2c15a3bd.jpg"
+    picUrl2 := "https://www.helloimg.com/i/2025/08/29/68b1b2c22d237.jpg"
+    guiSponsor.Add("ActiveX", "w205 h205", "mshtml:<img src='" picUrl1 "' />")
+    guiSponsor.Add("ActiveX", "yp w205 h205", "mshtml:<img src='" picUrl2 "' />")
+    guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
+    guiSponsor.Add("Text", "xm w400 Wrap cred", "为庆祝1.6版本，在9月4日游戏版本更新前包年免两月`n已包年的用户请凭付款截图联系续期三个月")
+    guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
+    guiSponsor.Add("Text", "xm w280 Wrap", "赞助信息生成器")
     ; 添加 Choose1 确保默认选中
     guiTier := guiSponsor.Add("DropDownList", "Choose1 w120", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
-    guiDuration := guiSponsor.Add("DropDownList", "Choose1 w120", ["1个月", "3个月", "6个月", "12个月"])
-    guiSponsor.Add("Text", "r1", "需要赞助：")
+    guiDuration := guiSponsor.Add("DropDownList", "yp x150 Choose1 w120", ["1个月", "3个月", "6个月", "12个月"])
+    guiSponsor.Add("Text", "xm r1", "需要赞助：")
     guiPriceText := guiSponsor.Add("Text", "x+5 w60", "")
-    guiSponsor.Add("Button", "xm", "我已赞助，生成赞助信息").OnEvent("Click", CalculateSponsorInfo)
+    guiSponsor.Add("Button", "yp x150 h30", "我已赞助，生成信息").OnEvent("Click", CalculateSponsorInfo)
     ; 确保回调函数正确绑定
     guiTier.OnEvent("Change", UpdateSponsorPrice)
     guiDuration.OnEvent("Change", UpdateSponsorPrice)
@@ -2287,7 +2302,10 @@ UpdateSponsorPrice(*) {
     months := Integer(monthsText)
     ; 计算总价格
     pricePerMonth := priceMap[tierSelected]
-    totalPrice := pricePerMonth * months . "元"
+    if months = 12 {
+        totalPrice := pricePerMonth * (months - 2) . "元"
+    }
+    else totalPrice := pricePerMonth * months . "元"
     ; 更新文本控件的内容
     guiPriceText.Text := totalPrice
 }

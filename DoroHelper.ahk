@@ -174,7 +174,7 @@ NikkeWP := 0
 NikkeHP := 0
 TrueRatio := 1
 if (scriptExtension = "ahk") {
-    MyFileHash := HashSHA256(A_ScriptFullPath)
+    MyFileHash := HashGitSHA1(A_ScriptFullPath)
     global MyFileShortHash := SubStr(MyFileHash, 1, 7)
 }
 ;tag 变量备份
@@ -878,7 +878,7 @@ if g_settings["AutoCheckUpdate"]
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
 if (scriptExtension = "ahk") {
-    AddLog("当前ahk文件的短哈希值是：" MyFileShortHash)
+    AddLog("当前文件的GitSHA-1短哈希是：" MyFileShortHash)
 }
 ;tag 定时启动
 if g_settings["Timedstart"] {
@@ -1253,55 +1253,110 @@ CheckForUpdate(isManualCheck) {
     local foundNewVersion := false
     local sourceName := ""
     local channelInfo := (g_numeric_settings["UpdateChannels"] == "测试版") ? "测试版" : "正式版"
-    ; ==================== AHK文件 直接下载 =====================
+    ; ==================== AHK文件更新检查=====================
     if (g_numeric_settings["UpdateChannels"] == "AHK版") {
         if (scriptExtension = "exe") {
             MsgBox "exe版本不可直接更新至ahk版本，请查看群公告下载完整的ahk版本文件"
             return
         }
-        ; 定义目标URL
-        url := "https://raw.githubusercontent.com/1204244136/DoroHelper/refs/heads/main/DoroHelper.ahk" ; 替换为实际下载链接
-        ; 获取当前脚本所在目录
+        ; 获取远程文件的 Git SHA-1 哈希值
+        ; --------------------------------------
+        local path := "DoroHelper.ahk"
+        local remoteSha := ""
+        try {
+            AddLog("正在从 GitHub API 获取最新版本文件哈希值……")
+            ; 直接内联 WinHttp.WinHttpRequest 逻辑
+            local whr := ComObject("WinHttp.WinHttpRequest.5.1")
+            local apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/" . path
+            whr.Open("GET", apiUrl, false) ; false for synchronous request
+            whr.SetRequestHeader("User-Agent", "DoroHelper-AHK-Script") ; 设置User-Agent以满足GitHub API要求
+            whr.Send()
+            if (whr.Status != 200) {
+                throw Error("API请求失败", -1, "状态码: " . whr.Status)
+            }
+            ; 手动解析 JSON 以提取 'sha' 字段
+            local responseText := whr.ResponseText
+            local shaMatch := ""
+            if (RegExMatch(responseText, '"sha"\s*:\s*"(.*?)"', &shaMatch)) {
+                remoteSha := shaMatch[1]
+            } else {
+                throw Error("JSON解析失败", -1, "未能从API响应中找到'sha'字段。")
+            }
+        } catch as e {
+            AddLog("获取远程哈希失败，错误信息: " . e.Message)
+            if (isManualCheck) {
+                MsgBox "无法检查更新，请检查网络或稍后再试。", "错误", "IconX"
+            }
+            return
+        }
+        if (remoteSha = "") {
+            AddLog("无法获取远程文件哈希值，更新中止。")
+            if (isManualCheck) {
+                MsgBox "无法获取远程文件信息，无法检查更新。", "错误", "IconX"
+            }
+            return
+        }
+        ; 获取本地文件的 Git SHA-1 哈希值
+        ; --------------------------------------
+        local localSha := ""
+        try {
+            localScriptPath := A_ScriptDir "\DoroHelper.ahk"
+            if !FileExist(localScriptPath) {
+                ; 如果文件不存在，可以认为需要下载
+                localSha := ""
+            } else {
+                localSha := HashGitSHA1(localScriptPath) ; 调用你提供的 Git SHA-1 哈希函数
+            }
+        } catch as e {
+            AddLog("计算本地文件哈希失败，错误信息: " e.Message)
+            if (isManualCheck) {
+                MsgBox "计算本地文件哈希时出错，无法检查更新。", "错误", "IconX"
+            }
+            return
+        }
+        AddLog("远程文件哈希值: " remoteSha)
+        AddLog("本地文件哈希值: " localSha)
+        ; 比较哈希值，决定是否需要下载
+        ; --------------------------------------
+        if (remoteSha = localSha) {
+            ; 如果哈希值相同，说明已是最新版本，无需下载
+            AddLog("文件哈希一致，当前已是最新版本。")
+            if (isManualCheck) {
+                MsgBox("当前已是最新版本，无需更新。")
+            }
+            return
+        }
+        ; --- 只有哈希值不一致时，才执行以下下载和替换代码 ---
+        AddLog("发现文件哈希不匹配，准备下载新版本。")
+        ; 定义目标URL和本地保存路径
+        ; url 中也直接使用全局变量 usr 和 repo
+        url := "https://raw.githubusercontent.com/" usr "/" repo "/main/" path
         currentScriptDir := A_ScriptDir
-        ; 定义本地保存路径
         NewFileName := "DoroHelper" A_Now ".ahk"
         localFilePath := currentScriptDir "\" NewFileName
         ; 下载文件到脚本所在目录
         try {
-            AddLog("正在下载最新AHK版本，请稍等……")
+            AddLog("正在下载最新 AHK 版本，请稍等……")
             Download(url, localFilePath)
             AddLog("文件下载成功！已保存到当前目录: " localFilePath)
         } catch as e {
             MsgBox "下载失败，错误信息: " e.Message
             return
         }
-        NewFileHash := HashSHA256(localFilePath)
-        NewFileShortHash := SubStr(NewFileHash, 1, 7)
-        AddLog("最新ahk文件的短哈希值是：" NewFileShortHash)
-        if (NewFileShortHash != MyFileShortHash) {
-            MsgBox("发现新版本！已下载至同目录下，软件即将退出")
-            OldName := "DoroHelperOld" A_Now ".ahk"
-            ; 检查是否已经在新名称下运行（避免重复重命名）
-            if !InStr(A_ScriptFullPath, OldName) {
-                try {
-                    ; 构建新路径
-                    newPath := A_ScriptDir "\" OldName
-                    ; 重命名文件
-                    FileMove A_ScriptFullPath, newPath
-                    FileMove localFilePath, "DoroHelper.ahk"
-                    ExitApp
-                } catch as e {
-                    MsgBox "重命名失败: " e.Message
-                }
-            } else {
-                MsgBox "脚本已经在重命名后的状态下运行"
+        ; 下载后不再需要进行哈希校验，因为我们已经通过远程哈希确定了版本
+        MsgBox("发现新版本！已下载至同目录下，软件即将退出")
+        OldName := "DoroHelperOld" A_Now ".ahk"
+        if !InStr(A_ScriptFullPath, OldName) {
+            try {
+                newPath := A_ScriptDir "\" OldName
+                FileMove A_ScriptFullPath, newPath
+                FileMove localFilePath, "DoroHelper.ahk"
+                ExitApp
+            } catch as e {
+                MsgBox "重命名失败: " e.Message
             }
         } else {
-            if (isManualCheck) {
-                MsgBox("当前已是最新版本，无需更新，即将删除校验文件")
-            }
-            AddLog("当前已是最新版本，无需更新，即将删除校验文件")
-            FileDelete localFilePath
+            MsgBox "脚本已经在重命名后的状态下运行"
         }
         return
     }
@@ -1834,7 +1889,7 @@ DownloadUrlContent(url) {
         return ""
     }
 }
-;tag 计算哈希值
+;tag 计算SHA256哈希值
 /**
  * 计算一个字符串或一个文件的 SHA-256 哈希值。
  * 
@@ -1903,6 +1958,93 @@ HashSHA256(input) {
         hexHash .= Format("{:02x}", NumGet(hashBuf, A_Index - 1, "UChar"))
     }
     ; 清理并释放资源
+    DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
+    DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+    return hexHash
+}
+;tag 计算Git SHA-1哈希值 (已修正行尾序列问题)
+/**
+ * 计算一个文件的 Git SHA-1 哈希值（Blob类型）。
+ * @param {String} filePath 要进行哈希计算的文件的完整路径。
+ * @returns {String} 返回计算出的 40 位十六进制 Git SHA-1 哈希字符串。
+ * @throws {Error} 如果在任何文件操作或加密 API 调用环节失败，则抛出异常。
+ */
+HashGitSHA1(filePath) {
+    if !FileExist(filePath) {
+        throw Error("文件不存在", -1, "指定的Git SHA-1哈希文件路径无效: " . filePath)
+    }
+    ; 1. 以二进制模式读取整个文件内容到 Buffer
+    fileObj := FileOpen(filePath, "r")
+    fileContentBuf := Buffer(fileObj.Length)
+    fileObj.RawRead(fileContentBuf, fileContentBuf.Size)
+    fileObj.Close()
+    ; 2. 在 Buffer 中处理换行符：将所有CRLF (`r`n) 和 CR (`r`) 替换为 LF (`n`)
+    normalizedContentBuf := Buffer(fileContentBuf.Size)
+    newSize := 0
+    i := 0
+    while i < fileContentBuf.Size {
+        byte := NumGet(fileContentBuf, i, "UChar")
+        if byte = 13 { ; 是一个 CR (`r`)
+            NumPut("UChar", 10, normalizedContentBuf, newSize) ; 写入一个 LF (`n`)
+            newSize += 1
+            ; 如果 CR 后面紧跟着一个 LF (即 CRLF)，则跳过那个 LF
+            if (i + 1 < fileContentBuf.Size and NumGet(fileContentBuf, i + 1, "UChar") = 10) {
+                i += 1
+            }
+        } else { ; 不是 CR
+            NumPut("UChar", byte, normalizedContentBuf, newSize) ; 直接复制原字节
+            newSize += 1
+        }
+        i += 1
+    }
+    normalizedContentBuf.Size := newSize ; 调整 Buffer 的实际大小
+    ; 3. 构建Git Blob头部，格式为: "blob <size>\0"
+    gitHeaderStr := "blob " . newSize . Chr(0)
+    requiredSize := StrPut(gitHeaderStr, "UTF-8")
+    gitHeaderBuf := Buffer(requiredSize)
+    StrPut(gitHeaderStr, gitHeaderBuf, "UTF-8")
+    gitHeaderLen := requiredSize - 1
+    ;================================================================================
+    ; Windows Cryptography API 调用部分
+    ;================================================================================
+    hProv := 0, hHash := 0
+    ; 4. 初始化 Windows Cryptography API
+    if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000) {
+        throw Error("CryptAcquireContext 失败", -1, "无法获取加密服务提供者句柄")
+    }
+    ; 5. 创建一个 SHA-1 哈希算法对象 (CALG_SHA1: 0x8004)
+    if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x8004, "Ptr", 0, "UInt", 0, "Ptr*", &hHash) {
+        DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        throw Error("CryptCreateHash 失败", -1, "无法创建哈希对象")
+    }
+    try {
+        ; 6. 更新哈希数据：先传入头部，再传入文件内容
+        if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", gitHeaderBuf, "UInt", gitHeaderLen, "UInt", 0) {
+            throw Error("CryptHashData (头部) 失败", -1, "更新头部哈希数据时出错")
+        }
+        if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", normalizedContentBuf, "UInt", newSize, "UInt", 0) {
+            throw Error("CryptHashData (内容) 失败", -1, "更新文件内容哈希数据时出错")
+        }
+    } catch as e {
+        ; 如果在处理过程中发生错误，确保释放加密资源
+        DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
+        DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        throw e
+    }
+    ; 7. 获取最终的哈希值
+    hashSize := 20
+    hashBuf := Buffer(hashSize)
+    if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0) {
+        DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
+        DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
+        throw Error("CryptGetHashParam 失败", -1, "无法获取最终的哈希值")
+    }
+    ; 8. 将二进制哈希值格式化为十六进制字符串
+    hexHash := ""
+    loop hashSize {
+        hexHash .= Format("{:02x}", NumGet(hashBuf, A_index - 1, "UChar"))
+    }
+    ; 9. 清理并释放资源
     DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash

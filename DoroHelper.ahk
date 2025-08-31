@@ -14,7 +14,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.6.0"
+currentVersion := "v1.6.1"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2627,13 +2627,13 @@ TimeToSeconds(timeStr) {
 CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     global outputText
     local logContent := LogBox.GetText()
-    ; 使用正则表达式直接提取所有时间戳
+    ; 使用正则表达式提取所有时间戳
     local timestamps := []
     local pos := 1
     local match := ""
     while (pos := RegExMatch(logContent, "(?<time>\d{2}:\d{2}:\d{2})\s{2,}", &match, pos)) {
         timestamps.Push(match["time"])
-        pos += match.Len  ; 移动到匹配结束的位置
+        pos += match.Len
     }
     ; 检查是否有足够的时间戳
     if (timestamps.Length < 2) {
@@ -2648,11 +2648,12 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
         AddLog("推算跨度失败：日志时间格式错误")
         return
     }
-    ; 处理跨天情况
-    if (latestSeconds < earliestSeconds) {
-        latestSeconds += 24 * 3600
-    }
+    ; 计算时间差（正确处理跨天）
     local spanSeconds := latestSeconds - earliestSeconds
+    ; 如果差值为负，说明可能跨天了
+    if (spanSeconds < 0) {
+        spanSeconds += 24 * 3600  ; 加上一天的秒数
+    }
     local spanMinutes := Floor(spanSeconds / 60)
     local remainingSeconds := Mod(spanSeconds, 60)
     outputText := "已帮你节省时间: "

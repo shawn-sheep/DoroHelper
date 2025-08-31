@@ -5032,7 +5032,8 @@ StoryMode(*) {
             else if (ok := FindText(&X, &Y, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.369 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.369 * NikkeH + 0.041 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的星星"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("点击左上角灰色的星星")
                 FindText().Click(X, Y, "L")
-                Pause
+                MsgBox("剧情结束力~")
+                return
             }
         }
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.500 * NikkeW . " ", NikkeY + 0.514 * NikkeH . " ", NikkeX + 0.500 * NikkeW + 0.139 * NikkeW . " ", NikkeY + 0.514 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("记录播放的播放"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5051,7 +5052,7 @@ StoryMode(*) {
         }
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"
-            Pause
+            return
         }
     }
 }
@@ -5113,7 +5114,7 @@ QuickBurst(*) {
         }
         if !WinActive(nikkeID) {
             MsgBox "窗口未聚焦，程序已终止"
-            Pause
+            return
         }
     }
 }

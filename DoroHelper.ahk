@@ -14,7 +14,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.6.1"
+currentVersion := "v1.6.2"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2249,7 +2249,7 @@ MsgSponsor(*) {
     guiSponsor.Add("Text", "w400 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
     guiSponsor.Add("Text", "xm w400 Wrap", "需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
     LV := guiSponsor.Add("ListView", "w400 h200", ["　　　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
-    LV.Add(, "每月（30天）价格", "免费", "10元", "20元", "30元")
+    LV.Add(, "每月（30天）价格", "免费", "6元", "18元", "30元")
     LV.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
     LV.Add(, "移除广告和赞助提示", "", "✅️", "✅️", "✅️")
     LV.Add(, "活动结束提醒", "", "✅️", "✅️", "✅️")

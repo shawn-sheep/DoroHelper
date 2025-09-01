@@ -4755,11 +4755,11 @@ AwardPass() {
             AddLog("1通行证模式")
         }
         ; 检查红点并执行通行证
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.986 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.986 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.257 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.985 * NikkeW . " ", NikkeY + 0.124 * NikkeH . " ", NikkeX + 0.985 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.124 * NikkeH + 0.261 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
-            t := t + 1
-            AddLog("执行第" t "个通行证")
             if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.227 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.090 * NikkeW . " ", NikkeY + 0.227 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("购买PASS的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                t := t + 1
+                AddLog("执行第" t "个通行证")
                 OneAwardPass()
             }
             BackToHall()

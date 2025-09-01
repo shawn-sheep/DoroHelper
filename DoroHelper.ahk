@@ -3923,6 +3923,8 @@ InterceptionAnomaly() {
         Sleep 500
     }
     FindText().Click(X, Y + 100 * TrueRatio, "L")
+    Sleep 500
+    Confirm
     if t > 1 {
         Sleep 2000
         switch g_numeric_settings["InterceptionBoss"] {

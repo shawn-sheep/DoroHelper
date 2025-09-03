@@ -121,7 +121,8 @@ global g_settings := Map(
     "AutoCheckUpdate", 0,        ;自动检查更新
     "AutoCheckUserGroup", 0,     ;自动检查会员组
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
-    "SelfClosing", 0,            ;完成后自动关闭程序
+    "DoroClosing", 0,            ;完成后自动关闭Doro
+    "LoopMode", 0,            ;完成后自动关闭游戏
     "OpenBlablalink", 0,         ;完成后打开Blablalink
     "CheckEvent", 0,             ;活动结束提醒
     "AutoStartNikke", 0,         ;使用脚本启动NIKKE
@@ -183,10 +184,11 @@ g_default_numeric_settings := g_numeric_settings.Clone()
 ;endregion 设置变量
 ;region 读取设置
 SetWorkingDir A_ScriptDir
+;tag 变量名修改提示
 try {
     LoadSettings()
-    if InStr(currentVersion, "v1.5.15") and g_numeric_settings["Version"] != currentVersion {
-        MsgBox("该版本的「自动打红圈」选项被重置了，请重新勾选")
+    if InStr(currentVersion, "v1.6.2") and g_numeric_settings["Version"] != currentVersion {
+        MsgBox("该版本的「任务完成后关闭」选项被重置了，请重新勾选")
         g_numeric_settings["Version"] := currentVersion
     }
 }
@@ -566,9 +568,9 @@ Btn1080 := doroGui.Add("Button", "w60 h30 ", "1080p")
 Btn1080.OnEvent("Click", (Ctrl, Info) => AdjustSize(1920, 1080))
 g_settingPages["Default"].Push(Btn1080)
 ;tag 二级登录Login
-SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
+SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项[金Doro]====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro]", "R1 ")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE", "R1 ")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
@@ -579,7 +581,7 @@ g_settingPages["Login"].Push(StartupPathEdit)
 StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathInfo)
-SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro]", "xs R1")
+SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动", "xs R1")
 doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
@@ -591,6 +593,9 @@ g_settingPages["Login"].Push(StartupTimeEdit)
 StartupTimeInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(StartupTimeInfo, "填写格式为 HHmmss`n例如：080000 表示早上8点")
 g_settingPages["Login"].Push(StartupTimeInfo)
+cbLoopMode := AddCheckboxSetting(doroGui, "LoopMode", "自律模式", "xs+20 R1 +0x0100")
+doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动")
+g_settingPages["Login"].Push(cbLoopMode)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
@@ -800,9 +805,9 @@ g_settingPages["Settings"].Push(SetSettingsTitle)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "R1")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 g_settingPages["Settings"].Push(cbOpenBlablalink)
-cbSelfClosing := AddCheckboxSetting(doroGui, "SelfClosing", "任务完成后关闭程序", "R1")
-doroGui.Tips.SetTip(cbSelfClosing, "勾选后，当 DoroHelper 完成所有已选任务后，程序将自动退出`r`n注意：测试版本中此功能可能会被禁用")
-g_settingPages["Settings"].Push(cbSelfClosing)
+cbDoroClosing := AddCheckboxSetting(doroGui, "DoroClosing", "任务完成后关闭Doro", "R1")
+doroGui.Tips.SetTip(cbDoroClosing, "勾选后，当 DoroHelper 完成所有已选任务后，Doro将自动退出")
+g_settingPages["Settings"].Push(cbDoroClosing)
 cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动广告[铜Doro]", "R1")
 g_settingPages["Settings"].Push(cbCloseAdvertisement)
 cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro]", "R1")
@@ -895,8 +900,7 @@ if g_settings["Timedstart"] {
     }
 }
 ;endregion 前置任务
-;region 启动辅助函数
-;tag 点击运行
+;region 点击运行
 ClickOnDoro(*) {
     ;清空文本
     LogBox.Value := ""
@@ -1000,6 +1004,10 @@ ClickOnDoro(*) {
             EventSpecial()
         BackToHall
     }
+    if g_settings["LoopMode"] {
+        WinClose winID
+        SaveAndRestart
+    }
     if g_settings["CheckEvent"] {
         if UserLevel < 1 {
             MsgBox("当前用户组不支持活动结束提醒，请点击赞助按钮升级会员组")
@@ -1021,7 +1029,7 @@ ClickOnDoro(*) {
     }
     if g_settings["OpenBlablalink"]
         Run("https://www.blablalink.com/")
-    if g_settings["SelfClosing"] {
+    if g_settings["DoroClosing"] {
         if InStr(currentVersion, "beta") {
             MsgBox ("测试版本禁用自动关闭！")
             Pause
@@ -1029,6 +1037,8 @@ ClickOnDoro(*) {
         ExitApp
     }
 }
+;endregion 点击运行
+;region 启动辅助函数
 ;tag 脚本启动NIKKE
 AutoStartNikke() {
     global NikkeX
@@ -1110,7 +1120,7 @@ Initialization() {
     global NikkeH
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {
-        winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
+        global winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
         actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
         if WinGetCount("ahk_exe " . targetExe) > 1 {
             MsgBox("金Doro会员支持多开自动运行")

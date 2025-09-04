@@ -4006,7 +4006,7 @@ EventSmall() {
     ; Sleep 5000
     while true {
         if (ok := FindText(&X, &Y, NikkeX + 0.681 * NikkeW . " ", NikkeY + 0.748 * NikkeH . " ", NikkeX + 0.681 * NikkeW + 0.075 * NikkeW . " ", NikkeY + 0.748 * NikkeH + 0.057 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y + 100 * TrueRatio, "L")
+            FindText().Click(X, Y + 200 * TrueRatio, "L")
             if (ok := FindText(&X := "wait0", &Y := 3, NikkeX + 0.681 * NikkeW . " ", NikkeY + 0.748 * NikkeH . " ", NikkeX + 0.681 * NikkeW + 0.075 * NikkeW . " ", NikkeY + 0.748 * NikkeH + 0.057 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("作战出击的击"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("已进入小活动")
                 Sleep 1000
@@ -4015,7 +4015,7 @@ EventSmall() {
                 break
             }
             else {
-                MsgBox("未找到小活动，可能是活动已结束或已完成或有新剧情")
+                AddLog("未找到小活动，可能是活动已结束或已完成或有新剧情")
                 return
             }
         }

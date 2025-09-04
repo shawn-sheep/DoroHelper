@@ -759,7 +759,7 @@ g_settingPages["Award"].Push(SetAwardFreeRecruit)
 ;tag 二级活动Event
 SetEventTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====活动选项[银Doro]====")
 g_settingPages["Event"].Push(SetEventTitle)
-SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[ABSOLUTE]", "R1")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[未开放]", "R1")
 g_settingPages["Event"].Push(SetEventSmall)
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSmallChallenge)
@@ -767,14 +767,13 @@ SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动�
 g_settingPages["Event"].Push(SetEventSmallStory)
 SetEventSmallMission := AddCheckboxSetting(doroGui, "EventSmallMission", "小活动任务", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSmallMission)
-SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[未开放]", "R1 xs")
+SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[COINS IN RUSH]", "R1 xs")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeSign)
 SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "大活动挑战", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeChallenge)
-SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情❔️", "R1 xs+15")
-doroGui.Tips.SetTip(SetEventLargeStory, "部分关卡可能有特殊关，此时需要手动完成任务")
+SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeStory)
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战[暂时禁用]", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeCooperate)
@@ -2312,10 +2311,10 @@ UpdateSponsorPrice(*) {
     months := Integer(monthsText)
     ; 计算总价格
     pricePerMonth := priceMap[tierSelected]
-    if months = 12 {
-        totalPrice := pricePerMonth * (months - 2) . "元"
-    }
-    else totalPrice := pricePerMonth * months . "元"
+    totalPrice := pricePerMonth * months . "元"
+    ; if months = 12 {
+    ;     totalPrice := pricePerMonth * (months - 2) . "元"
+    ; }
     ; 更新文本控件的内容
     guiPriceText.Text := totalPrice
 }

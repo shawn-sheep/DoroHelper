@@ -267,7 +267,7 @@ FindText().PicLib("|<重播的图标>*200$66.zzzzz0Dzzzzzzzz000Tzzzzzzw0007zzzzz
 FindText().PicLib("|<ESC>*150$62.zzzzzzzzzzzzzzzzzzzzzU03w03zU0Tk00y00Tk01w00D003s00T003k00y003k00w00DU00w3zz1y3s7kD0zzkTUy3y3kDzw7wDUzUw3zz0zzsDsD00Dk0zy3zzk03w00zUzzw00zU07sDzz00Dw00y3zzk03zk07Uzzw3zzzs1sDzz0zzzzUS3y3kDzw7s7UzUw3zz1y1sDsD0zzkTUS1w3k00w007U00w00D001s00D003k00z007k00y00Tk01y00Ds0Dz01zzzzzzzzzzzzzzzzzzzzzs", 1)
 FindText().PicLib("|<点击>*70$64.zzVzzzzy7zzzy3zzzzkTzzzsDzzzz1zzzzU01zzw7zzzy007zzkTzzzs00Tk0007zzU01z0000Tzy3zzw0001zzsDzzk0007zzUzzzzw7zzk000TzzkTzz0001zzz1zzw0007w00007k000Tk0000T3zzVz00000wDzy7w00003kzzsTk0000T0001zzz1zzw0007z1w7kTk000Tw7kT1z0001zkT1w7w0007z1w7kTzzzzTw7kT1z3bXVzkT1w7sAA63z1w7kTVksQ7w0001w73UsTk0007UwC3Uz0000Q3kwD1w0001sT3kw7s0007nwDjtzzzzkS", 1)
 ;判断胜利状态
-FindText().PicLib("|<下一关卡的下一>*200$76.000001zzzzzzw000007zzzzzzk00000Tzzzzzz000001zzzzzzw000007zzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz0zzzzzzzzzzzw0zzzzzzzzzzzk0zzzzzzzzzzz00zzk00000Dzw01zy000000zzk01zs000003zz1U1zU00000Dzw7U3y000000zzkT07zzzzzzzzz1z0Tzzzzzzzzw7y3zzzzzzzzzkTyTzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzzzz1zzzzzzzzzzzw7zzzzzzzzzzzkTzzzzzzzzy", 1)
+FindText().PicLib("|<白色的下一关卡>FFFFFF-0.90$155.0000000000000000040000D00000000000000000C00T0000S00000000000000000S00y0000w007zzzzzk00000000y03s0001s00DzzzzzU00000000w07U0003s00Tzzzzz000000001w0T00007zzkzzzzzw000000001k0w0000DzzU00T000000000003U3s0000Tzz000w00000000007zzzzk000w00001s0000000000DzzzzU001s00003k0000000000Tzzzz0003k00007U0000000000zzzzy0007U0000D0000000000001w00000D00000Tk000000000003s00000S00000zs000000000007k003zzzzzs01zw00000000000DU00Dzzzzzk03zw01zzzzzy000T000TzzzzzU07zy03zzzzzw000y000Tzzzzz00Dby07zzzzzsDzzzzz000D00000S3z0DzzzzzkTzzzzy000S00000w3z00000000zzzzzw000w00001s1y00000001zzzzzs001s00003k1s0000000000zU00003n00007U0U0000000001zU00007zk000D0000000000007z00000Dzs000S000000000000Tz00000STy000w000000000001yT00000w7z001s000000000007wTU0001s3z003k00000000000TkTU0003k1w007U00000000003z0TU0007U0s00D00000000000Ts0Tk000D00000S00000000003zU0Tw000S00000w0000000000zy00Ty000w00001s0000000001zk00Ds001s00003k0000000001w0007U003k00007U0000000001U00010007U00U", 1)
 FindText().PicLib("|<编队的图标>*200$53.zw3zzz0Tzzk1zzw0Tzy01zzU0Tzs03zz00Tzk0Dzz00TzU0S0D00zy01s0D01zw07U0C01zs0C00C03zk0w00Q07zk1s00w0TzU3U01s0zz07003k3zz0C007U7zz0S00D0TzzUw00S3zzz0s00sDzzs1s03k3zz03s0D01zw03s0y01zk07s7w01z00TU7w01y01w03w03s07k01w07k0D001s0700w001s0C01k001k0Q07U003k0M0C0007U0k0w000701U1s000C0303U000S04070000Q000C0000s000w0001k001s0003k003k0007U007U000D03zz0000Tzzzy0000zzzzs0001zzzzk0003zzU", 1)
 ;红圈
 FindText().PicLib("|<红圈的上边缘黄边>FFFF40-0.90$43.00000000000000000000000000000000000000znz000zztzzsDzzwzzzzzzyTzzzzzzDzzzzzzbzzzzzznzzzzzztzzzzy0001zz000000s00000000000000000000000000000000000000000000000000000000000000000000000E", 1)
@@ -2947,7 +2947,7 @@ BattleSettlement(modes*) {
         return False
     }
     ;如果有下一关，就点下一关（爬塔的情况）
-    else if (ok := FindText(&X, &Y, NikkeX + 0.889 * NikkeW . " ", NikkeY + 0.912 * NikkeH . " ", NikkeX + 0.889 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.912 * NikkeH + 0.081 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("下一关卡的下一"), , , , , , , TrueRatio, TrueRatio)) {
+    else if (ok := FindText(&X, &Y, NikkeX + 0.889 * NikkeW . " ", NikkeY + 0.912 * NikkeH . " ", NikkeX + 0.889 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.912 * NikkeH + 0.081 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的下一关卡"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("战斗成功！尝试进入下一关")
         Victory := Victory + 1
         if Victory > 1 {
@@ -2955,7 +2955,12 @@ BattleSettlement(modes*) {
         }
         FindText().Click(X, Y + 20 * TrueRatio, "L")
         Sleep 5000
-        BattleSettlement
+        if EventStory {
+            BattleSettlement("EventStory")
+        }
+        else {
+            BattleSettlement()
+        }
     }
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
     else {
@@ -2963,6 +2968,7 @@ BattleSettlement(modes*) {
         GoBack
         Sleep 1000
         Send "{]}"
+        Confirm
         return True
     }
     ;递归结束时清零
@@ -3047,6 +3053,7 @@ AdvanceMode(Picture, Picture2?) {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")
                 }
+                ; 自动填充加成妮姬
                 if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , , TrueRatio, TrueRatio)) {
                     if g_settings["AutoFill"] and UserLevel >= 3 {
                         AddLog("点击黑色的加号")
@@ -3075,9 +3082,14 @@ AdvanceMode(Picture, Picture2?) {
                 }
                 EnterToBattle
                 BattleSettlement("EventStory")
+                ; 区域变化的提示
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y + 400 * TrueRatio, "L")
+                }
                 if BattleActive = 2 {
                     return
                 }
+                Sleep 1000
             }
         }
         else {

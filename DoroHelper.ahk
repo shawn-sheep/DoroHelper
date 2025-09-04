@@ -128,6 +128,7 @@ global g_settings := Map(
     "AutoStartNikke", 0,         ;使用脚本启动NIKKE
     "Timedstart", 0,             ;定时启动
     ;其他
+    "AutoFill", 0,               ;自动填充加成妮姬
     "BluePill", 0,               ;万用开关
     "RedPill", 0                 ;万用开关
 )
@@ -370,6 +371,8 @@ FindText().PicLib("|<黄色的关卡的循环图标>F9A90E-0.60$56.003000000000w
 FindText().PicLib("|<STORYⅠ>*150$36.0000000000000000007zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs000000000000000000U", 1)
 FindText().PicLib("|<STORYⅠⅠ>*150$36.0000000000000000007zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs7zzzzs000000000000000000U", 1)
 FindText().PicLib("|<剧情活动>*150$121.zzzzbwDz3zzzzz7zzzszs00zVy7z1zz7zs1zzzsDw00Tkz3U00T0s00T00w7y00AMTVU00DUA00TU0S3z006ADk000DsC01zk0D1zVz327s3s7zz703zs07Uzk01V3k0003zzzVzzzz00M00kVk0001zzzkzzzz00A00MEs0TUzzzzsDzzzU0400A8Q1000Dbk003000023Vy4C0k003Us001U07113kz270M001UA000k03VkU01V3UDzzzs6000M01ksE00EVU7U03z3zkzzkzsQ8008Ew3k00zvzsTzsTwC40048TVs00TzzwDzsAS727Vy4DkwDsDzy007wAD3V3kz27sS7w7zD003y771kU01V3wD003zXU00y3VVsE00kVy7U01zUk00T3Ukw000Mkz3k00zksTsDU08S00sDsTVs00TkQDw7U00D00y7wDkw00DkS7y3k00D04T3y7sS007sD3z1s3w7U201z3wD3y3sDU00wDw10X00w1y7Xw1w7k00Tzy20NU0S0z3ly0y7s00Dzz3UDk0D0zVsz0zbw007zzlkDsz7VzkwTUzzy7z7zzzsz", 1)
+FindText().PicLib("|<剧情活动·黑色十字>2B2B2B-0.90$67.00000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000DzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzU00007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k0000000001s0000000000w0000000000S0000000000D00000000007U0000000003k00004", 1)
+FindText().PicLib("|<剧情活动·0%>*150$36.k0DkDXU07kD3007XD3003XC71y3XC71y3XCD1y3UAD1y3kAT1y3sMT1y3zsz1y3zkz1y3zlz1y3zVz1y3zVz1y3zX01y3z201y3z6A1y3y6A003yCA003wCAU07wS0k0DsT0U", 1)
 FindText().PicLib("|<大活动·开始>*150$107.zzzzzzzzzzrzzznzzzzzzzzzzzzz0zzzUzzzzzzzzzzzzy1zzy0zzy00000007zw3zzw1zzw00000007zs7zzs3zzs0000000DzkDzzUDzzk0000000TzUzzz0TzzU0000000zz1zzw1zzz00000001zy3zzs3zTzzs3zy0zzzs7zzUDsTzzs7zw1zzzkDzz0T0zzzkDzs3zzs003w1z0zzzUTzk7zzU007s3y0zzz0zzUDzz000DUDy1zzy1zz0Tzy000T0zw1zzw3zy0zzw001w1zw1zzs7zw1zzw003k7zw3zzkDzs3zzz0w7UDz03zzUTzk7zzy3sC00007zz0zzUDzzw7kM00007zy1zz0TzzkD0k0000Dzw3zy0zzzUS1U0000Dzs7zw1zzz0w300000000000007y3s700zz000000000Ds7kSDzzz600000000TkDUzzzzyQ00000000zUS1zzzzzs00000001z1w3zzzzzk00000003w1s7zzzzzzzUDzs3zzs1kTU0007zz0zzk7zzs10z0000Dzw1zzUDzzs01y0000Tzs3zz0Tzzs03w0000zzk7zy0zzzs0Ds0001zzUDzw1zzzs0TkDzw3zy0zzs3zzzs0zUTzs7zw1zzk7zzzs1z0zzkDzk3zzUDzzzk1y1zzUTzUDzz0TzzzU1w3zz0zy0Tzy0zzzy01s7zy1zw1zzw1zzzw01kDzw3zk3zzs3zzzk03UTzs7z0Dzzk7zzz0M70zzkDw0TzzUDzzw0sS1zzUTk1zzz0Tzzk3tw0000z07zzy0zzz0Drs0001s0Tzzw1zzw0Tzk0003U1zzzs3zzs1zzU0007U7zzzk7zzs7zz0000DkTzzzUDzzkTzy0zz0Tlzzzz0Tzznzzw3zz0zrzzzy0zzzzzzs7zy1s", 1)
 FindText().PicLib("|<大活动·载入>*150$62.zXz7zzzTzzzszlXzzXzzz00AMTzsTzzU0373zy3zzzsTlszzkTzzyDwTzzy3zzzXz7zzzkTzk0000Tzy7zw00007zzUzzyDz3zzzs7zzVzlzzzy1zzsTwTzzz0Dzw7z3Xzzk3zk00Ekzzw8Tw00AATzy27zszzX7zzVkzwCTsVzzkQ7z73y8zzwDVzU03UDzy3sDs00s7zzVz3y00C1zzkTsTzkzkzzsDy3zwDwCzw7zkTz063by1zy30010sz0zzkE01ECTUTzw0D3k17UDzzUzksA1wDzzwDwD7UzbzzznzbvzzzzzzzU", 1)
 FindText().PicLib("|<大活动·EVENT>*65$120.1zy000000zzU00001zzy7zzUs00s1zzkQ00Q3zzz7zzVw01s3zzsS00S3zzzTzzVw01w7zzkS00S3zzzzzz1w01wDzzUTk0S1zzyw001w01wT000Ts0S07w0y001w01wT000Tw0S01w0y001w01wT000Ty0S01w0y001w01wT000Tz0S01w0w001w01wT000TzUy01w0w001w01wT000STkS00w0w001w01wT000TDsS00w0w001w01wT000S7wS01w0w001w01wT000S3yS01w0w001w01wT000S1zy00w0w001w01wT000S0zy00w0w001w01wT000S0Ty01w0w001w01wT000S0Dy00w0w001w01wT000S06S00w0zzs1w01wTzw0Q00S00w0zzw1s01wTzy0Q00C00M0zzw1s01wTzy0Q00C00M0zzw1w01wTzy0Q00S00w0zzs1w01wTzw0S00S00w0w001y03sT000S00S00w0y000y03sT000S00S00w0z380y07sT2M0y00S00w0y000z07kT000S00S00w0w000T0DkT000S00S00w0w000TUDkT000S00y01w0w000DUDUT000S00y01w0w000DkT0T000S00S00w0w0007kT0T000S00y01w0w0007sz0T000y00y01w0w0003sy0T000S00S00w0w0001xw0T000S00S00w0w0003zw0T000y00y01w0zzy00zs0TzzUS00S01w0zzzU0zs0DzzkS00S00w0TzzU0Tk0DzzsS00S00w0DzzU0Tk07zzkS00S00w03zz00DU01zzUA00A00M00000000000000000000019a001U00NgUA00I00M0U", 1)
@@ -775,6 +778,8 @@ SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "�
 g_settingPages["Event"].Push(SetEventLargeChallenge)
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeStory)
+SetAutoFill := AddCheckboxSetting(doroGui, "AutoFill", "自动添加加成妮姬[金Doro]", "R1 xs+30")
+g_settingPages["Event"].Push(SetAutoFill)
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战[暂时禁用]", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeCooperate)
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏[暂时禁用]", "R1 xs+15")
@@ -3041,6 +3046,32 @@ AdvanceMode(Picture, Picture2?) {
             loop 2 {
                 try {
                     FindText().Click(ok1[A_Index].X, ok1[A_Index].Y, "L")
+                }
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , , TrueRatio, TrueRatio)) {
+                    if g_settings["AutoFill"] and UserLevel >= 3 {
+                        AddLog("点击黑色的加号")
+                        FindText().Click(X, Y, "L")
+                        Sleep 500
+                        FindText().Click(X, Y, "L")
+                        Sleep 2000
+                        if (ok := FindText(&X, &Y, NikkeX + 0.034 * NikkeW . " ", NikkeY + 0.483 * NikkeH . " ", NikkeX + 0.034 * NikkeW + 0.564 * NikkeW . " ", NikkeY + 0.483 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("剧情活动·0%"), , , , , , 1, TrueRatio, TrueRatio)) {
+                            loop ok.Length {
+                                AddLog("添加第" A_Index "个妮姬")
+                                FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
+                                Sleep 1000
+                                if A_Index = 5 {
+                                    break
+                                }
+                            }
+                        }
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.917 * NikkeW . " ", NikkeY + 0.910 * NikkeH . " ", NikkeX + 0.917 * NikkeW + 0.077 * NikkeW . " ", NikkeY + 0.910 * NikkeH + 0.057 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("点击储存")
+                            FindText().Click(X, Y, "L")
+                        }
+                    }
+                    else {
+                        MsgBox ("请手动选择妮姬")
+                    }
                 }
                 EnterToBattle
                 BattleSettlement("EventStory")

@@ -292,7 +292,7 @@ FindText().PicLib("|<不选择的图标>*140$58.000000008030000001k0S000000DU3w0
 FindText().PicLib("|<模拟室超频·获得>*150$51.yDszzbzzzky7zsM030001y73wM000DVszXy7kzsT00TtzDy7s03rDtjtX7wQFy8zwMzXkDl3z700S3yATks03UTlXwDzzs300D1k01C801kC00DVw0C1zwDwDkzmDzly1w7zlU01UDUzyA000Fw3zlU016D4DyD7lzlklzlsSDyCD7yDXlzV1sDlyCDUETVyDy1w77yDlzkTzzzzzDzDw", 1)
 ;tag 竞技场
 FindText().PicLib("|<竞技场·收菜的图标>01C5F3-0.90$38.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000Dzzzzw3zzzzz00000000000000000000000000000000000000U", 1)
-FindText().PicLib("|<竞技场>*150$96.zzVzzz3zsTzsTzzzzz0zzz3zsTzsS00TU0003z3zsTzsS00DU0003z3zsTzsS007U0003z3k00DsS00Dk0003z1k00DsS00TzVzVzk0000DsTy0zz1z1zk0000DkTw1z00001k0DE7y03k7z00001k0TsTy03UDz00001z1zsTy0200000001z3zsTy02000zzzzzz3s00TsS000w000Dz1s00DsT000w000Dz0M00DsTEE0w000Dy0M00DsTkkUw7zkDk0ADkTsTUkUwDzsDk0ADkTsTVVVw7zkDs0w7UzsT1VVw000Ds3y3UzsG31Vw000Dz3y31zs033Vw000Dz3z01zk063VzkQ7zz3zU3z00C71zkQDrz3zU7y03Q71zUwDlz3z07z0TsD1z0w7kz3w01z1zkT1s1w00y3U00D7zUS303w01s3U207zz0k307y01s3kDUDzz1k3UTz03s7kzsDzzXk7XzzzzwTvzzTzzzsTU", 1)
+FindText().PicLib("|<方舟·竞技场>*150$91.zz3zzwDz3zy7zzzk0007y7zVzz3k03s0001z3zkzzVs00w0000zVzsDzkw00S0000zkw007sS00Ty7w7z02003wDz0Tz3y3zU0001y7z0zU0001k0U00s0S0zk0000s0Tkzw0C0zs0000TUzsTy040000000DkzwDz02001zzzzzsS007wD000w000zwD001y7k00S000Ty0U00z3u40D000Dy0E00zVz347Vzw7w0A7kTkz323kzz3y063sDsTVV3s001z0DVsDwDVVVw000zUDkM7y0Ukky000Ty7w07z00ksT000Tz3z07z00sQDy73zzVzU7y06sS7y3VwTkzk3z0DsC3y3ky7sTU0TUTwD1s1sC3wC003tzw71U1w01k7000Tzs40k1y01s3UD0Tzw70Q3zU0y3sTsDzz7USDzzzz7xzzDzzzkT", 1)
 FindText().PicLib("|<左上角的竞技场>*150$91.zz3zzyDz3zy7zzzs0007y7zUzz3k07w0001z3zkTzVs01y0000zVzsDzkw00T0000Tkw007sS00Tz7y7zU6003wDz0Tz1z3zU0001y7z0zzUT0zk0000s0T0zs0000s0TkTw0C0zw0000TUzsDy040060000DkTw7z00001zzzzzsT00DwD000w000zw7U01y7k00y000Dy0k00z3s40T000Dy0M00zVz24DUzy7w0A7kTkz327kzz3y073sDsTVX3s001z0DVsDwDVVVw000zk7sQ7y0Ukky000Ty7w07z00ksT000Dz3z07z00sQDy31zzVzk3y00sS7z3UyTkzk3z0DsC3y1sT7sTk0zUTwD3w1wD3wD003tzwD1U1y01k7000Tzs40s1z00w3UD0Tzw60Q3zk0y1sTsDzz7UTDzzzz7zzzDzzzkz", 1)
 FindText().PicLib("|<蓝色的新人>79A6F4-0.80$59.1s01k00y003k0Tk01w01jnDzk03s03zzTy007U07zwzU00T00Dzts000z00D7Xk001y00SD7U003w00wyD0007s07zzS000Dk0DzyzzU0Tk0Tzxzz01zU0zzvzy03z001s7zs07z003kDD00Ty07zySS00zy0Dzwww03xw0Tztts07lw07xXnk0TXw0Fv7bU0y3w1zzTD03w7s3riwS0Dk7wDDTsw0z07wSSTls7w07wNwDXkTs07yDkS7UzU07wDUQD0w007kS0ES0k0030000Q00000E", 1)
 FindText().PicLib("|<免费>*210$59.zrzzzzySDzz1zzzzkMDzw01zzU000Tk01zz0001zU03zzz3VXy3sDzzy637sDkTzw000DUT0zzk000Q0000zVkkTs0001z100UM0003y0000sDUy7zkC3VsT3wDzUyD3ky7sTw3wQ7VwDkz0Dvwz0001y0Tzvy0003y0007w0007z000Dzw0Dzy000Tzs0zzwDzkzzUlzzszzlzy3XzzlwD3zs77tzXky7z0SDlzL1gzs1wD3zU61z0Ds07k0w0C0zk0S07z06Dzk0y0zzsTzzzzwzzzzk", 1)
@@ -3607,11 +3607,11 @@ EnterToArena() {
     if (ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         return
     }
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.554 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.554 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("竞技场"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.554 * NikkeW . " ", NikkeY + 0.640 * NikkeH . " ", NikkeX + 0.554 * NikkeW + 0.068 * NikkeW . " ", NikkeY + 0.640 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("方舟·竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击竞技场")
         FindText().Click(X, Y - 50 * TrueRatio, "L")
     }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X, &Y, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.060 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.060 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的竞技场"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
     }
     AddLog("进入竞技场")

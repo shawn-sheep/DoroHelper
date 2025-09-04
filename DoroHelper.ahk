@@ -416,8 +416,8 @@ FindText().PicLib("|<准备>*200$87.zzzzzzzzzyDzzzzzzkT7zzzzUTzzzxzy3UTzzzs3zzzw
 ;tag 通行证
 FindText().PicLib("|<通行证·2>*200$49.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzUDzzzzzy00zzzzzs007zzzzs000zzzzk000Dzzzk0003zzzk0Tk1zzzs1zy1zzzs1zzlzzzs3zzzzzzw3zzzzzzw1zzzzDzy1zzzz3zy0zzzz0zz0zzzz0DzUTzzz03zkTzzz00zsDzzz00Dw7zzzy1z007zzz0zk07zzzUTw07zzzkDz07zzzkDzk7zzzs7zw7zzzs3zz7zzzw1zzrzzzw1zzzzzzw1zzzwzzw0zzzwDzw0zzzw1zs0zzzw0000zzzz0000zzzzk000zzzzy000zzzzzU01zzzzzy07zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz", 1)
 FindText().PicLib("|<通行证·3+>*200$57.zzzzzzzzDzzzzzzzztzzzzzzzzz7zzzzzzzzwTzzzzzzzzVzzzzzzzzy3zzzzzzzzs7zzzzzzzzkzy3s0000DrzkT00001zzy3s0000DzzkT00001zzy3s0000DzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzkT00001zzy3s0000DzzkT00001zzy3s0000DzzkT00001zzy3s0000DzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzkT00001zzy3s0000DzzkT00001zzy3s0000DzzkT00001zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw", 1)
-FindText().PicLib("|<通行证·任务>**20$71.04001U00s0000T00TU03y0001z0Tv00CM00036zw700szzw0CTw0D03Vzzw0Mw07w0C000Q1ns0T01s000s36zsk0D3zy3UCMylU0w70CC0sk1X00nj1xs1VU3601zrjbU7306A01nXwQ0Q60AM00300k1kA0Mk07y01zzUM0lU1zkC0Tv0zzXznU7zk1bt8001X3z7z77mE0037zbUzwDYU00670Tk0E3Dzszw00lU006M0lU0TzXzzUAk1X00zy3zz0NU3601U000A0n06A03zVzwM1a0AM03z7zwk3A0Mk006A0NU6M0lU00Qs1r0Ak1X001nU3A0Nbz7zUDC06M0nDy7z3stzwk1aM006T7Xzn03Ak00AQS30C06NzzzsTk63s0DnzzzUS0DzU0TU000000000E", 1)
-FindText().PicLib("|<通行证·奖励>**20$70.0TUQ000001k01y3y00000DU1qMAs03zzwq0TNVlzsA00nQ3jaS03sk03Bk7OTU03X00Aq0BdwzyABzznM0zbrTtkq00Bk1qPn1a3Q07ry0tjyAsBzzyDwD6LTr0k04U0nkMAws300G03w1Uk70AwzyTD7a70s0rnztwyyTwD03PA1anTNy3k0Bgz6PBlaly00qnyNgk6Pz003P0Nan0TYU00Bg1aPA00z000qnqNgnzjDzy3PPNinzzwzzwRhhanD00000laqqvAw000036POPAnzzkDzwN99gnBzz0jzVZYarBk0Q3U06KmKMq07bbU0PPNPXM3wzDk1jBbANby7D7zCYy0zaz1sS1wk7k7yNkT0T1nSyTv3XTk0TyDzTjAQDk00DkCtwQzU000000F001s8", 1)
+FindText().PicLib("|<通行证·灰色的任务>6E6F71-0.80$69.08002001s0003s03s00TU000TUDzU07w0007xzzy01zzzs0zzzzk0TzzzUDrzzk07zzzw1yTzk03zzzzUTXvw01zs0Ts7w0DU0Dz07y0zU1w00zy3z0Dw0DU07Dzzk3zU1w000Tzw0zw0DU007zzU7zU1w00zzzzzzw0Tk0TzzzzvzjzzzXzz7zyTxzzzwDy03zlzjzzzVs3s0A1xzzzw00T000DU3y0003w001w0DU07zzzzUDU1w00zzzzw1w0DU07zzzzUDU1w00zzzzw1w0DU003w0T0DU1w000zU3s1w0DU00Ds0T0DU1y003y03s1wzzzs3zU0z0Dbzzz1zsTzk1wzzzsTy3zy0Dbzzz1z0DzU1wTzzk7U1zs0D0000000000U", 1)
+FindText().PicLib("|<通行证·灰色的奖励>6F6F71-0.80$68.0T0s000003U07kDU00001w0lw7w01zzyT0yT3zzkTzzbkDbnzzy7zztw1zxzzzVzzyT0TzzzzkT007k3bzo3w7k01w03xzUy1zztzz1z/wTUTzzzzlzkTzk7zzzzxzw3zs1zzzzzzz0zw0TzyTzzzkzy07rk1xztzzy01ww0SDMTTz00TDy7Xk7ny007nzlsw1wy001xzwSD00D000TTzDXk07s007rzXtxzzzzz1xxsyTzzzzzkTTSDbzzzzzw7brXlzzzzzz1tttwTTzzzzkSSST7k0Ty007jbblw0Dzk03vtvsT0Dzz00zwTy7kTyTz0DzDzVxzz1zzXzzzryzzUDzlzzzxzbzU0zwTyzSTtz001y1nDX3w0000000U00w8", 1)
 FindText().PicLib("|<SP灰色的全部>*130$70.00200006000000S0003w000003w000Dk3zs00Tk000TUDzs03zU01zzwzzk0Tz007zzvzy03zy00Tzzjzs0zry01zzyyTUDyDw07zzvty1zkTw07kzDbkTy0zw0T3syT7zU0zw1wTXvwzw01zw3twDjXzzzzzkTjkzyDzzzzyDzzzzkTzzzzkzzzzzUrzzzq3zzzzy0Dzzz0Dzzztw00Dk00Dzzzbk00z000000yDU03w000M03sy0zzzs0DzzDXs3zzzU1zzwyDUDzzy07zznsy0zzzs0TzzDbs3zzzU1zzwzzU03w007sDnzy00Dk00TUzDzk00z001zzwzy7zzzzw7zznvkTzzzzkTzzDU0zzzzz1zzwy03zzzzw7zzns0DzzzzkTUTDU0000000w00008", 1)
 FindText().PicLib("|<购买PASS的图标>*200$45.0Dzzzzzs1zzzzzz07zzzzzs0zzzzzzy000000Dk000000z0000007s000000zU00000Dw000001zk00000Ty000003zs00000zz000007zs00001zzU0000Dzw00003zzk0000zzy00007zzs0001zzz0000Dzzw0003zzz0000Tzzs0007zzy0007zzzUTzzzzzw7zzzzzz1zzzzzzsDzzzzzz00000Dzs00001zzU0000Dzy00001zzw0000Tzzzzzzzzzzzzzzzzy3zzw7zzUDzz0Tzs0zzk3zz07zy0Dzs0zzk1zz07zy0Tzw0zzk3zzUDzz0zzz7zzyDw", 1)
 ;tag 单人突击
@@ -4829,13 +4829,13 @@ OneAwardPass() {
     loop 2 {
         Sleep 1000
         if A_Index = 1 {
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.281 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.141 * NikkeW . " ", NikkeY + 0.281 * NikkeH + 0.070 * NikkeH . " ", 0.5 * PicTolerance, 0.5 * PicTolerance, FindText().PicLib("通行证·任务"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.281 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.141 * NikkeW . " ", NikkeY + 0.281 * NikkeH + 0.070 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("通行证·灰色的任务"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
             }
         }
         if A_Index = 2 {
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.075 * NikkeH . " ", 0.5 * PicTolerance, 0.5 * PicTolerance, FindText().PicLib("通行证·奖励"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.075 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("通行证·灰色的奖励"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
             }

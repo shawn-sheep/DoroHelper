@@ -14,7 +14,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.6.2"
+currentVersion := "v1.6.3"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -3795,6 +3795,12 @@ ArenaChampion() {
     while !(ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.869 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.117 * NikkeW . " ", NikkeY + 0.869 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("晋级赛内部的应援"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
         Sleep 1000
+        if A_Index > 10 {
+            AddLog("无法应援", "red")
+            GoBack
+            Sleep 2000
+            return
+        }
     }
     AddLog("已找到三级应援文本")
     FindText().Click(X, Y, "L")

@@ -5202,58 +5202,47 @@ AutoAdvance(*) {
         Sleep 1000
     }
     loop {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的遗失物品的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            AddLog("找到遗失物品！")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                Sleep 500
+                FindText().Click(X, Y, "L")
+            }
+        }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("点击小地图")
             FindText().Click(X, Y, "L")
         }
-        ; else {
-        ;     MsgBox("查找小地图失败")
-        ;     return
-        ; }
+        else {
+            EnterToBattle
+            k := 9
+            if BattleActive = 1 {
+                modes := ["EventStory"]
+                if BattleSettlement(modes*) = False {
+                    MsgBox("本日の勝敗結果：`nDoroの敗北")
+                    return
+                }
+                else {
+                    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
+                        Confirm
+                    }
+                }
+            }
+        }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.359 * NikkeW . " ", NikkeY + 0.251 * NikkeH . " ", NikkeX + 0.359 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.251 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·缩小镜"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已进入小地图")
             Sleep 1000
         }
-        ; else {
-        ;     MsgBox("进入小地图失败")
-        ;     return
-        ; }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.360 * NikkeW . " ", NikkeY + 0.254 * NikkeH . " ", NikkeX + 0.360 * NikkeW + 0.280 * NikkeW . " ", NikkeY + 0.254 * NikkeH + 0.495 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("推图·红色的三角"), , , , , , k, TrueRatio * 0.8, TrueRatio * 0.8)) {
             Confirm
             AddLog("找到敌人")
             FindText().Click(X + (k - 9) * Random(-100, 100) * TrueRatio, Y + (k - 9) * Random(-100, 100) * TrueRatio, "L")
         }
-        ; else {
-        ;     MsgBox("未找到敌人")
-        ;     return
-        ; }
-        k := 9
-        EnterToBattle
-        if BattleActive = 1 {
-            modes := ["EventStory"]
-            if BattleSettlement(modes*) = False {
-                MsgBox("本日の勝敗結果：`nDoroの敗北")
-                return
-            }
-            else {
-                while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
-                    Confirm
-                }
-            }
-        }
-        else {
-            k := k + 2
-            if k > 9
-                k := k - 9
-        }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("黄色的遗失物品的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 500
-                FindText().Click(X, Y, "L")
-            }
-        }
+        k := k + 2
+        if k > 9
+            k := k - 9
     }
 }
 ;endregion 妙妙工具

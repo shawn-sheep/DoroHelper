@@ -4284,7 +4284,11 @@ EventLarge() {
             Sleep 25000
             if (ok := FindText(&X, &Y, NikkeX + 0.384 * NikkeW . " ", NikkeY + 0.848 * NikkeH . " ", NikkeX + 0.384 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.848 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·返回"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
-                Sleep 8000
+                Sleep 1000
+                FindText().Click(X, Y, "L")
+                Sleep 4000
+                Send "{]}"
+                Sleep 4000
             }
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.759 * NikkeW . " ", NikkeY + 0.326 * NikkeH . " ", NikkeX + 0.759 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.326 * NikkeH + 0.017 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {

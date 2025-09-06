@@ -70,6 +70,7 @@ global g_settings := Map(
     "TowerUniversal", 0,         ;通用塔
     ;异常拦截
     "Interception", 0,           ;拦截战
+    "InterceptionNormal", 0,     ;普通拦截战
     "InterceptionAnomaly", 0,    ;异常拦截战
     "InterceptionScreenshot", 0, ;拦截截图
     "InterceptionRedCircle", 0,  ;拦截红圈
@@ -705,6 +706,8 @@ g_settingPages["Tower"].Push(SetTowerUniversal)
 ;tag 二级拦截战Interception
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
 g_settingPages["Interception"].Push(SetInterceptionTitle)
+SetInterceptionNormal := AddCheckboxSetting(doroGui, "InterceptionNormal", "普通拦截[暂不支持]", "R1")
+g_settingPages["Interception"].Push(SetInterceptionNormal)
 SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
 g_settingPages["Interception"].Push(SetInterceptionAnomaly)
 DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
@@ -4928,6 +4931,7 @@ AwardCooperate() {
 AwardCooperateBattle() {
     while true {
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.851 * NikkeW . " ", NikkeY + 0.750 * NikkeH . " ", NikkeX + 0.851 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.750 * NikkeH + 0.068 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("开始匹配的开始"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("开始匹配")
             FindText().Click(X, Y, "L")
             Sleep 500
         }
@@ -4940,10 +4944,12 @@ AwardCooperateBattle() {
             return
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.375 * NikkeW . " ", NikkeY + 0.436 * NikkeH . " ", NikkeX + 0.375 * NikkeW + 0.250 * NikkeW . " ", NikkeY + 0.436 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("普通"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("选择难度")
             FindText().Click(X, Y, "L")
             Sleep 500
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.373 * NikkeW . " ", NikkeY + 0.644 * NikkeH . " ", NikkeX + 0.373 * NikkeW + 0.253 * NikkeW . " ", NikkeY + 0.644 * NikkeH + 0.060 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("确认"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("确认匹配")
             FindText().Click(X, Y, "L")
         }
         while true {

@@ -2279,10 +2279,11 @@ MsgSponsor(*) {
     LV.Add(, "自动推图", "", "", "", "✅️", "✅️")
     picUrl1 := "https://www.helloimg.com/i/2025/08/29/68b1b2c15a3bd.jpg"
     picUrl2 := "https://www.helloimg.com/i/2025/08/29/68b1b2c22d237.jpg"
-    guiSponsor.Add("ActiveX", "w205 h205", "mshtml:<img src='" picUrl1 "' />")
-    guiSponsor.Add("ActiveX", "yp w205 h205", "mshtml:<img src='" picUrl2 "' />")
+    guiSponsor.Add("ActiveX", "w200 h200", "mshtml:<img src='" picUrl1 "' style='width:100%; height:100%; object-fit:contain;' />")
+    guiSponsor.Add("ActiveX", "yp w200 h200", "mshtml:<img src='" picUrl2 "' style='width:100%; height:100%; object-fit:contain;' />")
+    ; guiSponsor.Add("ActiveX", "yp w205 h205", "mshtml:<img src='" picUrl2 "' />")
     guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
-    guiSponsor.Add("Text", "xm w400 Wrap cred", "为庆祝1.6版本，在9月4日游戏版本更新前包年免两月`n已包年的用户请凭付款截图联系续期三个月")
+    ; guiSponsor.Add("Text", "xm w400 Wrap cred", "为庆祝1.6版本，在9月4日游戏版本更新前包年免两月`n已包年的用户请凭付款截图联系续期三个月")
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
     guiSponsor.Add("Text", "xm w280 Wrap", "赞助信息生成器")
     ; 添加 Choose1 确保默认选中

@@ -351,7 +351,7 @@ FindText().PicLib("|<好友的图标>*200$46.000Dk000003zs00000zzk00007zzk0000zz
 FindText().PicLib("|<灰色的全部>BBBBBB-0.90$77.002000020000000D0000y0000000z0001w0Tz0003y0001w0zz000Dy007zztzz000zy00Dzznzy003zz00Tzzbns00Dtz00zzzD7k41zVz00zzwSDUM7y1zU0y7kwS1kzs1zk1wDVtw7bz00zs1wT3nsTzw00zw3tw7bUyzzzzzs7nsDT0wzzzzzVzzySw0lrzzzy3zzyxw00Dzzz07zzxtw1UDzzy0Dzzvns300Dk000007Xs600TU00000D7kA00z000000S7U03zzz01zzswD007zzz03zzlsS00Dzzy07zzXkw00Tzzw0Dzz7Xs000TU00T0yDzk400z000y1wSzUM01y001w3sxy0E03w003s7lvs07zzzzs7zzXm00DzzzzkDzz7U00TzzzzUTzyD000zzzzz0zzwS000zzzzy1w3sw008", 1)
 FindText().PicLib("|<每日任务·MISSION>*200$205.zU0Ts07zk1zs003zw001w0Tzw00zzzy01zz003k00zs0zk001zs000y0Dzk007zzs00Dz000k00Dw0Tk000zk000T07zk000zzs001z0008003y0Dk000Ts000DU3zk000Dzs000T0000000z07k000Ds0007k1zU0003zs000DU000000DU3k0007w0003s0zk0000zs0003U0000007k1s0003w0001w0Tk0000Ts0000k0000001s0w0001y0000y0Dk00007w0000E0000000w0S0000z0000T07s00003y000080Tk0Ds0S0C07zzz03zzzU3s03z00z03y000Tw0Dw0D0703zzzU3zzzk1w07zk0T03zU00Dy07z07U3U3zzzk1zzzs0y07zw0DU1zs007zU3zU3k1k1zzzs0zzzw0T07zz03k1zw003zk1zk1s0s0Tzzw0Tzzy0D03zzU1s0zy001zs0zs0w0Q0Dzzy07zzz07U1zzs0w0Tz000zw0Tw0S0D000zzU00zzU3k1zzw0S0DzU00Ty0Dy0D07U003zk001zk1s0zzy0D07zk00Dz07z07U3k000Ts000Ds0w0Tzz07U3zs007zU3zU3k1s0007y0003w0S0DzzU3k1zw003zk1zk1s0y0001z0000y0D07zzs1s0zy001zs0zs0w0TU000zk000D07U3zzw0w0Tz000zw0Tw0S0Ds000Dw0007U3k1zzw0S0DzU00Ty0Dy0D07y0007z0003k1s0zzy0D07zk00Dz07z07U3zk003zs000s0w0Tzz07U3zs007zU3zU3k3zzzU0zzzk0Q0S07zzU3k1zw003zk1zk1s1zzzs0Tzzw0C0D03zzk1s0zy001zs0zs0w0zzzy0Dzzz0707k1zzk0w0Tz000zw0Tw0S0Tzzz07zzzU3U3s0Tzs0S0DzU00Ty0Dy0D0DzzzU3zzzk1k1w07zs0T07zk00Dz07z07U7zzzU1zzzs0s0y01zs0DU3zs007zU3zU3k3zzzU0zzzk0Q0TU0Dk07k1zw003zk1zk1s1s0000w0000C0Dk00007s0zy001zs0zs0w0y0000S0000D07w00003w0Tz000zw0Tw0S0T0000DU0007U3y00003y0DzU00Ty0Dy0D0DU000Dk0007k1zU0003z07zk00Dz07z07U7k0007s0003s0zs0003zU3zs007zU3zU3k3s0007w0003w0Ty0003zk1zw003zk1zk1s1w0007y0003y0Dzk003zs0zy001zs0zs0w0y000Dz0007z07zy007zw0Tz000zw0Tw0S0T000zzU00TzU3zzw0zzy0DzU2", 1)
 ;tag 活动·通用
-FindText().PicLib("|<活动地区>*150$122.tzzsTzzz1zy7zkzzzzzzy7zU3zzzkTzVzwDz000070M00T00w7zsTz3zk0001k600Dk0D1zy7kkzw0000T3U0zw03kTzVwADz00007ts0TzU0w7zsT327kzzzzzzy7zzzs01w3kk0wDzyDzzzVzzzy00Q0AA0D3nzUzzzk1zzzU0703003ksDkTns001U0001k0k00wA1sDsC000M01kMQ0A0AD3kA3w0U00600QC7sQ033ky01zUQ001U073Vy600kwDk0zy7zVzzVzksTVkAAD3y0TzvzsTzkTwC7sQ333kzk7zzzy7zw6D3Vy7UkkwDs0TzzU01z33ksTVwA8D3s03zss00DksMC7s3307kw10Ty6003sS63Vy0kk1wA0s3z1U00y61VsT04A8z00T0TUsTsDU00S70333zkkTsDsC7y3k007Vk3kztwCDz7w7VzUw003kQ3wDy73zzzy1sTsD0TUw7Xz3zVkTzzzUy003lzk03zzk00Q00000TU00zzw40zzw00D000027s00DzzXUDzzU03k0000vy003zzws7zzw01w0000TzVzlzzzzzzzzzzzzzzzy", 1)
+FindText().PicLib("|<活动地区的地区>*150$62.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzsTz3zzzzzzy7zkzw0000TVzwDz00007sT33zk0001y7kkzw0000TVwA8T3zzzzkD303kzzszk0kk0wDDy3w0A00D3Uz1z03003ks7Uzk0k0kwD0kDzVk0AD3s07zsM033kz03zy70kkwDs1zzVkAAD3z0TzsS333kzU1zy7kkUwDU0DzUAA0T3k41zs3307kk3UDw0EkXw01w1w0AADz31zkz0D3zrkszwTkDkzsQDzzzyDwDy71zzzzzz001k0001zzk00w0000Tzy00D00007zzk07k0001zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzs", 1)
 FindText().PicLib("|<活动·切换的图标>*200$54.zzzU3zzzzzzw00Dzzzzzk003zzzzz0000Tzzzy0000Dzzzw00003zzzs03w01zzzk0TzU0zzzU1zzs0TzzU3zzy1zzz07zzzXzzz0Dzzzrzzz0Tzzzzzzz0Tzzzzzzy0zzzzzvzy0zzzzzlzC0zzzzzUzU0zzzzy0Tk07zzzw0Ds01zzzk07w07zzzU03y0Dzzzz01z0zzzzzU0zVzzzzz0Tznzzzzz0Tzzzzzzz0Tzzzzzzy0Tzzzzzzy0Tzztzzzw0zzzUTzzs0zzz0Dzzk1zzz03zzU1zzzU0Ty03zzzk00007zzzw0000Dzzzy0000TzzzzU001zzzzzs003zzzzzz00TzzU", 1)
 FindText().PicLib("|<作战出击的击>*200$63.zzzzs1zzzzzzzzz03zzzzzzzzs0Tzzzzzzzz03zzzzzzzzs0Tzzzzzzzz03zzzzy0Tzs0Tzzzzk00D03zzzzy00000Dzzzzk000003zzzy00000000zzk00000000Dy000000001zk00000000Dzz00000001zzzzU00000Dzzzzs00001zzzzz01s00Dzzzzs0Tzw1zzzzz03zzzzUTzzs0Tzzzs00Dz03zzzz000000Tzzzs000001zzzz00000001zzs000000000z000000000000000000000U0000000007zk00000000zzzs0000007zzzz000000zzzzs0A0007s0zz03zy00z03zs0Tzzz7s0Tz03zzzzz03zs0Tzzzzs0Tz03zs3zz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs0Tz03zs00D03zs0Tz00000Dz03zs000007s0Tz000000003zs00000000Tz000000003zs00000000Tzzk0000003zzzzk00000Tzzzzzs0003zzzzzzzs00Tzzzzzzzz03zzzzzzzzs0TzzzzzzzzU3zzzzzzzzzszU", 1)
 FindText().PicLib("|<前往区域的图标>*155$39.zzznzzzzzyDzzzzzlzzzzzy3zzzzzkTzzzzy0zzzzzU3zs0000Dz00000zs00003z00000Ds00000z000003s00000D000000s00000300000080000000000000000000000000M000007000001s00000T000007s00001z00000Ts00007z00000zs0000Dzzzzk3zzzzy1zzzzzkTzzzzy7zzzzzlzzzzzyTzzzzzrzzw", 1)
@@ -4100,7 +4100,7 @@ EventSmall() {
             GoBack
             Sleep 1000
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 剧情活动
     if g_settings["EventSmallStory"] {
@@ -4167,9 +4167,8 @@ EventLarge() {
             return
         }
     }
-    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.002 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.061 * NikkeW . " ", NikkeY + 0.002 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动地区"), , , , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm
-        Sleep 1000
     }
     AddLog("已进入活动地区")
     Sleep 3000
@@ -4187,11 +4186,11 @@ EventLarge() {
             Sleep 3000
             Confirm
         }
-        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("活动地区"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 挑战
     if g_settings["EventLargeChallenge"] {
@@ -4202,11 +4201,11 @@ EventLarge() {
             Sleep 500
         }
         Challenge
-        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("活动地区"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 剧情活动
     if g_settings["EventLargeStory"] {
@@ -4231,11 +4230,11 @@ EventLarge() {
         else MsgBox("进入剧情活动超时")
         Confirm
         AdvanceMode("大活动·关卡图标", "大活动·关卡图标2")
-        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("活动地区"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 协同作战
     if g_settings["EventLargeCooperate"] {
@@ -4250,11 +4249,11 @@ EventLarge() {
             }
         }
         AwardCooperateBattle
-        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("活动地区"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 小游戏
     if g_settings["EventLargeMinigame"] {
@@ -4276,14 +4275,16 @@ EventLarge() {
             }
             UserClick(1922, 1998, TrueRatio)
             Sleep 25000
-            if (ok := FindText(&X, &Y, NikkeX + 0.384 * NikkeW . " ", NikkeY + 0.848 * NikkeH . " ", NikkeX + 0.384 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.848 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·返回"), , , , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-                Sleep 4000
+            while !(ok := FindText(&X, &Y, NikkeX + 0.384 * NikkeW . " ", NikkeY + 0.848 * NikkeH . " ", NikkeX + 0.384 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.848 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·返回"), , , , , , , TrueRatio, TrueRatio)) {
                 Send "{]}"
-                Sleep 4000
+                Sleep 1000
             }
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            FindText().Click(X, Y, "L")
+            Sleep 4000
+            Send "{]}"
+            Sleep 4000
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.759 * NikkeW . " ", NikkeY + 0.326 * NikkeH . " ", NikkeX + 0.759 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.326 * NikkeH + 0.017 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
@@ -4296,11 +4297,11 @@ EventLarge() {
             Confirm
             Sleep 1000
         }
-        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("活动地区"), , 0, , , , , TrueRatio, TrueRatio)) {
+        while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")
             GoBack
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 领取奖励
     if g_settings["EventLargeDaily"] {
@@ -4314,11 +4315,11 @@ EventLarge() {
                 UserClick(2412, 1905, TrueRatio)
                 Sleep 1000
             }
-            while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("活动地区"), , 0, , , , , TrueRatio, TrueRatio)) {
+            while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("尝试返回活动主页面")
                 GoBack
             }
-            else AddLog("已返回活动主页面")
+            AddLog("已返回活动主页面")
         }
         else AddLog("奖励已领取")
     }
@@ -4376,7 +4377,7 @@ EventSpecial() {
             GoBack
             Sleep 1000
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 挑战
     if g_settings["EventSpecialChallenge"] {
@@ -4417,7 +4418,7 @@ EventSpecial() {
             GoBack
             Sleep 1000
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 协同作战
     if g_settings["EventSpecialCooperate"] {
@@ -4437,7 +4438,7 @@ EventSpecial() {
             GoBack
             Sleep 1000
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
     }
     ;tag 小游戏
     if g_settings["EventSpecialMinigame"] {
@@ -4506,7 +4507,7 @@ EventSpecial() {
             GoBack
             Sleep 1000
         }
-        else AddLog("已返回活动主页面")
+        AddLog("已返回活动主页面")
         AddLog("已领取全部奖励")
     }
     BackToHall

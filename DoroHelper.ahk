@@ -152,6 +152,7 @@ outputText := ""
 Victory := 0
 BattleActive := 1
 BattleSkip := 0
+QuickBattle := 0
 PicTolerance := g_numeric_settings["Tolerance"]
 g_settingPages := Map()
 if A_Username = "12042" {
@@ -2770,11 +2771,15 @@ EnterToBattle() {
     global BattleActive
     ;是否能跳过动画
     global BattleSkip
+    ;是否能快速战斗
+    global QuickBattle
+    QuickBattle := 0
     ; AddLog("尝试进入战斗")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击快速战斗")
         FindText().Click(X + 50 * TrueRatio, Y, "L")
         BattleActive := 1
+        QuickBattle := 1
         Sleep 500
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.683 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.683 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
@@ -3102,6 +3107,9 @@ AdvanceMode(Picture, Picture2?) {
                 if BattleActive = 2 {
                     return
                 }
+                if QuickBattle = 1 {
+                    return
+                }
                 Sleep 1000
             }
         }
@@ -3115,6 +3123,9 @@ AdvanceMode(Picture, Picture2?) {
                         EnterToBattle
                         BattleSettlement("EventStory")
                         if BattleActive = 2 {
+                            return
+                        }
+                        if QuickBattle = 1 {
                             return
                         }
                     }
@@ -4233,6 +4244,7 @@ EventLarge() {
         }
         else MsgBox("进入剧情活动超时")
         Confirm
+        ; 执行剧情活动流程
         AdvanceMode("大活动·关卡图标", "大活动·关卡图标2")
         while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试返回活动主页面")

@@ -3006,7 +3006,7 @@ Challenge() {
     BattleSettlement
 }
 ;tag 返回大厅
-BackToHall() {
+BackToHall(AD := False) {
     ; AddLog("返回大厅")
     while true {
         if !WinActive(nikkeID) {
@@ -3014,6 +3014,9 @@ BackToHall() {
             Pause
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+            if AD = False {
+                break
+            }
             ; 点右上角的公告图标
             UserClick(3568, 90, TrueRatio)
             Sleep 500
@@ -4573,7 +4576,7 @@ AwardOutpost() {
     AddLog("已返回前哨基地主页面")
     if g_settings["AwardOutpostExpedition"] ;派遣
         AwardOutpostExpedition()
-    BackToHall()
+    BackToHall(True)
 }
 ;tag 派遣
 AwardOutpostExpedition() {
@@ -4605,7 +4608,6 @@ AwardOutpostExpedition() {
         }
     }
     else AddLog("派遣公告栏未找到！")
-    BackToHall()
 }
 ;endregion 前哨基地
 ;region 咨询

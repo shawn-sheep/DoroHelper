@@ -189,8 +189,9 @@ SetWorkingDir A_ScriptDir
 ;tag 变量名修改提示
 try {
     LoadSettings()
-    if InStr(currentVersion, "v1.6.2") and g_numeric_settings["Version"] != currentVersion {
-        MsgBox("该版本的「任务完成后关闭」选项被重置了，请重新勾选")
+    if InStr(currentVersion, "v1.6.4") and g_numeric_settings["Version"] != currentVersion {
+        MsgBox("该版本的「帮助弹窗」选项被重置了，请重新勾选")
+        g_settings["CloseHelp"] := 0
         g_numeric_settings["Version"] := currentVersion
     }
 }
@@ -1164,7 +1165,6 @@ Initialization() {
     AddLog("屏幕高度是" A_ScreenHeight)
     AddLog("游戏画面比例是" GameRatio)
     AddLog("图片缩放系数是" Round(TrueRatio, 3))
-    AddLog("如有问题请先尝试将更新渠道切换至AHK版并进行更新（需要优质网络）。如果无法更新或仍有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     if TrueRatio < 0.5 {
         Result := MsgBox("检测到NIKKE窗口尺寸过小，建议按ctrl+3调整游戏画面并重启脚本，是否暂停程序？", , "YesNo")
         if Result = "Yes"
@@ -2375,6 +2375,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
 ClickOnHelp(*) {
     MyHelp := Gui(, "帮助")
     MyHelp.SetFont('s10', 'Microsoft YaHei UI')
+    MyHelp.Add("Text", "w600", "- 如有问题请先尝试将更新渠道切换至AHK版并进行更新（需要优质网络）。如果无法更新或仍有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
     MyHelp.Add("Text", "w600", "- 游戏分辨率需要设置成**16:9**的分辨率，小于1080p可能有问题，暂不打算特殊支持")
     MyHelp.Add("Text", "w600", "- 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**")
     MyHelp.Add("Text", "w600", "- 多显示器请支持的显示器作为主显示器，将游戏放在主显示器内")

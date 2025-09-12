@@ -867,9 +867,8 @@ TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta[
 doroGui.Tips.SetTip(TextAutoAdvance, "视野调到最大。在地图中靠近怪海的地方启动，之后心怀希望")
 BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
-doroGui.Tips.SetTip(BtnBluePill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
 BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
-doroGui.Tips.SetTip(BtnRedPill, "这个开关可能没用`r`n但这个开关没用有点不太可能")
+doroGui.Add("Text", "x+10 +0x0100", "这俩没用")
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w400 h390 Section", "日志")
 doroGui.Add("Button", "xp+320 yp-5 w80 h30", "导出日志").OnEvent("Click", CopyLog)
@@ -2397,7 +2396,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     ; 步骤5：复制到剪切板
     A_Clipboard := jsonString
     ; 给出提示
-    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我。`n可以加入DoroHelper反馈群(584275905)并私信我`n也可以发我的 qq 邮箱(1204244136@qq.com)（为防止紊乱只选一个即可）`n24 小时内我会进行登记并通知，之后重启软件并勾选用户组的「自动检查」即可")
+    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我。`n可以加入DoroHelper反馈群(584275905)并私信我`n也可以发我的 qq 邮箱(1204244136@qq.com)`n（只选一个即可，邮箱标题建议注明X个月的XDoro，正文再复制赞助信息）`n24 小时内我会进行登记并通知，之后重启软件并勾选用户组的「自动检查」即可")
 }
 ;tag 帮助
 ClickOnHelp(*) {

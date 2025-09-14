@@ -869,7 +869,7 @@ TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "快速爆裂模式
 doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快。`n默认先A后S。适合凹分时解手")
 BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", QuickBurst)
 TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta[金Doro专属]")
-doroGui.Tips.SetTip(TextAutoAdvance, "视野调到最大。在地图中靠近怪海的地方启动，之后心怀希望")
+doroGui.Tips.SetTip(TextAutoAdvance, "半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关")
 BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
@@ -2323,7 +2323,7 @@ MsgSponsor(*) {
     guiSponsor.Add("Text", "xm w280 Wrap", "赞助信息生成器")
     ; 添加 Choose1 确保默认选中
     guiTier := guiSponsor.Add("DropDownList", "Choose1 w120", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
-    guiDuration := guiSponsor.Add("DropDownList", "yp x150 Choose1 w120", ["1个月", "3个月", "6个月", "12个月"])
+    guiDuration := guiSponsor.Add("DropDownList", "yp x150 Choose1 w120", ["1个月", "3个月", "6个月", "12个月", "36个月"])
     guiSponsor.Add("Text", "xm r1", "需要赞助：")
     guiPriceText := guiSponsor.Add("Text", "x+5 w60", "")
     guiSponsor.Add("Button", "yp x150 h30", "我已赞助，生成信息").OnEvent("Click", CalculateSponsorInfo)
@@ -2348,7 +2348,7 @@ UpdateSponsorPrice(*) {
         "铜Doro会员", 6,
         "银Doro会员", 18,
         "金Doro会员", 30,
-        "管理员", 999
+        "管理员", -1
     )
     ; 从 durationSelected 中提取月份数
     monthsText := StrReplace(durationSelected, "个月")
@@ -2408,6 +2408,7 @@ ClickOnHelp(*) {
     MyHelp := Gui(, "帮助")
     MyHelp.SetFont('s10', 'Microsoft YaHei UI')
     MyHelp.Add("Text", "w600", "- 如有问题请先尝试将更新渠道切换至AHK版并进行更新（需要优质网络）。如果无法更新或仍有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
+    MyHelp.Add("Text", "w600", "- 使用前请先完成所有特殊任务，以防图标错位")
     MyHelp.Add("Text", "w600", "- 游戏分辨率需要设置成**16:9**的分辨率，小于1080p可能有问题，暂不打算特殊支持")
     MyHelp.Add("Text", "w600", "- 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**")
     MyHelp.Add("Text", "w600", "- 多显示器请支持的显示器作为主显示器，将游戏放在主显示器内")

@@ -14,7 +14,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.6.5"
+currentVersion := "v1.6.6"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -130,6 +130,7 @@ global g_settings := Map(
     "Timedstart", 0,             ;定时启动
     ;其他
     "AutoFill", 0,               ;自动填充加成妮姬
+    "CheckAuto", 0,              ;开启自动射击和爆裂
     "BluePill", 0,               ;万用开关
     "RedPill", 0                 ;万用开关
 )
@@ -182,9 +183,9 @@ SetWorkingDir A_ScriptDir
 ;tag 变量名修改提示
 try {
     LoadSettings()
-    if InStr(currentVersion, "v1.6.4") and g_numeric_settings["Version"] != currentVersion {
-        MsgBox("该版本的「帮助弹窗」选项被重置了，请重新勾选")
-        g_settings["CloseHelp"] := 0
+    if InStr(currentVersion, "v1.6.6") and g_numeric_settings["Version"] != currentVersion {
+        MsgBox("该版本的「开启自动射击和爆裂」选项被重置了，请按需勾选")
+        ; g_settings["CloseHelp"] := 0
         g_numeric_settings["Version"] := currentVersion
     }
 }
@@ -544,7 +545,7 @@ doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
 BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks)
 doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
 doroGui.SetFont('s14')
-cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+35 Section", true)
+cbLogin := AddCheckboxSetting(doroGui, "Login", "登录/基础", "x20 yp+35 Section", true)
 doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
 BtnLogin := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店", "xs", true)
@@ -617,6 +618,10 @@ g_settingPages["Login"].Push(StartupTimeInfo)
 cbLoopMode := AddCheckboxSetting(doroGui, "LoopMode", "自律模式", "xs+20 R1 +0x0100")
 doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动")
 g_settingPages["Login"].Push(cbLoopMode)
+SetNormalTitle := doroGui.Add("Text", "xs R1", "===基础设置===")
+g_settingPages["Login"].Push(SetNormalTitle)
+CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "开启自动射击和爆裂", "R1 ")
+g_settingPages["Login"].Push(CheckAutoText)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
@@ -2938,7 +2943,9 @@ BattleSettlement(modes*) {
             }
         }
         ; 检测自动战斗和爆裂
-        CheckAuto
+        if g_settings["CheckAuto"] {
+            CheckAuto
+        }
         ;无限之塔的位置
         if (ok := FindText(&X, &Y, NikkeX + 0.855 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.855 * NikkeW + 0.031 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("TAB的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("[无限之塔胜利]TAB已命中")

@@ -763,9 +763,9 @@ g_settingPages["Award"].Push(SetAwardFriendPoint)
 SetAwardMail := AddCheckboxSetting(doroGui, "AwardMail", "邮箱收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardMail, "收取邮箱中所有奖励")
 g_settingPages["Award"].Push(SetAwardMail)
-; SetAwardRanking := AddCheckboxSetting(doroGui, "AwardRanking", "方舟排名奖励[暂时禁用]", "R1.2")
-; doroGui.Tips.SetTip(SetAwardRanking, "自动领取方舟内各类排名活动（如无限之塔排名、竞技场排名等）的结算奖励")
-; g_settingPages["Award"].Push(SetAwardRanking)
+SetAwardRanking := AddCheckboxSetting(doroGui, "AwardRanking", "方舟排名奖励", "R1.2")
+doroGui.Tips.SetTip(SetAwardRanking, "自动领取方舟内各类排名活动（如无限之塔排名、竞技场排名等）的结算奖励")
+g_settingPages["Award"].Push(SetAwardRanking)
 SetAwardDaily := AddCheckboxSetting(doroGui, "AwardDaily", "任务收取", "R1.2")
 doroGui.Tips.SetTip(SetAwardDaily, "收取每日任务、每周任务、主线任务以及成就等已完成任务的奖励")
 g_settingPages["Award"].Push(SetAwardDaily)
@@ -1008,8 +1008,8 @@ ClickOnDoro(*) {
             AwardFriendPoint()
         if g_settings["AwardMail"]
             AwardMail()
-        ; if g_settings["AwardRanking"] ;方舟排名奖励
-        ;     AwardRanking()
+        if g_settings["AwardRanking"] ;方舟排名奖励
+            AwardRanking()
         if g_settings["AwardDaily"]
             AwardDaily()
         if g_settings["AwardPass"]
@@ -4841,6 +4841,27 @@ AwardMail() {
     BackToHall
 }
 ;endregion 邮箱收取
+;region 方舟排名奖励
+;tag 排名奖励
+AwardRanking() {
+    AddLog("开始任务：方舟排名奖励", "Fuchsia")
+    EnterToArk()
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.979 * NikkeW . " ", NikkeY + 0.138 * NikkeH . " ", NikkeX + 0.979 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.138 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
+    }
+    else {
+        AddLog("没有可领取的排名奖励，跳过")
+        return
+    }
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.909 * NikkeW . " ", NikkeY + 0.915 * NikkeH . " ", NikkeX + 0.909 * NikkeW + 0.084 * NikkeW . " ", NikkeY + 0.915 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
+        Sleep 1000
+        AddLog("点击全部领取")
+        FindText().Click(X, Y - 30 * TrueRatio, "L")
+        Sleep 1000
+    }
+    BackToHall
+}
+;endregion 方舟排名奖励
 ;region 每日任务收取
 AwardDaily() {
     AddLog("开始任务：每日任务收取", "Fuchsia")

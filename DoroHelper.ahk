@@ -5082,6 +5082,7 @@ AwardSoloRaid(stage7 := True) {
     while True {
         if (ok := FindText(&X, &Y, NikkeX + 0.519 * NikkeW . " ", NikkeY + 0.618 * NikkeH . " ", NikkeX + 0.519 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.618 * NikkeH + 0.037 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红色的MODE"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("挑战模式")
+            BackToHall
             return
         }
         AddLog("检测快速战斗")

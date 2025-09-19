@@ -2291,7 +2291,7 @@ CheckEvent(*) {
     if MyFileShortHash = "20250923" {
         MsgBox "COINS IN RUSH活动将在今天结束，请尽快完成活动！记得捡垃圾、搬空商店！"
     }
-    if MyFileShortHash = "20250831" {
+    if MyFileShortHash = "20250922" {
         MsgBox "单人突击将在今天结束，请没凹的尽快凹分！"
     }
     if MyFileShortHash = "20250903" {

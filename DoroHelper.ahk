@@ -3317,6 +3317,10 @@ ShopCash() {
 }
 ;tag 普通商店
 ShopNormal() {
+    if g_settings["ShopNormalFree"] = False and g_settings["ShopNormalDust"] = False and g_settings["ShopNormalPackage"] = False {
+        AddLog("普通商店购买选项均未启用，跳过此任务", "Fuchsia")
+        return
+    }
     AddLog("开始任务：普通商店", "Fuchsia")
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.236 * NikkeW . " ", NikkeY + 0.633 * NikkeH . " ", NikkeX + 0.236 * NikkeW + 0.118 * NikkeW . " ", NikkeY + 0.633 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击商店图标")

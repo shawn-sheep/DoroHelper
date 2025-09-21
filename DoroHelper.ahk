@@ -4670,7 +4670,11 @@ AwardSoloRaid(stage7 := True) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
                 Skipping
-                BattleSettlement()
+                if BattleSettlement() = false {
+                    AddLog("战斗结算失败，尝试返回大厅", "red")
+                    BackToHall
+                    return
+                }
                 sleep 5000
                 while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
                     Confirm

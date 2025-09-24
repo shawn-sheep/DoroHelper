@@ -5197,7 +5197,7 @@ ClearRed() {
                     FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
                     Sleep 1000
                     ;把鼠标移动到活动栏
-                    UserMove(1906, 452, TrueRatio)
+                    UserMove(1380, 462, TrueRatio)
                 }
                 AddLog("查找红点")
                 while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.620 * NikkeW . " ", NikkeY + 0.189 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.189 * NikkeH + 0.677 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5205,6 +5205,7 @@ ClearRed() {
                     Sleep 2000
                     Confirm
                     Sleep 1000
+                    UserMove(1380, 462, TrueRatio)
                 }
                 AddLog("尝试滚动活动栏")
                 Send "{WheelDown 33}"
@@ -5216,7 +5217,7 @@ ClearRed() {
                     FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
                     Sleep 1000
                     ;把鼠标移动到活动栏
-                    UserMove(1906, 452, TrueRatio)
+                    UserMove(1380, 462, TrueRatio)
                 }
                 AddLog("查找红点")
                 while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.188 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.188 * NikkeH + 0.694 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5224,6 +5225,7 @@ ClearRed() {
                     Sleep 2000
                     Confirm
                     Sleep 1000
+                    UserMove(1380, 462, TrueRatio)
                 }
                 AddLog("尝试滚动活动栏")
                 Send "{WheelDown 33}"

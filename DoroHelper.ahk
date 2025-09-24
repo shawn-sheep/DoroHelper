@@ -1,4 +1,5 @@
 #Requires AutoHotkey >=v2.0
+#SingleInstance Force
 #Include <github>
 #Include <FindText>
 #Include <GuiCtrlTips>
@@ -179,6 +180,9 @@ NikkeYP := 0
 NikkeWP := 0
 NikkeHP := 0
 TrueRatio := 1
+;tag 彩蛋
+konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
+key_history := ""           ; 用于存储用户按键历史的变量
 if (scriptExtension = "ahk") {
     MyFileHash := HashGitSHA1(A_ScriptFullPath)
     global MyFileShortHash := SubStr(MyFileHash, 1, 7)
@@ -453,7 +457,8 @@ FindText().PicLib("|<同步器·消耗道具使用的图标>*200$82.0Dzzzzzzzzzz
 ;region 创建GUI
 ;tag 基础配置
 g_settingPages := Map("Default", [], "Login", [], "Shop", [], "SimulationRoom", [], "Arena", [], "Tower", [], "Interception", [], "Event", [], "Award", [], "Settings", [],)
-doroGui := Gui("+Resize", "DoroHelper - " currentVersion)
+title := "DoroHelper - " currentVersion
+doroGui := Gui("+Resize", title)
 doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
 doroGui.Tips.SetBkColor(0xFFFFFF)
 doroGui.Tips.SetTxColor(0x000000)
@@ -883,6 +888,31 @@ HideAllSettings()
 ShowSetting("Default")
 doroGui.Show("x" g_numeric_settings["doroGuiX"] " y" g_numeric_settings["doroGuiY"])
 ;endregion 创建GUI
+;region 彩蛋
+CheckSequence(key_char) {
+    global key_history, konami_code
+    ; 将当前按键对应的字符追加到历史记录中
+    key_history .= key_char
+    ; 为了防止历史记录字符串无限变长，我们只保留和目标代码一样长的末尾部分
+    if (StrLen(key_history) > StrLen(konami_code)) {
+        key_history := SubStr(key_history, -StrLen(konami_code) + 1)
+    }
+    ; 检查当前的历史记录是否与目标代码完全匹配
+    if (key_history == konami_code) {
+        AddLog("🎉 彩蛋触发！ 🎉！Konami Code 已输入！")
+        TextUserGroup.Value := "炫彩Doro"
+        key_history := ""    ; 重置历史记录，以便可以再次触发
+    }
+}
+#HotIf WinActive(title)
+~Up:: CheckSequence("U")
+~Down:: CheckSequence("D")
+~Left:: CheckSequence("L")
+~Right:: CheckSequence("R")
+~b:: CheckSequence("B")
+~a:: CheckSequence("A")
+#HotIf
+;endregion 彩蛋
 ;region 前置任务
 ;tag 检查用户组
 if g_settings["AutoCheckUserGroup"]

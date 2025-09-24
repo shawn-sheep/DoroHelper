@@ -2420,6 +2420,7 @@ Advertisement() {
     MyAd.Add("Text", "w300", "====广告位招租====")
     MyAd.Add("Text", , "可以通过赞助免除启动时的广告，启动选项-设置-移除启动广告")
     MyAd.Add("Text", , "详情见左上角的「赞助」按钮")
+    MyAd.Add("Link", , '<a href="https://pan.baidu.com/s/1pAq-o6fKqUPkRcgj_xVcdA?pwd=2d1q">ahk版和exe版的网盘下载链接</a>')
     MyAd.Add("Link", , '<a href="https://nikke.hayasa.link/">====Nikke CDK Tool====</a>')
     MyAd.Add("Text", "w500", "一个用于管理《胜利女神：NIKKE》CDK 的现代化工具网站，支持支持国际服、国服、港澳台服多服务器、多账号的CDK一键兑换")
     MyAd.Add("Link", , '<a href="https://mirrorchyan.com/">===Mirror酱===</a>')

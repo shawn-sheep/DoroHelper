@@ -2442,13 +2442,17 @@ CalculateSponsorInfo(thisGuiButton, info) {
         }
         ; 从原有过期日期开始计算
         expiryDate := DateAdd(UserGroupInfo.ExpirationTime . "000000", 30 * Month, "days")
+        UserStatus := "老用户续费" ; 新增：定义用户状态
     } else {
         ; 如果是新用户或已过期，则从今天开始计算
         expiryDate := DateAdd(A_Now, 30 * Month, "days")
+        UserStatus := "新用户开通" ; 新增：定义用户状态
     }
     ; 步骤4：生成 JSON 字符串
     ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
-    jsonString := "  `"" Hashed "`": {" . "`n"
+    jsonString := UserStatus "`n"
+    jsonString .= "(将这段文字替换成你的付款截图)`n"
+    jsonString .= "  `"" Hashed "`": {" . "`n"
     jsonString .= "    `"tier`": `"" tierSelected "`"," . "`n"
     jsonString .= "    `"expiry_date`": `"" SubStr(expiryDate, 1, 8) "`"" . "`n"
     jsonString .= "  },"

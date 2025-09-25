@@ -398,6 +398,8 @@ FindText().PicLib("|<大活动·关卡图标2>*100$99.001zzzzzzzzzzzzzs00zzzzzzz
 FindText().PicLib("|<大活动·任务>*150$58.zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzlzyTzkzzzz3y0zy3zzzw001zk00zzV00Ty001zw40DzU007zkvkzw1z0zy3z3zk3s7zkDwDz421zz0zkzzs07zs3z3zy003zUDwDy0001y0U00s0y0Dw2003Vzztzw800Dzkzzzkzkzzy3zzz3z3zk001zwDwDz0007zkzkzw000Tz3z3zzUzVzwDwDzw7yDzkzUzzUzkzz3003k7y3zwA00C0w0Tzkk00wDk1zzXzzznzUzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzy", 1)
 FindText().PicLib("|<大活动·小游戏>*150$91.zzzzzzzrzzzzzzzzzUzzyz3sTzzz3nzzkTzy7UwDzzzVUzzsDzy0sS7zzzkkDzw7zzUQT0300sQ7zy3zzs0001U0QD3zz1zzzE000k0C7rzzUzzzs000Q071sT7kTDzw00Tzz3U0DUsC3zTVsTzj0003kQ71z3kw07XU001kS3kT0MTU1Ukk0DsD1sDUQ0M0s8M3nw7Uy3wC0A0y0DVsS3kT1zj07Uz0DksC3sDUTzU3kzk7sQD1w7sDzlVsTw3wA70y3w7zkkU1z1y07Uz1z1wMM00z0T07UTUzUy4A00T0DU3kTkTkT2600DU3s2yDsDsD133kzU0w37jw7yTV3VsTUEQ3Vzy3zzkVlwDUQQ0kzz1zzkEky7kCM00Tk0zzsEMT3wDs00Ts0Tzs0EA1zDy20Dw0Tzw4M60zzzbU7z0DzzbA70zzzzs7zUzzzzzDlzzzzz7U", 1)
 FindText().PicLib("|<大活动·小游戏·返回>*150$76.wzzzw3zzzzzzzVzw007s0000083w000DU00000U7k000S0000030T0003s00000C0w007zU00000s1k1zzy000003kT0zzzs7zzzkDXw3ztzUTzzz0zTk000y1zzzw3zz0003s7U03kDzw000DUQ0070zzk001y1k00Q20D0007s7001k00w7TUTUQ007003kMw1y1kD0Q00C01kDs70y1k00s000zUQ3s70U3U007y1kDUQ3kC1U0Ts70y1kD0s703zUQ3s70w30y0Dy1k00Q3kA3s0zs7001kD0kC01zUQ0070w00k03y1k00Q3k00003s7001kD00E10DUTzzz0w03US1y1zzzw3U6C3wDs7zzzkA05wztzUDzzy0U03zzqS000000000000s000000000007U00000Us0000S0000027s0001s00000Azw000DUDzzy0vzz007y1zzzw2", 1)
+FindText().PicLib("|<大活动·小游戏·十字>*100$54.zzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzw0Tzzz000000000000000000000000000000000000000000000000000000000000000000000000000000000zzzy0Dzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0Tzzzzzzy0TzzzU", 1)
+FindText().PicLib("|<大活动·小游戏·扩充完成>*200$157.y7zzXzzzzkzzzzzzXzzzzzzUwTz3zz1zzzzkDzzzzz0zzzzzzkQ7zVzzkTzzzw3zzzzzUTzzzzzsA1zkzzsDzzzy1zzzzzk7zzzzzw70TsTzw7zzzz0zzzk00001zzzy3kTwDzy1zzzzUzzzs00000zzzy0s7y3s000y000003w00000Ts00000E0A000T000001y00000Dw00000806000DU00000z000007y000004030007k00000TVzzzy3z00000201U3jzw00000Tkzzzz1zU000wD00kTzzzz0TwTzsTzzzUzkTz1zzy3sDzzzz0Tw7zwC000kTsDzkTzz3w7zzzz0Tw1zy7000QDw7zsD7zVy3zzzz0Tz0TzzU00Dzy3zw7Uzkz1zzzz0DzU7zzk007zz0063kTsDUzzzz00001zzzzzzzzU031kTw0kTzzz00000Tzzzzzzzk01UsDw0MDzzzk0000Dzzzzzzzs00kM7k0A7zzzs00003w000007w00M07k063zzzw00001y000003y3sC03s031zzzz00s7Vz000001z1w703y0DUzzzzzUy3vzU00000zUy3U1z0DkzzzzzUT1zzm00000TkT1k1zy7sTzzzzkDUzzzz1y3zzsDVw0zz3wDzzzzsDkTzzzUz1zzs7ky0zzVw7zzzzs7sDvzzkTUzzw3kT0yzky3zzzzw3w7wTzsDkTzy30D0T7sT1zzzzw1y3y7zs7sDvz1U70DVwD0zzzzw1z1z3zw7w7wTUk303ky7Uzzzzs1zUz1zw3y3w7UQ301kS3kTzzzk0zkDUzs3z1y3kSy000M1kDzzzU0zs00T01zU03kDy000C0kDzzzk0zw00T01zk01s7z0A070M7zzzw1zz00Dk3zw00y7zkT07US7zzzz1zzU0Ds3zy00zXzwTk3szrzzzzbzzy1zyTzzk1ztzzTy7k", 1)
 FindText().PicLib("|<快速战斗的图标>*200$46.01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzz01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzz01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0TzzU", 1)
 FindText().PicLib("|<进行战斗的进>*200$25.zzzzzzzzyTnnz7tlzVwszsw8DyM01zw01zzVXzztlz1wszUwADsM01yA00z7XXzXnlzllszskwTwQyDw6zjw0TySQ00DDk07zzzzzzzzk", 1)
 FindText().PicLib("|<MAX>*150$41.1w7sD7W3sDUSD47kT0wC8DUy1wMED1w3slUS3s7lX0s7kDl61kDUTUQ3UTAT0s70wMy1lC1sly7WQXlXwD4t7X7sS8mD6DkwFYSATVsm8wMz3lYFsky3X9XU1s76H703kCA6C07UAMAQSCAMkMswQMlUllsslXVXXlVV7377V7WCCCD2D4QQMS4S4", 1)
@@ -799,7 +801,7 @@ g_settingPages["Event"].Push(SetEventLargeStory)
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战[暂时禁用]", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeCooperate)
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏", "R1 xs+15")
-doroGui.Tips.SetTip(SetEventLargeMinigame, "默认只打一次，开启蓝色药丸后无限打，需要手动暂停")
+doroGui.Tips.SetTip(SetEventLargeMinigame, "购买「扩充物品栏」后需要开启蓝色药丸")
 g_settingPages["Event"].Push(SetEventLargeMinigame)
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeDaily)
@@ -4970,6 +4972,20 @@ EventLarge() {
         AddLog("点第二个START")
         UserClick(1911, 1743, TrueRatio)
         Sleep 3000
+        if (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
+            loop {
+                if (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
+                    AddLog("点击扩充")
+                    FindText().Click(X, Y, "L")
+                    Sleep 500
+                }
+                if (ok := FindText(&X, &Y, NikkeX + 0.499 * NikkeW . " ", NikkeY + 0.723 * NikkeH . " ", NikkeX + 0.499 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.723 * NikkeH + 0.062 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·扩充完成"), , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    break
+                }
+            }
+        }
         AddLog("点战斗开始")
         UserClick(1938, 2030, TrueRatio)
         Sleep 1000

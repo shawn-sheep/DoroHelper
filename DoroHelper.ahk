@@ -4550,13 +4550,13 @@ OneAwardPass() {
     loop 2 {
         Sleep 2000
         if A_Index = 1 {
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.281 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.141 * NikkeW . " ", NikkeY + 0.281 * NikkeH + 0.070 * NikkeH . " ", 0.45 * PicTolerance, 0.45 * PicTolerance, FindText().PicLib("通行证·灰色的任务"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.502 * NikkeW . " ", NikkeY + 0.281 * NikkeH . " ", NikkeX + 0.502 * NikkeW + 0.141 * NikkeW . " ", NikkeY + 0.281 * NikkeH + 0.070 * NikkeH . " ", 0.5 * PicTolerance, 0.5 * PicTolerance, FindText().PicLib("通行证·灰色的任务"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
             }
         }
         if A_Index = 2 {
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.075 * NikkeH . " ", 0.47 * PicTolerance, 0.47 * PicTolerance, FindText().PicLib("通行证·灰色的奖励"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.075 * NikkeH . " ", 0.5 * PicTolerance, 0.5 * PicTolerance, FindText().PicLib("通行证·灰色的奖励"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
             }

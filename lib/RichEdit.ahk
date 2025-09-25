@@ -107,7 +107,7 @@ class RichEdit {
             This.SetDefaultFont()
         }
         ; Initialize the print margins
-        This.GetMargins()
+        ; This.GetMargins()
         ; Initialize the text limit
         This.LimitText(2147483647)
     }

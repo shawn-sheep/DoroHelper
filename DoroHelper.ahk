@@ -404,7 +404,7 @@ FindText().PicLib("|<大活动·小游戏·扩充完成>*200$157.y7zzXzzzzkzzzzz
 FindText().PicLib("|<快速战斗的图标>*200$46.01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzz01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzz01z01zzy03y03zzw07w07zzs0Ds0Dzzk0Tk0TzzU0zU0zzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0Tzy03y03zzk0Tk0TzzU", 1)
 FindText().PicLib("|<进行战斗的进>*200$25.zzzzzzzzyTnnz7tlzVwszsw8DyM01zw01zzVXzztlz1wszUwADsM01yA00z7XXzXnlzllszskwTwQyDw6zjw0TySQ00DDk07zzzzzzzzk", 1)
 FindText().PicLib("|<MAX>*150$41.1w7sD7W3sDUSD47kT0wC8DUy1wMED1w3slUS3s7lX0s7kDl61kDUTUQ3UTAT0s70wMy1lC1sly7WQXlXwD4t7X7sS8mD6DkwFYSATVsm8wMz3lYFsky3X9XU1s76H703kCA6C07UAMAQSCAMkMswQMlUllsslXVXXlVV7377V7WCCCD2D4QQMS4S4", 1)
-FindText().PicLib("|<协同作战的协同>*200$59.sTsTzzzzzzkzkzzU0003VzVzz000073z3zy0000C7y7zw0000QD00DsTzzksS00TkzzzU0400zVU0300801z300600T33y600A00y67wDzzsQDwADsTzzksQMM3kzzzVkklk7Vk073VV3UD3U0C73270C700QC4AC0QC7ksQ8EQ0sQDVksFVsFksT3Vkv3kVVkQ73Vw7V73U0C73sT3y700QC7Uy7wC00sQC3sDsQDzksM7UzksTz1kUM1zVzzk3VVs3z3zzUD3bkDy7zz0S7zzzwDzz7k", 1)
+FindText().PicLib("|<大活动·协同作战>*150$122.sTzzzzzzzzzzzzzzzzzzy7y7zzzzzzzwTXzzwDy7zVzVzz00007y3kTzz3zVXsTsTzk0001zVwDzzkzsMy7y7zw0000TkS3zzwDy67VzVzz1zzw7w7U01z03VlsS00TkzzzVy3k00Tk0sRy7U07wDzzsTUw007w0C7w0801z30067kC001z03UU0200Tkk01Vs3V1zzkzk000y67wA00MS0kETzwDk03VzVVz3zzy708A7zz3w07sQsM3kzzzVk2700zkzUBy66C0wC00sS0tk0Dw7z3DVV3UD3U0C7UDw03k03klsMEs3ks03Vy3z00w00w8S6AC0QC7ksTUzkTz00D2DV33U73VwC7sDw7zky3k3sEUs1ksT3Vy3z1zwDky0y6MS4QC7ksTUzk073wDUTVw7V73U0C7sDw01kz3sDsT1sTks03Vy3z00QDky3y7Uy7wC00sTUzk0D3wD0rVsDVz3Uzy7sDw7zk03U8sQ7kzksTzVy3z1zw00k0C630DwDzy0TUzkTz00003V0s3z3zzU7sDw7zk0060sMS1zkzzs3y3z1zwDkXkS7DVzwDzy1zUzkTzXzzyC", 1)
 FindText().PicLib("|<大活动·灰色的全部>595958-0.90$74.006000070000001s0007k000000z0001w0Tz000Tk000TU7zw00Dz007zztzz007zs01zzyTzk03zz00TzzbXs03zDs07zztsy01zVzU0T3wSDU1zkDy07ky7bk1zk1zk0wDVtw5zs07zUDXsSS3zw00zw3tw7bUrzzzzy0yT1vs4zzzzzXzzzSy0CzzzxkzzzrjU0Dzzz0Dzzxtw000z001zzySD000Dk000007Xs003w000001sy000z000000S7U0Tzzw0Dzz7Vs07zzz03zzlsS01zzzk0zzwS7U0Tzzw0Dzz7Xs003w003s7lzy000z000y1wSzU00Dk00DUT7jk003w003zzlvs0zzzzz0zzwS00DzzzzkDzz7U03zzzzw3zzls00zzzzz0zzwS00000000D0T7U08", 1)
 ;tag 特殊活动BOOM!THEGHOST!
 ;tag 协同作战
@@ -799,7 +799,7 @@ SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "�
 g_settingPages["Event"].Push(SetEventLargeChallenge)
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeStory)
-SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战[暂时禁用]", "R1 xs+15")
+SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeCooperate)
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeMinigame, "购买「扩充物品栏」后需要开启蓝色药丸")
@@ -4949,7 +4949,7 @@ EventLarge() {
     ;tag 协同作战
     if g_settings["EventLargeCooperate"] {
         AddLog("开始任务：大活动·协同作战", "Fuchsia")
-        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.895 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.073 * NikkeW . " ", NikkeY + 0.895 * NikkeH + 0.043 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("协同作战的协同"), , , , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.438 * NikkeW . " ", NikkeY + 0.866 * NikkeH . " ", NikkeX + 0.438 * NikkeW + 0.134 * NikkeW . " ", NikkeY + 0.866 * NikkeH + 0.046 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·协同作战"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试进入对应活动页")
             FindText().Click(X - 50 * TrueRatio, Y, "L")
             Sleep 500
@@ -4957,6 +4957,10 @@ EventLarge() {
                 AddLog("不在活动期间")
                 break
             }
+        }
+        if (ok := FindText(&X, &Y, NikkeX + 0.357 * NikkeW . " ", NikkeY + 0.575 * NikkeH . " ", NikkeX + 0.357 * NikkeW + 0.287 * NikkeW . " ", NikkeY + 0.575 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
         }
         AwardCooperateBattle
         while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.29 * PicTolerance, 0.29 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {

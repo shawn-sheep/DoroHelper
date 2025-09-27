@@ -122,6 +122,7 @@ global g_settings := Map(
     "ClearRedWallpaper", 0,      ;清除壁纸红点
     "ClearRedRecycling", 0,      ;自动升级循环室
     "ClearRedSynchro", 0,        ;自动升级同步器
+    "ClearRedCube", 0,           ;自动升级魔方
     "ClearRedSynchroForce", 0,   ;开箱子
     "ClearRedLimit", 0,          ;自动突破妮姬
     ;启动/退出相关
@@ -835,6 +836,8 @@ cbClearRedSynchroForce := AddCheckboxSetting(doroGui, "ClearRedSynchroForce", "�
 g_settingPages["Settings"].Push(cbClearRedSynchroForce)
 cbClearRedLimit := AddCheckboxSetting(doroGui, "ClearRedLimit", "自动突破/强化妮姬", "R1 xs+15")
 g_settingPages["Settings"].Push(cbClearRedLimit)
+cbClearRedCube := AddCheckboxSetting(doroGui, "ClearRedCube", "自动升级魔方", "R1 xs+15")
+g_settingPages["Settings"].Push(cbClearRedCube)
 cbClearRedNotice := AddCheckboxSetting(doroGui, "ClearRedNotice", "清除公告红点", "R1 xs+15")
 g_settingPages["Settings"].Push(cbClearRedNotice)
 cbClearRedWallpaper := AddCheckboxSetting(doroGui, "ClearRedWallpaper", "清除壁纸红点", "R1 xs+15")
@@ -5266,10 +5269,58 @@ ClearRed() {
             }
         }
     }
+    ;tag 自动升级魔方
+    if g_settings["ClearRedCube"] {
+        AddLog("自动升级魔方")
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.752 * NikkeW . " ", NikkeY + 0.626 * NikkeH . " ", NikkeX + 0.752 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.626 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击进入方舟")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.478 * NikkeW . " ", NikkeY + 0.106 * NikkeH . " ", NikkeX + 0.478 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.106 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击进入迷失地区")
+                Sleep 1000
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.903 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.903 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击调和魔方")
+                    Sleep 1000
+                    FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    loop {
+                        UserMove(1920, 598, TrueRatio)
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.339 * NikkeW . " ", NikkeY + 0.231 * NikkeH . " ", NikkeX + 0.339 * NikkeW + 0.322 * NikkeW . " ", NikkeY + 0.231 * NikkeH + 0.683 * NikkeH . " ", 0.23 * PicTolerance, 0.23 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("点击可升级魔方")
+                            FindText().Click(X, Y, "L")
+                            Sleep 1000
+                            if (ok := FindText(&X, &Y, NikkeX + 0.551 * NikkeW . " ", NikkeY + 0.839 * NikkeH . " ", NikkeX + 0.551 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.839 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                                AddLog("点击强化魔方")
+                                FindText().Click(X, Y, "L")
+                                Sleep 1000
+                                if (ok := FindText(&X, &Y, NikkeX + 0.602 * NikkeW . " ", NikkeY + 0.759 * NikkeH . " ", NikkeX + 0.602 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.759 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                                    AddLog("点击强化")
+                                    FindText().Click(X, Y, "L")
+                                    Sleep 500
+                                    loop 10 {
+                                        UserClick(1910, 2066, TrueRatio)
+                                        GoBack
+                                    }
+                                }
+                            }
+                        }
+                        else Send "{WheelDown 13}"
+                        if A_Index > 5 {
+                            AddLog("所有魔方已检查")
+                            break
+                        }
+                    }
+                }
+            }
+        }
+    }
     ;tag 清除公告红点
     if g_settings["ClearRedNotice"] {
         AddLog("清除公告红点")
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.933 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.933 * NikkeW + 0.009 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.933 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.933 * NikkeW + 0.009 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             Sleep 3000
             FindText().Click(X, Y, "L")
             Sleep 1000

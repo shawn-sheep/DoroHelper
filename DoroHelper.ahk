@@ -2344,16 +2344,17 @@ MsgSponsor(*) {
     global guiTier, guiDuration, guiSponsor, guiPriceText
     guiSponsor := Gui("+Resize", "赞助")
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
-    guiSponsor.Add("Text", "w400 Wrap", "当前任作者牢 H 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    guiSponsor.Add("Text", "w400 Wrap", "现在 DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
     guiSponsor.Add("Text", "xm w400 Wrap", "赞助信息与当前设备绑定。需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
     LV := guiSponsor.Add("ListView", "w400 h200", ["　　　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
     LV.Add(, "每月（30天）价格", "免费", "6元", "18元", "30元")
     LV.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
     LV.Add(, "移除广告和赞助提示", "", "✅️", "✅️", "✅️")
     LV.Add(, "活动结束提醒", "", "✅️", "✅️", "✅️")
-    LV.Add(, "轮换活动", "", "", "✅️", "✅️", "✅️")
-    LV.Add(, "路径和定时启动", "", "", "", "✅️", "✅️")
-    LV.Add(, "自动推图", "", "", "", "✅️", "✅️")
+    LV.Add(, "轮换活动", "", "", "✅️", "✅️")
+    LV.Add(, "路径和定时启动", "", "", "", "✅️")
+    LV.Add(, "自动推图", "", "", "", "✅️")
+    LV.Add(, "其他最新功能", "", "", "", "✅️")
     if (scriptExtension = "ahk") {
         picUrl1 := "img\weixin.png"
         picUrl2 := "img\alipay.png"
@@ -2463,7 +2464,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     ; 步骤5：复制到剪切板
     A_Clipboard := jsonString
     ; 给出提示
-    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我。`n可以加入DoroHelper反馈群(584275905)并私信我`n也可以发我的 qq 邮箱(1204244136@qq.com)或海外邮箱(zhi.11@foxmail.com)`n（只选一个即可，邮箱标题建议注明X个月的XDoro，正文再复制赞助信息）`n24 小时内我会进行登记并通知，之后重启软件并勾选用户组的「自动检查」即可")
+    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我。`n可以加入DoroHelper反馈群(584275905)并私信我`n也可以发我的 qq 邮箱(1204244136@qq.com)或海外邮箱(zhi.11@foxmail.com)`n（只选一个即可，邮箱标题建议注明几个月的金/银/铜oro，正文再复制赞助信息）`n24 小时内我会进行登记并通知，之后重启软件并勾选用户组的「自动检查」即可")
 }
 ;tag 帮助
 ClickOnHelp(*) {

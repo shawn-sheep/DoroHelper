@@ -2199,7 +2199,7 @@ CheckUserGroup() {
         return
     }
     ; 3. 从网络获取用户组数据
-    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV2.json"
+    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
     jsonContent := DownloadUrlContent(jsonUrl)
     if (jsonContent = "") {
         AddLog("无法获取用户组信息，请检查网络后尝试重启程序")
@@ -2219,43 +2219,52 @@ CheckUserGroup() {
     ; 5. 校验用户组成员资格
     CurrentDate := A_YYYY A_MM A_DD
     isMember := false
-    ; 为每一块硬盘生成一个哈希值并进行验证
+    ; 为每一块硬盘生成一个哈希值
     for diskSerial in diskSerials {
         Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
-        if groupData.Has(Hashed) {
-            memberInfo := groupData[Hashed]
-            if IsObject(memberInfo) && memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
-                expiryDate := memberInfo["expiry_date"]
-                if (expiryDate >= CurrentDate) {
-                    UserGroup := memberInfo["tier"]
-                    TextUserGroup.Value := UserGroup
-                    g_numeric_settings["UserGroup"] := UserGroup
-                    AddLog("验证成功，当前用户组：" UserGroup)
-                    AddLog("有效期至" expiryDate)
-                    ; 设置用户级别和托盘图标的逻辑...
-                    if (UserGroup == "管理员") {
-                        global UserLevel := 10
+        for _, memberInfo in groupData {
+            ; 检查 memberInfo 是否为对象且包含 'hash' 键，并与计算的哈希值匹配
+            if IsObject(memberInfo) && memberInfo.Has("hash") && (memberInfo["hash"] == Hashed) {
+                ; 找到匹配项，继续校验有效期和等级
+                if memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
+                    expiryDate := memberInfo["expiry_date"]
+                    if (expiryDate >= CurrentDate) {
+                        UserGroup := memberInfo["tier"]
+                        TextUserGroup.Value := UserGroup
+                        g_numeric_settings["UserGroup"] := UserGroup
+                        AddLog("验证成功，当前用户组：" UserGroup)
+                        AddLog("有效期至" expiryDate)
+                        ; 设置用户级别和托盘图标的逻辑...
+                        if (UserGroup == "管理员") {
+                            global UserLevel := 10
+                        }
+                        if (UserGroup == "金Doro会员") {
+                            try TraySetIcon("icon\GoldDoro.ico")
+                            global UserLevel := 3
+                        }
+                        if (UserGroup == "银Doro会员") {
+                            try TraySetIcon("icon\SilverDoro.ico")
+                            global UserLevel := 2
+                        }
+                        if (UserGroup == "铜Doro会员") {
+                            try TraySetIcon("icon\CopperDoro.ico")
+                            global UserLevel := 1
+                        }
+                        isMember := true
+                        break ; 找到有效的匹配项，退出内部循环 (groupData loop)
+                    } else {
+                        AddLog("会员已过期 (到期日: " expiryDate ")。已降级为普通用户")
                     }
-                    if (UserGroup == "金Doro会员") {
-                        try TraySetIcon("icon\GoldDoro.ico")
-                        global UserLevel := 3
-                    }
-                    if (UserGroup == "银Doro会员") {
-                        try TraySetIcon("icon\SilverDoro.ico")
-                        global UserLevel := 2
-                    }
-                    if (UserGroup == "铜Doro会员") {
-                        try TraySetIcon("icon\CopperDoro.ico")
-                        global UserLevel := 1
-                    }
-                    isMember := true
-                    break ; 找到匹配项后立即退出循环
                 } else {
-                    AddLog("会员已过期 (到期日: " expiryDate ")。已降级为普通用户")
+                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)")
                 }
-            } else {
-                AddLog("警告: 在JSON中找到设备ID，但会员信息不完整")
             }
+            if (isMember) {
+                break ; 找到有效的匹配项，退出内部循环 (groupData loop)
+            }
+        }
+        if (isMember) {
+            break ; 找到有效的匹配项，退出外部循环 (diskSerials loop)
         }
     }
     if (!isMember) {
@@ -2458,7 +2467,8 @@ CalculateSponsorInfo(thisGuiButton, info) {
     ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
     jsonString := UserStatus "`n"
     jsonString .= "(将这段文字替换成你的付款截图)`n"
-    jsonString .= "  `"" Hashed "`": {" . "`n"
+    jsonString .= "  {" . "`n"
+    jsonString .= "    `"hash`": `"" Hashed "`"," . "`n"
     jsonString .= "    `"tier`": `"" tierSelected "`"," . "`n"
     jsonString .= "    `"expiry_date`": `"" SubStr(expiryDate, 1, 8) "`"" . "`n"
     jsonString .= "  },"

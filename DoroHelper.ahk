@@ -15,7 +15,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.7.2"
+currentVersion := "v1.7.3"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -724,6 +724,8 @@ DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["Int
 doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用你的编队1去挑战克拉肯")
 DropDownListBoss.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBoss"] := Ctrl.Value)
 g_settingPages["Interception"].Push(DropDownListBoss)
+SetInterceptionNormalTitle := doroGui.Add("Text", "R1", "===基础选项===")
+g_settingPages["Interception"].Push(SetInterceptionNormalTitle)
 SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionScreenshot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
 g_settingPages["Interception"].Push(SetInterceptionScreenshot)

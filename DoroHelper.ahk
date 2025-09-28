@@ -1190,6 +1190,7 @@ Initialization() {
     global NikkeY
     global NikkeW
     global NikkeH
+    LogBox.SetText()
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {
         global winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID

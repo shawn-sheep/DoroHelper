@@ -125,6 +125,7 @@ global g_settings := Map(
     "ClearRedCube", 0,           ;自动升级魔方
     "ClearRedSynchroForce", 0,   ;开箱子
     "ClearRedLimit", 0,          ;自动突破妮姬
+    "ClearRedProfile", 0,        ;清除个人页红点
     ;启动/退出相关
     "CloseAdvertisement", 0,     ;关闭启动提示
     "CloseNoticeSponsor", 0,     ;关闭赞助提示
@@ -246,6 +247,7 @@ FindText().PicLib("|<黄色的小时>FFC700-0.90$135.0000Dz00000000000000zk00001
 FindText().PicLib("|<公告的图标>*150$44.zzzszzzzzzw7zzzzzy1zzzzzzUDzzzzzs3zzzzzs0Tzzzzs01zzzzs007zzzw000Tzzy0003zzz0000TzzU0003zzs0000zzw00007zy00001zzU0000Dzs00003zw00000zz00000Dzk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zw00000Tz000007zk00001zs00000Dw000001y000000D0000001U000000000000000000000UsM3VokTzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzw01zzzzz00zzzzzs0Tzzzzz0Dzzzzzw7zzy", 1)
 FindText().PicLib("|<黄色的遗失物品的图标>FF9900-0.80$78.zzzzzzzzzzzzzzzzzzzzzzzzzzTzzzzzzzzzzzzTzzzzzzzzzzzyDzzzzzzzzzzzyDzzzzzzzzzzzw7zzzw0Tzzzzzs3zzzk03zzzzzs3zzzU01zzzzzk1zzz000zzzzzk1zzy000TzzzzU0zzw0z0TzzzzU0zzw3zkDzzzz00Tzw7zsDzzzy00Dzs7zw7zzzy00DzsDzw7zzzy007zsDzw7zzzw007zsDzw7zzzs003zsDzw7zzzs001zsDzw7zzzk001zsDzw7zzzk000zs7zw7zzzU000zw7zsDzzz0000Tw3zkDzzz0000Dy1zUTzzy0000Dy000Dzzy00007z0007zzw00007zU003zzs00003zs041zzs00001zw0S0zzk00001zzzz0Tzk00000zzzzUDzU00000zzzzk7z000000Tzzzs3z000000Tzzzw1y000000Dzzzy3y0000007zzzz3w0000007zzzzbs0000003zzzzzs0000003zzzzzk0000001zzzzzk0000000zzzzzU0000000zzzzzU0000000zzzzz00000000Tzzzy00000000Dzzzy00000000Dzzzw000000007zzzw000000007zzzs000000003zzzk000000001zzzk000000001s07U000000000k03U000000000s030000000000M020000000000A060000000000A0A000000000060A000000000060M000000000030E000000000010k00000000001UU00000000000VU00000000000l000000000000S000000000000S000000000000A0000000000004000000U", 1)
 FindText().PicLib("|<抽卡·确认>*200$87.zzzyDzzzzzzy7zzzzzVzzzzDzzkzzk03wDzzzkTzy7zw00D1zzzy1zzkzzU03s00zzs7zy7zw00S007zzUTzkzzz3zk00zzy1zy7zzsTw7sDzzsDzkzzy3z1z1zzzXzy7zzkzsTkTzzyzzkzzy7y3w7zzzzzy7zzkzU000Tzzzzkzzw7s0003zzzzy7zzVy0000TzzzzkzzwDk0003s07zy7zzVy0T3wT00zzUzzs033sTXs07zw7zz00sT3wTU0zzUzzk073sT3zy7zw3zy00s000TzkzzUTzUT70003zy7zw3zw3ss000TzkzzUTz0T71kT3zy7zs1zs3ssT3wTzkzz0DzUT73sTXzy7zs1zw3ssT3wTzkzz07zwT73sT3zy7zkEzzXss000Tzkzy23zwT70003zy7zksTzXsk000Tzksw71zwT60003zy67VwDzVkkz3wTzk0sDUzw067sTXzy061y7zU0Uz3wTzk3kTkTw047sTXzw0w7z1zU01z3wTzUT0zs7wTsDsTXzs7kDzUTXy3z20Dz1w3zy1wTkTsE3zwz0zzs7ry7z20TzzsDzzVzztzzk7zzznzzyQ", 1)
+FindText().PicLib("|<全部领取的图标>*200$48.zzzzzk1zzyTzzk1zzwTzzk1zzsDzzk1zzs7zzk1zzk7zzk1zzU3zzk1zzU1zzk1zz01zzk1zy00zzk1zy00Tzk1zw00Tzk1zs00Dzk1zs007zk1zk007zk1zU003zk1zU001zk1z0001zk1zzU3zzk1zzU3zzk1zzU3zzk1zzU3zzk1zzU3zzk1zzU3zzk1zzU3zU000zU3zU001zU3zk001zU3zs003zU3zs007zU3zw007zU3zy00DzU3zy00TzU3zz00TzU3zzU0zzU3zzU1zzU3zzk1zzU3zzs3zzU3zzs7zzU3zzw7zzU3zzyDzzU3zzyTzzU3zzzzzU", 1)
 ;tag 商店
 ;tag 付费商店
 FindText().PicLib("|<付费商店的图标>7EBBED-0.80$24.0UVU1VkU13sE27s807w44Dy68Tz2EzzVlzzkVzzk3zzs7zzwDzzyDzzyTzzwDzzw7zzs3zzk3zzkVzzVEzz2MTy48DyA4Dw827sE13kU1VkU0UV0U", 1)
@@ -844,6 +846,8 @@ cbClearRedNotice := AddCheckboxSetting(doroGui, "ClearRedNotice", "清除公告�
 g_settingPages["Settings"].Push(cbClearRedNotice)
 cbClearRedWallpaper := AddCheckboxSetting(doroGui, "ClearRedWallpaper", "清除壁纸红点", "R1 xs+15")
 g_settingPages["Settings"].Push(cbClearRedWallpaper)
+cbClearRedProfile := AddCheckboxSetting(doroGui, "ClearRedProfile", "清除个人页红点", "R1 xs+15")
+g_settingPages["Settings"].Push(cbClearRedProfile)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "R1 xs")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 g_settingPages["Settings"].Push(cbOpenBlablalink)
@@ -5404,6 +5408,56 @@ ClearRed() {
             }
         }
         else AddLog("未发现壁纸红点")
+    }
+    ;tag 清除个人页红点
+    if g_settings["ClearRedProfile"] {
+        AddLog("清除个人页红点")
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) or (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击左上角的个人头像")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.418 * NikkeW . " ", NikkeY + 0.202 * NikkeH . " ", NikkeX + 0.418 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.202 * NikkeH + 0.039 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击头像&边框")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                AddLog("点击头像")
+                UserClick(1682, 292, TrueRatio)
+                Sleep 1000
+                AddLog("点击边框")
+                UserClick(2152, 326, TrueRatio)
+                Sleep 1000
+                Send "{Esc}"
+                Sleep 1000
+            }
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.556 * NikkeW . " ", NikkeY + 0.217 * NikkeH . " ", NikkeX + 0.556 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.217 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) or (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.556 * NikkeW . " ", NikkeY + 0.217 * NikkeH . " ", NikkeX + 0.556 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.217 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击称号")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.535 * NikkeW . " ", NikkeY + 0.802 * NikkeH . " ", NikkeX + 0.535 * NikkeW + 0.102 * NikkeW . " ", NikkeY + 0.802 * NikkeH + 0.057 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("全部领取的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击全部领取")
+                    FindText().Click(X, Y, "L")
+                    Sleep 3000
+                    Confirm
+                    Sleep 1000
+                }
+                Send "{Esc}"
+                Sleep 1000
+            }
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.629 * NikkeW . " ", NikkeY + 0.159 * NikkeH . " ", NikkeX + 0.629 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.159 * NikkeH + 0.036 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击个人简介装饰")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                AddLog("点击背景")
+                UserClick(1634, 942, TrueRatio)
+                Sleep 1000
+                AddLog("点击贴纸")
+                UserClick(2252, 932, TrueRatio)
+                Sleep 1000
+                Send "{Esc}"
+                Sleep 1000
+            }
+        }
+        else AddLog("未发现个人页红点")
     }
 }
 ;endregion 清除红点

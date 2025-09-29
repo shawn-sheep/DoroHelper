@@ -5053,10 +5053,10 @@ EventLarge() {
             if (ok := FindText(&X, &Y, NikkeX + 0.956 * NikkeW . " ", NikkeY + 0.170 * NikkeH . " ", NikkeX + 0.956 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.170 * NikkeH + 0.089 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·任务"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y - 50 * TrueRatio, "L")
                 Sleep 1000
-            }
-            while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
-                UserClick(2412, 1905, TrueRatio)
-                Sleep 1000
+                while !(ok := FindText(&X, &Y, NikkeX + 0.548 * NikkeW . " ", NikkeY + 0.864 * NikkeH . " ", NikkeX + 0.548 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.864 * NikkeH + 0.063 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
+                    UserClick(2412, 1905, TrueRatio)
+                    Sleep 1000
+                }
             }
             while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.29 * PicTolerance, 0.29 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
                 AddLog("尝试返回活动主页面")

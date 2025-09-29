@@ -1079,7 +1079,27 @@ ClickOnDoro(*) {
             MsgBox("当前用户组不支持清除红点，请点击赞助按钮升级会员组")
             Pause
         }
-        ClearRed()
+        if g_settings["ClearRedRecycling"] {
+            ClearRedRecycling() ; 自动升级循环室
+        }
+        if g_settings["ClearRedSynchro"] {
+            ClearRedSynchro() ; 自动升级同步器
+        }
+        if g_settings["ClearRedLimit"] {
+            ClearRedLimit() ; 自动突破妮姬 (限界突破/核心强化)
+        }
+        if g_settings["ClearRedCube"] {
+            ClearRedCube() ; 自动升级魔方
+        }
+        if g_settings["ClearRedNotice"] {
+            ClearRedNotice()   ; 清除公告红点
+        }
+        if g_settings["ClearRedWallpaper"] {
+            ClearRedWallpaper()  ; 清除壁纸红点
+        }
+        if g_settings["ClearRedProfile"] {
+            ClearRedProfile() ; 清除个人页红点
+        }
         BackToHall
     }
     if g_settings["LoopMode"] {
@@ -5085,380 +5105,393 @@ EventSpecial() {
 }
 ;endregion 特殊活动
 ;region 清除红点
-ClearRed() {
-    ;tag 自动升级循环室
-    if g_settings["ClearRedRecycling"] {
-        AddLog("自动升级循环室")
+;tag 自动升级循环室
+ClearRedRecycling() {
+    AddLog("自动升级循环室")
+    if (ok := FindText(&X, &Y, NikkeX + 0.344 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.344 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击进入前哨基地")
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.582 * NikkeW . " ", NikkeY + 0.805 * NikkeH . " ", NikkeX + 0.582 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.805 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            Sleep 1000
+            AddLog("点击进入循环室")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.612 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.612 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.020 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击进入")
+                FindText().Click(X, Y, "L")
+                Sleep 3000
+                Send "{WheelUp 2}"
+                while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.333 * NikkeW . " ", NikkeY + 0.040 * NikkeH . " ", NikkeX + 0.333 * NikkeW + 0.354 * NikkeW . " ", NikkeY + 0.040 * NikkeH + 0.865 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击类型研究/通用研究")
+                    FindText().Click(X, Y + 200 * TrueRatio, "L")
+                    Sleep 1000
+                    loop {
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.397 * NikkeW . " ", NikkeY + 0.767 * NikkeH . " ", NikkeX + 0.397 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.767 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("自动选择的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("点击自动选择")
+                            FindText().Click(X, Y, "L")
+                            Sleep 500
+                        }
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.489 * NikkeW . " ", NikkeY + 0.764 * NikkeH . " ", NikkeX + 0.489 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.764 * NikkeH + 0.071 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("循环室·升级"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("点击升级")
+                            FindText().Click(X, Y, "L")
+                            Sleep 500
+                            Confirm()
+                            Sleep 500
+                            Confirm()
+                        }
+                        else {
+                            Confirm()
+                            break
+                        }
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.573 * NikkeW . " ", NikkeY + 0.684 * NikkeH . " ", NikkeX + 0.573 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.684 * NikkeH + 0.044 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("点击MAX")
+                            FindText().Click(X, Y, "L")
+                            Sleep 500
+                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.423 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.423 * NikkeW + 0.157 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("循环室·升级"), , , , , , , TrueRatio, TrueRatio)) {
+                                AddLog("点击升级")
+                                FindText().Click(X, Y, "L")
+                                Sleep 2000
+                                Confirm()
+                                Sleep 500
+                                Confirm()
+                                break
+                            }
+                        }
+                    }
+                }
+                BackToHall()
+            }
+        }
+        else AddLog("未发现循环室红点")
+    }
+    else AddLog("未发现前哨基地红点")
+}
+;tag 自动升级同步器
+ClearRedSynchro() {
+    AddLog("自动升级同步器")
+    if g_settings["ClearRedSynchroForce"] {
+        while (FindText(&X := "wait", &Y := 1, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击进入前哨基地")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+        }
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.408 * NikkeW . " ", NikkeY + 0.806 * NikkeH . " ", NikkeX + 0.408 * NikkeW + 0.046 * NikkeW . " ", NikkeY + 0.806 * NikkeH + 0.096 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前哨基地·同步器"), , , , , , , TrueRatio, TrueRatio)) {
+            Sleep 1000
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.084 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前哨基地·进入的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                loop {
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.201 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.201 * NikkeH + 0.045 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·增强"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击增强")
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                    }
+                    if (ok := FindText(&X, &Y, NikkeX + 0.599 * NikkeW . " ", NikkeY + 0.604 * NikkeH . " ", NikkeX + 0.599 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.604 * NikkeH + 0.034 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·消耗道具使用的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                    }
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.416 * NikkeW . " ", NikkeY + 0.798 * NikkeH . " ", NikkeX + 0.416 * NikkeW + 0.091 * NikkeW . " ", NikkeY + 0.798 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("自动选择的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击自动选择")
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                    }
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.798 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.112 * NikkeW . " ", NikkeY + 0.798 * NikkeH + 0.068 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·开始增强"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击开始增强")
+                        FindText().Click(X, Y, "L")
+                        Sleep 3000
+                        while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.201 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.201 * NikkeH + 0.045 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·增强"), , , , , , , TrueRatio, TrueRatio)) {
+                            Confirm()
+                        }
+                    }
+                    else {
+                        AddLog("资源不足")
+                        break
+                    }
+                }
+                BackToHall()
+            }
+        }
+    }
+    if !g_settings["ClearRedSynchroForce"] {
         if (ok := FindText(&X, &Y, NikkeX + 0.344 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.344 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("点击进入前哨基地")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.582 * NikkeW . " ", NikkeY + 0.805 * NikkeH . " ", NikkeX + 0.582 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.805 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.804 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.804 * NikkeH + 0.025 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                 Sleep 1000
-                AddLog("点击进入循环室")
+                AddLog("点击进入同步器")
                 FindText().Click(X, Y, "L")
                 Sleep 1000
                 if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.612 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.612 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.020 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                     AddLog("点击进入")
                     FindText().Click(X, Y, "L")
-                    Sleep 3000
-                    Send "{WheelUp 2}"
-                    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.333 * NikkeW . " ", NikkeY + 0.040 * NikkeH . " ", NikkeX + 0.333 * NikkeW + 0.354 * NikkeW . " ", NikkeY + 0.040 * NikkeH + 0.865 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                        AddLog("点击类型研究/通用研究")
-                        FindText().Click(X, Y + 200 * TrueRatio, "L")
-                        Sleep 1000
-                        loop {
-                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.397 * NikkeW . " ", NikkeY + 0.767 * NikkeH . " ", NikkeX + 0.397 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.767 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("自动选择的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("点击自动选择")
-                                FindText().Click(X, Y, "L")
-                                Sleep 500
-                            }
-                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.489 * NikkeW . " ", NikkeY + 0.764 * NikkeH . " ", NikkeX + 0.489 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.764 * NikkeH + 0.071 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("循环室·升级"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("点击升级")
-                                FindText().Click(X, Y, "L")
-                                Sleep 500
-                                Confirm
-                                Sleep 500
-                                Confirm
-                            }
-                            else {
-                                Confirm
-                                break
-                            }
-                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.573 * NikkeW . " ", NikkeY + 0.684 * NikkeH . " ", NikkeX + 0.573 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.684 * NikkeH + 0.044 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("点击MAX")
-                                FindText().Click(X, Y, "L")
-                                Sleep 500
-                                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.423 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.423 * NikkeW + 0.157 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("循环室·升级"), , , , , , , TrueRatio, TrueRatio)) {
-                                    AddLog("点击升级")
-                                    FindText().Click(X, Y, "L")
-                                    Sleep 2000
-                                    Confirm
-                                    Sleep 500
-                                    Confirm
-                                    break
-                                }
-                            }
-                        }
-                    }
-                    BackToHall
-                }
-            }
-            else AddLog("未发现循环室红点")
-        }
-        else AddLog("未发现前哨基地红点")
-    }
-    ;tag 自动升级同步器
-    if g_settings["ClearRedSynchro"] {
-        AddLog("自动升级同步器")
-        if g_settings["ClearRedSynchroForce"] {
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击进入前哨基地")
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-            }
-            if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.408 * NikkeW . " ", NikkeY + 0.806 * NikkeH . " ", NikkeX + 0.408 * NikkeW + 0.046 * NikkeW . " ", NikkeY + 0.806 * NikkeH + 0.096 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前哨基地·同步器"), , , , , , , TrueRatio, TrueRatio)) {
-                Sleep 1000
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.084 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前哨基地·进入的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                    Sleep 1000
+                    Sleep 2000
                     loop {
                         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.201 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.201 * NikkeH + 0.045 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·增强"), , , , , , , TrueRatio, TrueRatio)) {
                             AddLog("点击增强")
                             FindText().Click(X, Y, "L")
                             Sleep 1000
-                        }
-                        if (ok := FindText(&X, &Y, NikkeX + 0.599 * NikkeW . " ", NikkeY + 0.604 * NikkeH . " ", NikkeX + 0.599 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.604 * NikkeH + 0.034 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·消耗道具使用的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                            FindText().Click(X, Y, "L")
-                            Sleep 1000
-                        }
-                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.416 * NikkeW . " ", NikkeY + 0.798 * NikkeH . " ", NikkeX + 0.416 * NikkeW + 0.091 * NikkeW . " ", NikkeY + 0.798 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("自动选择的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击自动选择")
-                            FindText().Click(X, Y, "L")
-                            Sleep 1000
-                        }
-                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.798 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.112 * NikkeW . " ", NikkeY + 0.798 * NikkeH + 0.068 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·开始增强"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击开始增强")
-                            FindText().Click(X, Y, "L")
-                            Sleep 3000
-                            while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.201 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.201 * NikkeH + 0.045 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·增强"), , , , , , , TrueRatio, TrueRatio)) {
-                                Confirm
+                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.798 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.112 * NikkeW . " ", NikkeY + 0.798 * NikkeH + 0.068 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·开始增强"), , , , , , , TrueRatio, TrueRatio)) {
+                                AddLog("点击开始增强")
+                                FindText().Click(X, Y, "L")
+                                Sleep 1000
                             }
+                            else
+                                break
                         }
                         else {
-                            AddLog("资源不足")
-                            break
+                            Confirm()
                         }
                     }
                 }
+                else AddLog("未发现同步器进入红点")
             }
+            else AddLog("未发现同步器红点")
+            BackToHall()
         }
-        if !g_settings["ClearRedSynchroForce"] {
-            if (ok := FindText(&X, &Y, NikkeX + 0.344 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.344 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击进入前哨基地")
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.804 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.804 * NikkeH + 0.025 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                    Sleep 1000
-                    AddLog("点击进入同步器")
-                    FindText().Click(X, Y, "L")
-                    Sleep 1000
-                    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.612 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.612 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.020 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                        AddLog("点击进入")
-                        FindText().Click(X, Y, "L")
-                        Sleep 2000
-                        loop {
-                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.477 * NikkeW . " ", NikkeY + 0.201 * NikkeH . " ", NikkeX + 0.477 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.201 * NikkeH + 0.045 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·增强"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("点击增强")
-                                FindText().Click(X, Y, "L")
-                                Sleep 1000
-                                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.798 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.112 * NikkeW . " ", NikkeY + 0.798 * NikkeH + 0.068 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("同步器·开始增强"), , , , , , , TrueRatio, TrueRatio)) {
-                                    AddLog("点击开始增强")
-                                    FindText().Click(X, Y, "L")
-                                    Sleep 1000
-                                }
-                                else break
-                            }
-                            else {
-                                Confirm
-                            }
-                        }
-                    }
-                }
-                else AddLog("未发现同步器红点")
-            }
-            else AddLog("未发现前哨基地红点")
-        }
+        else AddLog("未发现前哨基地红点")
     }
-    ;tag 自动突破妮姬
-    if g_settings["ClearRedLimit"] {
-        BackToHall
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.395 * NikkeW . " ", NikkeY + 0.883 * NikkeH . " ", NikkeX + 0.395 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.883 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击进入妮姬")
+}
+;tag 自动突破妮姬
+ClearRedLimit() {
+    AddLog("自动突破妮姬")
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.395 * NikkeW . " ", NikkeY + 0.883 * NikkeH . " ", NikkeX + 0.395 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.883 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击进入妮姬")
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.513 * NikkeW . " ", NikkeY + 0.191 * NikkeH . " ", NikkeX + 0.513 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.191 * NikkeH + 0.022 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·筛选红点"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击筛选红点")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.513 * NikkeW . " ", NikkeY + 0.191 * NikkeH . " ", NikkeX + 0.513 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.191 * NikkeH + 0.022 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·筛选红点"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击筛选红点")
+            while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.099 * NikkeW . " ", NikkeY + 0.284 * NikkeH . " ", NikkeX + 0.099 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.284 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击带有红点的妮姬")
                 FindText().Click(X, Y, "L")
-                Sleep 1000
-                while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.099 * NikkeW . " ", NikkeY + 0.284 * NikkeH . " ", NikkeX + 0.099 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.284 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                    AddLog("点击带有红点的妮姬")
+                Sleep 2000
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.960 * NikkeW . " ", NikkeY + 0.487 * NikkeH . " ", NikkeX + 0.960 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.487 * NikkeH + 0.012 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("妮姬·极限突破的红色红点"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("点击极限突破/核心强化的红点")
                     FindText().Click(X, Y, "L")
-                    Sleep 2000
-                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.960 * NikkeW . " ", NikkeY + 0.487 * NikkeH . " ", NikkeX + 0.960 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.487 * NikkeH + 0.012 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("妮姬·极限突破的红色红点"), , , , , , , TrueRatio, TrueRatio)) {
-                        AddLog("点击极限突破/核心强化的红点")
+                    Sleep 1000
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.416 * NikkeW . " ", NikkeY + 0.822 * NikkeH . " ", NikkeX + 0.416 * NikkeW + 0.171 * NikkeW . " ", NikkeY + 0.822 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·极限突破"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击极限突破")
                         FindText().Click(X, Y, "L")
                         Sleep 1000
-                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.416 * NikkeW . " ", NikkeY + 0.822 * NikkeH . " ", NikkeX + 0.416 * NikkeW + 0.171 * NikkeW . " ", NikkeY + 0.822 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·极限突破"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击极限突破")
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("确认突破")
                             FindText().Click(X, Y, "L")
                             Sleep 1000
-                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("确认")
-                                FindText().Click(X, Y, "L")
-                                Sleep 1000
-                            }
-                        }
-                        if (ok := FindText(&X, &Y, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.683 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.683 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击MAX")
-                            FindText().Click(X, Y, "L")
-                            Sleep 500
-                        }
-                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.371 * NikkeW . " ", NikkeY + 0.785 * NikkeH . " ", NikkeX + 0.371 * NikkeW + 0.257 * NikkeW . " ", NikkeY + 0.785 * NikkeH + 0.076 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·核心强化"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击核心强化")
-                            FindText().Click(X, Y, "L")
-                            Sleep 1000
-                            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("确认")
-                                FindText().Click(X, Y, "L")
-                                Sleep 1000
-                            }
                         }
                     }
-                    loop 3 {
-                        Confirm
+                    if (ok := FindText(&X, &Y, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.683 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.683 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击MAX")
+                        FindText().Click(X, Y, "L")
+                        Sleep 500
+                    }
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.371 * NikkeW . " ", NikkeY + 0.785 * NikkeH . " ", NikkeX + 0.371 * NikkeW + 0.257 * NikkeW . " ", NikkeY + 0.785 * NikkeH + 0.076 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·核心强化"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击核心强化")
+                        FindText().Click(X, Y, "L")
                         Sleep 1000
+                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("确认核心强化")
+                            FindText().Click(X, Y, "L")
+                            Sleep 1000
+                        }
                     }
-                    GoBack
                 }
-                UserClick(1898, 2006, TrueRatio)
+                loop 3 {
+                    Confirm()
+                    Sleep 1000
+                }
+                GoBack()
             }
+            UserClick(1898, 2006, TrueRatio)
         }
+        BackToHall()
     }
-    ;tag 自动升级魔方
-    if g_settings["ClearRedCube"] {
-        AddLog("自动升级魔方")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.752 * NikkeW . " ", NikkeY + 0.626 * NikkeH . " ", NikkeX + 0.752 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.626 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击进入方舟")
+    else AddLog("未发现妮姬菜单红点")
+}
+;tag 自动升级魔方
+ClearRedCube() {
+    AddLog("自动升级魔方")
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.752 * NikkeW . " ", NikkeY + 0.626 * NikkeH . " ", NikkeX + 0.752 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.626 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击进入方舟")
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.478 * NikkeW . " ", NikkeY + 0.106 * NikkeH . " ", NikkeX + 0.478 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.106 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击进入迷失地区")
+            Sleep 1000
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.478 * NikkeW . " ", NikkeY + 0.106 * NikkeH . " ", NikkeX + 0.478 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.106 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击进入迷失地区")
+            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.903 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.903 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击调和魔方")
                 Sleep 1000
                 FindText().Click(X, Y, "L")
                 Sleep 1000
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.903 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.903 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                    AddLog("点击调和魔方")
-                    Sleep 1000
-                    FindText().Click(X, Y, "L")
-                    Sleep 1000
-                    loop {
-                        UserMove(1920, 598, TrueRatio)
-                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.339 * NikkeW . " ", NikkeY + 0.231 * NikkeH . " ", NikkeX + 0.339 * NikkeW + 0.322 * NikkeW . " ", NikkeY + 0.231 * NikkeH + 0.683 * NikkeH . " ", 0.23 * PicTolerance, 0.23 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击可升级魔方")
+                loop {
+                    UserMove(1920, 598, TrueRatio) ; 将鼠标移到魔方列表区域，准备滚动或点击
+                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.339 * NikkeW . " ", NikkeY + 0.231 * NikkeH . " ", NikkeX + 0.339 * NikkeW + 0.322 * NikkeW . " ", NikkeY + 0.231 * NikkeH + 0.683 * NikkeH . " ", 0.23 * PicTolerance, 0.23 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                        AddLog("点击可升级魔方")
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                        if (ok := FindText(&X, &Y, NikkeX + 0.551 * NikkeW . " ", NikkeY + 0.839 * NikkeH . " ", NikkeX + 0.551 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.839 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                            AddLog("点击强化魔方")
                             FindText().Click(X, Y, "L")
                             Sleep 1000
-                            if (ok := FindText(&X, &Y, NikkeX + 0.551 * NikkeW . " ", NikkeY + 0.839 * NikkeH . " ", NikkeX + 0.551 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.839 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                                AddLog("点击强化魔方")
+                            if (ok := FindText(&X, &Y, NikkeX + 0.602 * NikkeW . " ", NikkeY + 0.759 * NikkeH . " ", NikkeX + 0.602 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.759 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                                AddLog("点击强化")
                                 FindText().Click(X, Y, "L")
-                                Sleep 1000
-                                if (ok := FindText(&X, &Y, NikkeX + 0.602 * NikkeW . " ", NikkeY + 0.759 * NikkeH . " ", NikkeX + 0.602 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.759 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                                    AddLog("点击强化")
-                                    FindText().Click(X, Y, "L")
-                                    Sleep 500
-                                    loop 10 {
-                                        UserClick(1910, 2066, TrueRatio)
-                                        GoBack
-                                    }
+                                Sleep 500
+                                ; 清除强化后的确认/动画
+                                loop 10 {
+                                    UserClick(1910, 2066, TrueRatio)
+                                    GoBack()
                                 }
                             }
                         }
-                        else Send "{WheelDown 13}"
-                        if A_Index > 5 {
-                            AddLog("所有魔方已检查")
-                            break
-                        }
+                    }
+                    ; 未发现红点，尝试滚动
+                    else {
+                        Send "{WheelDown 13}"
+                    }
+                    if A_Index > 5 {
+                        AddLog("所有魔方已检查")
+                        break
                     }
                 }
+                BackToHall()
             }
         }
     }
-    ;tag 清除公告红点
-    if g_settings["ClearRedNotice"] {
-        AddLog("清除公告红点")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.933 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.933 * NikkeW + 0.009 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-            Sleep 3000
+    else AddLog("未发现方舟红点")
+}
+;tag 清除公告红点
+ClearRedNotice() {
+    AddLog("清除公告红点")
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.933 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.933 * NikkeW + 0.009 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        Sleep 3000
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.490 * NikkeW . " ", NikkeY + 0.128 * NikkeH . " ", NikkeX + 0.490 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.128 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            if A_Index = 1 {
+                AddLog("清除活动公告红点")
+                FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
+                Sleep 1000
+                UserMove(1380, 462, TrueRatio) ; 将鼠标移动到活动栏区域
+            }
+            AddLog("查找红点")
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.620 * NikkeW . " ", NikkeY + 0.189 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.189 * NikkeH + 0.677 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 2000
+                Confirm()
+                Sleep 1000
+                UserMove(1380, 462, TrueRatio)
+            }
+            AddLog("尝试滚动活动栏")
+            Send "{WheelDown 33}"
+            Sleep 500
+        }
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.141 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.141 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            if A_Index = 1 {
+                AddLog("清除系统公告红点")
+                FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
+                Sleep 1000
+                UserMove(1380, 462, TrueRatio) ; 将鼠标移动到活动栏区域
+            }
+            AddLog("查找红点")
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.188 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.188 * NikkeH + 0.694 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 2000
+                Confirm()
+                Sleep 1000
+                UserMove(1380, 462, TrueRatio)
+            }
+            AddLog("尝试滚动活动栏")
+            Send "{WheelDown 33}"
+            Sleep 500
+        }
+        AddLog("公告红点已清除")
+        BackToHall()
+    }
+    else AddLog("未发现公告红点")
+}
+;tag 清除壁纸红点
+ClearRedWallpaper() {
+    AddLog("清除壁纸红点")
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.980 * NikkeW . " ", NikkeY + 0.008 * NikkeH . " ", NikkeX + 0.980 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.008 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击右上角的SUBMENU")
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.590 * NikkeW . " ", NikkeY + 0.441 * NikkeH . " ", NikkeX + 0.590 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.441 * NikkeH + 0.042 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击装饰大厅")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.490 * NikkeW . " ", NikkeY + 0.128 * NikkeH . " ", NikkeX + 0.490 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.128 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                if A_Index = 1 {
-                    AddLog("清除活动公告红点")
-                    FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
-                    Sleep 1000
-                    ;把鼠标移动到活动栏
-                    UserMove(1380, 462, TrueRatio)
-                }
-                AddLog("查找红点")
-                while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.620 * NikkeW . " ", NikkeY + 0.189 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.189 * NikkeH + 0.677 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                    Sleep 2000
-                    Confirm
-                    Sleep 1000
-                    UserMove(1380, 462, TrueRatio)
-                }
-                AddLog("尝试滚动活动栏")
-                Send "{WheelDown 33}"
-                Sleep 500
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.341 * NikkeW . " ", NikkeY + 0.371 * NikkeH . " ", NikkeX + 0.341 * NikkeW + 0.320 * NikkeW . " ", NikkeY + 0.371 * NikkeH + 0.028 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , 0.83 * TrueRatio, 0.83 * TrueRatio)) {
+                AddLog("点击立绘/活动/技能动画/珍藏品")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                UserClick(1434, 856, TrueRatio)
+                Sleep 1000
             }
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.141 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.141 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                if A_Index = 1 {
-                    AddLog("清除系统公告红点")
-                    FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
-                    Sleep 1000
-                    ;把鼠标移动到活动栏
-                    UserMove(1380, 462, TrueRatio)
-                }
-                AddLog("查找红点")
-                while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.188 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.188 * NikkeH + 0.694 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y, "L")
-                    Sleep 2000
-                    Confirm
-                    Sleep 1000
-                    UserMove(1380, 462, TrueRatio)
-                }
-                AddLog("尝试滚动活动栏")
-                Send "{WheelDown 33}"
-                Sleep 500
-            }
-            AddLog("公告红点已清除")
-            BackToHall
+            GoBack()
         }
-        else AddLog("未发现公告红点")
+        BackToHall()
     }
-    ;tag 清除壁纸红点
-    if g_settings["ClearRedWallpaper"] {
-        AddLog("清除壁纸红点")
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.980 * NikkeW . " ", NikkeY + 0.008 * NikkeH . " ", NikkeX + 0.980 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.008 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击右上角的SUBMENU")
+    else AddLog("未发现壁纸红点")
+}
+;tag 清除个人页红点
+ClearRedProfile() {
+    AddLog("清除个人页红点")
+    if (FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio))
+    || (FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击左上角的个人头像")
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.418 * NikkeW . " ", NikkeY + 0.202 * NikkeH . " ", NikkeX + 0.418 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.202 * NikkeH + 0.039 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击头像&边框")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.590 * NikkeW . " ", NikkeY + 0.441 * NikkeH . " ", NikkeX + 0.590 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.441 * NikkeH + 0.042 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击装饰大厅")
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.341 * NikkeW . " ", NikkeY + 0.371 * NikkeH . " ", NikkeX + 0.341 * NikkeW + 0.320 * NikkeW . " ", NikkeY + 0.371 * NikkeH + 0.028 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , 0.83 * TrueRatio, 0.83 * TrueRatio)) {
-                    AddLog("点击立绘/活动/技能动画/珍藏品")
-                    FindText().Click(X, Y, "L")
-                    Sleep 1000
-                    UserClick(1434, 856, TrueRatio)
-                    Sleep 1000
-                }
-            }
+            AddLog("点击头像")
+            UserClick(1682, 292, TrueRatio)
+            Sleep 1000
+            AddLog("点击边框")
+            UserClick(2152, 326, TrueRatio)
+            Sleep 1000
+            Send "{Esc}"
+            Sleep 1000
         }
-        else AddLog("未发现壁纸红点")
-    }
-    ;tag 清除个人页红点
-    if g_settings["ClearRedProfile"] {
-        AddLog("清除个人页红点")
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) or (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击左上角的个人头像")
+        if (FindText(&X := "wait", &Y := 1, NikkeX + 0.556 * NikkeW . " ", NikkeY + 0.217 * NikkeH . " ", NikkeX + 0.556 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.217 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio))
+        || (FindText(&X := "wait", &Y := 1, NikkeX + 0.556 * NikkeW . " ", NikkeY + 0.217 * NikkeH . " ", NikkeX + 0.556 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.217 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击称号")
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.418 * NikkeW . " ", NikkeY + 0.202 * NikkeH . " ", NikkeX + 0.418 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.202 * NikkeH + 0.039 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击头像&边框")
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.535 * NikkeW . " ", NikkeY + 0.802 * NikkeH . " ", NikkeX + 0.535 * NikkeW + 0.102 * NikkeW . " ", NikkeY + 0.802 * NikkeH + 0.057 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("全部领取的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击全部领取")
                 FindText().Click(X, Y, "L")
-                Sleep 1000
-                AddLog("点击头像")
-                UserClick(1682, 292, TrueRatio)
-                Sleep 1000
-                AddLog("点击边框")
-                UserClick(2152, 326, TrueRatio)
-                Sleep 1000
-                Send "{Esc}"
+                Sleep 3000
+                Confirm()
                 Sleep 1000
             }
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.556 * NikkeW . " ", NikkeY + 0.217 * NikkeH . " ", NikkeX + 0.556 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.217 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) or (ok1 := FindText(&X := "wait", &Y := 1, NikkeX + 0.556 * NikkeW . " ", NikkeY + 0.217 * NikkeH . " ", NikkeX + 0.556 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.217 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击称号")
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.535 * NikkeW . " ", NikkeY + 0.802 * NikkeH . " ", NikkeX + 0.535 * NikkeW + 0.102 * NikkeW . " ", NikkeY + 0.802 * NikkeH + 0.057 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("全部领取的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                    AddLog("点击全部领取")
-                    FindText().Click(X, Y, "L")
-                    Sleep 3000
-                    Confirm
-                    Sleep 1000
-                }
-                Send "{Esc}"
-                Sleep 1000
-            }
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.629 * NikkeW . " ", NikkeY + 0.159 * NikkeH . " ", NikkeX + 0.629 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.159 * NikkeH + 0.036 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("点击个人简介装饰")
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                AddLog("点击背景")
-                UserClick(1634, 942, TrueRatio)
-                Sleep 1000
-                AddLog("点击贴纸")
-                UserClick(2252, 932, TrueRatio)
-                Sleep 1000
-                Send "{Esc}"
-                Sleep 1000
-            }
+            Send "{Esc}"
+            Sleep 1000
         }
-        else AddLog("未发现个人页红点")
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.629 * NikkeW . " ", NikkeY + 0.159 * NikkeH . " ", NikkeX + 0.629 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.159 * NikkeH + 0.036 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("点击个人简介装饰")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            AddLog("点击背景")
+            UserClick(1634, 942, TrueRatio)
+            Sleep 1000
+            AddLog("点击贴纸")
+            UserClick(2252, 932, TrueRatio)
+            Sleep 1000
+            Send "{Esc}"
+            Sleep 1000
+        }
+        BackToHall()
     }
+    else AddLog("未发现个人页红点")
 }
 ;endregion 清除红点
 ;region 妙妙工具

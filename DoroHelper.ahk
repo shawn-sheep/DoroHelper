@@ -349,6 +349,7 @@ FindText().PicLib("|<拦截战·快速战斗的图标>*200$50.00zU0Tzzs07w03zzz0
 FindText().PicLib("|<拦截战·红色框的7>B83900-0.90$53.00Tzzzw0001zzzzs0007zzzzs000Dzzzzs000zzzzzk001zzzzzk007zzzzzU00DzzzzzU00zzzzzzU03zzzzzz007zzzzzz00Tzzzzzy00zzy1zzy03zzs1zzw0Dzzk3zzw0Tzzk7zzw1zzzwTzzs3zzzszzzsDzzzlzzzkTzzz3zzzlzzzy7zzzbzzzwDzzzjzzzszzzzzzzzVzzzyTzzz3zzzwzzzy7zzzkzzzwTzzz0zzzszzzy1zzzlzzzs1zzz3zzzk3zzy7zzz03zzzzzzy07zzzzzzs07zzzzzzU07zzzzzz00Dzzzzzw00Dzzzzzs00TzzzzzU00Tzzzzy000Tzzzzw000zzzzzk000zzzzzU001zzzzy0001zzzzw0003zzzzk0003zzzz008", 1)
 ;tag 前哨基地
 FindText().PicLib("|<前哨基地的图标>*100$47.Q0TUw1UCQ0TXk60sA0Dj0M3UC0Dw1UC0C07s60s0707sM3k0707tUD10703y0w3U7U3w3k7U3U3yD0DU3U1yw0DU1U1zk0Dk1k1zU0Dk1k0zk0Dk1k0zk0Dk0s0Tk07s0s0Tk0Ds0s0Tk0zs0w0Ds3vs0w0DsD3s0Q0Dsw3w0S07nk7w0S07jUBw0C07y0ly0C03", 1)
+FindText().PicLib("|<左上角的前哨基地>*150$122.z7zlzzzzVzzUzsTz3zsTzUzsDzzskMTsDw3zkzy7zsDy3zzwA67U0007wDzVzz1z1zk0111s0001z3sMTk0000w08EES0000Tky67w000070204Dy3zUzwDVVX00001k0k07zU00Tz1sM0E0000Q8AkNzs007y06607zzzzz23A6Ty001zU1U01zzzyDkUU03zUzsTs0M00Q03XVw8800Ts007y0600700sMT22007y001zwA01Vk0C67kUU01zU00Tz300MQ03VVw88TkTsDy7zkk4673ksMT2200700001wC1VVk0C67kUU01k0000T3kMMQ03VVw8800Q00007ky64700sMT0200700001w1VU1kwC67k0Vz1z0ks7z0MM0wC3VVw0800T0Q70TU264T00sMT0200700001U1VVzk0C67kzU01k0000s1sMzw03XVwDs00S600AC1y7z33kzsTzy7w7Xz1zbVzVzkkwDw7zzVz3yzUTvxzsDkAA3s1zzsS0zU000zzy00330y0Tzy7UDs000DzzU01kkDkDzzVw3y0003zzw00wCDwDzzsT3zzzzzzzzzzy", 1)
 FindText().PicLib("|<溢出资源的图标>*100$34.zzyzzzzzUzzzzs0zzzy7UzzzVzUzzkTzUzw7zzVzVzzzVsTzzzV3zzzz03zzzs03zzy003zzUk03zsD003y3w003Uzk000Dz0003zw000Tzk001zz0007zw000Tzk001zz0007zw000Tzk001zw8007z3s00Tkzs01wDzs073zzs0ETzzs0Dzzzw3zzzzwzzy", 1)
 FindText().PicLib("|<进行歼灭的歼灭>*200$77.zzzzz7zzzzzzz003zU7w000006006007s00000A008007k00000M00E01zU00000y1zk0zzzzsDzzy7zjVzzzzkTzzsDzz3zzzzUzzzkTzy7zzzz1zzzU0TwDzzzy3zzz00zsTzzzw7zTw01zkzzz3sDw7s03zVzzy7kTsDkw7z3zzsDUzUz1wDw7zzkT0z1y7kE003z1y1y3wDVU007y3w3sDkT3000DsDk7kT066000TUTU71y20Dw1zz1z0C7w00zy7zz3y0SDwE1zwDzzjs0Tzxs3zsTzzzk0zzzsDzkzzzz0UzzzkTzVzzzy30zzzUzz3zzzs71zzy3zy7zzzUS1zzs7zwDzzy0y1zzkTzsTzzs3y0zz1zzkzzz0Dw0zw3zzVzzs0zw0TUDzz3zz03zy060zzy7zk0Dzy063zzwDzk1zzy0CDzzsTzkDzzz0xzzzkzzVzzzznU", 1)
 FindText().PicLib("|<获得奖励的图标>*200$47.zzzsDzzzzzzkTzzzzzzUzzzzzzz1zzzzzzy3zzzzzzw7zzzzzzsDzzzzzzkTzzzzzzUzzzzzzz1zzzzzzy3zzzzzzw7zzzzzzsDzzzzzzkTzzzzzzUzzzzzzz1zzzzzk000Tzzzk000zzzzU003zzzzU00DzzzzU00zzzzz001zzzzz007zzzzz00Dzzzzy00zzy3zy03zy07zy07zw0Dzw0Tzs0Tzw1zzk0zzw3zzU1zzsDzz03zzszzy07zztzzw0Dzzzzzs0Tzzzzzk0zzzzzzU1zzzzzz03zzzzzy07zzzzzw0Dzzzzzs0Tzzzzzk0Tzzzzz000000001000000070000000D0000000z0000007k", 1)
@@ -4252,17 +4253,7 @@ InterceptionAnomaly() {
 ;tag 前哨基地收菜
 AwardOutpost() {
     AddLog("开始任务：前哨基地收菜", "Fuchsia")
-    if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        while (ok := FindText(&X, &Y, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击进入前哨基地")
-            FindText().Click(X, Y, "L")
-            Sleep 1000
-        }
-    }
-    else {
-        AddLog("未找到前哨基地！")
-        return
-    }
+    EnterToOutpost()
     while true {
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
             Sleep 1000
@@ -5127,9 +5118,9 @@ EventSpecial() {
 ;region 清除红点
 ;tag 自动升级循环室
 ClearRedRecycling() {
-    AddLog("自动升级循环室")
+    AddLog("自动升级循环室", "Fuchsia")
     if (ok := FindText(&X, &Y, NikkeX + 0.344 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.344 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击进入前哨基地")
+        AddLog("进入前哨基地")
         FindText().Click(X, Y, "L")
         Sleep 1000
         if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.582 * NikkeW . " ", NikkeY + 0.805 * NikkeH . " ", NikkeX + 0.582 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.805 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5189,18 +5180,16 @@ ClearRedRecycling() {
 }
 ;tag 自动升级同步器
 ClearRedSynchro() {
-    AddLog("自动升级同步器")
+    AddLog("自动升级同步器", "Fuchsia")
     if g_settings["ClearRedSynchroForce"] {
-        while (FindText(&X := "wait", &Y := 1, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击进入前哨基地")
-            FindText().Click(X, Y, "L")
+        EnterToOutpost()
+        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.408 * NikkeW . " ", NikkeY + 0.806 * NikkeH . " ", NikkeX + 0.408 * NikkeW + 0.046 * NikkeW . " ", NikkeY + 0.806 * NikkeH + 0.096 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地·同步器"), , , , , , , TrueRatio, TrueRatio)) {
             Sleep 1000
-        }
-        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.408 * NikkeW . " ", NikkeY + 0.806 * NikkeH . " ", NikkeX + 0.408 * NikkeW + 0.046 * NikkeW . " ", NikkeY + 0.806 * NikkeH + 0.096 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前哨基地·同步器"), , , , , , , TrueRatio, TrueRatio)) {
-            Sleep 1000
+            AddLog("点击同步器")
             FindText().Click(X, Y, "L")
             Sleep 1000
             if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.907 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.907 * NikkeH + 0.084 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前哨基地·进入的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击进入")
                 FindText().Click(X, Y, "L")
                 Sleep 1000
                 loop {
@@ -5231,7 +5220,6 @@ ClearRedSynchro() {
                         break
                     }
                 }
-                BackToHall()
             }
         }
     }
@@ -5270,14 +5258,14 @@ ClearRedSynchro() {
                 else AddLog("未发现同步器进入红点")
             }
             else AddLog("未发现同步器红点")
-            BackToHall()
         }
         else AddLog("未发现前哨基地红点")
     }
+    BackToHall()
 }
 ;tag 自动突破妮姬
 ClearRedLimit() {
-    AddLog("自动突破妮姬")
+    AddLog("自动突破妮姬", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.395 * NikkeW . " ", NikkeY + 0.883 * NikkeH . " ", NikkeX + 0.395 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.883 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入妮姬")
         FindText().Click(X, Y, "L")
@@ -5334,7 +5322,7 @@ ClearRedLimit() {
 }
 ;tag 自动升级魔方
 ClearRedCube() {
-    AddLog("自动升级魔方")
+    AddLog("自动升级魔方", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.752 * NikkeW . " ", NikkeY + 0.626 * NikkeH . " ", NikkeX + 0.752 * NikkeW + 0.013 * NikkeW . " ", NikkeY + 0.626 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入方舟")
         FindText().Click(X, Y, "L")
@@ -5388,7 +5376,7 @@ ClearRedCube() {
 }
 ;tag 清除公告红点
 ClearRedNotice() {
-    AddLog("清除公告红点")
+    AddLog("清除公告红点", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.933 * NikkeW . " ", NikkeY + 0.012 * NikkeH . " ", NikkeX + 0.933 * NikkeW + 0.009 * NikkeW . " ", NikkeY + 0.012 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         Sleep 3000
         FindText().Click(X, Y, "L")
@@ -5438,7 +5426,7 @@ ClearRedNotice() {
 }
 ;tag 清除壁纸红点
 ClearRedWallpaper() {
-    AddLog("清除壁纸红点")
+    AddLog("清除壁纸红点", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.980 * NikkeW . " ", NikkeY + 0.008 * NikkeH . " ", NikkeX + 0.980 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.008 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击右上角的SUBMENU")
         FindText().Click(X, Y, "L")
@@ -5462,7 +5450,7 @@ ClearRedWallpaper() {
 }
 ;tag 清除个人页红点
 ClearRedProfile() {
-    AddLog("清除个人页红点")
+    AddLog("清除个人页红点", "Fuchsia")
     if (FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio))
     || (FindText(&X := "wait", &Y := 1, NikkeX + 0.028 * NikkeW . " ", NikkeY + 0.000 * NikkeH . " ", NikkeX + 0.028 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.000 * NikkeH + 0.032 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击左上角的个人头像")

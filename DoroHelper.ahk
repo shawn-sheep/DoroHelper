@@ -15,7 +15,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.7.3"
+currentVersion := "v1.7.4"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -1254,11 +1254,6 @@ Initialization() {
     AddLog("屏幕高度是" A_ScreenHeight)
     AddLog("游戏画面比例是" GameRatio)
     AddLog("图片缩放系数是" Round(TrueRatio, 3))
-    if TrueRatio < 0.5 {
-        Result := MsgBox("检测到NIKKE窗口尺寸过小，建议按ctrl+3调整游戏画面并重启脚本，是否暂停程序？", , "YesNo")
-        if Result = "Yes"
-            Pause
-    }
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
         AddLog("游戏是标准的16：9尺寸")
     }
@@ -1294,7 +1289,7 @@ Initialization() {
         if (A_ScreenWidth = 1920 and A_ScreenHeight = 1080) {
             AddLog("显示器是标准1080p分辨率")
             if NikkeW < 1920 and NikkeH < 1080 {
-                MsgBox("NIKKE尺寸过小，请尝试全屏运行。否则的话能正常运行就偷着乐吧，跑不了也别反馈")
+                MsgBox("NIKKE尺寸过小，请尝试全屏运行")
             }
         } else if (A_ScreenWidth = 2560 and A_ScreenHeight = 1080) {
             AddLog("显示器是1080p 加宽 (21:9 超宽屏)")
@@ -1308,6 +1303,11 @@ Initialization() {
     }
     else {
         AddLog("显示器不足1080p分辨率")
+    }
+    if TrueRatio < 0.5 {
+        Result := MsgBox("检测到NIKKE窗口尺寸过小，建议按ctrl+3调整游戏画面并重启脚本，是否暂停程序？", , "YesNo")
+        if Result = "Yes"
+            Pause
     }
 }
 ;tag 定时启动

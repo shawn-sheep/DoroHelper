@@ -81,7 +81,8 @@ global g_settings := Map(
     "AwardOutpost", 0,           ;前哨基地收菜
     "AwardOutpostExpedition", 0, ;派遣
     "AwardLoveTalking", 0,       ;咨询
-    "AwardAppreciation", 0,      ;花絮鉴赏
+    "AwardLoveTalkingAward", 0,  ;咨询奖励
+    "AwardAppreciation", 0,      ;花絮鉴赏会
     "AwardFriendPoint", 0,       ;好友点数
     "AwardMail", 0,              ;邮箱
     "AwardRanking", 0,           ;排名奖励
@@ -752,8 +753,11 @@ g_settingPages["Award"].Push(SetAwardOutpostExpedition)
 SetAwardLoveTalking := AddCheckboxSetting(doroGui, "AwardLoveTalking", "咨询妮姬", "R1 xs Section")
 doroGui.Tips.SetTip(SetAwardLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n你可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`r`n会循环直到次数耗尽")
 g_settingPages["Award"].Push(SetAwardLoveTalking)
-SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏", "R1 xs+15")
-doroGui.Tips.SetTip(SetAwardAppreciation, "自动观看并领取花絮鉴赏中当前可领取的奖励")
+SetAwardLoveTalkingAward := AddCheckboxSetting(doroGui, "AwardLoveTalkingAward", "自动观看新花絮[金Doro]", "R1 xs+15")
+doroGui.Tips.SetTip(SetAwardLoveTalkingAward, "自动观看妮姬升级产生的新花絮并领取奖励")
+g_settingPages["Award"].Push(SetAwardLoveTalkingAward)
+SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏会", "R1 xs+15")
+doroGui.Tips.SetTip(SetAwardAppreciation, "自动观看并领取花絮鉴赏会中当前可领取的奖励")
 g_settingPages["Award"].Push(SetAwardAppreciation)
 SetAwardFriendPoint := AddCheckboxSetting(doroGui, "AwardFriendPoint", "好友点数收取", "R1 xs")
 doroGui.Tips.SetTip(SetAwardFriendPoint, "收取并回赠好友点数")
@@ -4422,6 +4426,24 @@ AwardLoveTalking() {
             AddLog("确认咨询结算")
             Confirm
         }
+        if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) and UserLevel >= 3 {
+            AddLog("点击红点")
+            FindText().Click(X, Y, "L")
+            Sleep 2000
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.361 * NikkeW . " ", NikkeY + 0.398 * NikkeH . " ", NikkeX + 0.361 * NikkeW + 0.277 * NikkeW . " ", NikkeY + 0.398 * NikkeH + 0.509 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
+                AddLog("播放新的片段")
+                FindText().Click(X, Y, "L")
+                Sleep 3000
+                Send "{]}" ;尝试跳过
+                Sleep 3000
+                Confirm
+                Sleep 1000
+                GoBack
+                UserMove(1906, 1026, TrueRatio)
+                Send "{WheelDown 3}"
+                Sleep 1000
+            }
+        }
         if (ok := FindText(&X, &Y, NikkeX + 0.970 * NikkeW . " ", NikkeY + 0.403 * NikkeH . " ", NikkeX + 0.970 * NikkeW + 0.024 * NikkeW . " ", NikkeY + 0.403 * NikkeH + 0.067 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询·向右的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("下一个妮姬")
             FindText().Click(X - 30 * TrueRatio, Y, "L")
@@ -4430,16 +4452,16 @@ AwardLoveTalking() {
     }
     BackToHall
 }
-;tag 花絮鉴赏
+;tag 花絮鉴赏会
 AwardAppreciation() {
-    AddLog("开始任务：花絮鉴赏", "Fuchsia")
+    AddLog("开始任务：花絮鉴赏会", "Fuchsia")
     Sleep 1000
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.979 * NikkeW . " ", NikkeY + 0.903 * NikkeH . " ", NikkeX + 0.979 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.903 * NikkeH + 0.034 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X - 50 * TrueRatio, Y + 50 * TrueRatio, "L")
         AddLog("点击花絮")
     }
     else {
-        AddLog("未找到花絮鉴赏的N图标")
+        AddLog("未找到花絮鉴赏会的N图标")
         return
     }
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.363 * NikkeW . " ", NikkeY + 0.550 * NikkeH . " ", NikkeX + 0.363 * NikkeW + 0.270 * NikkeW . " ", NikkeY + 0.550 * NikkeH + 0.316 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("EPI"), , , , , , 1, TrueRatio, TrueRatio)) {

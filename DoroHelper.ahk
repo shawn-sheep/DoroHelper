@@ -970,7 +970,7 @@ if g_settings["Timedstart"] {
         StartDailyTimer()
         return
     } else {
-        MsgBox("当前用户组不支持定时启动，请点击赞助按钮升级会员组")
+        MsgBox("当前用户组不支持定时启动，请点击左上角赞助按钮升级会员组或取消勾选该功能，脚本即将暂停")
         Pause
     }
 }
@@ -989,7 +989,7 @@ ClickOnDoro(*) {
                 AutoStartNikke() ;登陆到主界面
             }
             else {
-                MsgBox("当前用户组不支持使用脚本启动NIKKE，请点击赞助按钮升级会员组")
+                MsgBox("当前用户组不支持定时启动，请点击左上角赞助按钮升级会员组或取消勾选该功能，脚本即将暂停")
                 Pause
             }
         }

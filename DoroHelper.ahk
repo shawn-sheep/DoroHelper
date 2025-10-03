@@ -2717,6 +2717,13 @@ BattleSettlement(modes*) {
     RedCircle := false
     Exit7 := false
     EventStory := false
+    if (BattleActive = 0 or BattleActive = 2) {
+        AddLog("由于无法战斗，跳过战斗结算")
+        if BattleActive = 2 {
+            Send "{Esc}"
+        }
+        return
+    }
     for mode in modes {
         switch mode {
             case "Screenshot":
@@ -2745,13 +2752,6 @@ BattleSettlement(modes*) {
             }
             default: MsgBox "格式输入错误，你输入的是" mode
         }
-    }
-    if (BattleActive = 0 or BattleActive = 2) {
-        AddLog("由于无法战斗，跳过战斗结算")
-        if BattleActive = 2 {
-            Send "{Esc}"
-        }
-        return
     }
     AddLog("等待战斗结算")
     while true {

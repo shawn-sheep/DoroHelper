@@ -1128,51 +1128,74 @@ global latestObj := Map(
     "source", "", ; "github", "mirror", "ahk"
     "display_name", "" ; "GitHub", "Mirror酱", "AHK版"
 )
-;tag 统一检查更新 (主调度函数)
+;tag 统一检查更新
 CheckForUpdate(isManualCheck) {
-    global currentVersion, g_numeric_settings, latestObj
+    global currentVersion, g_numeric_settings, latestObj, scriptExtension
     ; 重置 latestObj 以确保每次检查都是新的状态
     latestObj := Map(
         "version", "",
         "change_notes", "无更新说明",
         "download_url", "",
-        "source", "",
-        "display_name", ""
+        "source", "", ; "github", "mirror", "ahk"
+        "display_name", "" ; "GitHub", "Mirror酱", "AHK版"
     )
     local foundNewVersion := false
     local channelInfo := (g_numeric_settings["UpdateChannels"] == "测试版") ? "测试版" : "正式版"
     local checkResult := Map() ; 用于存储子函数返回的结果
-    ; ==================== AHK文件更新检查 =====================
-    if (g_numeric_settings["UpdateChannels"] == "AHK版") {
-        ; CheckForUpdate_AHK_File 内部可能直接 ExitApp
-        ; 如果它返回，说明没有 ExitApp，但检查结果已处理或无需进一步操作
+    ; ==================== AHK文件更新检查 (本体更新) =====================
+    if (scriptExtension = "ahk") { ; 只有当当前运行的是 AHK 脚本时才检查 AHK 本体更新
+        AddLog("开始检查 DoroHelper.ahk 本体更新……")
         local ahkResult := CheckForUpdate_AHK_File(isManualCheck)
-        ; 如果 ahkResult.success 为 true，表示 AHK 逻辑已完成（可能已退出或确认无需更新），
-        ; 此时无需继续执行后续的 GUI 提示。
-        ; 如果 ahkResult.success 为 false，表示 AHK 检查失败，错误信息已在内部处理或记录。
-        ; 无论哪种情况，AHK 路径都是一个独立的更新流程，不应与 EXE 版本的通用提示混淆。
-        return ; AHK 版本的更新逻辑是独立的，处理完后直接返回
+        ; 核心逻辑判断
+        if (ahkResult.Has("success") && ahkResult.success) {
+            ; 确保 success 键存在且为 true。直接使用硬编码字符串。
+            AddLog("DoroHelper.ahk 本体更新检查成功: 本地版本已是最新或已修改，无需下载。", "Green")
+        } else {
+            local failureMessage := ahkResult.Get("message", "未知错误")
+            AddLog("DoroHelper.ahk 本体更新检查失败或被跳过: " . failureMessage, "Red")
+        }
+        ; 无论本体是否更新，都继续检查资源文件
+        AddLog("开始检查函数库文件更新 (资源更新)……")
+        local resourceUpdateResult := CheckForResourceUpdate(isManualCheck)
+        if (resourceUpdateResult.Get("success", false)) {
+            AddLog("函数库文件更新检查完成。")
+            if (resourceUpdateResult.Get("updatedCount", 0) > 0) {
+                AddLog("已更新 " . resourceUpdateResult.updatedCount . " 个函数库文件。请重启脚本以加载新文件。", "Green")
+                if (isManualCheck) {
+                    MsgBox("已更新 " . resourceUpdateResult.updatedCount . " 个函数库文件。请重启 DoroHelper 以加载新文件。", "资源更新完成", "IconI")
+                }
+            } else {
+                AddLog("所有函数库文件更新检查成功: 本地版本已是最新或已修改，无需下载。", "Green")
+                if (isManualCheck) {
+                    MsgBox("所有函数库文件均已是最新版本。", "资源更新", "IconI")
+                }
+            }
+        } else {
+            AddLog("函数库文件更新检查失败: " . resourceUpdateResult.Get("message", "未知错误"), "Red")
+            if (isManualCheck) {
+                MsgBox("函数库文件更新检查失败: " . resourceUpdateResult.Get("message", "未知错误"), "资源更新错误", "IconX")
+            }
+        }
+        return ; AHK 版本的更新逻辑（本体+资源）是独立的，处理完后直接返回
     }
-    ; ==================== Mirror酱 更新检查 ====================
+    ; ==================== Mirror酱 更新检查 (EXE版本) ====================
     if (g_numeric_settings["DownloadSource"] == "Mirror酱") {
         latestObj.source := "mirror"
         latestObj.display_name := "Mirror酱"
         checkResult := CheckForUpdate_Mirror(isManualCheck, channelInfo)
     }
-    ; ==================== Github 更新检查 ====================
+    ; ==================== Github 更新检查 (EXE版本) ====================
     else {
         latestObj.source := "github"
         latestObj.display_name := "Github"
         checkResult := CheckForUpdate_Github(isManualCheck, channelInfo)
     }
     ; 确保 checkResult 包含预期的属性
-    ; 如果 CheckForUpdate_Mirror 或 CheckForUpdate_Github 内部出现异常，
-    ; 它们应该返回一个包含这些默认属性的 Map。
     foundNewVersion := checkResult.Get("foundNewVersion", false) ; 使用 .Get() 方法安全获取，提供默认值
     latestObj.version := checkResult.Get("version", "")
     latestObj.change_notes := checkResult.Get("change_notes", "无更新说明")
     latestObj.download_url := checkResult.Get("download_url", "")
-    ; ==================== 处理检查结果 ====================
+    ; ==================== 处理 EXE 版本检查结果 ====================
     if foundNewVersion {
         AddLog(latestObj.display_name . " 更新检查：发现新版本 " . latestObj.version . "，准备提示用户")
         if (latestObj.download_url = "" && isManualCheck) {
@@ -1204,7 +1227,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
     }
     local path := "DoroHelper.ahk"
     local remoteSha := ""
-    local remoteLastModified := "" ; 存储远程文件的修改时间 (YYYYMMDDHH24MISS 格式)
+    local remoteLastModified := ""
     try {
         AddLog("正在从 GitHub API 获取最新版本文件哈希值及修改时间……")
         local whr := ComObject("WinHttp.WinHttpRequest.5.1")
@@ -1215,11 +1238,9 @@ CheckForUpdate_AHK_File(isManualCheck) {
         if (whr.Status != 200) {
             throw Error("API请求失败", -1, "状态码: " . whr.Status)
         }
-        ; --- 优先从 HTTP 响应头中获取 Last-Modified 时间 ---
         try {
             local lastModifiedHeader := whr.GetResponseHeader("Last-Modified")
             if (lastModifiedHeader != "") {
-                ; 使用自定义的 ParseDateTimeString 函数解析
                 local parsedTime := ParseDateTimeString(lastModifiedHeader)
                 if (parsedTime != "") {
                     remoteLastModified := parsedTime
@@ -1234,19 +1255,15 @@ CheckForUpdate_AHK_File(isManualCheck) {
         }
         local responseText := whr.ResponseText
         local shaMatch := ""
-        ; 提取 SHA
         if (RegExMatch(responseText, '"sha"\s*:\s*"(.*?)"', &shaMatch)) {
             remoteSha := shaMatch[1]
         } else {
             throw Error("JSON解析失败", -1, "未能从API响应中找到'sha'字段。")
         }
-        ; --- 备用：如果HTTP头未获取到时间，尝试从JSON响应体中的commit信息获取 ---
-        ; GitHub /contents API的JSON响应体中通常包含一个 'commit' 对象，其中有 'author.date' 或 'committer.date'
         if (remoteLastModified = "") {
             local commitDateMatch := ""
             if (RegExMatch(responseText, '"commit":\s*\{.*?\"author\":\s*\{.*?\"date\":\s*\"(.*?)\"', &commitDateMatch)) {
                 local commitDateStr := commitDateMatch[1]
-                ; 使用自定义的 ParseDateTimeString 函数解析
                 local parsedCommitTime := ParseDateTimeString(commitDateStr)
                 if (parsedCommitTime != "") {
                     remoteLastModified := parsedCommitTime
@@ -1269,14 +1286,13 @@ CheckForUpdate_AHK_File(isManualCheck) {
     }
     local localScriptPath := A_ScriptDir "\DoroHelper.ahk"
     local localSha := ""
-    local localLastModified := "" ; 存储本地文件的修改时间 (YYYYMMDDHH24MISS 格式)
+    local localLastModified := ""
     try {
         if !FileExist(localScriptPath) {
-            localSha := "" ; 文件不存在，视为需要下载
-            localLastModified := "0" ; 确保有默认值，使其早于任何远程时间
+            localSha := ""
+            localLastModified := "0"
         } else {
             localSha := HashGitSHA1(localScriptPath)
-            ; 获取本地文件的修改时间，格式为 YYYYMMDDHH24MISS
             localLastModified := FileGetTime(localScriptPath, "M")
         }
     } catch as e {
@@ -1288,17 +1304,15 @@ CheckForUpdate_AHK_File(isManualCheck) {
     AddLog("本地文件哈希值: " localSha)
     AddLog("远程文件修改时间: " (remoteLastModified != "" ? remoteLastModified : "未获取到"))
     AddLog("本地文件修改时间: " localLastModified)
-    ; 1. 首先比较哈希值
     if (remoteSha = localSha) {
         AddLog("文件哈希一致，当前已是最新版本。")
         if (isManualCheck) {
             MsgBox("当前已是最新版本，无需更新。")
         }
         result.success := true
+        result.message := "文件哈希一致，当前已是最新版本。" ; <--- **关键修改：明确成功消息**
         return result
     }
-    ; 2. 如果哈希值不同，再比较修改时间
-    ; 只有当远程文件修改时间比本地文件修改时间晚时，才进行下载
     if (remoteLastModified != "" && localLastModified != "") {
         if (remoteLastModified <= localLastModified) {
             AddLog("本地文件修改时间晚于或等于远程文件，认为本地版本已是最新或已修改，无需下载。")
@@ -1306,14 +1320,12 @@ CheckForUpdate_AHK_File(isManualCheck) {
                 MsgBox("检测到本地文件可能已被修改或已是最新，无需下载更新。", "AHK更新提示", "IconI")
             }
             result.success := true
+            result.message := "本地文件修改时间晚于或等于远程文件，无需下载。" ; <--- **关键修改：明确成功消息**
             return result
         }
     } else {
         AddLog("警告: 无法获取完整的修改时间信息，将仅依赖哈希值进行更新判断。")
-        ; 如果无法获取时间，但哈希值不同，我们仍然倾向于更新，因为哈希值是更强的版本指示。
-        ; 如果你希望在无法获取时间时也阻止更新，可以在这里添加 return result
     }
-    ; --- 只有哈希值不一致且远程文件修改时间晚于本地时，才执行以下下载和替换代码 ---
     AddLog("发现文件哈希不匹配且远程版本较新，准备下载新版本。")
     local url := "https://raw.githubusercontent.com/" . usr . "/" . repo . "/main/" . path
     local currentScriptDir := A_ScriptDir
@@ -1346,8 +1358,153 @@ CheckForUpdate_AHK_File(isManualCheck) {
         result.message := "脚本已经在重命名后的状态下运行"
         return result
     }
-    result.success := true ; Should not be reached if ExitApp is called
-    return result
+    result.success := true
+    result.message := "更新成功，脚本即将重启。" ; <--- **关键修改：明确成功消息**
+    return result ; Should not be reached if ExitApp is called
+}
+;tag AHK资源文件更新检查子函数
+; --- 函数库文件更新检查函数 (资源更新) ---
+/**
+ * 检查 lib 目录下所有 .ahk 函数库文件的更新。
+ * 比较本地文件与 GitHub 上的文件哈希值和修改时间。
+ * 如果远程文件哈希不同且修改时间更晚，或者本地文件缺失，则下载更新。
+ * 
+ * @param {Boolean} isManualCheck 是否为手动触发的检查。
+ * @returns {Map} 包含更新结果的 Map，如 {success: true/false, message: String, updatedCount: Integer}。
+ */
+CheckForResourceUpdate(isManualCheck) {
+    global usr, repo
+    local libDir := A_ScriptDir "\lib"
+    local updatedFiles := []
+    local failedFiles := []
+    local updatedCount := 0
+    AddLog("开始检查函数库文件更新 (lib 目录)……")
+    ; 确保 lib 目录存在
+    if !DirExist(libDir) {
+        AddLog("本地 lib 目录不存在，尝试创建: " . libDir)
+        try {
+            DirCreate(libDir)
+        } catch as e {
+            AddLog("创建 lib 目录失败: " . e.Message, "Red")
+            return Map("success", false, "message", "无法创建 lib 目录: " . e.Message)
+        }
+    }
+    ; 获取 GitHub 上 lib 目录的内容列表
+    local apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/lib"
+    local whr := ComObject("WinHttp.WinHttpRequest.5.1")
+    try {
+        whr.Open("GET", apiUrl, false)
+        whr.SetRequestHeader("User-Agent", "DoroHelper-AHK-Script-ResourceChecker")
+        whr.Send()
+        if (whr.Status != 200) {
+            local errorMsg := "GitHub API 请求失败，状态码: " . whr.Status . ", URL: " . apiUrl
+            try {
+                ; Json.Load 需要 VarRef
+                local errorJson := Json.Load(whr.ResponseText)
+                ; 访问属性使用 Get() 方法
+                if (errorJson is Object && errorJson.Get("message", "") != "") {
+                    errorMsg .= "。API 消息: " . errorJson.Get("message", "")
+                }
+            } catch {
+                ; 忽略解析错误响应文本的失败
+            }
+            throw Error("GitHub API 请求失败", -1, errorMsg)
+        }
+        local responseText := whr.ResponseText
+        ; Json.Load 需要 VarRef
+        local remoteFilesData := Json.Load(&responseText)
+        if (!(remoteFilesData is Array)) {
+            AddLog("错误: GitHub API 返回的 lib 目录内容不是预期的数组类型。原始响应 (前500字符): " . SubStr(responseText, 1, 500) . "...", "Red")
+            return Map("success", false, "message", "GitHub API 返回数据格式错误，可能远程 lib 目录不存在或API限速。", "updatedCount", 0)
+        }
+        ; 确保数组不为空
+        if (!remoteFilesData.Length) {
+            AddLog("警告: GitHub API 返回的 lib 目录内容为空。", "")
+            return Map("success", true, "message", "lib 目录远程无文件", "updatedCount", 0)
+        }
+        for _, fileData in remoteFilesData {
+            ; 增加对 fileData 类型的检查，并使用 Get() 安全地获取属性
+            local remoteFileName := (fileData is Object) ? fileData.Get("name", "") : ""
+            local remoteFileType := (fileData is Object) ? fileData.Get("type", "") : ""
+            local remoteSha := (fileData is Object) ? fileData.Get("sha", "") : ""
+            local remoteDownloadUrl := (fileData is Object) ? fileData.Get("download_url", "") : ""
+            ; 验证获取到的关键属性是否有效
+            if (remoteFileName == "" || remoteFileType == "" || remoteSha == "" || remoteDownloadUrl == "") {
+                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"), "")
+                continue ; 跳过此条不完整或无效的数据
+            }
+            ; 只处理 .ahk 文件
+            local currentFileExtension := ""
+            SplitPath remoteFileName, , , &currentFileExtension
+            currentFileExtension := StrLower(currentFileExtension)
+            if (remoteFileType == "file" && currentFileExtension == "ahk") {
+                local localFilePath := libDir . "\" . remoteFileName
+                local localSha := ""
+                local localLastModified := "0" ; 如果文件不存在，默认为一个非常早的时间
+                ; 获取本地文件信息
+                if FileExist(localFilePath) {
+                    try {
+                        localSha := HashGitSHA1(localFilePath)
+                        localLastModified := FileGetTime(localFilePath, "M")
+                    } catch as e {
+                        AddLog("错误: 计算本地文件 " . remoteFileName . " 哈希或获取修改时间失败: " . e.Message, "Red")
+                        failedFiles.Push(remoteFileName)
+                        continue
+                    }
+                }
+                ; 获取远程文件的详细信息，包括 Last-Modified
+                local remoteFileDetails := Map()
+                ; 尝试从 fileData 本身获取 commit 信息（如果API响应包含）
+                ; 这里也使用 .Get() 确保安全
+                local commitObj := (fileData is Object) ? fileData.Get("commit", "") : ""
+                if (commitObj is Object) {
+                    local authorObj := commitObj.Get("author", "")
+                    if (authorObj is Object) {
+                        local commitDateStr := authorObj.Get("date", "")
+                        if (commitDateStr != "") {
+                            remoteFileDetails.remoteLastModified := ParseDateTimeString(commitDateStr)
+                        }
+                    }
+                }
+                local remoteLastModified := remoteFileDetails.Get("remoteLastModified", "")
+                local needsUpdate := false
+                if (localSha != remoteSha) {
+                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "")
+                    needsUpdate := true
+                } else if (!FileExist(localFilePath)) {
+                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "")
+                    needsUpdate := true
+                } else if (remoteLastModified != "" && localLastModified != "" && remoteLastModified > localLastModified) {
+                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (" . remoteLastModified . ") 晚于本地 (" . localLastModified . ")。", "")
+                    needsUpdate := true
+                } else {
+                    ; AddLog("文件 " . remoteFileName . " 已是最新版本。") ; 避免过多日志
+                }
+                if (needsUpdate) {
+                    AddLog("正在下载更新文件: " . remoteFileName . "……")
+                    try {
+                        Download(remoteDownloadUrl, localFilePath)
+                        AddLog("成功更新文件: " . remoteFileName, "Green")
+                        updatedFiles.Push(remoteFileName)
+                        updatedCount++
+                    } catch as e {
+                        AddLog("下载或替换文件 " . remoteFileName . " 失败: " . e.Message, "Red")
+                        failedFiles.Push(remoteFileName)
+                    }
+                }
+            }
+        }
+    } catch as e {
+        AddLog("获取远程函数库文件列表失败，错误信息: " . e.Message, "Red")
+        return Map("success", false, "message", "获取远程函数库文件列表失败: " . e.Message)
+    }
+    if (updatedCount > 0) {
+        return Map("success", true, "message", "成功更新 " . updatedCount . " 个函数库文件。", "updatedCount", updatedCount, "updatedFiles", updatedFiles)
+    } else if (failedFiles.Length > 0) {
+        return Map("success", false, "message", "部分函数库文件更新失败。", "updatedCount", 0, "failedFiles", failedFiles)
+    } else {
+        return Map("success", true, "message", "所有函数库文件均已是最新版本。", "updatedCount", 0)
+    }
 }
 ;tag 日期时间解析辅助函数
 /**
@@ -5689,6 +5846,7 @@ AutoAdvance(*) {
 ;tag 调试指定函数
 ^0:: {
     ;添加基本的依赖
-    Initialization()
+    ; Initialization()
+    HashGitSHA1("C:\Users\12042\Documents\GitHub\DoroHelper\lib\FindText.ahk")
 }
 ;endregion 快捷键

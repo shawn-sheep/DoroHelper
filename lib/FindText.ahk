@@ -1,4 +1,4 @@
-﻿;/*
+;/*
 ;===========================================
 ;  FindText - 屏幕抓字生成字库工具与找字函数
 ;  https://www.autohotkey.com/boards/viewtopic.php?f=83&t=116471
@@ -3025,8 +3025,9 @@ int __attribute__((__stdcall__)) PicFind(
                 x := nX + CutLeft + (nW - CutLeft - CutRight) // 2
                 y := nY + CutUp + (nH - CutUp - CutDown) // 2
                 s := StrReplace(s, "Text.=", "Text:="), r := StrSplit(Lang["s8"] "|||||||", "|")
-                s := "`; #Include <FindText>`n"
-                    . "currentScale := A_ScreenDPI / 96"
+                s := "`; #Include <FindText>"
+                    . "`n#Include `"PicLib.ahk`""
+                    . "`ncurrentScale := A_ScreenDPI / 96"
                     . "`ntitle := `"ahk_exe nikke.exe`""
                     . "`nnikkeID := WinGetIDLast(title)"
                     . "`nWinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID"

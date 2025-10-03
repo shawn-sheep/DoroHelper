@@ -166,7 +166,6 @@ global g_numeric_settings := Map(
 ;tag 其他全局变量
 outputText := ""
 Victory := 0
-BattleActive := 1
 BattleSkip := 0
 QuickBattle := 0
 PicTolerance := g_numeric_settings["Tolerance"]
@@ -184,6 +183,8 @@ NikkeYP := 0
 NikkeWP := 0
 NikkeHP := 0
 TrueRatio := 1
+;是否能进入战斗，0表示根本没找到进入战斗的图标，1表示能，2表示能但次数耗尽（灰色的进入战斗）
+BattleActive := 1
 ;tag 彩蛋
 konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
 key_history := ""           ; 用于存储用户按键历史的变量
@@ -2625,9 +2626,9 @@ CalculateSponsorInfo(thisGuiButton, info) {
     jsonString .= "(将这段文字替换成你的付款截图)`n"
     jsonString .= "  {" . "`n"
     jsonString .= "    `"hash`": `"" Hashed "`"," . "`n"
-    jsonString .= "    `"tier`": `"" tierSelected "`"," . "`n"
-    jsonString .= "    `"expiry_date`": `"" SubStr(expiryDate, 1, 8) "`"" . "`n"
-    jsonString .= "  },"
+    jsonString .= "`"tier`": `"" tierSelected "`"," . "`n"
+    jsonString .= "`"expiry_date`": `"" SubStr(expiryDate, 1, 8) "`"" . "`n"
+    jsonString .= "},"
     ; 步骤5：复制到剪切板
     A_Clipboard := jsonString
     ; 给出提示
@@ -3030,7 +3031,7 @@ Skipping() {
 }
 ;tag 进入战斗
 EnterToBattle() {
-    ;是否能进入战斗，0表示根本没找到进入战斗的图标，1表示能，2表示能但次数耗尽（灰色的进入战斗）
+    ;是否能战斗
     global BattleActive
     ;是否能跳过动画
     global BattleSkip
@@ -3347,79 +3348,97 @@ EnterToOutpost() {
     }
     Sleep 2000
 }
+;tag 自动填充加成妮姬
+AutoFill() {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
+        if g_settings["AutoFill"] and UserLevel >= 3 {
+            AddLog("点击黑色的加号")
+            FindText().Click(X, Y, "L")
+            Sleep 500
+            FindText().Click(X, Y, "L")
+            Sleep 2000
+            if (ok := FindText(&X, &Y, NikkeX + 0.034 * NikkeW . " ", NikkeY + 0.483 * NikkeH . " ", NikkeX + 0.034 * NikkeW + 0.564 * NikkeW . " ", NikkeY + 0.483 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("剧情活动·0%"), , , , , , 1, TrueRatio, TrueRatio)) {
+                loop ok.Length {
+                    AddLog("添加第" A_Index "个妮姬")
+                    FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
+                    Sleep 1000
+                    if A_Index = 5
+                        break
+                }
+            }
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.917 * NikkeW . " ", NikkeY + 0.910 * NikkeH . " ", NikkeX + 0.917 * NikkeW + 0.077 * NikkeW . " ", NikkeY + 0.910 * NikkeH + 0.057 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击储存")
+                FindText().Click(X, Y, "L")
+                Sleep 2000
+            }
+        } else {
+            MsgBox ("请手动选择妮姬")
+        }
+    }
+}
 ;tag 推关模式
 AdvanceMode(Picture, Picture2?) {
     AddLog("进行活动推关")
     Sleep 500
+    Failed := false
     while true {
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.305 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.305 * NikkeW + 0.388 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.691 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(Picture), , , , , , 3, TrueRatio, TrueRatio)) {
-            loop 2 {
-                try {
-                    FindText().Click(ok[A_Index].X, ok[A_Index].Y, "L")
-                }
-                ; 自动填充加成妮姬
-                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
-                    if g_settings["AutoFill"] and UserLevel >= 3 {
-                        AddLog("点击黑色的加号")
-                        FindText().Click(X, Y, "L")
-                        Sleep 500
-                        FindText().Click(X, Y, "L")
-                        Sleep 2000
-                        if (ok := FindText(&X, &Y, NikkeX + 0.034 * NikkeW . " ", NikkeY + 0.483 * NikkeH . " ", NikkeX + 0.034 * NikkeW + 0.564 * NikkeW . " ", NikkeY + 0.483 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("剧情活动·0%"), , , , , , 1, TrueRatio, TrueRatio)) {
-                            loop ok.Length {
-                                AddLog("添加第" A_Index "个妮姬")
-                                FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
-                                Sleep 1000
-                                if A_Index = 5 {
-                                    break
-                                }
-                            }
-                        }
-                        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.917 * NikkeW . " ", NikkeY + 0.910 * NikkeH . " ", NikkeX + 0.917 * NikkeW + 0.077 * NikkeW . " ", NikkeY + 0.910 * NikkeH + 0.057 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-                            AddLog("点击储存")
-                            FindText().Click(X, Y, "L")
-                            Sleep 2000
-                        }
-                    }
-                    else {
-                        MsgBox ("请手动选择妮姬")
-                    }
-                }
-                EnterToBattle
-                BattleSettlement("EventStory")
-                ; 区域变化的提示
-                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                    FindText().Click(X, Y + 400 * TrueRatio, "L")
-                }
-                if BattleActive = 2 {
-                    return
-                }
-                if QuickBattle = 1 {
-                    return
-                }
+        ok := ""
+        currentPic := ""
+        hasAutoFill := false
+        ; 记录本轮是否需要跳过 Picture 的检查
+        skipped := Failed
+        ; 假设本轮能成功处理，先将标记重置为 false
+        Failed := false
+        ; 1. 尝试匹配 Picture (高优先级)
+        ; 只有在 Picture 上一轮没有失败时，才进行识别
+        if (!skipped && (ok_Pic := FindText(&X := "wait", &Y := 1, NikkeX + 0.305 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.305 * NikkeW + 0.388 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.691 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(Picture), , , , , , 3, TrueRatio, TrueRatio))) {
+            ok := ok_Pic
+            currentPic := Picture
+            hasAutoFill := true
+        }
+        ; 2. 尝试匹配 Picture2 (低优先级，使用 else if 确保优先级)
+        ; 无论 Picture 是否被跳过，如果 Picture 未找到，都会尝试 Picture2
+        else if (Picture2 && (ok_Pic2 := FindText(&X := "wait", &Y := 1, NikkeX + 0.305 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.305 * NikkeW + 0.388 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.691 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(Picture2), , , , , , 3, TrueRatio, TrueRatio))) {
+            ok := ok_Pic2
+            currentPic := Picture2
+            hasAutoFill := false
+        }
+        ; 3. 统一处理找到的图片逻辑
+        if (ok && currentPic) {
+            ; 3.1 点击图标进入关卡详情页
+            try {
+                FindText().Click(X, Y, "L")
                 Sleep 1000
             }
-        }
-        else {
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.305 * NikkeW . " ", NikkeY + 0.230 * NikkeH . " ", NikkeX + 0.305 * NikkeW + 0.388 * NikkeW . " ", NikkeY + 0.230 * NikkeH + 0.691 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib(Picture2), , , , , , 3, TrueRatio, TrueRatio)) {
-                loop 2 {
-                    try {
-                        FindText().Click(ok[A_Index].X, ok[A_Index].Y, "L")
-                    }
-                    EnterToBattle
-                    BattleSettlement("EventStory")
-                    ; 区域变化的提示
-                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                        FindText().Click(X, Y + 400 * TrueRatio, "L")
-                    }
-                    if BattleActive = 2 {
-                        return
-                    }
-                    if QuickBattle = 1 {
-                        return
-                    }
-                }
+            ; 只有 Picture 有自动填充逻辑
+            if (hasAutoFill) {
+                AutoFill
             }
+            ; 3.2 尝试进入战斗 (依赖 EnterToBattle 内部设置 BattleActive)
+            EnterToBattle
+            BattleSettlement("EventStory")
+            ; 区域变化的提示
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y + 400 * TrueRatio, "L")
+            }
+            ; 3.3 退出判断（仅扫荡成功时退出）
+            if (QuickBattle = 1) {
+                AddLog("扫荡完成，退出推关模式。")
+                return
+            }
+            ; 3.4 关键失败/耗尽处理
+            ; 如果当前处理的是 Picture 且失败了，就设置标记，让下一轮跳过它。
+            if (currentPic == Picture && BattleActive != 1) {
+                Failed := true ; 标记失败，下一轮将跳过 Picture
+            }
+            if (BattleActive == 0) {
+                AddLog("关卡无法进入，切换识图类型")
+            }
+            else if (BattleActive == 2) {
+                AddLog("关卡次数耗尽")
+                return
+            }
+            Sleep 1000
         }
         Sleep 3000
         Send "{]}" ;防止最后一关剧情卡死
@@ -5134,6 +5153,7 @@ EventLargeStory() {
         AddLog("进入剧情活动页面")
         Sleep 500
         FindText().Click(X, Y - 100 * TrueRatio, "L")
+        Sleep 500
     }
     Confirm
     ; 执行剧情活动流程

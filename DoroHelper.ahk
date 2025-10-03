@@ -4388,6 +4388,7 @@ AwardPass() {
         }
         else {
             AddLog("通行证已全部收取")
+            Confirm
             break
         }
     }

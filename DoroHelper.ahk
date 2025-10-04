@@ -679,7 +679,7 @@ doroGui.Show("x" g_numeric_settings["doroGuiX"] " y" g_numeric_settings["doroGui
 ;endregion 创建GUI
 ;region 彩蛋
 CheckSequence(key_char) {
-    global key_history, konami_code
+    global key_history, konami_code, UserLevel
     ; 将当前按键对应的字符追加到历史记录中
     key_history .= key_char
     ; 为了防止历史记录字符串无限变长，我们只保留和目标代码一样长的末尾部分
@@ -691,6 +691,7 @@ CheckSequence(key_char) {
         AddLog("🎉 彩蛋触发！ 🎉！Konami Code 已输入！")
         TextUserGroup.Value := "炫彩Doro"
         key_history := ""    ; 重置历史记录，以便可以再次触发
+        UserLevel := 0
     }
 }
 #HotIf WinActive(title)
@@ -2733,10 +2734,11 @@ AddCheckboxSetting(guiObj, settingKey, displayText, options := "", addToTaskList
     fullOptions := options (options ? " " : "") initialState ;如果有 options，加空格分隔
     ;添加复选框控件，并将 displayText 作为第三个参数
     cbCtrl := guiObj.Add("Checkbox", fullOptions, displayText)
-    ;给控件附加 settingKey，方便后面识别
+    ;给控件附加 settingKey，方便后面识别，并保存 displayText
     cbCtrl.settingKey := settingKey
-    ;绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey
-    cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl, eventInfo))
+    cbCtrl.displayText := displayText ; 存储原始显示文本
+    ;绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey 和 displayText
+    cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl.displayText, guiCtrl)) ; 传递 guiCtrl
     ;如果指定，则添加到任务列表数组
     if (addToTaskList) {
         g_taskListCheckboxes.Push(cbCtrl)
@@ -2744,13 +2746,43 @@ AddCheckboxSetting(guiObj, settingKey, displayText, options := "", addToTaskList
     ;返回创建的控件对象 (可选，如果需要进一步操作)
     return cbCtrl
 }
-;通用函数，用于切换 g_settings Map 中的设置值
-ToggleSetting(settingKey, guiCtrl, *) {
-    global g_settings
-    ;切换值 (0 变 1, 1 变 0)
+;通用函数，用于切换 g_settings Map 中的设置值，并进行会员等级检测
+ToggleSetting(settingKey, displayText, guiCtrl, *) {
+    global g_settings, UserLevel
+    ; 如果用户正在尝试勾选本选项 (即当前复选框的值将从0变为1)
+    if (guiCtrl.Value == 0) { ; guiCtrl.Value 是控件的当前状态 (0 未勾选, 1 勾选)，这里是点击前的值
+        local requiredLevel := 0
+        local memberType := ""
+        ; 检查 displayText 是否包含会员等级信息
+        if InStr(displayText, "[金Doro]") {
+            requiredLevel := 3
+            memberType := "金Doro会员"
+        } else if InStr(displayText, "[银Doro]") {
+            requiredLevel := 2
+            memberType := "银Doro会员"
+        } else if InStr(displayText, "[铜Doro]") {
+            requiredLevel := 1
+            memberType := "铜Doro会员"
+        }
+        ; 如果检测到会员限制
+        if (requiredLevel > 0) {
+            ; 检查当前用户等级是否足够
+            if (UserLevel < requiredLevel) {
+                MsgBox("当前用户组 (" . UserGroup . ") 不足，需要 " . memberType . " 才能使用此功能。请点击左上角的“赞助”按钮升级会员组。", "会员功能限制", "")
+                ; 阻止勾选操作：在 Click 事件中，如果返回0或不修改控件值，将阻止状态改变
+                ; 但AutoHotkey GUI的Checkbox控件在Click事件中已经改变了值，所以需要手动改回去
+                guiCtrl.Value := 0 ; 手动取消勾选
+                g_settings[settingKey] := 0 ; 同步到内部设置Map
+                AddLog("用户尝试勾选限制功能 '" . displayText . "' 失败，等级不足。", "Red")
+                WriteSettings() ; 强制保存设置以确保配置文件也是最新的
+                return
+            }
+        }
+    }
+    ; 如果通过了会员检测 (或没有会员限制)，则正常切换值
     g_settings[settingKey] := 1 - g_settings[settingKey]
     ;可选: 如果需要，可以在这里添加日志记录
-    ;ToolTip("切换 " settingKey " 为 " g_settings[settingKey])
+    ; AddLog("切换 " settingKey . " 为 " . g_settings[settingKey])
 }
 ;endregion 数据辅助函数
 ;region 坐标辅助函数

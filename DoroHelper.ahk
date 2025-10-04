@@ -1154,7 +1154,7 @@ CheckForUpdate(isManualCheck) {
     ; 重置 latestObj 以确保每次检查都是新的状态
     ; 此处不直接重建Map，而是清空内容，以避免垃圾回收开销和可能的引用问题。
     if (!IsObject(latestObj) || Type(latestObj) != "Map") {
-        AddLog("警告: latestObj 未初始化或类型错误，重新初始化。", "Orange")
+        AddLog("警告: latestObj 未初始化或类型错误，重新初始化。", "Red")
         latestObj := Map("version", "", "change_notes", "无更新说明", "download_url", "", "source", "", "display_name", "")
     } else {
         ; 重置 latestObj 以确保每次检查都是新的状态
@@ -1218,7 +1218,7 @@ CheckForUpdate(isManualCheck) {
         AddLog(latestObj.Get("display_name") . " 更新检查：发现新版本 " . latestObj.Get("version") . "，准备提示用户", "Green")
         local downloadUrl := latestObj.Get("download_url", "")
         if (downloadUrl == "" && isManualCheck) {
-            MsgBox("已检测到新版本 " . latestObj.Get("version") . "，但未能获取到下载链接。请检查 " . latestObj.Get("display_name") . " 库或手动下载", "更新提示", "IconW")
+            MsgBox("已检测到新版本 " . latestObj.Get("version") . "，但未能获取到下载链接。请检查 " . latestObj.Get("display_name") . " 库或手动下载", "更新提示", "IconWarning")
         }
         DisplayUpdateNotification() ; 使用全局 latestObj
     } else if (checkSucceeded && latestObj.Get("version", "") != "") {
@@ -1252,6 +1252,11 @@ CheckForUpdate_AHK_File(isManualCheck) {
     local path := "DoroHelper.ahk"
     local remoteSha := ""
     local remoteLastModified := ""
+    local localScriptPath := A_ScriptDir "\DoroHelper.ahk"
+    local localSha := ""
+    local localLastModified := ""
+    local shouldDownload := false ; 新增旗帜，用于控制是否执行下载
+    ; --- 1. 获取远程文件信息 ---
     try {
         AddLog("正在从 GitHub API 获取最新版本文件哈希值及修改时间……")
         local whr := ComObject("WinHttp.WinHttpRequest.5.1")
@@ -1284,7 +1289,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
         } else {
             throw Error("JSON解析失败", -1, "未能从API响应中找到'sha'字段。")
         }
-        if (remoteLastModified = "") {
+        if (remoteLastModified = "") { ; Fallback for remoteLastModified if not found in header
             local commitDateMatch := ""
             if (RegExMatch(responseText, '"commit":\s*\{.*?\"author\":\s*\{.*?\"date\":\s*\"(.*?)\"', &commitDateMatch)) {
                 local commitDateStr := commitDateMatch[1]
@@ -1308,13 +1313,11 @@ CheckForUpdate_AHK_File(isManualCheck) {
         result.Set("message", "无法获取远程文件信息，无法检查更新。")
         return result
     }
-    local localScriptPath := A_ScriptDir "\DoroHelper.ahk"
-    local localSha := ""
-    local localLastModified := ""
+    ; --- 2. 获取本地文件信息 ---
     try {
         if !FileExist(localScriptPath) {
-            localSha := ""
-            localLastModified := "0"
+            localSha := "" ; 表示文件缺失
+            localLastModified := "0" ; 视为非常旧
         } else {
             localSha := HashGitSHA1(localScriptPath)
             localLastModified := FileGetTime(localScriptPath, "M")
@@ -1328,61 +1331,96 @@ CheckForUpdate_AHK_File(isManualCheck) {
     AddLog("本地文件哈希值: " localSha)
     AddLog("远程文件修改时间: " (remoteLastModified != "" ? remoteLastModified : "未获取到"))
     AddLog("本地文件修改时间: " localLastModified)
+    ; --- 3. 比较并决定是否更新 ---
+    ; 情况 1: 哈希一致 -> 已是最新版本
     if (remoteSha = localSha) {
         AddLog("文件哈希一致，当前已是最新版本。", "Green")
         if (isManualCheck) {
-            MsgBox("当前已是最新版本，无需更新。")
+            MsgBox("当前已是最新版本，无需更新。", "AHK更新提示", "IconI")
         }
         result.Set("success", true)
-        result.Set("message", "文件哈希一致，当前已是最新版本。")
+        result.Set("message", "AHK脚本已是最新版本。")
         return result
     }
-    if (remoteLastModified != "" && localLastModified != "") {
-        if (remoteLastModified <= localLastModified) {
-            if (isManualCheck) {
-                MsgBox("检测到本地文件可能已被修改或已是最新，无需下载更新。", "AHK更新提示", "IconI")
+    ; 情况 2: 哈希不一致 -> 可能有更新，需要进一步判断
+    else { ; remoteSha != localSha
+        if (remoteLastModified != "" && localLastModified != "") {
+            if (remoteLastModified > localLastModified) {
+                ; 远程文件的时间戳更新，这是正常的更新情况
+                AddLog("检测到远程 AHK 文件版本 (" . remoteSha . ") 较新，本地版本 (" . localSha . ") 较旧。", "Green")
+                shouldDownload := true
+            } else { ; remoteLastModified <= localLastModified
+                ; 哈希不一致，但本地文件的时间戳更近或相同。
+                ; 这通常意味着本地文件被修改过，或者远程的时间戳有问题。
+                AddLog("警告: 检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (" . localLastModified . ") 晚于或等于远程 (" . remoteLastModified . ")。", "Red")
+                if (isManualCheck) {
+                    local userChoice := MsgBox("检测到 AHK 脚本哈希不匹配，但本地文件修改时间晚于或等于线上版本。这可能意味着您本地做过更改，或者线上有新更新但时间戳较老。`n`n远程哈希 (截短): " . SubStr(remoteSha, 1, 7)
+                    . "`n本地哈希 (截短): " . SubStr(localSha, 1, 7)
+                    . "`n远程修改时间: " . remoteLastModified
+                    . "`n本地修改时间: " . localLastModified
+                    . "`n`n是否强制更新本地脚本为线上版本？(建议在备份后操作)", "AHK强制更新提示", "YesNo")
+                    if (userChoice == "Yes") {
+                        AddLog("用户选择强制更新 AHK 脚本。", "Red")
+                        shouldDownload := true
+                    } else {
+                        AddLog("用户取消强制更新 AHK 脚本。", "Blue")
+                        result.Set("success", true) ; 用户选择不更新，视为流程成功完成
+                        result.Set("message", "用户选择不强制更新 AHK 脚本。")
+                        return result
+                    }
+                } else {
+                    AddLog("自动检查中检测到 AHK 文件哈希不匹配但本地修改时间问题，跳过自动更新。", "Red")
+                    result.Set("success", false)
+                    result.Set("message", "自动检查中 AHK 脚本哈希不匹配且本地修改时间晚于或等于远程，跳过。")
+                    return result
+                }
             }
-            result.Set("success", true)
-            result.Set("message", "本地文件修改时间晚于或等于远程文件，无需下载。")
+        } else {
+            ; 无法可靠获取一个或两个修改时间。由于哈希不一致，假定需要更新。
+            AddLog("警告: 无法获取完整的修改时间信息，但检测到 AHK 文件哈希不匹配。准备下载新版本。", "Red")
+            shouldDownload := true
+        }
+    }
+    ; --- 4. 执行下载和替换（如果 `shouldDownload` 旗帜为真）---
+    if (shouldDownload) {
+        AddLog("准备下载 AHK 脚本新版本。", "Green")
+        local url := "https://raw.githubusercontent.com/" . usr . "/" . repo . "/main/" . path
+        local currentScriptDir := A_ScriptDir
+        local NewFileName := "DoroHelper_new_" . A_Now . ".ahk" ; 使用包含时间戳的唯一名称
+        local localNewFilePath := currentScriptDir . "\" . NewFileName
+        try {
+            AddLog("正在下载最新 AHK 版本，请稍等……")
+            Download(url, localNewFilePath)
+            AddLog("文件下载成功！已保存到: " . localNewFilePath, "Green")
+        } catch as e {
+            MsgBox "下载失败，错误信息: " . e.Message, "错误", "IconX"
+            result.Set("message", "下载失败: " . e.Message)
             return result
         }
-    } else {
-        AddLog("警告: 无法获取完整的修改时间信息，将仅依赖哈希值进行更新判断。", "Orange")
-    }
-    AddLog("发现文件哈希不匹配且远程版本较新，准备下载新版本。", "Green")
-    local url := "https://raw.githubusercontent.com/" . usr . "/" . repo . "/main/" . path
-    local currentScriptDir := A_ScriptDir
-    local NewFileName := "DoroHelper" . A_Now . ".ahk"
-    local localFilePath := currentScriptDir . "\" . NewFileName
-    try {
-        AddLog("正在下载最新 AHK 版本，请稍等……")
-        Download(url, localFilePath)
-        AddLog("文件下载成功！已保存到当前目录: " . localFilePath, "Green")
-    } catch as e {
-        MsgBox "下载失败，错误信息: " . e.Message, "错误", "IconX"
-        result.Set("message", "下载失败: " . e.Message)
-        return result
-    }
-    MsgBox("发现新版本！已下载至同目录下，软件即将退出")
-    local OldName := "DoroHelperOld" . A_Now . ".ahk"
-    if !InStr(A_ScriptFullPath, OldName) {
+        MsgBox("发现新版本！已下载至同目录下，软件即将退出以完成更新。", "AHK更新")
+        ; 重命名当前运行的脚本为旧版本，然后将新脚本重命名为 DoroHelper.ahk
+        local OldFileName := "DoroHelper_old_" . A_Now . ".ahk"
         try {
-            local newPath := A_ScriptDir . "\" . OldName
-            FileMove A_ScriptFullPath, newPath
-            FileMove localFilePath, "DoroHelper.ahk"
-            ExitApp
+            FileMove A_ScriptFullPath, A_ScriptDir . "\" . OldFileName, 1 ; 覆盖旧备份文件
+            FileMove localNewFilePath, A_ScriptDir . "\DoroHelper.ahk"
+            AddLog("AHK 脚本更新成功。旧版本已备份为 '" . OldFileName . "'。", "Green")
+            ExitApp ; 退出以加载新脚本
         } catch as e {
-            MsgBox "重命名失败: " . e.Message, "错误", "IconX"
+            MsgBox "更新后的文件重命名失败: " . e.Message . "`n请手动将下载的 '" . NewFileName . "' 文件重命名为 'DoroHelper.ahk' 并替换现有文件。", "错误", "IconX"
+            AddLog("更新后的文件重命名失败: " . e.Message, "Red")
             result.Set("message", "重命名失败: " . e.Message)
             return result
         }
     } else {
-        MsgBox "脚本已经在重命名后的状态下运行", "警告", "IconW"
-        result.Set("message", "脚本已经在重命名后的状态下运行")
+        ; 如果 shouldDownload 为 false，表示不需要下载或用户已取消
+        AddLog("AHK 脚本无需更新或用户选择取消。", "Blue")
+        result.Set("success", true)
+        result.Set("message", "AHK 脚本无需更新或用户选择取消。")
         return result
     }
+    ; 这一行在 ExitApp 之后不会被执行，仅作为逻辑完整性展示（但实际上不会到达）
     result.Set("success", true)
-    result.Set("message", "更新成功，脚本即将重启。")
+    result.Set("message", "AHK 脚本更新流程完成，脚本已重启。")
     return result
 }
 ;tag AHK资源文件更新检查子函数
@@ -1474,13 +1512,13 @@ CheckForResourceUpdate(isManualCheck) {
                 local remoteLastModifiedFromDetails := remoteFileDetails.Get("remoteLastModified", "")
                 local needsUpdate := false
                 if (localSha != remoteSha) {
-                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "Orange")
+                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "Red")
                     needsUpdate := true
                 } else if (!FileExist(localFilePath)) {
-                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "Orange")
+                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "Red")
                     needsUpdate := true
                 } else if (remoteLastModifiedFromDetails != "" && localLastModified != "" && remoteLastModifiedFromDetails > localLastModified) {
-                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (" . remoteLastModifiedFromDetails . ") 晚于本地 (" . localLastModified . ")。", "Orange")
+                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (" . remoteLastModifiedFromDetails . ") 晚于本地 (" . localLastModified . ")。", "Red")
                     needsUpdate := true
                 }
                 if (needsUpdate) {
@@ -1756,20 +1794,20 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
                 }
             }
             if !IsObject(targetAssetEntry) {
-                AddLog(sourceName . " 警告: 未找到任何符合条件的正式版 EXE 下载。回退到查找最新的任何 EXE。", "Orange")
+                AddLog(sourceName . " 警告: 未找到任何符合条件的正式版 EXE 下载。回退到查找最新的任何 EXE。", "Red")
                 for assetEntry in allReleaseAssets {
                     if !IsObject(assetEntry) || !(assetEntry.HasProp("version")) {
                         continue
                     }
                     if (assetEntry.HasProp("name") && InStr(assetEntry.name, "DoroHelper", false) && InStr(assetEntry.name, ".exe", false)) {
                         targetAssetEntry := assetEntry
-                        AddLog(sourceName . " 警告: 回退到最新 EXE 文件 " . assetEntry.name . "，版本 " . assetEntry.version, "Orange")
+                        AddLog(sourceName . " 警告: 回退到最新 EXE 文件 " . assetEntry.name . "，版本 " . assetEntry.version, "Red")
                         break
                     }
                 }
                 if !IsObject(targetAssetEntry) && allReleaseAssets.Length > 0 {
                     targetAssetEntry := allReleaseAssets[1]
-                    AddLog(sourceName . " 警告: 无法匹配到 DoroHelper*.exe，回退到最新 Release 的第一个发现的资产。", "Orange")
+                    AddLog(sourceName . " 警告: 无法匹配到 DoroHelper*.exe，回退到最新 Release 的第一个发现的资产。", "Red")
                 }
                 if !IsObject(targetAssetEntry) || !(targetAssetEntry.HasProp("version")) {
                     latestObjMapOut.Set("message", sourceName . " 更新检查：未找到任何有效的 Release Assets。")
@@ -1795,7 +1833,7 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
             return false
         }
         if (!targetAssetEntry.HasProp("downloadURL") || latestObjMapOut.Get("download_url") == "") {
-            AddLog(sourceName . " 警告: 未能为版本 " . latestObjMapOut.Get("version") . " 找到有效的下载链接。", "Orange")
+            AddLog(sourceName . " 警告: 未能为版本 " . latestObjMapOut.Get("version") . " 找到有效的下载链接。", "Red")
         }
         AddLog(sourceName . " 更新检查：获取到版本 " . latestObjMapOut.Get("version") . (latestObjMapOut.Get("download_url") ? "" : " (下载链接未找到)"))
         if (CompareVersionsSemVer(latestObjMapOut.Get("version"), currentVersion) > 0) {

@@ -1157,8 +1157,8 @@ global latestObj := Map( ; latestObj 是全局变量，在此处初始化，并�
     "version", "",
     "change_notes", "无更新说明",
     "download_url", "",
-    "source", "", ; e.g., "github", "mirror", "ahk"
-    "display_name", "" ; e.g., "GitHub", "Mirror酱", "AHK版"
+    "source", "", ; 例如: "github", "mirror", "ahk"
+    "display_name", "" ; 例如: "GitHub", "Mirror酱", "AHK版"
 )
 ;tag 统一检查更新
 CheckForUpdate(isManualCheck) {
@@ -1232,6 +1232,7 @@ CheckForUpdate(isManualCheck) {
             MsgBox("当前通道为:" . channelInfo . "通道 - " . latestObj.Get("display_name") . "`n最新版本为:" . latestObj.Get("version") "`n当前版本为:" . currentVersion "`n当前已是最新版本", "检查更新", "IconI")
         }
     } else {
+        ; 如果 checkSucceeded 为 false，表示发生错误，或者即使成功但版本为空（现在不太可能）
         local displayMessage := latestObj.Get("message", "")
         if (displayMessage == "") { ; 如果没有设置具体的错误消息，则使用备用消息
             displayMessage := (latestObj.Get("display_name") ? latestObj.Get("display_name") : "更新") . " 更新检查：未能获取到有效的版本信息或检查被中止"
@@ -1559,8 +1560,8 @@ ParseDateTimeString(dateTimeStr) {
 CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
     global currentVersion, g_numeric_settings
     local sourceName := "Mirror酱"
-    latestObjMapOut.Set("message", "")
-    latestObjMapOut.Set("foundNewVersion", false)
+    latestObjMapOut.Set("message", "") ; 清除在主 CheckForUpdate 中设置的任何先前消息
+    latestObjMapOut.Set("foundNewVersion", false) ; 重置此标志
     AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
     if Trim(g_numeric_settings.Get("MirrorCDK")) == "" {
         latestObjMapOut.Set("message", "Mirror酱 CDK 为空，无法检查更新")
@@ -1568,7 +1569,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
             MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
         }
         AddLog(latestObjMapOut.Get("message"), "Red")
-        return false
+        return false ; 表示失败
     }
     local apiUrl := "https://mirrorchyan.com/api/resources/DoroHelper/latest?"
     apiUrl .= "cdk=" . g_numeric_settings.Get("MirrorCDK")
@@ -1597,6 +1598,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
     }
     local ResponseTextForJson := ""
     if (ResponseStatus == 200) {
+        ; 检查 ResponseBody 是否为 SafeArray 类型 (二进制数据)
         if (IsObject(ResponseBody) && (ComObjType(ResponseBody) & 0x2000)) {
             try {
                 local dataPtr := 0, lBound := 0, uBound := 0
@@ -1615,24 +1617,28 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
                 ResponseTextForJson := HttpRequest.ResponseText
                 AddLog(sourceName . " 警告: SafeArray 处理失败，回退到 HttpRequest.ResponseText，可能存在编码问题")
             }
-        } else if (IsObject(ResponseBody)) {
+        }
+        ; 如果 ResponseBody 是其他类型的 COM 对象 (例如 ADODB.Stream 可能在某些旧系统或特定配置下返回)
+        else if (IsObject(ResponseBody)) {
             AddLog(sourceName . " 警告: ResponseBody 是对象但不是 SafeArray (类型: " . ComObjType(ResponseBody, "Name") . ")，尝试 ADODB.Stream")
             try {
                 local Stream := ComObject("ADODB.Stream")
-                Stream.Type := 1
+                Stream.Type := 1 ; 设置为二进制模式
                 Stream.Open()
                 Stream.Write(ResponseBody)
-                Stream.Position := 0
-                Stream.Type := 2
-                Stream.Charset := "utf-8"
+                Stream.Position := 0 ; 重置流位置
+                Stream.Type := 2 ; 设置为文本模式
+                Stream.Charset := "utf-8" ; 指定字符编码
                 ResponseTextForJson := Stream.ReadText()
                 Stream.Close()
             } catch as e_adodb {
-                AddLog(sourceName . " 错误: ADODB.Stream 处理 ResponseBody (non-SafeArray COM Object) 失败: " . e_adodb.Message, "Red")
+                AddLog(sourceName . " 错误: ADODB.Stream 处理 ResponseBody (非 SafeArray COM 对象) 失败: " . e_adodb.Message, "Red")
                 ResponseTextForJson := HttpRequest.ResponseText
                 AddLog(sourceName . " 警告: ADODB.Stream 失败，回退到 HttpRequest.ResponseText，可能存在编码问题")
             }
-        } else {
+        }
+        ; 如果 ResponseBody 既不是 COM 对象也不是 SafeArray，直接使用 ResponseText (可能存在编码问题)
+        else {
             AddLog(sourceName . " 警告: ResponseBody 不是 COM 对象，或请求未成功。将直接使用 HttpRequest.ResponseText")
             ResponseTextForJson := HttpRequest.ResponseText
         }
@@ -1641,7 +1647,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
             if (!IsObject(JsonData)) {
                 latestObjMapOut.Set("message", sourceName . " API 响应格式错误")
                 if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
-                    AddLog(latestObjMapOut.Get("message") . ". ResponseText (first 200): " . SubStr(ResponseTextForJson, 1, 200), "Red")
+                    AddLog(latestObjMapOut.Get("message") . ". ResponseText (前200字符): " . SubStr(ResponseTextForJson, 1, 200), "Red")
                 return false
             }
             local jsonDataCode := JsonData.Get("code", -1)
@@ -1669,7 +1675,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
                 if (isManualCheck) {
                     MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
                 }
-                AddLog(errorMsg . " Type of 'data' retrieved: " . Type(potentialData), "Red")
+                AddLog(errorMsg . " 取回的 'data' 类型: " . Type(potentialData), "Red")
                 return false
             }
             local mirrorData := potentialData
@@ -2181,7 +2187,6 @@ GetMainBoardSerial() {
     wmi := ComObjGet("winmgmts:\\.\root\cimv2")
     query := "SELECT * FROM Win32_BaseBoard"
     for board in wmi.ExecQuery(query) {
-        ; Mainboard serial is typically in 'SerialNumber'
         return board.SerialNumber
     }
     return "未找到序列号"
@@ -2189,11 +2194,8 @@ GetMainBoardSerial() {
 ;tag 获取CPU序列号的函数
 GetCpuSerial() {
     wmi := ComObjGet("winmgmts:\\.\root\cimv2")
-    ; Win32_Processor class contains CPU information
     query := "SELECT * FROM Win32_Processor"
     for cpu in wmi.ExecQuery(query) {
-        ; CPU serial is typically in 'ProcessorID' or 'SerialNumber'
-        ; ProcessorID is more commonly available and unique for CPUs
         return cpu.ProcessorID
     }
     return "未找到序列号"
@@ -2203,19 +2205,16 @@ GetDiskSerial() {
     wmi := ComObjGet("winmgmts:\\.\root\cimv2")
     query := "SELECT * FROM Win32_DiskDrive"
     for disk in wmi.ExecQuery(query) {
-        ; 返回找到的第一块硬盘的序列号
         return disk.SerialNumber
     }
-    ; 如果没有找到任何硬盘，返回一个默认值
     return "未找到序列号"
 }
-;tag 获取所有硬盘序列号的函数（用于校验设备码）
+;tag 获取所有硬盘序列号的函数
 GetDiskSerialsForValidation() {
     wmi := ComObjGet("winmgmts:\\.\root\cimv2")
     query := "SELECT * FROM Win32_DiskDrive"
-    diskSerials := [] ; 创建一个空数组
+    diskSerials := []
     for disk in wmi.ExecQuery(query) {
-        ; 将每个硬盘的序列号添加到数组中
         diskSerials.Push(disk.SerialNumber)
     }
     return diskSerials
@@ -5782,6 +5781,5 @@ AutoAdvance(*) {
 ^0:: {
     ;添加基本的依赖
     ; Initialization()
-    HashGitSHA1("C:\Users\12042\Documents\GitHub\DoroHelper\lib\FindText.ahk")
 }
 ;endregion 快捷键

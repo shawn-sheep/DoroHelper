@@ -16,7 +16,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.7.5"
+currentVersion := "v1.7.6"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -721,12 +721,6 @@ if g_settings["AutoDeleteOldFile"]
 ;tag 检查更新
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
-;tag 检查脚本哈希
-SplitPath A_ScriptFullPath, , , &scriptExtension
-scriptExtension := StrLower(scriptExtension)
-if (scriptExtension = "ahk") {
-    AddLog("当前文件的GitSHA-1短哈希是：" MyFileShortHash)
-}
 ;tag 定时启动
 if g_settings["Timedstart"] {
     if UserLevel >= 3 {
@@ -1344,7 +1338,6 @@ CheckForUpdate_AHK_File(isManualCheck) {
     }
     if (remoteLastModified != "" && localLastModified != "") {
         if (remoteLastModified <= localLastModified) {
-            AddLog("本地文件修改时间晚于或等于远程文件，认为本地版本已是最新或已修改，无需下载。", "Green")
             if (isManualCheck) {
                 MsgBox("检测到本地文件可能已被修改或已是最新，无需下载更新。", "AHK更新提示", "IconI")
             }

@@ -132,7 +132,7 @@ global g_settings := Map(
     "CloseAdvertisement", 0,     ;关闭广告提示
     "CloseHelp", 0,              ;关闭帮助提示
     "AutoCheckUpdate", 0,        ;自动检查更新
-    "AutoCheckUserGroup", 0,     ;自动检查会员组
+    "AutoCheckUserGroup", 1,     ;自动检查会员组
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
     "DoroClosing", 0,            ;完成后自动关闭Doro
     "LoopMode", 0,               ;完成后自动关闭游戏
@@ -2282,86 +2282,98 @@ GetDiskSerialsForValidation() {
 }
 ;tag 确定用户组
 CheckUserGroup() {
-    global TextUserGroup, UserGroup
+    global TextUserGroup, UserGroup, UserLevel ; 声明为全局，以便修改GUI和UserLevel
+    ; 静态变量用于缓存结果和标记是否已运行
+    static cachedUserGroupInfo := unset
+    static hasRun := false
+    ; 如果函数已经执行过并且有缓存数据，则直接返回缓存结果
+    if (hasRun && IsObject(cachedUserGroupInfo)) {
+        ; 每次返回前，更新GUI显示和全局UserGroup/UserLevel
+        TextUserGroup.Value := cachedUserGroupInfo.MembershipType
+        UserGroup := cachedUserGroupInfo.MembershipType
+        UserLevel := cachedUserGroupInfo.UserLevel
+        AddLog("从缓存获取用户组信息: " . cachedUserGroupInfo.MembershipType, "Blue")
+        return cachedUserGroupInfo
+    }
+    AddLog("首次运行，正在检查用户组信息……", "Blue")
     ; 1. 初始化默认用户组
     try {
         TextUserGroup.Value := "普通用户"
         UserGroup := "普通用户"
+        UserLevel := 0 ; 默认用户级别
         expiryDate := "19991231"
     }
     ; 2. 获取硬件信息
     try {
         mainBoardSerial := GetMainBoardSerial()
         cpuSerial := GetCpuSerial()
-        ; 获取所有硬盘的序列号数组（注意：此函数需要单独实现）
         diskSerials := GetDiskSerialsForValidation()
-        ; 检查是否成功获取硬盘序列号
         if (diskSerials.Length = 0) {
             AddLog("警告: 未检测到任何硬盘序列号。")
         }
     } catch as e {
-        AddLog("获取硬件信息失败: " e.Message)
-        return
+        AddLog("获取硬件信息失败: " e.Message, "Red")
+        cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
+        hasRun := true
+        return cachedUserGroupInfo
     }
     ; 3. 从网络获取用户组数据
     jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
     jsonContent := DownloadUrlContent(jsonUrl)
     if (jsonContent = "") {
-        AddLog("无法获取用户组信息，请检查网络后尝试重启程序")
-        return
+        AddLog("无法获取用户组信息，请检查网络后尝试重启程序", "Red")
+        cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
+        hasRun := true
+        return cachedUserGroupInfo
     }
     ; 4. 解析JSON数据
     try {
         groupData := Json.Load(&jsonContent)
         if !IsObject(groupData) {
-            AddLog("解析 JSON 文件失败或格式不正确")
-            return
+            AddLog("解析 JSON 文件失败或格式不正确", "Red")
+            cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
+            hasRun := true
+            return cachedUserGroupInfo
         }
     } catch as e {
-        AddLog("解析 JSON 文件时发生错误: " e.Message)
-        return
+        AddLog("解析 JSON 文件时发生错误: " e.Message, "Red")
+        cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
+        hasRun := true
+        return cachedUserGroupInfo
     }
     ; 5. 校验用户组成员资格
     CurrentDate := A_YYYY A_MM A_DD
     isMember := false
+    local tempUserGroup := "普通用户"
+    local tempExpiryDate := "19991231"
+    local tempUserLevel := 0
     ; 为每一块硬盘生成一个哈希值
     for diskSerial in diskSerials {
-        Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+        local Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
         for _, memberInfo in groupData {
-            ; 检查 memberInfo 是否为对象且包含 'hash' 键，并与计算的哈希值匹配
             if IsObject(memberInfo) && memberInfo.Has("hash") && (memberInfo["hash"] == Hashed) {
-                ; 找到匹配项，继续校验有效期和等级
                 if memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
-                    expiryDate := memberInfo["expiry_date"]
-                    if (expiryDate >= CurrentDate) {
-                        UserGroup := memberInfo["tier"]
-                        TextUserGroup.Value := UserGroup
-                        g_numeric_settings["UserGroup"] := UserGroup
-                        AddLog("验证成功，当前用户组：" UserGroup)
-                        AddLog("有效期至" expiryDate)
-                        ; 设置用户级别和托盘图标的逻辑...
-                        if (UserGroup == "管理员") {
-                            global UserLevel := 10
-                        }
-                        if (UserGroup == "金Doro会员") {
-                            try TraySetIcon("icon\GoldDoro.ico")
-                            global UserLevel := 3
-                        }
-                        if (UserGroup == "银Doro会员") {
-                            try TraySetIcon("icon\SilverDoro.ico")
-                            global UserLevel := 2
-                        }
-                        if (UserGroup == "铜Doro会员") {
-                            try TraySetIcon("icon\CopperDoro.ico")
-                            global UserLevel := 1
+                    tempExpiryDate := memberInfo["expiry_date"]
+                    if (tempExpiryDate >= CurrentDate) {
+                        tempUserGroup := memberInfo["tier"]
+                        if (tempUserGroup == "管理员") {
+                            tempUserLevel := 10
+                        } else if (tempUserGroup == "金Doro会员") {
+                            tempUserLevel := 3
+                        } else if (tempUserGroup == "银Doro会员") {
+                            tempUserLevel := 2
+                        } else if (tempUserGroup == "铜Doro会员") {
+                            tempUserLevel := 1
+                        } else {
+                            tempUserLevel := 0
                         }
                         isMember := true
                         break ; 找到有效的匹配项，退出内部循环 (groupData loop)
                     } else {
-                        AddLog("会员已过期 (到期日: " expiryDate ")。已降级为普通用户")
+                        AddLog("会员已过期 (到期日: " tempExpiryDate ")。已降级为普通用户", "Red")
                     }
                 } else {
-                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)")
+                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)", "Red")
                 }
             }
             if (isMember) {
@@ -2372,11 +2384,33 @@ CheckUserGroup() {
             break ; 找到有效的匹配项，退出外部循环 (diskSerials loop)
         }
     }
-    if (!isMember) {
-        AddLog("当前设备非会员")
+    ; 更新全局变量和GUI显示
+    UserGroup := tempUserGroup
+    TextUserGroup.Value := UserGroup
+    g_numeric_settings["UserGroup"] := UserGroup
+    UserLevel := tempUserLevel
+    if (isMember) {
+        if (UserGroup == "管理员") {
+            ; 管理员可以有特殊图标，根据你的实际情况设置
+            ; TraySetIcon("icon\AdminDoro.ico")
+        } else if (UserGroup == "金Doro会员") {
+            try TraySetIcon("icon\GoldDoro.ico")
+        } else if (UserGroup == "银Doro会员") {
+            try TraySetIcon("icon\SilverDoro.ico")
+        } else if (UserGroup == "铜Doro会员") {
+            try TraySetIcon("icon\CopperDoro.ico")
+        } else {
+            try TraySetIcon("doro.ico") ; 普通用户或过期会员
+        }
+        AddLog("当前用户组：" UserGroup . " (有效期至" tempExpiryDate . ")", "Green")
+    } else {
+        AddLog("当前设备非会员，用户组：普通用户（或已过期）")
+        try TraySetIcon("doro.ico") ; 恢复默认图标
     }
-    UserGroupInfo := { MembershipType: UserGroup, ExpirationTime: expiryDate }
-    return UserGroupInfo
+    ; 缓存结果并标记已运行
+    cachedUserGroupInfo := { MembershipType: UserGroup, ExpirationTime: tempExpiryDate, UserLevel: UserLevel }
+    hasRun := true
+    return cachedUserGroupInfo
 }
 ;endregion 身份辅助函数
 ;region GUI辅助函数

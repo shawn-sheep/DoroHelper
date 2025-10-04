@@ -238,9 +238,10 @@ if UserGroup = "普通用户" {
 ;endregion 读取设置
 ;region 创建GUI
 ;tag 基础配置
-g_settingPages := Map("Default", [], "Login", [], "Shop", [], "SimulationRoom", [], "Arena", [], "Tower", [], "Interception", [], "Event", [], "Award", [], "Settings", [],)
+g_settingPages := Map("Default", [], "Login", [], "Shop", [], "SimulationRoom", [], "Arena", [], "Tower", [], "Interception", [], "Event", [], "Award", [], "Settings", [], "After", [])
 title := "DoroHelper - " currentVersion
 doroGui := Gui("+Resize", title)
+doroGui.Opt("+DPIScale +OwnDialogs")
 doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
 doroGui.Tips.SetBkColor(0xFFFFFF)
 doroGui.Tips.SetTxColor(0x000000)
@@ -248,16 +249,16 @@ doroGui.Tips.SetMargins(3, 3, 3, 3)
 doroGui.MarginY := Round(doroGui.MarginY * 1)
 doroGui.SetFont('s12', 'Microsoft YaHei UI')
 ;tag 框
-doroGui.AddGroupBox("x10 y10 w250 h210 ", "更新")
+Update := doroGui.AddGroupBox("x10 y10 w250 h210 ", "更新")
 BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
 BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助").OnEvent("Click", MsgSponsor)
 BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", ClickOnHelp)
 doroGui.Add("Text", "x20 y40 R1 +0x0100", "版本：" currentVersion)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "x170 yp R1")
 doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度`nahk版暂时改为下载最新版的压缩包")
-doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
-TextUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", g_numeric_settings["UserGroup"] . "❔️")
+TextUserGroup := doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
 doroGui.Tips.SetTip(TextUserGroup, "用户组会在你正式运行Doro时检查，也可以勾选右边的自动检查在每次启动时检查`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
+VariableUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", g_numeric_settings["UserGroup"])
 try doroGui.Add("Text", "x20 y90 R1 +0x0100", "哈希值：" MyFileShortHash)
 cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查", "x170 ys R1")
 doroGui.Tips.SetTip(cbAutoCheckUserGroup, "启动时自动检查用户组`n该功能启用时会略微降低启动速度`n如果你不是会员，开启这个功能对你来说没有意义")
@@ -291,9 +292,8 @@ cbDownloadSource.OnEvent("Change", (Ctrl, Info) => ShowMirror(Ctrl, Info))
 PostMessage(0x153, -1, 30, cbDownloadSource)
 PostMessage(0x153, 0, 30, cbDownloadSource)
 ;tag Mirror酱
-MirrorText := doroGui.Add("Text", "xs R1 +0x0100", "Mirror酱CDK")
-MirrorInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(MirrorInfo, "Mirror酱是一个第三方应用分发平台，让你能在普通网络环境下更新应用`n网址：https://mirrorchyan.com/zh/（付费使用）`nMirror酱和Doro会员并无任何联系")
+MirrorText := doroGui.Add("Text", "xs R1 +0x0100", "Mirror酱CDK❔️")
+doroGui.Tips.SetTip(MirrorText, "Mirror酱是一个第三方应用分发平台，让你能在普通网络环境下更新应用`n网址：https://mirrorchyan.com/zh/（付费使用）`nMirror酱和Doro会员并无任何联系")
 MirrorEditControl := doroGui.Add("Edit", "x140 yp+1 w100 h20")
 MirrorEditControl.Value := g_numeric_settings["MirrorCDK"]
 MirrorEditControl.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["MirrorCDK"] := Ctrl.Value)
@@ -303,63 +303,66 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 } else {
     MirrorText.Visible := false
     MirrorEditControl.Visible := false
-    MirrorInfo.Visible := false
 }
 ;tag 任务列表
 global g_taskListCheckboxes := []
-doroGui.AddGroupBox("x10 y230 w250 h315 ", "任务列表")
-doroGui.SetFont('s12')
-BtnSaveSettings := doroGui.Add("Button", "xp+100 yp w60 h30", "保存").OnEvent("Click", SaveSettings)
+doroGui.AddGroupBox("x10 y230 w250 h420 ", "任务列表")
 doroGui.SetFont('s9')
-BtnCheckAll := doroGui.Add("Button", "xp+70 R1", "☑️").OnEvent("Click", CheckAllTasks)
+BtnCheckAll := doroGui.Add("Button", "xp+180 R1", "✅️").OnEvent("Click", CheckAllTasks)
 doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
-BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks)
+BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "🔲").OnEvent("Click", UncheckAllTasks)
 doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
 doroGui.SetFont('s14')
-cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+35 Section", true)
+SettingsText := doroGui.Add("Text", "x20 yp+40 Section", "　基础设置")
+BtnSetting := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Settings"))
+cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "xs", true)
 doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
-BtnLogin := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
+BtnLogin := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店", "xs", true)
 doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店相关的任务`r`n具体的购买项目请在右侧详细设置")
-BtnShop := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Shop"))
+BtnShop := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Shop"))
 cbSimulationRoom := AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "xs", true)
 doroGui.Tips.SetTip(cbSimulationRoom, "总开关：控制是否执行模拟室相关的任务")
-BtnSimulationRoom := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("SimulationRoom"))
+BtnSimulationRoom := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("SimulationRoom"))
 cbArena := AddCheckboxSetting(doroGui, "Arena", "竞技场", "xs", true)
 doroGui.Tips.SetTip(cbArena, "总开关：控制是否执行竞技场相关的任务，如领取奖励、挑战不同类型的竞技场`r`n请在右侧详细设置")
-BtnArena := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Arena"))
+BtnArena := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Arena"))
 cbTower := AddCheckboxSetting(doroGui, "Tower", "无限之塔", "xs", true)
 doroGui.Tips.SetTip(cbTower, "总开关：控制是否执行无限之塔相关的任务，包括企业塔和通用塔的挑战")
-BtnTower := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Tower"))
+BtnTower := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Tower"))
 cbInterception := AddCheckboxSetting(doroGui, "Interception", "拦截战", "xs", true)
 doroGui.Tips.SetTip(cbInterception, "总开关：控制是否执行拦截战任务`r`nBOSS选择、请在右侧详细设置")
-BtnInterception := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Interception"))
+BtnInterception := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Interception"))
 cbAward := AddCheckboxSetting(doroGui, "Award", "奖励收取", "xs", true)
 doroGui.Tips.SetTip(cbAward, "总开关：控制是否执行各类日常奖励的收取任务`r`n请在右侧详细设置")
-BtnAward := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Award"))
+BtnAward := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Award"))
 cbEvent := AddCheckboxSetting(doroGui, "Event", "活动", "xs", true)
 doroGui.Tips.SetTip(cbEvent, "总开关：控制是否执行大小活动的刷取`r`n请在右侧详细设置")
-BtnEvent := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
-;tag 启动设置
+BtnEvent := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
+cbAfterText := doroGui.Add("Text", "x20 yp+40 Section", "　任务完成后")
+BtnAfter := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("After"))
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x10 yp+40 w250 h100 ", "启动选项")
-BtnReload := doroGui.Add("Button", "x110 yp-2 w60 h30", "重启").OnEvent("Click", SaveAndRestart)
-doroGui.Tips.SetTip(BtnReload, "保存设置并重启 DoroHelper")
-doroGui.SetFont('s14')
-BtnArena := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Settings"))
-doroGui.SetFont('s12')
-BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+50", "DORO!").OnEvent("Click", ClickOnDoro)
+BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+40", "DORO!").OnEvent("Click", ClickOnDoro)
+doroGui.SetFont('s16')
+BtnSaveSettings := doroGui.Add("Button", "x210 yp+2 w30 h30 ", "♻️").OnEvent("Click", SaveAndRestart)
 ;tag 二级设置
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x280 y10 w300 h640 ", "任务设置")
 ;tag 二级默认Default
-SetNotice := doroGui.Add("Text", "x290 y40 w280 +0x0100 Section", "====提示====`n请到左侧「任务列表」处对每个任务进行详细设置。鼠标悬停以查看对应详细信息。有问题先点左上角的帮助")
+SetNotice := doroGui.Add("Text", "x290 y40 w280 +0x0100 Section", "====提示====`n请到左侧「任务列表」处对每个任务进行详细设置`n有问题先点左上角的帮助`n鼠标悬停以查看对应详细信息。")
 g_settingPages["Default"].Push(SetNotice)
 SetSize := doroGui.Add("Text", "w280 +0x0100", "====游戏尺寸设置（窗口化）====`n推荐1080p分辨率的用户使用游戏内部的全屏，1080p以上分辨率的用户选择1080p，也可以适当放大")
 g_settingPages["Default"].Push(SetSize)
 Btn1080 := doroGui.Add("Button", "w60 h30 ", "1080p")
 Btn1080.OnEvent("Click", (Ctrl, Info) => AdjustSize(1920, 1080))
 g_settingPages["Default"].Push(Btn1080)
+;tag 二级设置Settings
+SetNormalTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "===基础设置===")
+g_settingPages["Settings"].Push(SetNormalTitle)
+CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "开启自动射击和爆裂", "R1 ")
+g_settingPages["Settings"].Push(CheckAutoText)
+cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示[铜Doro]", "R1")
+g_settingPages["Settings"].Push(cbCloseAdvertisement)
 ;tag 二级登录Login
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
 g_settingPages["Login"].Push(SetLogin)
@@ -602,41 +605,35 @@ doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认不使用技能，开启蓝�
 g_settingPages["Event"].Push(SetEventSpecialMinigame)
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSpecialDaily)
-;tag 二级设置Settings
-SetNormalTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "===基础设置===")
-g_settingPages["Settings"].Push(SetNormalTitle)
-CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "开启自动射击和爆裂", "R1 ")
-g_settingPages["Settings"].Push(CheckAutoText)
-cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示[铜Doro]", "R1")
-g_settingPages["Settings"].Push(cbCloseAdvertisement)
-SetSettingsTitle := doroGui.Add("Text", "R1", "====任务完成后====")
-g_settingPages["Settings"].Push(SetSettingsTitle)
+;tag 二级设置After
+SetAfterTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====任务完成后====")
+g_settingPages["After"].Push(SetAfterTitle)
 cbClearRed := AddCheckboxSetting(doroGui, "ClearRed", "任务完成后[金Doro]", "R1")
-g_settingPages["Settings"].Push(cbClearRed)
+g_settingPages["After"].Push(cbClearRed)
 cbClearRedRecycling := AddCheckboxSetting(doroGui, "ClearRedRecycling", "自动升级循环室", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedRecycling)
+g_settingPages["After"].Push(cbClearRedRecycling)
 cbClearRedSynchro := AddCheckboxSetting(doroGui, "ClearRedSynchro", "自动升级同步器", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedSynchro)
+g_settingPages["After"].Push(cbClearRedSynchro)
 cbClearRedSynchroForce := AddCheckboxSetting(doroGui, "ClearRedSynchroForce", "开箱子", "R1 x+5")
-g_settingPages["Settings"].Push(cbClearRedSynchroForce)
+g_settingPages["After"].Push(cbClearRedSynchroForce)
 cbClearRedLimit := AddCheckboxSetting(doroGui, "ClearRedLimit", "自动突破/强化妮姬", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedLimit)
+g_settingPages["After"].Push(cbClearRedLimit)
 cbClearRedCube := AddCheckboxSetting(doroGui, "ClearRedCube", "自动升级魔方", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedCube)
+g_settingPages["After"].Push(cbClearRedCube)
 cbClearRedNotice := AddCheckboxSetting(doroGui, "ClearRedNotice", "清除公告红点", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedNotice)
+g_settingPages["After"].Push(cbClearRedNotice)
 cbClearRedWallpaper := AddCheckboxSetting(doroGui, "ClearRedWallpaper", "清除壁纸红点", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedWallpaper)
+g_settingPages["After"].Push(cbClearRedWallpaper)
 cbClearRedProfile := AddCheckboxSetting(doroGui, "ClearRedProfile", "清除个人页红点", "R1 xs+15")
-g_settingPages["Settings"].Push(cbClearRedProfile)
+g_settingPages["After"].Push(cbClearRedProfile)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "打开Blablalink", "R1 xs")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
-g_settingPages["Settings"].Push(cbOpenBlablalink)
+g_settingPages["After"].Push(cbOpenBlablalink)
 cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒", "R1")
 doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在大小活动结束前进行提醒")
-g_settingPages["Settings"].Push(cbCheckEvent)
+g_settingPages["After"].Push(cbCheckEvent)
 cbDoroClosing := AddCheckboxSetting(doroGui, "DoroClosing", "关闭DoroHelper", "R1")
-g_settingPages["Settings"].Push(cbDoroClosing)
+g_settingPages["After"].Push(cbDoroClosing)
 ;tag 妙妙工具
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x600 y10 w400 h240 Section", "妙妙工具")
@@ -665,7 +662,7 @@ doroGui.Tips.SetTip(TextAutoAdvance, "半自动推图。视野调到最大。在
 BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
 BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
-doroGui.Add("Text", "x+10 +0x0100", "问就是没用")
+doroGui.Add("Text", "x+10 +0x0100", "←特定情况下勾选")
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w400 h390 Section", "日志")
 doroGui.Add("Button", "xp+320 yp-5 w80 h30", "导出日志").OnEvent("Click", CopyLog)
@@ -689,7 +686,7 @@ CheckSequence(key_char) {
     ; 检查当前的历史记录是否与目标代码完全匹配
     if (key_history == konami_code) {
         AddLog("🎉 彩蛋触发！ 🎉！Konami Code 已输入！")
-        TextUserGroup.Value := "炫彩Doro"
+        VariableUserGroup.Value := "炫彩Doro"
         key_history := ""    ; 重置历史记录，以便可以再次触发
         UserLevel := 0
     }
@@ -2285,14 +2282,14 @@ GetDiskSerialsForValidation() {
 }
 ;tag 确定用户组
 CheckUserGroup() {
-    global TextUserGroup, UserGroup, UserLevel ; 声明为全局，以便修改GUI和UserLevel
+    global VariableUserGroup, UserGroup, UserLevel ; 声明为全局，以便修改GUI和UserLevel
     ; 静态变量用于缓存结果和标记是否已运行
     static cachedUserGroupInfo := unset
     static hasRun := false
     ; 如果函数已经执行过并且有缓存数据，则直接返回缓存结果
     if (hasRun && IsObject(cachedUserGroupInfo)) {
         ; 每次返回前，更新GUI显示和全局UserGroup/UserLevel
-        TextUserGroup.Value := cachedUserGroupInfo.MembershipType
+        VariableUserGroup.Value := cachedUserGroupInfo.MembershipType
         UserGroup := cachedUserGroupInfo.MembershipType
         UserLevel := cachedUserGroupInfo.UserLevel
         AddLog("从缓存获取用户组信息: " . cachedUserGroupInfo.MembershipType, "Blue")
@@ -2301,7 +2298,7 @@ CheckUserGroup() {
     AddLog("首次运行，正在检查用户组信息……", "Blue")
     ; 1. 初始化默认用户组
     try {
-        TextUserGroup.Value := "普通用户"
+        VariableUserGroup.Value := "普通用户"
         UserGroup := "普通用户"
         UserLevel := 0 ; 默认用户级别
         expiryDate := "19991231"
@@ -2389,7 +2386,7 @@ CheckUserGroup() {
     }
     ; 更新全局变量和GUI显示
     UserGroup := tempUserGroup
-    TextUserGroup.Value := UserGroup
+    VariableUserGroup.Value := UserGroup
     g_numeric_settings["UserGroup"] := UserGroup
     UserLevel := tempUserLevel
     if (isMember) {
@@ -2446,11 +2443,9 @@ ShowMirror(Ctrl, Info) {
     if Ctrl.Value = 2 {
         MirrorText.Visible := true
         MirrorEditControl.Visible := true
-        MirrorInfo.Visible := true
     } else {
         MirrorText.Visible := false
         MirrorEditControl.Visible := false
-        MirrorInfo.Visible := false
     }
 }
 ;tag 隐藏所有二级设置
@@ -2534,7 +2529,7 @@ MsgSponsor(*) {
     guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
     ; guiSponsor.Add("Text", "xm w400 Wrap cred", "为庆祝1.6版本，在9月4日游戏版本更新前包年免两月`n已包年的用户请凭付款截图联系续期三个月")
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
-    guiSponsor.Add("Button", "xm", "I can't make the payment in the above way").OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
+    guiSponsor.Add("Button", "xm", "我无法使用以上支付方式").OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
     guiSponsor.Add("Text", "xm w280 Wrap", "赞助信息生成器")
     ; 添加 Choose1 确保默认选中
     guiTier := guiSponsor.Add("DropDownList", "Choose1 w120", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
@@ -2628,21 +2623,19 @@ ClickOnHelp(*) {
     MyHelp := Gui(, "帮助")
     MyHelp.SetFont('s10', 'Microsoft YaHei UI')
     MyHelp.Add("Text", "w600", "- 如有问题请先尝试将更新渠道切换至AHK版并进行更新（需要优质网络）。如果无法更新或仍有问题请加入反馈qq群584275905，反馈必须附带日志和录屏")
-    MyHelp.Add("Text", "w600", "- 使用前请先完成所有特殊任务，以防图标错位")
+    MyHelp.Add("Text", "w600", "- 使用前请先完成所有特殊任务（例如珍藏品任务），以防图标错位")
     MyHelp.Add("Text", "w600", "- 游戏分辨率需要设置成**16:9**的分辨率，小于1080p可能有问题，暂不打算特殊支持")
     MyHelp.Add("Text", "w600", "- 由于使用的是图像识别，请确保游戏画面完整在屏幕内，且**游戏画面没有任何遮挡**")
     MyHelp.Add("Text", "w600", "- 多显示器请支持的显示器作为主显示器，将游戏放在主显示器内")
     MyHelp.Add("Text", "w600", "- 未激活正版Windows会有水印提醒，请激活正版Windows")
     MyHelp.Add("Text", "w600", "- 不要使用微星小飞机、游戏加加等悬浮显示数据的软件")
-    MyHelp.Add("Text", "w600", "- 游戏画质越高，脚本出错的几率越低")
     MyHelp.Add("Text", "w600", "- 游戏帧数建议保持60，帧数过低时，部分场景的行动可能会被吞，导致问题")
     MyHelp.Add("Text", "w600", "- 如遇到识别问题，请尝试关闭会改变画面颜色相关的功能或设置，例如")
     MyHelp.Add("Text", "w600", "- 软件层面：各种驱动的色彩滤镜，部分笔记本的真彩模式")
     MyHelp.Add("Text", "w600", "- 设备层面：显示器的护眼模式、色彩模式、色温调节、HDR等")
     MyHelp.Add("Text", "w600", "- 游戏语言设置为**简体中文**，设定-画质-开启光晕效果，设定-画质-开启颜色分级，不要使用太亮的大厅背景")
-    MyHelp.Add("Text", "w600", "- 推荐使用win11操作系统，win10可能有未知bug")
     MyHelp.Add("Text", "w600", "- 反馈任何问题前，请先尝试复现，如能复现再进行反馈，反馈时必须有录屏和全部日志")
-    MyHelp.Add("Text", "w600", "- 鼠标悬浮在控件上会有对应的提示，请勾选或点击前仔细阅读！")
+    MyHelp.Add("Text", "w600", "- 鼠标悬浮在控件上会有对应的提示和详细信息，请勾选或点击前仔细阅读！")
     MyHelp.Add("Text", "w600", "- ctrl+1关闭程序、ctrl+2暂停程序、ctrl+3~7调整游戏大小")
     MyHelp.Add("Text", "w600", "- 如果遇到启动了但毫无反应的情况，请检查杀毒软件(如360、火绒等)是否拦截了DoroHelper的运行，请将其添加信任")
     MyHelp.Add("Text", "w600", "- 如果遇到ACE安全中心提示，请尝试卸载wegame")
@@ -2654,10 +2647,8 @@ Advertisement() {
     adTitle := "AD"
     MyAd := Gui(, adTitle)
     MyAd.SetFont('s10', 'Microsoft YaHei UI')
-    ; MyAd.Add("Text", "w300", "====帮助====")
-    ; MyAd.Add("Text", , "第一次运行请先点击左上角的帮助")
     MyAd.Add("Text", "w300", "====广告位招租====")
-    MyAd.Add("Text", , "可以通过赞助免除启动时的广告，启动选项-设置-移除启动广告")
+    MyAd.Add("Text", , "可以通过赞助免除启动时的广告，设置-移除启动广告")
     MyAd.Add("Text", , "详情见左上角的「赞助」按钮")
     MyAd.Add("Link", , '<a href="https://pan.baidu.com/s/1pAq-o6fKqUPkRcgj_xVcdA?pwd=2d1q">ahk版和exe版的网盘下载链接</a>')
     MyAd.Add("Link", , '<a href="https://nikke.hayasa.link/">====Nikke CDK Tool====</a>')

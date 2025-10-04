@@ -129,8 +129,7 @@ global g_settings := Map(
     "ClearRedLimit", 0,          ;自动突破妮姬
     "ClearRedProfile", 0,        ;清除个人页红点
     ;启动/退出相关
-    "CloseAdvertisement", 0,     ;关闭启动提示
-    "CloseNoticeSponsor", 0,     ;关闭赞助提示
+    "CloseAdvertisement", 0,     ;关闭广告提示
     "CloseHelp", 0,              ;关闭帮助提示
     "AutoCheckUpdate", 0,        ;自动检查更新
     "AutoCheckUserGroup", 0,     ;自动检查会员组
@@ -317,7 +316,7 @@ doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
 BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "⛔️").OnEvent("Click", UncheckAllTasks)
 doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
 doroGui.SetFont('s14')
-cbLogin := AddCheckboxSetting(doroGui, "Login", "登录/基础", "x20 yp+35 Section", true)
+cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "x20 yp+35 Section", true)
 doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
 BtnLogin := doroGui.Add("Button", "x180 yp-2 w60 h30", "设置").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店", "xs", true)
@@ -362,9 +361,9 @@ Btn1080 := doroGui.Add("Button", "w60 h30 ", "1080p")
 Btn1080.OnEvent("Click", (Ctrl, Info) => AdjustSize(1920, 1080))
 g_settingPages["Default"].Push(Btn1080)
 ;tag 二级登录Login
-SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项[金Doro]====")
+SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE", "R1 ")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro]", "R1 ")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
 g_settingPages["Login"].Push(StartupPathText)
@@ -375,7 +374,7 @@ g_settingPages["Login"].Push(StartupPathEdit)
 StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathInfo)
-SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动", "xs R1")
+SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro]", "xs R1")
 doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
@@ -390,10 +389,6 @@ g_settingPages["Login"].Push(StartupTimeInfo)
 cbLoopMode := AddCheckboxSetting(doroGui, "LoopMode", "自律模式", "xs+20 R1 +0x0100")
 doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动")
 g_settingPages["Login"].Push(cbLoopMode)
-SetNormalTitle := doroGui.Add("Text", "xs R1", "===基础设置===")
-g_settingPages["Login"].Push(SetNormalTitle)
-CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "开启自动射击和爆裂", "R1 ")
-g_settingPages["Login"].Push(CheckAutoText)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
@@ -495,7 +490,7 @@ g_settingPages["Tower"].Push(SetTowerUniversal)
 ;tag 二级拦截战Interception
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
 g_settingPages["Interception"].Push(SetInterceptionTitle)
-SetInterceptionNormal := AddCheckboxSetting(doroGui, "InterceptionNormal", "普通拦截[暂不支持]", "R1")
+SetInterceptionNormal := AddCheckboxSetting(doroGui, "InterceptionNormal", "普通拦截(暂不支持)", "R1")
 g_settingPages["Interception"].Push(SetInterceptionNormal)
 SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
 g_settingPages["Interception"].Push(SetInterceptionAnomaly)
@@ -558,7 +553,7 @@ g_settingPages["Award"].Push(SetAwardSoloRaid)
 SetLimitedAwardTitle := doroGui.Add("Text", "R1 Section +0x0100", "===限时奖励===")
 doroGui.Tips.SetTip(SetLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动")
 g_settingPages["Award"].Push(SetLimitedAwardTitle)
-SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动期间每日免费招募[失效]", "R1.2")
+SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动期间每日免费招募", "R1.2")
 doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
 g_settingPages["Award"].Push(SetAwardFreeRecruit)
 ;tag 二级活动Event
@@ -566,9 +561,9 @@ SetEventUniversal := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====通
 g_settingPages["Event"].Push(SetEventUniversal)
 SetAutoFill := AddCheckboxSetting(doroGui, "AutoFill", "剧情活动自动添加妮姬[金Doro]", "R1 ")
 g_settingPages["Event"].Push(SetAutoFill)
-SetEventTitle := doroGui.Add("Text", "R1 +0x0100", "====活动选项[银Doro]====")
+SetEventTitle := doroGui.Add("Text", "R1 +0x0100", "====活动选项====")
 g_settingPages["Event"].Push(SetEventTitle)
-SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动总开关[未开放]", "R1")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动[银Doro](未开放)", "R1")
 g_settingPages["Event"].Push(SetEventSmall)
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSmallChallenge)
@@ -576,7 +571,7 @@ SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动�
 g_settingPages["Event"].Push(SetEventSmallStory)
 SetEventSmallMission := AddCheckboxSetting(doroGui, "EventSmallMission", "小活动任务", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSmallMission)
-SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动总开关[REBORN EVIL]", "R1 xs")
+SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动[银Doro](REBORN EVIL)", "R1 xs")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeSign)
@@ -591,7 +586,7 @@ doroGui.Tips.SetTip(SetEventLargeMinigame, "购买「扩充物品栏」后需要
 g_settingPages["Event"].Push(SetEventLargeMinigame)
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventLargeDaily)
-SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动总开关[未开放]", "R1 xs")
+SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动[银Doro](未开放)", "R1 xs")
 g_settingPages["Event"].Push(SetEventSpecial)
 SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊活动签到", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSpecialSign)
@@ -600,7 +595,7 @@ g_settingPages["Event"].Push(SetEventSpecialChallenge)
 SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊活动剧情❔️", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialStory, "部分关卡可能有特殊关，此时需要手动完成任务")
 g_settingPages["Event"].Push(SetEventSpecialStory)
-SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战[暂时禁用]", "R1 xs+15")
+SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSpecialCooperate)
 SetEventSpecialMinigame := AddCheckboxSetting(doroGui, "EventSpecialMinigame", "特殊活动小游戏", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认不使用技能，开启蓝色药丸后使用技能")
@@ -608,7 +603,13 @@ g_settingPages["Event"].Push(SetEventSpecialMinigame)
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")
 g_settingPages["Event"].Push(SetEventSpecialDaily)
 ;tag 二级设置Settings
-SetSettingsTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====设置选项====")
+SetNormalTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "===基础设置===")
+g_settingPages["Settings"].Push(SetNormalTitle)
+CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "开启自动射击和爆裂", "R1 ")
+g_settingPages["Settings"].Push(CheckAutoText)
+cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示[铜Doro]", "R1")
+g_settingPages["Settings"].Push(cbCloseAdvertisement)
+SetSettingsTitle := doroGui.Add("Text", "R1", "====任务完成后====")
 g_settingPages["Settings"].Push(SetSettingsTitle)
 cbClearRed := AddCheckboxSetting(doroGui, "ClearRed", "任务完成后[金Doro]", "R1")
 g_settingPages["Settings"].Push(cbClearRed)
@@ -628,17 +629,13 @@ cbClearRedWallpaper := AddCheckboxSetting(doroGui, "ClearRedWallpaper", "清除�
 g_settingPages["Settings"].Push(cbClearRedWallpaper)
 cbClearRedProfile := AddCheckboxSetting(doroGui, "ClearRedProfile", "清除个人页红点", "R1 xs+15")
 g_settingPages["Settings"].Push(cbClearRedProfile)
-cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "任务完成后打开Blablalink", "R1 xs")
+cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "打开Blablalink", "R1 xs")
 doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
 g_settingPages["Settings"].Push(cbOpenBlablalink)
-cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除启动广告[铜Doro]", "R1")
-g_settingPages["Settings"].Push(cbCloseAdvertisement)
-cbCloseNoticeSponsor := AddCheckboxSetting(doroGui, "CloseNoticeSponsor", "移除赞助提示[铜Doro]", "R1")
-g_settingPages["Settings"].Push(cbCloseNoticeSponsor)
-cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒[铜Doro]", "R1")
-doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在活动结束前进行提醒`r`n注意：此功能需要会员用户组才能使用")
+cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒", "R1")
+doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在大小活动结束前进行提醒")
 g_settingPages["Settings"].Push(cbCheckEvent)
-cbDoroClosing := AddCheckboxSetting(doroGui, "DoroClosing", "任务完成后关闭DoroHelper", "R1")
+cbDoroClosing := AddCheckboxSetting(doroGui, "DoroClosing", "关闭DoroHelper", "R1")
 g_settingPages["Settings"].Push(cbDoroClosing)
 ;tag 妙妙工具
 doroGui.SetFont('s12')
@@ -915,22 +912,18 @@ ClickOnDoro(*) {
         SaveAndRestart
     }
     if g_settings["CheckEvent"] {
-        if UserLevel < 1 {
-            MsgBox("当前用户组不支持活动结束提醒，请点击赞助按钮升级会员组")
-            Pause
-        }
         CheckEvent()
     }
     CalculateAndShowSpan()
-    if UserLevel < 1 or !g_settings["CloseNoticeSponsor"] {
+    if UserLevel < 1 or !g_settings["CloseAdvertisement"] {
         Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
         if Result = "Yes"
             MsgSponsor
     }
-    if UserLevel > 0 and UserLevel < 10 and g_settings["CloseNoticeSponsor"] {
+    if UserLevel > 0 and UserLevel < 10 and g_settings["CloseAdvertisement"] {
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
     }
-    if UserLevel = 10 and g_settings["CloseNoticeSponsor"] {
+    if UserLevel = 10 and g_settings["CloseAdvertisement"] {
         Result := MsgBox("Doro完成任务！" outputText "`n感谢你的辛苦付出～")
     }
     if g_settings["OpenBlablalink"]
@@ -2434,7 +2427,6 @@ MsgSponsor(*) {
     LV.Add(, "每月（30天）价格", "免费", "6元", "18元", "30元")
     LV.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
     LV.Add(, "移除广告和赞助提示", "", "✅️", "✅️", "✅️")
-    LV.Add(, "活动结束提醒", "", "✅️", "✅️", "✅️")
     LV.Add(, "轮换活动", "", "", "✅️", "✅️")
     LV.Add(, "路径和定时启动", "", "", "", "✅️")
     LV.Add(, "自动推图", "", "", "", "✅️")

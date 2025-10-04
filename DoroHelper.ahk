@@ -2044,8 +2044,10 @@ DeleteOldFile(*) {
 ;region 身份辅助函数
 ;tag 下载指定URL的内容
 DownloadUrlContent(url) {
+    ; 这个函数是获取纯文本内容，而不是下载文件到磁盘。
+    ; 请注意与 Download 命令的区别。
     try {
-        local whr := ComObject("WinHttp.WinHttpRequest.5.1")
+        whr := ComObject("WinHttp.WinHttpRequest.5.1")
         whr.Open("GET", url, true)
         whr.Send()
         whr.WaitForResponse(10) ; 10 秒超时
@@ -2053,10 +2055,37 @@ DownloadUrlContent(url) {
             AddLog("下载 URL 内容失败，HTTP状态码: " . whr.Status . " URL: " . url, "Red")
             return ""
         }
-        ; WinHttp.WinHttpRequest.5.1 的 ResponseText 通常会处理好编码
-        ; 如果有特定编码问题，可以考虑手动解码 ResponseBody (SafeArray of bytes)
-        ; 但优先使用 ResponseText 简化
-        return whr.ResponseText
+        ; 尝试以 UTF-8 解码响应体
+        local responseBody := whr.ResponseBody
+        if (IsObject(responseBody) && ComObjType(responseBody) & 0x2000) { ; SafeArray (VT_ARRAY)
+            local dataPtr := 0, lBound := 0, uBound := 0
+            DllCall("OleAut32\SafeArrayGetLBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &lBound)
+            DllCall("OleAut32\SafeArrayGetUBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &uBound)
+            local actualSize := uBound - lBound + 1
+            if (actualSize > 0) {
+                DllCall("OleAut32\SafeArrayAccessData", "Ptr", ComObjValue(responseBody), "Ptr*", &dataPtr)
+                local content := StrGet(dataPtr, actualSize, "UTF-8")
+                DllCall("OleAut32\SafeArrayUnaccessData", "Ptr", ComObjValue(responseBody))
+                return content
+            } else {
+                AddLog("下载 URL 内容警告: SafeArray 大小为0或无效，URL: " . url)
+                return ""
+            }
+        } else if IsObject(responseBody) { ; Other COM object, try ADODB.Stream
+            local Stream := ComObject("ADODB.Stream")
+            Stream.Type := 1 ; adTypeBinary
+            Stream.Open()
+            Stream.Write(responseBody)
+            Stream.Position := 0
+            Stream.Type := 2 ; adTypeText
+            Stream.Charset := "utf-8"
+            local content := Stream.ReadText()
+            Stream.Close()
+            return content
+        } else { ; Not a COM object, fallback to ResponseText (may have encoding issues)
+            AddLog("下载 URL 内容警告: ResponseBody 不是预期类型，回退到 ResponseText，URL: " . url)
+            return whr.ResponseText
+        }
     } catch as e {
         AddLog("下载 URL 内容时发生错误: " . e.Message . " URL: " . url, "Red")
         return ""

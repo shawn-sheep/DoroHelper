@@ -16,7 +16,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.7.4"
+currentVersion := "v1.7.5"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -1153,51 +1153,40 @@ StartDailyTimer() {
 }
 ;endregion 启动辅助函数
 ;region 更新辅助函数
-; 全局变量声明 - 确保这些在函数外部有定义
-; global currentVersion, usr, repo, latestObj, g_settings, g_numeric_settings, scriptExtension
-; latestObj 结构体定义，用于在更新流程中传递最新版本信息
-global latestObj := Map(
+global latestObj := Map( ; latestObj 是全局变量，在此处初始化，并通过辅助函数直接填充
     "version", "",
     "change_notes", "无更新说明",
     "download_url", "",
-    "source", "", ; "github", "mirror", "ahk"
-    "display_name", "" ; "GitHub", "Mirror酱", "AHK版"
+    "source", "", ; e.g., "github", "mirror", "ahk"
+    "display_name", "" ; e.g., "GitHub", "Mirror酱", "AHK版"
 )
 ;tag 统一检查更新
 CheckForUpdate(isManualCheck) {
-    global currentVersion, g_numeric_settings, latestObj, scriptExtension
+    global currentVersion, usr, repo, latestObj, g_settings, g_numeric_settings, scriptExtension
     ; 重置 latestObj 以确保每次检查都是新的状态
-    latestObj := Map(
-        "version", "",
-        "change_notes", "无更新说明",
-        "download_url", "",
-        "source", "", ; "github", "mirror", "ahk"
-        "display_name", "" ; "GitHub", "Mirror酱", "AHK版"
-    )
-    local foundNewVersion := false
-    local channelInfo := (g_numeric_settings["UpdateChannels"] == "测试版") ? "测试版" : "正式版"
-    local checkResult := Map() ; 用于存储子函数返回的结果
-    ; ==================== AHK文件更新检查 (本体更新) =====================
-    if (scriptExtension = "ahk") { ; 只有当当前运行的是 AHK 脚本时才检查 AHK 本体更新
+    ; 此处不直接重建Map，而是清空内容，以避免垃圾回收开销和可能的引用问题。
+    for k, v in latestObj {
+        latestObj.Delete(k)
+    }
+    local checkSucceeded := false
+    local channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
+    ; ==================== AHK 文件更新检查 (脚本本体更新) =====================
+    if (scriptExtension = "ahk") {
         AddLog("开始检查 DoroHelper.ahk 本体更新……")
-        local ahkResult := CheckForUpdate_AHK_File(isManualCheck)
-        ; 核心逻辑判断
-        if (ahkResult.Has("success") && ahkResult.success) {
-            ; 确保 success 键存在且为 true。直接使用硬编码字符串。
-            AddLog("DoroHelper.ahk 本体更新检查成功: 本地版本已是最新或已修改，无需下载。", "Green")
+        local ahkResult := CheckForUpdate_AHK_File(isManualCheck) ; 该函数返回其自身的 Map 结果，不直接修改 latestObj
+        if (ahkResult.Get("success", false)) {
+            AddLog("DoroHelper.ahk 本体更新检查成功: " . ahkResult.Get("message", "本地版本已是最新或已修改。"), "Green")
         } else {
-            local failureMessage := ahkResult.Get("message", "未知错误")
-            AddLog("DoroHelper.ahk 本体更新检查失败或被跳过: " . failureMessage, "Red")
+            AddLog("DoroHelper.ahk 本体更新检查失败或被跳过: " . ahkResult.Get("message", "未知错误"), "Red")
         }
-        ; 无论本体是否更新，都继续检查资源文件
         AddLog("开始检查函数库文件更新 (资源更新)……")
-        local resourceUpdateResult := CheckForResourceUpdate(isManualCheck)
+        local resourceUpdateResult := CheckForResourceUpdate(isManualCheck) ; 该函数也返回其自身的 Map 结果。
         if (resourceUpdateResult.Get("success", false)) {
             AddLog("函数库文件更新检查完成。")
             if (resourceUpdateResult.Get("updatedCount", 0) > 0) {
-                AddLog("已更新 " . resourceUpdateResult.updatedCount . " 个函数库文件。请重启脚本以加载新文件。", "Green")
+                AddLog("已更新 " . resourceUpdateResult.Get("updatedCount") . " 个函数库文件。请重启脚本以加载新文件。", "Green")
                 if (isManualCheck) {
-                    MsgBox("已更新 " . resourceUpdateResult.updatedCount . " 个函数库文件。请重启 DoroHelper 以加载新文件。", "资源更新完成", "IconI")
+                    MsgBox("已更新 " . resourceUpdateResult.Get("updatedCount") . " 个函数库文件。请重启 DoroHelper 以加载新文件。", "资源更新完成", "IconI")
                 }
             } else {
                 AddLog("所有函数库文件更新检查成功: 本地版本已是最新或已修改，无需下载。", "Green")
@@ -1213,39 +1202,43 @@ CheckForUpdate(isManualCheck) {
         }
         return ; AHK 版本的更新逻辑（本体+资源）是独立的，处理完后直接返回
     }
-    ; ==================== Mirror酱 更新检查 (EXE版本) ====================
-    if (g_numeric_settings["DownloadSource"] == "Mirror酱") {
-        latestObj.source := "mirror"
-        latestObj.display_name := "Mirror酱"
-        checkResult := CheckForUpdate_Mirror(isManualCheck, channelInfo)
+    ; ==================== EXE 版本更新检查（Mirror酱 或 Github） ====================
+    ; 确定更新来源是 Mirror酱 还是 Github (只针对 EXE 版本)
+    latestObj.Set("version", "")
+    latestObj.Set("change_notes", "无更新说明")
+    latestObj.Set("download_url", "")
+    latestObj.Set("foundNewVersion", false) ; 确保此标志也已被重置
+    if (g_numeric_settings.Get("DownloadSource") == "Mirror酱") {
+        latestObj.Set("source", "mirror")
+        latestObj.Set("display_name", "Mirror酱")
+        checkSucceeded := CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObj) ; 将 latestObj 作为引用传递
+    } else {
+        latestObj.Set("source", "github")
+        latestObj.Set("display_name", "Github")
+        checkSucceeded := CheckForUpdate_Github(isManualCheck, channelInfo, &latestObj) ; 将 latestObj 作为引用传递
     }
-    ; ==================== Github 更新检查 (EXE版本) ====================
-    else {
-        latestObj.source := "github"
-        latestObj.display_name := "Github"
-        checkResult := CheckForUpdate_Github(isManualCheck, channelInfo)
-    }
-    ; 确保 checkResult 包含预期的属性
-    foundNewVersion := checkResult.Get("foundNewVersion", false) ; 使用 .Get() 方法安全获取，提供默认值
-    latestObj.version := checkResult.Get("version", "")
-    latestObj.change_notes := checkResult.Get("change_notes", "无更新说明")
-    latestObj.download_url := checkResult.Get("download_url", "")
-    ; ==================== 处理 EXE 版本检查结果 ====================
-    if foundNewVersion {
-        AddLog(latestObj.display_name . " 更新检查：发现新版本 " . latestObj.version . "，准备提示用户")
-        if (latestObj.download_url = "" && isManualCheck) {
-            MsgBox("已检测到新版本 " . latestObj.version . "，但未能获取到下载链接。请检查 " . latestObj.display_name . " 库或手动下载", "更新提示", "IconW")
+    ; ==================== 处理最终检查结果 (适用于 EXE 版本) ====================
+    if (checkSucceeded && latestObj.Get("foundNewVersion", false)) {
+        ; 直接使用 latestObj，因为它已通过引用被填充
+        AddLog(latestObj.Get("display_name") . " 更新检查：发现新版本 " . latestObj.Get("version") . "，准备提示用户", "Green")
+        local downloadUrl := latestObj.Get("download_url", "")
+        if (downloadUrl == "" && isManualCheck) {
+            MsgBox("已检测到新版本 " . latestObj.Get("version") . "，但未能获取到下载链接。请检查 " . latestObj.Get("display_name") . " 库或手动下载", "更新提示", "IconW")
         }
-        DisplayUpdateNotification(latestObj, channelInfo)
-    } else if latestObj.version != "" {
-        AddLog(latestObj.display_name . " 更新检查：当前已是最新版本 " . currentVersion)
+        DisplayUpdateNotification() ; 使用全局 latestObj
+    } else if (checkSucceeded && latestObj.Get("version", "") != "") {
+        AddLog(latestObj.Get("display_name") . " 更新检查：当前已是最新版本 " . currentVersion, "Green")
         if (isManualCheck) {
-            MsgBox("当前通道为:" . channelInfo . "通道 - " . latestObj.display_name . "`n最新版本为:" . latestObj.version "`n当前版本为:" . currentVersion "`n当前已是最新版本", "检查更新", "IconI")
+            MsgBox("当前通道为:" . channelInfo . "通道 - " . latestObj.Get("display_name") . "`n最新版本为:" . latestObj.Get("version") "`n当前版本为:" . currentVersion "`n当前已是最新版本", "检查更新", "IconI")
         }
     } else {
-        AddLog((latestObj.display_name ? latestObj.display_name : "更新") . " 更新检查：未能获取到有效的版本信息或检查被中止")
+        local displayMessage := latestObj.Get("message", "")
+        if (displayMessage == "") { ; 如果没有设置具体的错误消息，则使用备用消息
+            displayMessage := (latestObj.Get("display_name") ? latestObj.Get("display_name") : "更新") . " 更新检查：未能获取到有效的版本信息或检查被中止"
+        }
+        AddLog(displayMessage, "Red")
         if (isManualCheck) {
-            MsgBox("未能完成更新检查。请查看日志了解详情", "检查更新", "IconX")
+            MsgBox(displayMessage, "检查更新", "IconX")
         }
     }
 }
@@ -1254,9 +1247,9 @@ CheckForUpdate_AHK_File(isManualCheck) {
     global currentVersion, usr, repo, scriptExtension
     local result := Map("success", false, "message", "未知错误")
     if (scriptExtension = "exe") {
-        result.message := "exe版本不可直接更新至ahk版本，请查看群公告下载完整的ahk版本文件"
+        result.Set("message", "exe版本不可直接更新至ahk版本，请查看群公告下载完整的ahk版本文件")
         if (isManualCheck) {
-            MsgBox result.message
+            MsgBox result.Get("message")
         }
         return result
     }
@@ -1310,13 +1303,13 @@ CheckForUpdate_AHK_File(isManualCheck) {
             }
         }
     } catch as e {
-        AddLog("获取远程文件信息失败，错误信息: " . e.Message)
-        result.message := "无法检查更新，请检查网络或稍后再试。"
+        AddLog("获取远程文件信息失败，错误信息: " . e.Message, "Red")
+        result.Set("message", "无法检查更新，请检查网络或稍后再试。")
         return result
     }
-    if (remoteSha = "") {
-        AddLog("无法获取远程文件哈希值，更新中止。")
-        result.message := "无法获取远程文件信息，无法检查更新。"
+    if (remoteSha == "") {
+        AddLog("无法获取远程文件哈希值，更新中止。", "Red")
+        result.Set("message", "无法获取远程文件信息，无法检查更新。")
         return result
     }
     local localScriptPath := A_ScriptDir "\DoroHelper.ahk"
@@ -1331,8 +1324,8 @@ CheckForUpdate_AHK_File(isManualCheck) {
             localLastModified := FileGetTime(localScriptPath, "M")
         }
     } catch as e {
-        AddLog("计算本地文件哈希或获取修改时间失败，错误信息: " e.Message)
-        result.message := "计算本地文件哈希或获取修改时间时出错，无法检查更新。"
+        AddLog("计算本地文件哈希或获取修改时间失败，错误信息: " . e.Message, "Red")
+        result.Set("message", "计算本地文件哈希或获取修改时间时出错，无法检查更新。")
         return result
     }
     AddLog("远程文件哈希值: " remoteSha)
@@ -1340,28 +1333,28 @@ CheckForUpdate_AHK_File(isManualCheck) {
     AddLog("远程文件修改时间: " (remoteLastModified != "" ? remoteLastModified : "未获取到"))
     AddLog("本地文件修改时间: " localLastModified)
     if (remoteSha = localSha) {
-        AddLog("文件哈希一致，当前已是最新版本。")
+        AddLog("文件哈希一致，当前已是最新版本。", "Green")
         if (isManualCheck) {
             MsgBox("当前已是最新版本，无需更新。")
         }
-        result.success := true
-        result.message := "文件哈希一致，当前已是最新版本。" ; <--- **关键修改：明确成功消息**
+        result.Set("success", true)
+        result.Set("message", "文件哈希一致，当前已是最新版本。")
         return result
     }
     if (remoteLastModified != "" && localLastModified != "") {
         if (remoteLastModified <= localLastModified) {
-            AddLog("本地文件修改时间晚于或等于远程文件，认为本地版本已是最新或已修改，无需下载。")
+            AddLog("本地文件修改时间晚于或等于远程文件，认为本地版本已是最新或已修改，无需下载。", "Green")
             if (isManualCheck) {
                 MsgBox("检测到本地文件可能已被修改或已是最新，无需下载更新。", "AHK更新提示", "IconI")
             }
-            result.success := true
-            result.message := "本地文件修改时间晚于或等于远程文件，无需下载。" ; <--- **关键修改：明确成功消息**
+            result.Set("success", true)
+            result.Set("message", "本地文件修改时间晚于或等于远程文件，无需下载。")
             return result
         }
     } else {
-        AddLog("警告: 无法获取完整的修改时间信息，将仅依赖哈希值进行更新判断。")
+        AddLog("警告: 无法获取完整的修改时间信息，将仅依赖哈希值进行更新判断。", "Orange")
     }
-    AddLog("发现文件哈希不匹配且远程版本较新，准备下载新版本。")
+    AddLog("发现文件哈希不匹配且远程版本较新，准备下载新版本。", "Green")
     local url := "https://raw.githubusercontent.com/" . usr . "/" . repo . "/main/" . path
     local currentScriptDir := A_ScriptDir
     local NewFileName := "DoroHelper" . A_Now . ".ahk"
@@ -1369,10 +1362,10 @@ CheckForUpdate_AHK_File(isManualCheck) {
     try {
         AddLog("正在下载最新 AHK 版本，请稍等……")
         Download(url, localFilePath)
-        AddLog("文件下载成功！已保存到当前目录: " . localFilePath)
+        AddLog("文件下载成功！已保存到当前目录: " . localFilePath, "Green")
     } catch as e {
-        MsgBox "下载失败，错误信息: " . e.Message
-        result.message := "下载失败: " . e.Message
+        MsgBox "下载失败，错误信息: " . e.Message, "错误", "IconX"
+        result.Set("message", "下载失败: " . e.Message)
         return result
     }
     MsgBox("发现新版本！已下载至同目录下，软件即将退出")
@@ -1384,47 +1377,38 @@ CheckForUpdate_AHK_File(isManualCheck) {
             FileMove localFilePath, "DoroHelper.ahk"
             ExitApp
         } catch as e {
-            MsgBox "重命名失败: " . e.Message
-            result.message := "重命名失败: " . e.Message
+            MsgBox "重命名失败: " . e.Message, "错误", "IconX"
+            result.Set("message", "重命名失败: " . e.Message)
             return result
         }
     } else {
-        MsgBox "脚本已经在重命名后的状态下运行"
-        result.message := "脚本已经在重命名后的状态下运行"
+        MsgBox "脚本已经在重命名后的状态下运行", "警告", "IconW"
+        result.Set("message", "脚本已经在重命名后的状态下运行")
         return result
     }
-    result.success := true
-    result.message := "更新成功，脚本即将重启。" ; <--- **关键修改：明确成功消息**
-    return result ; Should not be reached if ExitApp is called
+    result.Set("success", true)
+    result.Set("message", "更新成功，脚本即将重启。")
+    return result
 }
 ;tag AHK资源文件更新检查子函数
-; --- 函数库文件更新检查函数 (资源更新) ---
-/**
- * 检查 lib 目录下所有 .ahk 函数库文件的更新。
- * 比较本地文件与 GitHub 上的文件哈希值和修改时间。
- * 如果远程文件哈希不同且修改时间更晚，或者本地文件缺失，则下载更新。
- * 
- * @param {Boolean} isManualCheck 是否为手动触发的检查。
- * @returns {Map} 包含更新结果的 Map，如 {success: true/false, message: String, updatedCount: Integer}。
- */
 CheckForResourceUpdate(isManualCheck) {
     global usr, repo
+    local result := Map("success", false, "message", "未知错误", "updatedCount", 0)
     local libDir := A_ScriptDir "\lib"
     local updatedFiles := []
     local failedFiles := []
     local updatedCount := 0
     AddLog("开始检查函数库文件更新 (lib 目录)……")
-    ; 确保 lib 目录存在
     if !DirExist(libDir) {
         AddLog("本地 lib 目录不存在，尝试创建: " . libDir)
         try {
             DirCreate(libDir)
         } catch as e {
             AddLog("创建 lib 目录失败: " . e.Message, "Red")
-            return Map("success", false, "message", "无法创建 lib 目录: " . e.Message)
+            result.Set("message", "无法创建 lib 目录: " . e.Message)
+            return result
         }
     }
-    ; 获取 GitHub 上 lib 目录的内容列表
     local apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/lib"
     local whr := ComObject("WinHttp.WinHttpRequest.5.1")
     try {
@@ -1434,49 +1418,43 @@ CheckForResourceUpdate(isManualCheck) {
         if (whr.Status != 200) {
             local errorMsg := "GitHub API 请求失败，状态码: " . whr.Status . ", URL: " . apiUrl
             try {
-                ; Json.Load 需要 VarRef
                 local errorJson := Json.Load(whr.ResponseText)
-                ; 访问属性使用 Get() 方法
                 if (errorJson is Object && errorJson.Get("message", "") != "") {
                     errorMsg .= "。API 消息: " . errorJson.Get("message", "")
                 }
             } catch {
-                ; 忽略解析错误响应文本的失败
             }
             throw Error("GitHub API 请求失败", -1, errorMsg)
         }
         local responseText := whr.ResponseText
-        ; Json.Load 需要 VarRef
         local remoteFilesData := Json.Load(&responseText)
         if (!(remoteFilesData is Array)) {
-            AddLog("错误: GitHub API 返回的 lib 目录内容不是预期的数组类型。原始响应 (前500字符): " . SubStr(responseText, 1, 500) . "...", "Red")
-            return Map("success", false, "message", "GitHub API 返回数据格式错误，可能远程 lib 目录不存在或API限速。", "updatedCount", 0)
+            AddLog("错误: GitHub API 返回的 lib 目录内容不是预期的数组类型或为空。原始响应 (前500字符): " . SubStr(responseText, 1, 500) . "...", "Red")
+            result.Set("message", "GitHub API 返回数据格式错误，可能远程 lib 目录不存在或API限速。")
+            return result
         }
-        ; 确保数组不为空
         if (!remoteFilesData.Length) {
-            AddLog("警告: GitHub API 返回的 lib 目录内容为空。", "")
-            return Map("success", true, "message", "lib 目录远程无文件", "updatedCount", 0)
+            AddLog("警告: GitHub API 返回的 lib 目录内容为空。")
+            result.Set("success", true)
+            result.Set("message", "lib 目录远程无文件。")
+            return result
         }
         for _, fileData in remoteFilesData {
-            ; 增加对 fileData 类型的检查，并使用 Get() 安全地获取属性
             local remoteFileName := (fileData is Object) ? fileData.Get("name", "") : ""
             local remoteFileType := (fileData is Object) ? fileData.Get("type", "") : ""
             local remoteSha := (fileData is Object) ? fileData.Get("sha", "") : ""
             local remoteDownloadUrl := (fileData is Object) ? fileData.Get("download_url", "") : ""
-            ; 验证获取到的关键属性是否有效
             if (remoteFileName == "" || remoteFileType == "" || remoteSha == "" || remoteDownloadUrl == "") {
-                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"), "")
-                continue ; 跳过此条不完整或无效的数据
+                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"))
+                continue
             }
-            ; 只处理 .ahk 文件
             local currentFileExtension := ""
             SplitPath remoteFileName, , , &currentFileExtension
             currentFileExtension := StrLower(currentFileExtension)
             if (remoteFileType == "file" && currentFileExtension == "ahk") {
                 local localFilePath := libDir . "\" . remoteFileName
                 local localSha := ""
-                local localLastModified := "0" ; 如果文件不存在，默认为一个非常早的时间
-                ; 获取本地文件信息
+                local localLastModified := "0"
                 if FileExist(localFilePath) {
                     try {
                         localSha := HashGitSHA1(localFilePath)
@@ -1487,33 +1465,28 @@ CheckForResourceUpdate(isManualCheck) {
                         continue
                     }
                 }
-                ; 获取远程文件的详细信息，包括 Last-Modified
                 local remoteFileDetails := Map()
-                ; 尝试从 fileData 本身获取 commit 信息（如果API响应包含）
-                ; 这里也使用 .Get() 确保安全
                 local commitObj := (fileData is Object) ? fileData.Get("commit", "") : ""
                 if (commitObj is Object) {
                     local authorObj := commitObj.Get("author", "")
                     if (authorObj is Object) {
                         local commitDateStr := authorObj.Get("date", "")
                         if (commitDateStr != "") {
-                            remoteFileDetails.remoteLastModified := ParseDateTimeString(commitDateStr)
+                            remoteFileDetails.Set("remoteLastModified", ParseDateTimeString(commitDateStr))
                         }
                     }
                 }
-                local remoteLastModified := remoteFileDetails.Get("remoteLastModified", "")
+                local remoteLastModifiedFromDetails := remoteFileDetails.Get("remoteLastModified", "")
                 local needsUpdate := false
                 if (localSha != remoteSha) {
-                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "")
+                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "Orange")
                     needsUpdate := true
                 } else if (!FileExist(localFilePath)) {
-                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "")
+                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "Orange")
                     needsUpdate := true
-                } else if (remoteLastModified != "" && localLastModified != "" && remoteLastModified > localLastModified) {
-                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (" . remoteLastModified . ") 晚于本地 (" . localLastModified . ")。", "")
+                } else if (remoteLastModifiedFromDetails != "" && localLastModified != "" && remoteLastModifiedFromDetails > localLastModified) {
+                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (" . remoteLastModifiedFromDetails . ") 晚于本地 (" . localLastModified . ")。", "Orange")
                     needsUpdate := true
-                } else {
-                    ; AddLog("文件 " . remoteFileName . " 已是最新版本。") ; 避免过多日志
                 }
                 if (needsUpdate) {
                     AddLog("正在下载更新文件: " . remoteFileName . "……")
@@ -1531,97 +1504,75 @@ CheckForResourceUpdate(isManualCheck) {
         }
     } catch as e {
         AddLog("获取远程函数库文件列表失败，错误信息: " . e.Message, "Red")
-        return Map("success", false, "message", "获取远程函数库文件列表失败: " . e.Message)
+        result.Set("message", "获取远程函数库文件列表失败: " . e.Message)
+        return result
     }
+    result.Set("updatedCount", updatedCount)
     if (updatedCount > 0) {
-        return Map("success", true, "message", "成功更新 " . updatedCount . " 个函数库文件。", "updatedCount", updatedCount, "updatedFiles", updatedFiles)
+        result.Set("success", true)
+        result.Set("message", "成功更新 " . updatedCount . " 个函数库文件。")
+        result.Set("updatedFiles", updatedFiles)
     } else if (failedFiles.Length > 0) {
-        return Map("success", false, "message", "部分函数库文件更新失败。", "updatedCount", 0, "failedFiles", failedFiles)
+        result.Set("success", false)
+        result.Set("message", "部分函数库文件更新失败。")
+        result.Set("failedFiles", failedFiles)
     } else {
-        return Map("success", true, "message", "所有函数库文件均已是最新版本。", "updatedCount", 0)
+        result.Set("success", true)
+        result.Set("message", "所有函数库文件均已是最新版本。")
     }
+    return result
 }
 ;tag 日期时间解析辅助函数
-/**
- * 尝试解析多种常见日期时间字符串格式，并返回 YYYYMMDDHH24MISS 格式的字符串。
- * 支持 ISO 8601 (如 "2023-10-27T10:00:00Z") 和 RFC 1123 (如 "Fri, 27 Oct 2023 10:00:00 GMT")。
- * 
- * @param {String} dateTimeStr 要解析的日期时间字符串。
- * @returns {String} 解析成功返回 YYYYMMDDHH24MISS 格式的字符串，失败返回空字符串。
- */
 ParseDateTimeString(dateTimeStr) {
-    ; 移除字符串首尾空白
     dateTimeStr := Trim(dateTimeStr)
-    ; 尝试解析 ISO 8601 格式 (例如 "2023-10-27T10:00:00Z" 或 "2023-10-27 10:00:00")
-    ; 匹配 YYYY-MM-DD[T ]HH:MM:SS (可选毫秒和时区)
     local isoMatch := ""
     if RegExMatch(dateTimeStr, "(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})", &isoMatch) {
-        local year := isoMatch[1]
-        local month := isoMatch[2]
-        local day := isoMatch[3]
-        local hour := isoMatch[4]
-        local minute := isoMatch[5]
-        local second := isoMatch[6]
+        local year := isoMatch[1], month := isoMatch[2], day := isoMatch[3]
+        local hour := isoMatch[4], minute := isoMatch[5], second := isoMatch[6]
         return year . month . day . hour . minute . second
     }
-    ; 尝试解析 RFC 1123 格式 (例如 "Fri, 27 Oct 2023 10:00:00 GMT")
-    ; 注意：AHK内置的FormatTime函数在没有指定时间戳时，会使用当前时间。
-    ; 我们需要一个方法将RFC1123转换为AHK时间戳。
-    ; 这是一个更复杂的解析，需要手动映射月份和处理时区。
-    ; 简化处理：只提取日期和时间部分，并假设为GMT，然后转换为本地时间。
     local rfcMatch := ""
-    ; 匹配 "DD Mon YYYY HH:MM:SS" 部分
     if RegExMatch(dateTimeStr, "\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}\s+\d{2}:\d{2}:\d{2}", &rfcMatch) {
         local datePart := rfcMatch[0]
-        ; 示例: "27 Oct 2023 10:00:00"
         local parts := StrSplit(datePart, " ")
         local day := parts[1]
         local monthStr := parts[2]
         local year := parts[3]
         local timeStr := parts[4]
-        ; 月份字符串到数字的映射
         local monthMap := Map(
             "Jan", "01", "Feb", "02", "Mar", "03", "Apr", "04", "May", "05", "Jun", "06",
             "Jul", "07", "Aug", "08", "Sep", "09", "Oct", "10", "Nov", "11", "Dec", "12"
         )
         local monthNum := monthMap.Get(monthStr, "")
-        if (monthNum = "") {
-            return "" ; 无法识别的月份
+        if (monthNum == "") {
+            return ""
         }
-        ; 确保日是两位数
-        if (StrLen(day) = 1) {
+        if (StrLen(day) == 1) {
             day := "0" . day
         }
-        ; 拼接成 YYYYMMDDHH24MISS 格式
         local finalDateTime := year . monthNum . day . StrReplace(timeStr, ":", "")
         return finalDateTime
     }
-    ; 如果以上格式都不匹配，返回空字符串
     return ""
 }
 ;tag Mirror酱更新检查子函数
-CheckForUpdate_Mirror(isManualCheck, channelInfo) {
+CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
     global currentVersion, g_numeric_settings
-    local result := Map(
-        "foundNewVersion", false,
-        "version", "",
-        "change_notes", "无更新说明",
-        "download_url", "",
-        "message", ""
-    )
     local sourceName := "Mirror酱"
+    latestObjMapOut.Set("message", "")
+    latestObjMapOut.Set("foundNewVersion", false)
     AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
-    if Trim(g_numeric_settings["MirrorCDK"]) = "" {
-        result.message := "Mirror酱 CDK 为空，无法检查更新"
+    if Trim(g_numeric_settings.Get("MirrorCDK")) == "" {
+        latestObjMapOut.Set("message", "Mirror酱 CDK 为空，无法检查更新")
         if (isManualCheck) {
-            MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+            MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
         }
-        AddLog(sourceName . " 更新检查：CDK为空")
-        return result
+        AddLog(latestObjMapOut.Get("message"), "Red")
+        return false
     }
     local apiUrl := "https://mirrorchyan.com/api/resources/DoroHelper/latest?"
-    apiUrl .= "cdk=" . g_numeric_settings["MirrorCDK"]
-    if (g_numeric_settings["UpdateChannels"] == "测试版") {
+    apiUrl .= "cdk=" . g_numeric_settings.Get("MirrorCDK")
+    if (g_numeric_settings.Get("UpdateChannels") == "测试版") {
         apiUrl .= "&channel=beta"
     }
     local HttpRequest := ""
@@ -1633,18 +1584,19 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo) {
         HttpRequest.SetRequestHeader("User-Agent", "DoroHelper-AHK-Script/" . currentVersion)
         HttpRequest.Send()
         ResponseStatus := HttpRequest.Status
-        if (ResponseStatus = 200) {
+        if (ResponseStatus == 200) {
             ResponseBody := HttpRequest.ResponseBody
         }
     } catch as e {
-        result.message := sourceName . " API 请求失败: " . e.Message
+        latestObjMapOut.Set("message", sourceName . " API 请求失败: " . e.Message)
         if (isManualCheck) {
-            MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+            MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
         }
-        return result
+        AddLog(latestObjMapOut.Get("message"), "Red")
+        return false
     }
     local ResponseTextForJson := ""
-    if (ResponseStatus = 200) {
+    if (ResponseStatus == 200) {
         if (IsObject(ResponseBody) && (ComObjType(ResponseBody) & 0x2000)) {
             try {
                 local dataPtr := 0, lBound := 0, uBound := 0
@@ -1659,7 +1611,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo) {
                     AddLog(sourceName . " 警告: SafeArray 大小为0或无效")
                 }
             } catch as e_sa {
-                AddLog(sourceName . " 错误: 处理 ResponseBody (SafeArray) 失败: " . e_sa.Message . ". 类型: " . ComObjType(ResponseBody, "Name"))
+                AddLog(sourceName . " 错误: 处理 ResponseBody (SafeArray) 失败: " . e_sa.Message . ". 类型: " . ComObjType(ResponseBody, "Name"), "Red")
                 ResponseTextForJson := HttpRequest.ResponseText
                 AddLog(sourceName . " 警告: SafeArray 处理失败，回退到 HttpRequest.ResponseText，可能存在编码问题")
             }
@@ -1676,7 +1628,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo) {
                 ResponseTextForJson := Stream.ReadText()
                 Stream.Close()
             } catch as e_adodb {
-                AddLog(sourceName . " 错误: ADODB.Stream 处理 ResponseBody (non-SafeArray COM Object) 失败: " . e_adodb.Message)
+                AddLog(sourceName . " 错误: ADODB.Stream 处理 ResponseBody (non-SafeArray COM Object) 失败: " . e_adodb.Message, "Red")
                 ResponseTextForJson := HttpRequest.ResponseText
                 AddLog(sourceName . " 警告: ADODB.Stream 失败，回退到 HttpRequest.ResponseText，可能存在编码问题")
             }
@@ -1684,265 +1636,263 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo) {
             AddLog(sourceName . " 警告: ResponseBody 不是 COM 对象，或请求未成功。将直接使用 HttpRequest.ResponseText")
             ResponseTextForJson := HttpRequest.ResponseText
         }
-        AddLog(sourceName . " API Response Status 200. Decoded ResponseTextForJson (first 500 chars): " . SubStr(ResponseTextForJson, 1, 500))
         try {
             local JsonData := Json.Load(&ResponseTextForJson)
             if (!IsObject(JsonData)) {
-                result.message := sourceName . " API 响应格式错误"
-                if (isManualCheck) MsgBox(result.message, sourceName . "检查更新错误", "IconX")
-                    AddLog(sourceName . " API 响应未能解析为JSON. ResponseText (first 200): " . SubStr(ResponseTextForJson, 1, 200))
-                return result
+                latestObjMapOut.Set("message", sourceName . " API 响应格式错误")
+                if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+                    AddLog(latestObjMapOut.Get("message") . ". ResponseText (first 200): " . SubStr(ResponseTextForJson, 1, 200), "Red")
+                return false
             }
             local jsonDataCode := JsonData.Get("code", -1)
             local potentialData := JsonData.Get("data", unset)
             if (jsonDataCode != 0) {
                 local errorMsg := sourceName . " API 返回错误。 Code: " . jsonDataCode . "."
-                if (JsonData.Has("msg") && Trim(JsonData.msg) != "") {
-                    errorMsg .= " 消息: " . JsonData.msg
+                if (JsonData.Has("msg") && Trim(JsonData.Get("msg")) != "") {
+                    errorMsg .= " 消息: " . JsonData.Get("msg")
                 } else {
                     errorMsg .= " (API未提供详细错误消息)"
                 }
-                result.message := errorMsg
+                latestObjMapOut.Set("message", errorMsg)
                 if (isManualCheck) {
-                    MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+                    MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
                 }
-                AddLog(errorMsg)
-                return result
+                AddLog(errorMsg, "Red")
+                return false
             }
             if (!IsSet(potentialData) || !IsObject(potentialData)) {
                 local errorMsg := sourceName . " API 响应成功 (code 0)，但 'data' 字段缺失或非对象类型"
-                if (JsonData.Has("msg") && Trim(JsonData.msg) != "") {
-                    errorMsg .= " API 消息: " . JsonData.msg
+                if (JsonData.Has("msg") && Trim(JsonData.Get("msg")) != "") {
+                    errorMsg .= " API 消息: " . JsonData.Get("msg")
                 }
-                result.message := errorMsg
+                latestObjMapOut.Set("message", errorMsg)
                 if (isManualCheck) {
-                    MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+                    MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
                 }
-                AddLog(errorMsg . " Type of 'data' retrieved: " . Type(potentialData))
-                return result
+                AddLog(errorMsg . " Type of 'data' retrieved: " . Type(potentialData), "Red")
+                return false
             }
             local mirrorData := potentialData
-            result.version := mirrorData.Get("version_name", "")
-            result.change_notes := mirrorData.Get("release_note", "无更新说明")
-            result.download_url := mirrorData.Get("url", "")
-            if result.version = "" {
-                result.message := sourceName . " API 响应中版本信息为空"
+            latestObjMapOut.Set("version", mirrorData.Get("version_name", ""))
+            latestObjMapOut.Set("change_notes", mirrorData.Get("release_note", "无更新说明"))
+            latestObjMapOut.Set("download_url", mirrorData.Get("url", ""))
+            if latestObjMapOut.Get("version") == "" {
+                latestObjMapOut.Set("message", sourceName . " API 响应中版本信息为空")
                 if (isManualCheck) {
-                    MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+                    MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
                 }
-                AddLog(sourceName . " 更新检查：API响应中版本信息为空")
-                return result
+                AddLog(sourceName . " 更新检查：API响应中版本信息为空", "Red")
+                return false
             }
-            AddLog(sourceName . " 更新检查：获取到版本 " . result.version)
-            if (CompareVersionsSemVer(result.version, currentVersion) > 0) {
-                result.foundNewVersion := true
-                AddLog(sourceName . " 版本比较：发现新版本")
+            AddLog(sourceName . " 更新检查：获取到版本 " . latestObjMapOut.Get("version"))
+            if (CompareVersionsSemVer(latestObjMapOut.Get("version"), currentVersion) > 0) {
+                latestObjMapOut.Set("foundNewVersion", true)
+                AddLog(sourceName . " 版本比较：发现新版本", "Green")
             } else {
-                AddLog(sourceName . " 版本比较：当前已是最新或更新")
+                latestObjMapOut.Set("foundNewVersion", false)
+                AddLog(sourceName . " 版本比较：当前已是最新或更新", "Green")
             }
         } catch as e {
             local errorDetails := "错误类型: " . Type(e) . ", 消息: " . e.Message
             if e.HasProp("What") errorDetails .= "`n触发对象/操作: " . e.What
                 if e.HasProp("File") errorDetails .= "`n文件: " . e.File
                     if e.HasProp("Line") errorDetails .= "`n行号: " . e.Line
-                        result.message := "处理 " . sourceName . " JSON 数据时发生内部错误: `n" . errorDetails
-            if (isManualCheck) MsgBox(result.message, sourceName . "检查更新错误", "IconX")
-                AddLog(sourceName . " 更新检查：处理JSON时发生内部错误: " . errorDetails)
+                        latestObjMapOut.Set("message", "处理 " . sourceName . " JSON 数据时发生内部错误: `n" . errorDetails)
+            if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+                AddLog(sourceName . " 更新检查：处理JSON时发生内部错误: " . errorDetails, "Red")
             AddLog(sourceName . " 相关的 ResponseTextForJson (前1000字符): " . SubStr(ResponseTextForJson, 1, 1000))
-            return result
+            return false
         }
     } else {
         local errorResponseText := HttpRequest.ResponseText
         local responseTextPreview := SubStr(errorResponseText, 1, 300)
-        result.message := sourceName . " API 请求失败！`n状态码: " . ResponseStatus . "`n响应预览:`n" . responseTextPreview
+        latestObjMapOut.Set("message", sourceName . " API 请求失败！`n状态码: " . ResponseStatus . "`n响应预览:`n" . responseTextPreview)
         if (isManualCheck) {
-            MsgBox(result.message, sourceName . " API 错误", "IconX")
+            MsgBox(latestObjMapOut.Get("message"), sourceName . " API 错误", "IconX")
         }
-        AddLog(sourceName . " API 请求失败！状态码: " . ResponseStatus . ", 响应预览: " . responseTextPreview)
-        return result
+        AddLog(latestObjMapOut.Get("message"), "Red")
+        return false
     }
-    return result
+    return true
 }
 ;tag Github更新检查子函数
-CheckForUpdate_Github(isManualCheck, channelInfo) {
+CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
     global currentVersion, usr, repo, g_numeric_settings
-    local result := Map(
-        "foundNewVersion", false,
-        "version", "",
-        "change_notes", "无更新说明",
-        "download_url", "",
-        "message", ""
-    )
     local sourceName := "Github"
+    latestObjMapOut.Set("message", "")
+    latestObjMapOut.Set("foundNewVersion", false)
     AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
     try {
-        local allReleases := Github.historicReleases(usr, repo)
-        if !(allReleases is Array) || !allReleases.Length {
-            result.message := "无法获取 Github 版本列表，请检查网络或仓库信息"
+        local allReleaseAssets := Github.historicReleases(usr, repo)
+        if !(allReleaseAssets is Array) || !allReleaseAssets.Length {
+            latestObjMapOut.Set("message", "无法获取 Github 版本列表或库返回空数据（非Array或空），请检查网络或仓库信息。")
             if (isManualCheck) {
-                MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+                MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
             }
-            AddLog(sourceName . " 更新检查：无法获取版本列表")
-            return result
+            AddLog(latestObjMapOut.Get("message"), "Red")
+            return false
         }
-        local targetRelease := ""
-        if (g_numeric_settings["UpdateChannels"] == "测试版") {
-            AddLog(sourceName . " 更新检查：测试版优先，已选定最新 Release")
-            targetRelease := allReleases[1]
-            if !(IsObject(targetRelease) && (targetRelease.HasProp("version") || targetRelease.HasProp("tag_name"))) {
-                result.message := sourceName . " 更新检查：获取到的最新预发布 Release 对象无效或缺少版本信息"
-                if (isManualCheck) MsgBox(result.message, sourceName . "检查更新错误", "IconX")
-                    AddLog(result.message)
-                return result
+        local targetAssetEntry := ""
+        if (g_numeric_settings.Get("UpdateChannels") == "测试版") {
+            AddLog(sourceName . " 更新检查：测试版优先，已选定最新 Release Assets")
+            targetAssetEntry := allReleaseAssets[1]
+            if !IsObject(targetAssetEntry) || !targetAssetEntry.HasProp("version") {
+                latestObjMapOut.Set("message", sourceName . " 更新检查：获取到的最新测试版 Release Assets 对象无效或缺少版本信息")
+                if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+                    AddLog(latestObjMapOut.Get("message"), "Red")
+                return false
             }
         } else {
             AddLog(sourceName . " 更新检查：正式版优先，正在查找……")
-            for release_item in allReleases {
-                if !(IsObject(release_item) && (release_item.HasProp("version") || release_item.HasProp("tag_name"))) {
+            for assetEntry in allReleaseAssets {
+                if !IsObject(assetEntry) || !(assetEntry.HasProp("version")) {
                     continue
                 }
-                local current_release_version := release_item.HasProp("version") ? release_item.version : release_item.tag_name
-                if !(InStr(current_release_version, "beta") || InStr(current_release_version, "alpha") || InStr(current_release_version, "rc")) {
-                    targetRelease := release_item
-                    AddLog(sourceName . " 更新检查：找到正式版 " . current_release_version)
+                local current_release_version := assetEntry.version
+                if (assetEntry.HasProp("name") && InStr(assetEntry.name, "DoroHelper", false) && InStr(assetEntry.name, ".exe", false) && !(InStr(current_release_version, "beta", false) || InStr(current_release_version, "alpha", false) || InStr(current_release_version, "rc", false))) {
+                    targetAssetEntry := assetEntry
+                    AddLog(sourceName . " 更新检查：找到正式版下载文件 " . assetEntry.name . "，版本 " . current_release_version)
                     break
                 }
             }
-            if !IsObject(targetRelease) {
-                AddLog(sourceName . " 更新检查：未找到正式版，将使用最新版本进行比较")
-                targetRelease := allReleases[1]
-                if !(IsObject(targetRelease) && (targetRelease.HasProp("version") || targetRelease.HasProp("tag_name"))) {
-                    result.message := sourceName . " 更新检查：回退到的最新 Release 对象也无效或缺少版本信息"
-                    if (isManualCheck) MsgBox(result.message, sourceName . "检查更新错误", "IconX")
-                        AddLog(result.message)
-                    return result
-                }
-            }
-        }
-        if !IsObject(targetRelease) {
-            result.message := sourceName . " 更新检查：最终未能确定有效的 targetRelease 对象"
-            if (isManualCheck) MsgBox(result.message, sourceName . "检查更新错误", "IconX")
-                AddLog(result.message)
-            return result
-        }
-        if (targetRelease.HasProp("version")) {
-            result.version := targetRelease.version
-        } else if (targetRelease.HasProp("tag_name")) {
-            result.version := targetRelease.tag_name
-        } else {
-            result.version := ""
-            AddLog(sourceName . " 警告: Release 对象缺少 'version' 或 'tag_name' 属性")
-        }
-        if (targetRelease.HasProp("change_notes")) {
-            result.change_notes := targetRelease.change_notes
-        } else if (targetRelease.HasProp("body")) {
-            result.change_notes := targetRelease.body
-        } else {
-            result.change_notes := "无更新说明"
-        }
-        if Trim(result.change_notes) = "" {
-            result.change_notes := "无更新说明"
-        }
-        result.download_url := ""
-        if (targetRelease.HasProp("downloadURL") && Trim(targetRelease.downloadURL) != "") {
-            result.download_url := targetRelease.downloadURL
-            AddLog(sourceName . " 找到下载链接 (from downloadURL): " . result.download_url)
-        }
-        else if (targetRelease.HasProp("assets") && targetRelease.assets is Array && targetRelease.assets.Length > 0) {
-            for asset in targetRelease.assets {
-                if IsObject(asset) && asset.HasProp("name") && asset.HasProp("browser_download_url") {
-                    if (InStr(asset.name, "DoroHelper") && InStr(asset.name, ".exe")) {
-                        result.download_url := asset.browser_download_url
-                        AddLog(sourceName . " 找到 .exe asset 下载链接 (from assets): " . result.download_url)
+            if !IsObject(targetAssetEntry) {
+                AddLog(sourceName . " 警告: 未找到任何符合条件的正式版 EXE 下载。回退到查找最新的任何 EXE。", "Orange")
+                for assetEntry in allReleaseAssets {
+                    if !IsObject(assetEntry) || !(assetEntry.HasProp("version")) {
+                        continue
+                    }
+                    if (assetEntry.HasProp("name") && InStr(assetEntry.name, "DoroHelper", false) && InStr(assetEntry.name, ".exe", false)) {
+                        targetAssetEntry := assetEntry
+                        AddLog(sourceName . " 警告: 回退到最新 EXE 文件 " . assetEntry.name . "，版本 " . assetEntry.version, "Orange")
                         break
                     }
                 }
+                if !IsObject(targetAssetEntry) && allReleaseAssets.Length > 0 {
+                    targetAssetEntry := allReleaseAssets[1]
+                    AddLog(sourceName . " 警告: 无法匹配到 DoroHelper*.exe，回退到最新 Release 的第一个发现的资产。", "Orange")
+                }
+                if !IsObject(targetAssetEntry) || !(targetAssetEntry.HasProp("version")) {
+                    latestObjMapOut.Set("message", sourceName . " 更新检查：未找到任何有效的 Release Assets。")
+                    if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+                        AddLog(latestObjMapOut.Get("message"), "Red")
+                    return false
+                }
             }
-            if (result.download_url = "")
-                AddLog(sourceName . " 警告: 在 'assets' 中未精确匹配到 'DoroHelper*.exe' 或 'assets' 结构不符")
         }
-        else if (targetRelease.HasProp("downloadURLs") && targetRelease.downloadURLs is Array && targetRelease.downloadURLs.Length > 0 && Trim(targetRelease.downloadURLs[1]) != "") {
-            result.download_url := targetRelease.downloadURLs[1]
-            AddLog(sourceName . " 使用 downloadURLs[1] 作为下载链接 (Fallback): " . result.download_url)
+        if !IsObject(targetAssetEntry) {
+            latestObjMapOut.Set("message", sourceName . " 更新检查：未能确定有效的目标 Release Assets。")
+            if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+                AddLog(latestObjMapOut.Get("message"), "Red")
+            return false
         }
-        else if (targetRelease.HasProp("download_url") && Trim(targetRelease.download_url) != "") {
-            result.download_url := targetRelease.download_url
-            AddLog(sourceName . " 使用顶层 download_url 属性作为下载链接 (Fallback): " . result.download_url)
+        latestObjMapOut.Set("version", Trim(targetAssetEntry.version))
+        latestObjMapOut.Set("change_notes", Trim(targetAssetEntry.change_notes))
+        latestObjMapOut.Set("download_url", Trim(targetAssetEntry.downloadURL))
+        if (!targetAssetEntry.HasProp("version") || latestObjMapOut.Get("version") == "") {
+            latestObjMapOut.Set("message", sourceName . " 更新检查：未能从选定的 Release Assets 获取到版本号")
+            if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+                AddLog(latestObjMapOut.Get("message"), "Red")
+            return false
         }
-        else {
-            AddLog(sourceName . " 警告: Release 对象未找到任何有效的下载链接属性 (已尝试: downloadURL, assets, downloadURLs, download_url)")
+        if (!targetAssetEntry.HasProp("downloadURL") || latestObjMapOut.Get("download_url") == "") {
+            AddLog(sourceName . " 警告: 未能为版本 " . latestObjMapOut.Get("version") . " 找到有效的下载链接。", "Orange")
         }
-        if result.version = "" {
-            result.message := sourceName . " 更新检查：未能从选定的 Release 对象获取版本号"
-            if (isManualCheck) MsgBox(result.message, sourceName . "检查更新错误", "IconX")
-                AddLog(result.message)
-            return result
-        }
-        if result.download_url = "" {
-            AddLog(sourceName . " 警告: 未能为版本 " . result.version . " 找到有效的下载链接")
-        }
-        AddLog(sourceName . " 更新检查：获取到版本 " . result.version . (result.download_url ? "" : " (下载链接未找到)"))
-        if (CompareVersionsSemVer(result.version, currentVersion) > 0) {
-            result.foundNewVersion := true
-            AddLog(sourceName . " 版本比较：发现新版本")
+        AddLog(sourceName . " 更新检查：获取到版本 " . latestObjMapOut.Get("version") . (latestObjMapOut.Get("download_url") ? "" : " (下载链接未找到)"))
+        if (CompareVersionsSemVer(latestObjMapOut.Get("version"), currentVersion) > 0) {
+            latestObjMapOut.Set("foundNewVersion", true)
+            AddLog(sourceName . " 版本比较：发现新版本", "Green")
         } else {
-            AddLog(sourceName . " 版本比较：当前已是最新或更新")
+            latestObjMapOut.Set("foundNewVersion", false)
+            AddLog(sourceName . " 版本比较：当前已是最新或更新", "Green")
         }
     } catch as githubError {
-        result.message := "Github 检查更新失败: `n" . githubError.Message . (githubError.HasProp("Extra") ? "`nExtra: " . githubError.Extra : "")
-        if (isManualCheck) {
-            MsgBox(result.message, sourceName . "检查更新错误", "IconX")
+        local errorMessage := ""
+        if (IsObject(githubError)) {
+            local msg := githubError.Message
+            local extra := githubError.Extra
+            if (msg != "") {
+                errorMessage .= msg
+            }
+            else {
+                try {
+                    local tempStr := ""
+                    if (githubError.HasMethod("ToString")) {
+                        tempStr := githubError.ToString()
+                    }
+                    else {
+                        tempStr := "对象无法通过标准ToString()方法获取详情。"
+                    }
+                    if (tempStr != "") {
+                        errorMessage .= tempStr
+                    }
+                    else {
+                        errorMessage .= "错误对象类型: " . Type(githubError)
+                    }
+                } catch {
+                    errorMessage .= "无法获取原始错误对象详情（ToString()失败）。"
+                }
+            }
+            if (extra != "") {
+                errorMessage .= "`nExtra: " . extra
+            }
+        } else {
+            errorMessage := "Github库返回了一个非对象错误: " . githubError
         }
-        AddLog(sourceName . " 检查更新失败: " . githubError.Message . (githubError.HasProp("Extra") ? ". Extra: " . githubError.Extra : ""))
-        return result
+        latestObjMapOut.Set("message", "Github 检查更新失败: `n" . errorMessage)
+        if (isManualCheck) {
+            MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
+        }
+        AddLog(latestObjMapOut.Get("message"), "Red")
+        return false
     }
-    return result
+    return true
 }
 ;tag 显示更新通知GUI
-DisplayUpdateNotification(latestObj, channelInfo) {
-    global currentVersion
-    local MyGui := Gui("+Resize", "更新提示 (" . latestObj.display_name . ")")
+DisplayUpdateNotification() {
+    global currentVersion, latestObj, g_numeric_settings
+    local channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
+    local MyGui := Gui("+Resize", "更新提示 (" . latestObj.Get("display_name") . ")")
     MyGui.SetFont("s10", "Microsoft YaHei UI")
-    MyGui.Add("Text", "w300 xm ym", "发现 DoroHelper 新版本 (" . channelInfo . " - " . latestObj.display_name . "):")
-    MyGui.Add("Text", "xp+10 yp+25 w300", "最新版本: " . latestObj.version)
+    MyGui.Add("Text", "w300 xm ym", "发现 DoroHelper 新版本 (" . channelInfo . " - " . latestObj.Get("display_name") . "):")
+    MyGui.Add("Text", "xp+10 yp+25 w300", "最新版本: " . latestObj.Get("version"))
     MyGui.Add("Text", "xp yp+20 w300", "当前版本: " . currentVersion)
     MyGui.Add("Text", "xp yp+25 w300", "更新内容:")
-    local notes_for_edit := latestObj.change_notes
+    local notes_for_edit := latestObj.Get("change_notes")
     notes_for_edit := StrReplace(notes_for_edit, "`r`n", "`n")
     notes_for_edit := StrReplace(notes_for_edit, "`r", "`n")
     notes_for_edit := StrReplace(notes_for_edit, "`n", "`r`n")
     MyGui.Add("Edit", "w250 h200 ReadOnly VScroll Border", notes_for_edit)
-    MyGui.Add("Button", "xm+20 w100 h30 yp+220", "立即下载").OnEvent("Click", DownloadAndReplaceUpdate)
+    MyGui.Add("Button", "xm+20 w100 h30 yp+220", "立即下载").OnEvent("Click", DownloadUpdate)
     MyGui.Add("Button", "x+20 w100 h30", "稍后提醒").OnEvent("Click", (*) => MyGui.Destroy())
     MyGui.Show("w320 h400 Center")
 }
-;tag 统一更新下载 (由GUI按钮触发)
-DownloadAndReplaceUpdate(*) {
+;tag 统一更新下载
+DownloadUpdate(*) {
     global latestObj
-    if !IsObject(latestObj) || !latestObj.Has("source") || latestObj.source = "" || !latestObj.Has("version") || latestObj.version = "" {
+    if (!IsObject(latestObj) || latestObj.Get("source", "") == "" || latestObj.Get("version", "") == "") {
         MsgBox("下载错误：更新信息不完整，无法开始下载", "下载错误", "IconX")
-        AddLog("下载错误：latestObj 信息不完整。 Source: " . latestObj.Get("source", "N/A") . ", Version: " . latestObj.Get("version", "N/A"))
+        AddLog("下载错误：latestObj 信息不完整。 Source: " . latestObj.Get("source", "N/A") . ", Version: " . latestObj.Get("version", "N/A"), "Red")
         return
     }
     local downloadTempName := "DoroDownload.exe"
-    local finalName := "DoroHelper-" . latestObj.version . ".exe"
-    local downloadUrlToUse := latestObj.download_url
-    if downloadUrlToUse = "" {
-        MsgBox("错误：找不到有效的 " . latestObj.display_name . " 下载链接", "下载错误", "IconX")
-        AddLog(latestObj.display_name . " 下载错误：下载链接为空")
+    local finalName := "DoroHelper-" . latestObj.Get("version") . ".exe"
+    local downloadUrlToUse := latestObj.Get("download_url")
+    if downloadUrlToUse == "" {
+        MsgBox("错误：找不到有效的 " . latestObj.Get("display_name") . " 下载链接", "下载错误", "IconX")
+        AddLog(latestObj.Get("display_name") . " 下载错误：下载链接为空", "Red")
         return
     }
-    AddLog(latestObj.display_name . " 下载：开始下载 " . downloadUrlToUse . " 到 " . A_ScriptDir . "\" . finalName)
+    AddLog(latestObj.Get("display_name") . " 下载：开始下载 " . downloadUrlToUse . " 到 " . A_ScriptDir . "\" . finalName)
     local downloadStatusCode := 0
     try {
-        if latestObj.source == "github" {
+        if latestObj.Get("source") == "github" {
             ErrorLevel := 0
             Github.Download(downloadUrlToUse, A_ScriptDir . "\" . downloadTempName)
             downloadStatusCode := ErrorLevel
             if downloadStatusCode != 0 {
                 throw Error("Github 下载失败 (ErrorLevel: " . downloadStatusCode . "). 检查 Github.Download 库的内部提示或网络")
             }
-        } else if latestObj.source == "mirror" {
+        } else if latestObj.Get("source") == "mirror" {
             ErrorLevel := 0
             Download downloadUrlToUse, A_ScriptDir . "\" . downloadTempName
             downloadStatusCode := ErrorLevel
@@ -1950,20 +1900,19 @@ DownloadAndReplaceUpdate(*) {
                 throw Error("Mirror酱下载失败 (错误代码: " . downloadStatusCode . ")")
             }
         } else {
-            throw Error("未知的下载源: " . latestObj.source)
+            throw Error("未知的下载源: " . latestObj.Get("source"))
         }
         FileMove A_ScriptDir . "\" . downloadTempName, A_ScriptDir . "\" . finalName, 1
-        MsgBox("新版本已通过 " . latestObj.display_name . " 下载至当前目录: `n" . A_ScriptDir . "\" . finalName, "下载完成")
-        AddLog(latestObj.display_name . " 下载：成功下载并保存为 " . finalName)
+        MsgBox("新版本已通过 " . latestObj.Get("display_name") . " 下载至当前目录: `n" . A_ScriptDir . "\" . finalName, "下载完成")
+        AddLog(latestObj.Get("display_name") . " 下载：成功下载并保存为 " . finalName, "Green")
         ExitApp
     } catch as downloadError {
-        MsgBox(latestObj.display_name . " 下载失败: `n" . downloadError.Message, "下载错误", "IconX")
-        AddLog(latestObj.display_name . " 下载失败: " . downloadError.Message)
+        MsgBox(latestObj.Get("display_name") . " 下载失败: `n" . downloadError.Message, "下载错误", "IconX")
+        AddLog(latestObj.Get("display_name") . " 下载失败: " . downloadError.Message, "Red")
         if FileExist(A_ScriptDir . "\" . downloadTempName) {
             try {
                 FileDelete(A_ScriptDir . "\" . downloadTempName)
             } catch {
-                ; 忽略删除临时文件失败
             }
         }
     }
@@ -2041,7 +1990,6 @@ CompareVersionsSemVer(v1, v2) {
             if (numSeg1 < numSeg2)
                 return -1
         } else if (!isNum1 && !isNum2) {
-            ; 强制进行字符串比较
             compareResult := StrCompare(seg1, seg2)
             if (compareResult > 0)
                 return 1
@@ -2060,14 +2008,11 @@ CompareVersionsSemVer(v1, v2) {
 DeleteOldFile(*) {
     currentScriptPath := A_ScriptFullPath
     scriptDir := A_ScriptDir
-    foundAnyDeletableFile := false ; 标志，只有当发现可删除的文件时才设置为true
+    foundAnyDeletableFile := false
     loop files, scriptDir . "\*.*" {
         currentFile := A_LoopFileFullPath
         fileName := A_LoopFileName
-        ; 确保要删除的文件包含 "DoroHelper" (不区分大小写)
-        ; 并且最重要的是：确保要删除的文件不是当前正在运行的脚本文件本身
         if (InStr(fileName, "DoroHelper", false) && currentFile != currentScriptPath) {
-            ; 如果这是第一次发现可删除的文件，则输出初始日志
             if (!foundAnyDeletableFile) {
                 AddLog("开始在目录 " . scriptDir . " 中查找并删除旧版本文件")
                 AddLog("当前正在运行的脚本路径: " . currentScriptPath)
@@ -2075,88 +2020,86 @@ DeleteOldFile(*) {
             }
             try {
                 FileDelete currentFile
-                AddLog("成功删除旧版本程序: " . currentFile) ; 只有成功删除才输出此日志
+                AddLog("成功删除旧版本程序: " . currentFile)
             } catch as e {
-                AddLog("删除文件失败: " . currentFile . " 错误: " . e.Message)
+                AddLog("删除文件失败: " . currentFile . " 错误: " . e.Message, "Red")
             }
-        } else if (currentFile = currentScriptPath) {
-            ; 即使是自身，如果之前没有发现可删除文件，也不输出初始日志
-            if (foundAnyDeletableFile) { ; 只有在已经开始输出日志后，才记录跳过自身
+        } else if (currentFile == currentScriptPath) {
+            if (foundAnyDeletableFile) {
                 AddLog("跳过当前运行的程序（自身）: " . currentFile)
             }
         }
     }
-    ; 只有当确实有文件被处理（删除或尝试删除），才输出结束日志
     if (foundAnyDeletableFile) {
         AddLog("旧版本文件删除操作完成")
     }
-    ; 如果foundAnyDeletableFile仍然是false，则意味着没有找到任何符合删除条件的文件，
-    ; 并且根据要求，此时不会输出任何日志。
 }
 ;endregion 更新辅助函数
 ;region 身份辅助函数
 ;tag 下载指定URL的内容
 DownloadUrlContent(url) {
+    ; 这个函数是获取纯文本内容，而不是下载文件到磁盘。
+    ; 请注意与 Download 命令的区别。
     try {
-        ; 1. 创建 WinHttpRequest COM 对象用于网络请求
         whr := ComObject("WinHttp.WinHttpRequest.5.1")
-        whr.Open("GET", url, true) ; 使用异步模式
+        whr.Open("GET", url, true)
         whr.Send()
-        ; 2. 等待请求完成，超时时间为 10 秒
-        whr.WaitForResponse(10)
-        ; 3. 检查 HTTP 状态码是否为 200 (成功)
+        whr.WaitForResponse(10) ; 10 秒超时
         if (whr.Status != 200) {
-            AddLog("下载失败，HTTP状态码: " . whr.Status)
+            AddLog("下载 URL 内容失败，HTTP状态码: " . whr.Status . " URL: " . url, "Red")
             return ""
         }
-        ; 4. 获取原始的二进制响应体 (ResponseBody)，而不是 ResponseText
-        responseBody := whr.ResponseBody
-        ; 5. 使用 ADODB.Stream 对象来处理二进制流并正确解码
-        stream := ComObject("ADODB.Stream")
-        stream.Type := 1 ; 1 = adTypeBinary
-        stream.Open()
-        stream.Write(responseBody)
-        stream.Position := 0
-        stream.Type := 2 ; 2 = adTypeText
-        stream.Charset := "utf-8" ; << 核心步骤：明确指定使用 UTF-8 解码
-        ; 6. 读取解码后的文本内容并返回
-        content := stream.ReadText()
-        stream.Close()
-        return content
+        ; 尝试以 UTF-8 解码响应体
+        local responseBody := whr.ResponseBody
+        if (IsObject(responseBody) && ComObjType(responseBody) & 0x2000) { ; SafeArray (VT_ARRAY)
+            local dataPtr := 0, lBound := 0, uBound := 0
+            DllCall("OleAut32\SafeArrayGetLBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &lBound)
+            DllCall("OleAut32\SafeArrayGetUBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &uBound)
+            local actualSize := uBound - lBound + 1
+            if (actualSize > 0) {
+                DllCall("OleAut32\SafeArrayAccessData", "Ptr", ComObjValue(responseBody), "Ptr*", &dataPtr)
+                local content := StrGet(dataPtr, actualSize, "UTF-8")
+                DllCall("OleAut32\SafeArrayUnaccessData", "Ptr", ComObjValue(responseBody))
+                return content
+            } else {
+                AddLog("下载 URL 内容警告: SafeArray 大小为0或无效，URL: " . url)
+                return ""
+            }
+        } else if IsObject(responseBody) { ; Other COM object, try ADODB.Stream
+            local Stream := ComObject("ADODB.Stream")
+            Stream.Type := 1 ; adTypeBinary
+            Stream.Open()
+            Stream.Write(responseBody)
+            Stream.Position := 0
+            Stream.Type := 2 ; adTypeText
+            Stream.Charset := "utf-8"
+            local content := Stream.ReadText()
+            Stream.Close()
+            return content
+        } else { ; Not a COM object, fallback to ResponseText (may have encoding issues)
+            AddLog("下载 URL 内容警告: ResponseBody 不是预期类型，回退到 ResponseText，URL: " . url)
+            return whr.ResponseText
+        }
     } catch as e {
-        AddLog("下载发生错误: " . e.Message)
+        AddLog("下载 URL 内容时发生错误: " . e.Message . " URL: " . url, "Red")
         return ""
     }
 }
 ;tag 计算SHA256哈希值
-/**
- * 计算一个字符串或一个文件的 SHA-256 哈希值。
- * 
- * @param {String} input 要进行哈希计算的源，可以是一个字符串，也可以是文件的完整路径。
- * @returns {String} 返回计算出的 64 位十六进制哈希字符串。
- * @throws {Error} 如果在任何加密 API 调用环节失败，则抛出异常。
- */
 HashSHA256(input) {
     hProv := 0, hHash := 0
-    ; 初始化 Windows Cryptography API
     if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000) {
         throw Error("CryptAcquireContext 失败", -1, "无法获取加密服务提供者句柄")
     }
-    ; 创建一个 SHA-256 哈希算法对象
     if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x800C, "Ptr", 0, "UInt", 0, "Ptr*", &hHash) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw Error("CryptCreateHash 失败", -1, "无法创建哈希对象")
     }
-    ; 判断输入是文件还是字符串，并分别进行哈希数据更新
     if FileExist(input) {
-        ; =================== 修改开始 ===================
         try {
-            ; 1. 一次性读取整个文件的内容 (假设为 UTF-8 编码)
             fileContent := FileRead(input, "UTF-8")
-            ; 2. 将所有行尾序列 (CRLF 和 CR) 统一替换为 LF
-            normalizedContent := StrReplace(fileContent, "`r`n", "`n") ; 先替换 CRLF
-            normalizedContent := StrReplace(normalizedContent, "`r", "`n")   ; 再替换独立的 CR
-            ; 3. 像处理普通字符串一样处理转换后的内容
+            normalizedContent := StrReplace(fileContent, "`r`n", "`n")
+            normalizedContent := StrReplace(normalizedContent, "`r", "`n")
             strByteLen := StrPut(normalizedContent, "UTF-8") - 1
             if (strByteLen >= 0) {
                 strBuf := Buffer(strByteLen)
@@ -2166,14 +2109,11 @@ HashSHA256(input) {
                 }
             }
         } catch as e {
-            ; 如果在文件处理过程中发生错误，确保释放加密资源
             DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
             DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
             throw e
         }
-        ; =================== 修改结束 ===================
     } else {
-        ; 输入文字符串的情况 (此部分保持不变)
         strByteLen := StrPut(input, "UTF-8") - 1
         if (strByteLen >= 0) {
             strBuf := Buffer(strByteLen)
@@ -2183,7 +2123,6 @@ HashSHA256(input) {
             }
         }
     }
-    ; 获取最终的哈希值
     hashSize := 32
     hashBuf := Buffer(hashSize)
     if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0) {
@@ -2191,73 +2130,55 @@ HashSHA256(input) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw Error("CryptGetHashParam 失败", -1, "无法获取最终的哈希值")
     }
-    ; 将二进制哈希值格式化为十六进制字符串
     hexHash := ""
     loop hashSize {
         hexHash .= Format("{:02x}", NumGet(hashBuf, A_Index - 1, "UChar"))
     }
-    ; 清理并释放资源
     DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash
 }
 ;tag 计算Git SHA-1哈希值 (已修正行尾序列问题)
-/**
- * 计算一个文件的 Git SHA-1 哈希值（Blob类型）。
- * @param {String} filePath 要进行哈希计算的文件的完整路径。
- * @returns {String} 返回计算出的 40 位十六进制 Git SHA-1 哈希字符串。
- * @throws {Error} 如果在任何文件操作或加密 API 调用环节失败，则抛出异常。
- */
 HashGitSHA1(filePath) {
     if !FileExist(filePath) {
         throw Error("文件不存在", -1, "指定的Git SHA-1哈希文件路径无效: " . filePath)
     }
-    ; 1. 以二进制模式读取整个文件内容到 Buffer
     fileObj := FileOpen(filePath, "r")
     fileContentBuf := Buffer(fileObj.Length)
     fileObj.RawRead(fileContentBuf, fileContentBuf.Size)
     fileObj.Close()
-    ; 2. 在 Buffer 中处理换行符：将所有CRLF (`r`n) 和 CR (`r`) 替换为 LF (`n`)
     normalizedContentBuf := Buffer(fileContentBuf.Size)
     newSize := 0
     i := 0
     while i < fileContentBuf.Size {
         byte := NumGet(fileContentBuf, i, "UChar")
-        if byte = 13 { ; 是一个 CR (`r`)
-            NumPut("UChar", 10, normalizedContentBuf, newSize) ; 写入一个 LF (`n`)
+        if byte == 13 {
+            NumPut("UChar", 10, normalizedContentBuf, newSize)
             newSize += 1
-            ; 如果 CR 后面紧跟着一个 LF (即 CRLF)，则跳过那个 LF
-            if (i + 1 < fileContentBuf.Size and NumGet(fileContentBuf, i + 1, "UChar") = 10) {
+            if (i + 1 < fileContentBuf.Size && NumGet(fileContentBuf, i + 1, "UChar") == 10) {
                 i += 1
             }
-        } else { ; 不是 CR
-            NumPut("UChar", byte, normalizedContentBuf, newSize) ; 直接复制原字节
+        } else {
+            NumPut("UChar", byte, normalizedContentBuf, newSize)
             newSize += 1
         }
         i += 1
     }
-    normalizedContentBuf.Size := newSize ; 调整 Buffer 的实际大小
-    ; 3. 构建Git Blob头部，格式为: "blob <size>\0"
+    normalizedContentBuf.Size := newSize
     gitHeaderStr := "blob " . newSize . Chr(0)
     requiredSize := StrPut(gitHeaderStr, "UTF-8")
     gitHeaderBuf := Buffer(requiredSize)
     StrPut(gitHeaderStr, gitHeaderBuf, "UTF-8")
     gitHeaderLen := requiredSize - 1
-    ;================================================================================
-    ; Windows Cryptography API 调用部分
-    ;================================================================================
     hProv := 0, hHash := 0
-    ; 4. 初始化 Windows Cryptography API
     if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000) {
         throw Error("CryptAcquireContext 失败", -1, "无法获取加密服务提供者句柄")
     }
-    ; 5. 创建一个 SHA-1 哈希算法对象 (CALG_SHA1: 0x8004)
     if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x8004, "Ptr", 0, "UInt", 0, "Ptr*", &hHash) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw Error("CryptCreateHash 失败", -1, "无法创建哈希对象")
     }
     try {
-        ; 6. 更新哈希数据：先传入头部，再传入文件内容
         if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", gitHeaderBuf, "UInt", gitHeaderLen, "UInt", 0) {
             throw Error("CryptHashData (头部) 失败", -1, "更新头部哈希数据时出错")
         }
@@ -2265,12 +2186,10 @@ HashGitSHA1(filePath) {
             throw Error("CryptHashData (内容) 失败", -1, "更新文件内容哈希数据时出错")
         }
     } catch as e {
-        ; 如果在处理过程中发生错误，确保释放加密资源
         DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw e
     }
-    ; 7. 获取最终的哈希值
     hashSize := 20
     hashBuf := Buffer(hashSize)
     if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0) {
@@ -2278,12 +2197,10 @@ HashGitSHA1(filePath) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw Error("CryptGetHashParam 失败", -1, "无法获取最终的哈希值")
     }
-    ; 8. 将二进制哈希值格式化为十六进制字符串
     hexHash := ""
     loop hashSize {
-        hexHash .= Format("{:02x}", NumGet(hashBuf, A_index - 1, "UChar"))
+        hexHash .= Format("{:02x}", NumGet(hashBuf, A_Index - 1, "UChar"))
     }
-    ; 9. 清理并释放资源
     DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash

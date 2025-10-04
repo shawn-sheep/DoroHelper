@@ -195,6 +195,14 @@ if (scriptExtension = "ahk") {
 ;tag 变量备份
 g_default_settings := g_settings.Clone()
 g_default_numeric_settings := g_numeric_settings.Clone()
+;tag 更新相关变量
+global latestObj := Map( ; latestObj 是全局变量，在此处初始化，并通过辅助函数直接填充
+    "version", "",
+    "change_notes", "无更新说明",
+    "download_url", "",
+    "source", "", ; 例如: "github", "mirror", "ahk"
+    "display_name", "" ; 例如: "GitHub", "Mirror酱", "AHK版"
+)
 ;endregion 设置变量
 ;region 读取设置
 SetWorkingDir A_ScriptDir
@@ -1147,20 +1155,20 @@ StartDailyTimer() {
 }
 ;endregion 启动辅助函数
 ;region 更新辅助函数
-global latestObj := Map( ; latestObj 是全局变量，在此处初始化，并通过辅助函数直接填充
-    "version", "",
-    "change_notes", "无更新说明",
-    "download_url", "",
-    "source", "", ; 例如: "github", "mirror", "ahk"
-    "display_name", "" ; 例如: "GitHub", "Mirror酱", "AHK版"
-)
 ;tag 统一检查更新
 CheckForUpdate(isManualCheck) {
     global currentVersion, usr, repo, latestObj, g_settings, g_numeric_settings, scriptExtension
     ; 重置 latestObj 以确保每次检查都是新的状态
     ; 此处不直接重建Map，而是清空内容，以避免垃圾回收开销和可能的引用问题。
-    for k, v in latestObj {
-        latestObj.Delete(k)
+    if (!IsObject(latestObj) || Type(latestObj) != "Map") {
+        AddLog("警告: latestObj 未初始化或类型错误，重新初始化。", "Orange")
+        latestObj := Map("version", "", "change_notes", "无更新说明", "download_url", "", "source", "", "display_name", "")
+    } else {
+        ; 重置 latestObj 以确保每次检查都是新的状态
+        ; 此处不直接重建Map，而是清空内容，以避免垃圾回收开销和可能的引用问题。
+        for k, v in latestObj {
+            latestObj.Delete(k)
+        }
     }
     local checkSucceeded := false
     local channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"

@@ -16,7 +16,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.7.6"
+currentVersion := "v1.8.0"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2956,6 +2956,8 @@ ToggleSetting(settingKey, displayText, guiCtrl, *) {
     }
     ; 如果通过了会员检测 (或没有会员限制)，则正常切换值
     g_settings[settingKey] := 1 - g_settings[settingKey]
+    ; 每次勾选后都保存数据
+    WriteSettings()
     ;可选: 如果需要，可以在这里添加日志记录
     ; AddLog("切换 " settingKey . " 为 " . g_settings[settingKey])
 }

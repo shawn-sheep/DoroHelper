@@ -694,14 +694,16 @@ CheckSequence(key_char) {
         UserLevel := 0
     }
 }
-#HotIf WinActive(title)
-~Up:: CheckSequence("U")
-~Down:: CheckSequence("D")
-~Left:: CheckSequence("L")
-~Right:: CheckSequence("R")
-~b:: CheckSequence("B")
-~a:: CheckSequence("A")
-#HotIf
+try {
+    #HotIf WinActive(title)
+    ~Up:: CheckSequence("U")
+    ~Down:: CheckSequence("D")
+    ~Left:: CheckSequence("L")
+    ~Right:: CheckSequence("R")
+    ~b:: CheckSequence("B")
+    ~a:: CheckSequence("A")
+    #HotIf
+}
 ;endregion 彩蛋
 ;region 前置任务
 ;tag 检查用户组

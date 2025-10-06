@@ -1,3 +1,5 @@
+#Requires AutoHotkey v2.0
+FileEncoding "UTF-8"
 ;/*
 ;===========================================
 ;  FindText - 屏幕抓字生成字库工具与找字函数

@@ -1,3 +1,5 @@
+#Requires AutoHotkey v2.0
+FileEncoding "UTF-8"
 ;tag 未更新
 FindText().PicLib("|<白色的叉叉>*220$28.zzzzszzzz1zzzsXzzz77zzsyDzz7wTzszszz7zlzszzXz7zz7szzyD7zzwMzzzs7zzzkzzzz3zzzs7zzz6DzzswTzz7szzszlzz7znzszz7z7zyDszzwT7zzsszzzlDzzzVzzzzc", 1)
 ;tag 登录

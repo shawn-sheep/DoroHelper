@@ -36,10 +36,10 @@ global g_settings := Map(
     "ShopCash", 1,               ;付费商店
     "ShopCashFree", 0,           ;付费商店免费物品
     "ShopCashFreePackage", 0,     ;付费商店免费STEPUP
-    "ShopNormal", 1,             ;普通商店
-    "ShopNormalFree", 0,         ;普通商店：免费物品
-    "ShopNormalDust", 0,         ;普通商店：芯尘盒
-    "ShopNormalPackage", 0,      ;普通商店：简介个性化礼包
+    "ShopGeneral", 1,             ;普通商店
+    "ShopGeneralFree", 0,         ;普通商店：免费物品
+    "ShopGeneralDust", 0,         ;普通商店：芯尘盒
+    "ShopGeneralPackage", 0,      ;普通商店：简介个性化礼包
     "ShopArena", 1,              ;竞技场商店
     "ShopArenaBookFire", 0,      ;竞技场商店：燃烧手册
     "ShopArenaBookWater", 0,     ;竞技场商店：水冷手册
@@ -49,13 +49,13 @@ global g_settings := Map(
     "ShopArenaBookBox", 0,       ;竞技场商店：手册宝箱
     "ShopArenaPackage", 0,       ;竞技场商店：简介个性化礼包
     "ShopArenaFurnace", 0,       ;竞技场商店：公司武器熔炉
-    "ShopScrap", 1,              ;废铁商店
-    "ShopScrapGem", 0,           ;废铁商店：珠宝
-    "ShopScrapVoucher", 0,       ;废铁商店：好感券
-    "ShopScrapResources", 0,     ;废铁商店：养成资源
-    "ShopScrapTeamworkBox", 0,   ;废铁商店：团队合作宝箱
-    "ShopScrapKitBox", 0,        ;废铁商店：保养工具箱
-    "ShopScrapArms", 0,          ;废铁商店：企业精选武装
+    "ShopRecycling", 1,              ;废铁商店
+    "ShopRecyclingGem", 0,           ;废铁商店：珠宝
+    "ShopRecyclingVoucher", 0,       ;废铁商店：好感券
+    "ShopRecyclingResources", 0,     ;废铁商店：养成资源
+    "ShopRecyclingTeamworkBox", 0,   ;废铁商店：团队合作宝箱
+    "ShopRecyclingKitBox", 0,        ;废铁商店：保养工具箱
+    "ShopRecyclingArms", 0,          ;废铁商店：企业精选武装
     ;模拟室
     "SimulationRoom", 0,         ;模拟室
     "SimulationNormal", 0,       ;普通模拟室
@@ -80,9 +80,9 @@ global g_settings := Map(
     ;常规奖励
     "Award", 0,                  ;奖励领取总开关
     "AwardOutpost", 0,           ;前哨基地收菜
-    "AwardOutpostExpedition", 0, ;派遣
-    "AwardLoveTalking", 0,       ;咨询
-    "AwardLoveTalkingAward", 0,  ;咨询奖励
+    "AwardOutpostDispatch", 0, ;派遣
+    "AwardAdvise", 0,       ;咨询
+    "AwardAdviseAward", 0,  ;咨询奖励
     "AwardAppreciation", 0,      ;花絮鉴赏会
     "AwardFriendPoint", 0,       ;好友点数
     "AwardMail", 0,              ;邮箱
@@ -184,6 +184,11 @@ NikkeHP := 0
 TrueRatio := 1
 ;是否能进入战斗，0表示根本没找到进入战斗的图标，1表示能，2表示能但次数耗尽（灰色的进入战斗）
 BattleActive := 1
+; 确定地区
+LocaleName := GetUserLocaleName()
+if !(LocaleName = "zh-CN") {
+    AddLog("Hover your mouse over to view the English translatio, except for the content of the log")
+}
 ;tag 彩蛋
 konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
 key_history := ""           ; 用于存储用户按键历史的变量
@@ -208,9 +213,8 @@ SetWorkingDir A_ScriptDir
 ;tag 变量名修改提示
 try {
     LoadSettings()
-    if InStr(currentVersion, "v1.6.6") and g_numeric_settings["Version"] != currentVersion {
-        MsgBox("该版本的「开启自动射击和爆裂」选项被重置了，请按需勾选")
-        ; g_settings["CloseHelp"] := 0
+    if InStr(currentVersion, "v1.7.7") and g_numeric_settings["Version"] != currentVersion {
+        MsgBox("该版本部分选项被重置了，请按需勾选")
         g_numeric_settings["Version"] := currentVersion
     }
 }
@@ -246,26 +250,33 @@ doroGui.Tips := GuiCtrlTips(doroGui) ; 为 doroGui 实例化 GuiCtrlTips
 doroGui.Tips.SetBkColor(0xFFFFFF)
 doroGui.Tips.SetTxColor(0x000000)
 doroGui.Tips.SetMargins(3, 3, 3, 3)
+doroGui.Tips.SetDelayTime("AUTOPOP", 10000)
 doroGui.MarginY := Round(doroGui.MarginY * 1)
 doroGui.SetFont('s12', 'Microsoft YaHei UI')
 ;tag 框
 Update := doroGui.AddGroupBox("x10 y10 w250 h210 ", "更新")
-BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新").OnEvent("Click", ClickOnCheckForUpdate)
-BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助").OnEvent("Click", MsgSponsor)
-BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助").OnEvent("Click", ClickOnHelp)
-doroGui.Add("Text", "x20 y40 R1 +0x0100", "版本：" currentVersion)
-cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查", "x170 yp R1")
-doroGui.Tips.SetTip(cbAutoCheckVersion, "启动时自动检查版本`n该功能启用时会略微降低启动速度`nahk版暂时改为下载最新版的压缩包")
-TextUserGroup := doroGui.Add("Text", "x20 y65 R1 +0x0100 Section", "用户组：")
-doroGui.Tips.SetTip(TextUserGroup, "用户组会在你正式运行Doro时检查，也可以勾选右边的自动检查在每次启动时检查`n你可以通过支持DoroHelper来获得更高级的用户组，支持方式请点击赞助按钮`n普通用户：可以使用大部分功能`r`n会员用户：可以提前使用某些功能")
+;tag 检查更新
+BtnUpdate := doroGui.Add("Button", "xp+50 yp-1 w80 h25", "检查更新")
+doroGui.Tips.SetTip(BtnUpdate, "Check for updates")
+BtnUpdate.OnEvent("Click", ClickOnCheckForUpdate)
+;tag 赞助
+BtnSponsor := doroGui.Add("Button", "x+10  w50 h25", "赞助")
+doroGui.Tips.SetTip(BtnSponsor, "Sponsor")
+BtnSponsor.OnEvent("Click", MsgSponsor)
+;tag 帮助
+BtnHelp := doroGui.Add("Button", "x+10 w50 h25", "帮助")
+doroGui.Tips.SetTip(BtnHelp, "Help")
+BtnHelp.OnEvent("Click", ClickOnHelp)
+;tag 版本
+TextVersion := doroGui.Add("Text", "x20 y40 R1 +0x0100", "版本：" currentVersion)
+doroGui.Tips.SetTip(TextVersion, "Version")
+;tag 用户组
+TextUserGroup := doroGui.Add("Text", "x20 y+5 R1 +0x0100 Section", "用户组：")
+doroGui.Tips.SetTip(TextUserGroup, "你可以通点击上方的赞助按钮来获得更高级的用户组`nUserGroup:You can upgrade your membership by clicking the Sponsor button above`n普通用户:Normal User|铜:Copper|银:Silver|金:Gold")
 VariableUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", g_numeric_settings["UserGroup"])
-try doroGui.Add("Text", "x20 y90 R1 +0x0100", "哈希值：" MyFileShortHash)
-cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查", "x170 ys R1")
-doroGui.Tips.SetTip(cbAutoCheckUserGroup, "启动时自动检查用户组`n该功能启用时会略微降低启动速度`n如果你不是会员，开启这个功能对你来说没有意义")
-cbAutoDeleteOldFile := AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除", "yp+25")
-doroGui.Tips.SetTip(cbAutoDeleteOldFile, "更新后自动删除旧版本")
 ;tag 更新渠道
-doroGui.Add("Text", "Section x20 yp+30 R1 +0x0100", "更新渠道")
+TextUpdateChannels := doroGui.Add("Text", "Section x20 y+8 R1 +0x0100", "更新渠道")
+doroGui.Tips.SetTip(TextUpdateChannels, "UpdateChannels`n正式版:稳定，适合大多数用户|Stable: Reliable, recommended for most users.`n测试版:现已弃用|Beta: Now deprecated.`nAHK版:源代码版本，第一时间体验最新功能|AHK: Source code version with earliest access to new features.")
 if g_numeric_settings["UpdateChannels"] = "正式版" {
     var := 1
 }
@@ -277,10 +288,9 @@ else {
 }
 cbUpdateChannels := doroGui.Add("DropDownList", "x140 yp w100 Choose" var, ["正式版", "测试版", "AHK版"])
 cbUpdateChannels.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["UpdateChannels"] := Ctrl.Text)
-PostMessage(0x153, -1, 30, cbUpdateChannels)  ; 设置选区字段的高度.
-PostMessage(0x153, 0, 30, cbUpdateChannels)  ; 设置列表项的高度.
 ;tag 资源下载
-doroGui.Add("Text", "xs R1 +0x0100", "资源下载源")
+TextDownloadSource := doroGui.Add("Text", "xs R1 +0x0100", "资源下载源")
+doroGui.Tips.SetTip(TextDownloadSource, "Download Source")
 if g_numeric_settings["DownloadSource"] = "GitHub" {
     var := 1
 }
@@ -289,8 +299,6 @@ else {
 }
 cbDownloadSource := doroGui.AddDropDownList(" x140 yp w100 Choose" var, ["GitHub", "Mirror酱"])
 cbDownloadSource.OnEvent("Change", (Ctrl, Info) => ShowMirror(Ctrl, Info))
-PostMessage(0x153, -1, 30, cbDownloadSource)
-PostMessage(0x153, 0, 30, cbDownloadSource)
 ;tag Mirror酱
 MirrorText := doroGui.Add("Text", "xs R1 +0x0100", "Mirror酱CDK❔️")
 doroGui.Tips.SetTip(MirrorText, "Mirror酱是一个第三方应用分发平台，让你能在普通网络环境下更新应用`n网址：https://mirrorchyan.com/zh/（付费使用）`nMirror酱和Doro会员并无任何联系")
@@ -307,365 +315,455 @@ if g_numeric_settings["DownloadSource"] = "Mirror酱" {
 ;tag 任务列表
 global g_taskListCheckboxes := []
 doroGui.AddGroupBox("x10 y230 w250 h420 ", "任务列表")
+;tag 全选/全不选
 doroGui.SetFont('s9')
-BtnCheckAll := doroGui.Add("Button", "xp+180 R1", "✅️").OnEvent("Click", CheckAllTasks)
-doroGui.Tips.SetTip(BtnCheckAll, "勾选全部")
-BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "🔲").OnEvent("Click", UncheckAllTasks)
-doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部")
+BtnCheckAll := doroGui.Add("Button", "xp+180 R1", "✅️")
+doroGui.Tips.SetTip(BtnCheckAll, "勾选全部|Check All")
+BtnCheckAll.OnEvent("Click", CheckAllTasks)
+BtnUncheckAll := doroGui.Add("Button", "xp+40 R1", "🔲")
+doroGui.Tips.SetTip(BtnUncheckAll, "取消勾选全部|Uncheck All")
+BtnUncheckAll.OnEvent("Click", UncheckAllTasks)
+;tag 任务总开关
 doroGui.SetFont('s14')
-SettingsText := doroGui.Add("Text", "x20 yp+40 Section", "　基础设置")
+TextSettings := doroGui.Add("Text", "x20 yp+40 Section +0x0100", "　基础设置")
+doroGui.Tips.SetTip(TextSettings, "Basic Settings")
 BtnSetting := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Settings"))
 cbLogin := AddCheckboxSetting(doroGui, "Login", "登录", "xs", true)
-doroGui.Tips.SetTip(cbLogin, "是否先尝试登录游戏")
+doroGui.Tips.SetTip(cbLogin, "是否先尝试进入大厅页面|Login:Proceed to the lobby first")
 BtnLogin := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Login"))
 cbShop := AddCheckboxSetting(doroGui, "Shop", "商店", "xs", true)
-doroGui.Tips.SetTip(cbShop, "总开关：控制是否执行所有与商店相关的任务`r`n具体的购买项目请在右侧详细设置")
+doroGui.Tips.SetTip(cbShop, "Shop")
 BtnShop := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Shop"))
 cbSimulationRoom := AddCheckboxSetting(doroGui, "SimulationRoom", "模拟室", "xs", true)
-doroGui.Tips.SetTip(cbSimulationRoom, "总开关：控制是否执行模拟室相关的任务")
+doroGui.Tips.SetTip(cbSimulationRoom, "SimulationRoom")
 BtnSimulationRoom := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("SimulationRoom"))
 cbArena := AddCheckboxSetting(doroGui, "Arena", "竞技场", "xs", true)
-doroGui.Tips.SetTip(cbArena, "总开关：控制是否执行竞技场相关的任务，如领取奖励、挑战不同类型的竞技场`r`n请在右侧详细设置")
+doroGui.Tips.SetTip(cbArena, "Arena")
 BtnArena := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Arena"))
 cbTower := AddCheckboxSetting(doroGui, "Tower", "无限之塔", "xs", true)
-doroGui.Tips.SetTip(cbTower, "总开关：控制是否执行无限之塔相关的任务，包括企业塔和通用塔的挑战")
+doroGui.Tips.SetTip(cbTower, "Tribe Tower")
 BtnTower := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Tower"))
 cbInterception := AddCheckboxSetting(doroGui, "Interception", "拦截战", "xs", true)
-doroGui.Tips.SetTip(cbInterception, "总开关：控制是否执行拦截战任务`r`nBOSS选择、请在右侧详细设置")
+doroGui.Tips.SetTip(cbInterception, "Interception")
 BtnInterception := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Interception"))
 cbAward := AddCheckboxSetting(doroGui, "Award", "奖励收取", "xs", true)
-doroGui.Tips.SetTip(cbAward, "总开关：控制是否执行各类日常奖励的收取任务`r`n请在右侧详细设置")
+doroGui.Tips.SetTip(cbAward, "Award")
 BtnAward := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Award"))
 cbEvent := AddCheckboxSetting(doroGui, "Event", "活动", "xs", true)
-doroGui.Tips.SetTip(cbEvent, "总开关：控制是否执行大小活动的刷取`r`n请在右侧详细设置")
+doroGui.Tips.SetTip(cbEvent, "Event")
 BtnEvent := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("Event"))
-cbAfterText := doroGui.Add("Text", "x20 yp+40 Section", "　任务完成后")
+cbAfterText := doroGui.Add("Text", "x20 yp+40 Section +0x0100", "　任务完成后")
+doroGui.Tips.SetTip(cbAfterText, "After Task Completion")
 BtnAfter := doroGui.Add("Button", "x210 yp-2 w30 h30", "🔧").OnEvent("Click", (Ctrl, Info) => ShowSetting("After"))
 doroGui.SetFont('s12')
-BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+40", "DORO!").OnEvent("Click", ClickOnDoro)
+BtnDoro := doroGui.Add("Button", "w80 xm+80 yp+40", "DORO!")
+doroGui.Tips.SetTip(BtnDoro, "开始运行Doro|Start Doro")
+BtnDoro.OnEvent("Click", ClickOnDoro)
 doroGui.SetFont('s16')
-BtnSaveSettings := doroGui.Add("Button", "x210 yp+2 w30 h30 ", "♻️").OnEvent("Click", SaveAndRestart)
+BtnSaveSettings := doroGui.Add("Button", "x210 yp+2 w30 h30 ", "♻️")
+doroGui.Tips.SetTip(BtnSaveSettings, "保存并重启Doro|Save and Restart Doro")
+BtnSaveSettings.OnEvent("Click", SaveAndRestart)
 ;tag 二级设置
 doroGui.SetFont('s12')
-doroGui.AddGroupBox("x280 y10 w300 h640 ", "任务设置")
+TaskSettings := doroGui.AddGroupBox("x280 y10 w300 h640 +0x0100", "任务设置")
+doroGui.Tips.SetTip(TaskSettings, "Task Settings")
 ;tag 二级默认Default
-SetNotice := doroGui.Add("Text", "x290 y40 w280 +0x0100 Section", "====提示====`n请到左侧「任务列表」处对每个任务进行详细设置`n有问题先点左上角的帮助`n鼠标悬停以查看对应详细信息。")
-g_settingPages["Default"].Push(SetNotice)
-SetSize := doroGui.Add("Text", "w280 +0x0100", "====游戏尺寸设置（窗口化）====`n推荐1080p分辨率的用户使用游戏内部的全屏，1080p以上分辨率的用户选择1080p，也可以适当放大")
-g_settingPages["Default"].Push(SetSize)
-Btn1080 := doroGui.Add("Button", "w60 h30 ", "1080p")
+SetNotice1 := doroGui.Add("Text", "x290 y40 w280 +0x0100 Section", "====提示====")
+doroGui.Tips.SetTip(SetNotice1, "Notice")
+g_settingPages["Default"].Push(SetNotice1)
+SetNotice2 := doroGui.Add("Text", "x290 y+10 w280 +0x0100", "鼠标悬停以查看对应详细信息")
+doroGui.Tips.SetTip(SetNotice2, "Hover the mouse to view the corresponding detailed information")
+g_settingPages["Default"].Push(SetNotice2)
+SetSize1 := doroGui.Add("Text", "x290 y+10 w280 +0x0100", "====游戏尺寸设置====")
+doroGui.Tips.SetTip(SetSize1, "Game size Settings")
+g_settingPages["Default"].Push(SetSize1)
+SetSize2 := doroGui.Add("Text", "x290 y+10 w280 +0x0100", "推荐1080p分辨率的用户使用游戏内部的全屏（而不通过本软件调整）`n1080p以上分辨率的用户选择1080p")
+doroGui.Tips.SetTip(SetSize2, "For 1080p, use in-game fullscreen (not via this app), and for higher resolutions, select 1080p.")
+g_settingPages["Default"].Push(SetSize2)
+Btn1080 := doroGui.Add("Button", "w150 h30 ", "点击设置为1080p")
 Btn1080.OnEvent("Click", (Ctrl, Info) => AdjustSize(1920, 1080))
+doroGui.Tips.SetTip(Btn1080, "Click to set to 1080p")
 g_settingPages["Default"].Push(Btn1080)
 ;tag 二级设置Settings
-SetNormalTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "===基础设置===")
+SetNormalTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====基础设置====")
 g_settingPages["Settings"].Push(SetNormalTitle)
-CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "开启自动射击和爆裂", "R1 ")
-g_settingPages["Settings"].Push(CheckAutoText)
 cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示[铜Doro]", "R1")
+doroGui.Tips.SetTip(cbCloseAdvertisement, "Remove ads[Copper Doro]")
 g_settingPages["Settings"].Push(cbCloseAdvertisement)
+cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1")
+doroGui.Tips.SetTip(cbAutoCheckVersion, "Check for updates automatically at startup")
+g_settingPages["Settings"].Push(cbAutoCheckVersion)
+cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查用户组", "R1")
+doroGui.Tips.SetTip(cbAutoCheckUserGroup, "Check user group automatically at startup")
+g_settingPages["Settings"].Push(cbAutoCheckUserGroup)
+cbAutoDeleteOldFile := AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "R1")
+doroGui.Tips.SetTip(cbAutoDeleteOldFile, "Delete old versions automatically after updating")
+g_settingPages["Settings"].Push(cbAutoDeleteOldFile)
+CheckAutoText := AddCheckboxSetting(doroGui, "CheckAuto", "自动开启自动射击和爆裂", "R1")
+doroGui.Tips.SetTip(CheckAutoText, "Enable Auto Shoot and Burst automatically")
+g_settingPages["Settings"].Push(CheckAutoText)
 ;tag 二级登录Login
-SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录选项====")
+SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro]", "R1 ")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro]", "R1")
+doroGui.Tips.SetTip(StartupText, "勾选后，脚本会尝试通过填写的路径启动NIKKE`nLaunch NIKKEwith Script:If checked, the script will attempt to start NIKKE using the specified path")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
+doroGui.Tips.SetTip(StartupPathText, "Path of NIKKE Launcher")
 g_settingPages["Login"].Push(StartupPathText)
 StartupPathEdit := doroGui.Add("Edit", "x+5 yp+1 w160 h20")
 StartupPathEdit.Value := g_numeric_settings["StartupPath"]
 StartupPathEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupPath"] := Ctrl.Value)
+doroGui.Tips.SetTip(StartupPathEdit, "例如：C:\NIKKE\Launcher\nikke_launcher.exe`nFor example: C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathEdit)
-StartupPathInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(StartupPathInfo, "例如：C:\NIKKE\Launcher\nikke_launcher.exe")
-g_settingPages["Login"].Push(StartupPathInfo)
 SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro]", "xs R1")
-doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可")
+doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可`nTimed start[Gold Doro]:If checked, the script will Click DORO! at the specified time. Just keep the program running in the background.")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
+doroGui.Tips.SetTip(StartupTimeText, "Time to start NIKKE")
 g_settingPages["Login"].Push(StartupTimeText)
 StartupTimeEdit := doroGui.Add("Edit", "x+5 yp+1 w100 h20")
 StartupTimeEdit.Value := g_numeric_settings["StartupTime"]
 StartupTimeEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupTime"] := Ctrl.Value)
+doroGui.Tips.SetTip(StartupTimeEdit, "填写格式为 HHmmss 例如：080000 表示早上8点`nTime format must be HHmmss. For example, 080000 represents 08:00 AM.")
 g_settingPages["Login"].Push(StartupTimeEdit)
-StartupTimeInfo := doroGui.Add("Text", "x+2 yp-1 R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(StartupTimeInfo, "填写格式为 HHmmss`n例如：080000 表示早上8点")
-g_settingPages["Login"].Push(StartupTimeInfo)
 cbLoopMode := AddCheckboxSetting(doroGui, "LoopMode", "自律模式", "xs+20 R1 +0x0100")
-doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动")
+doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动`nLoopMode:If checked, when DoroHelper completes all selected tasks, NIKKE will automatically exit, and Doro will automatically restart to facilitate timed restarts.")
 g_settingPages["Login"].Push(cbLoopMode)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
 SetShopCashTitle := doroGui.Add("Text", "R1", "===付费商店===")
+doroGui.Tips.SetTip(SetShopCashTitle, "Cash Shop")
 g_settingPages["Shop"].Push(SetShopCashTitle)
-SetShopCashFree := AddCheckboxSetting(doroGui, "ShopCashFree", "购买付费商店免费珠宝", "R1 ")
+SetShopCashFree := AddCheckboxSetting(doroGui, "ShopCashFree", "购买付费商店免费珠宝", "R1")
+doroGui.Tips.SetTip(SetShopCashFree, "Automatically purchase free gems when they appear in the cash shop")
 g_settingPages["Shop"].Push(SetShopCashFree)
-SetShopCashFreePackage := AddCheckboxSetting(doroGui, "ShopCashFreePackage", "购买付费商店免费礼包", "R1 ")
+SetShopCashFreePackage := AddCheckboxSetting(doroGui, "ShopCashFreePackage", "购买付费商店免费礼包", "R1")
+doroGui.Tips.SetTip(SetShopCashFreePackage, "Automatically purchase free packages when they appear in the cash shop")
 g_settingPages["Shop"].Push(SetShopCashFreePackage)
-SetShopNormalTitle := doroGui.Add("Text", "R1", "===普通商店===")
-g_settingPages["Shop"].Push(SetShopNormalTitle)
-SetShopNormalFree := AddCheckboxSetting(doroGui, "ShopNormalFree", "购买普通商店免费商品", "R1 ")
-g_settingPages["Shop"].Push(SetShopNormalFree)
-SetShopNormalDust := AddCheckboxSetting(doroGui, "ShopNormalDust", "用信用点买芯尘盒", "R1")
-doroGui.Tips.SetTip(SetShopNormalDust, "勾选后，在普通商店中如果出现可用信用点购买的芯尘盒，则自动购买")
-g_settingPages["Shop"].Push(SetShopNormalDust)
-SetShopNormalPackage := AddCheckboxSetting(doroGui, "ShopNormalPackage", "购买简介个性化礼包", "R1 ")
-doroGui.Tips.SetTip(SetShopNormalPackage, "勾选后，在普通商店中如果出现可用游戏内货币购买的简介个性化礼包，则自动购买")
-g_settingPages["Shop"].Push(SetShopNormalPackage)
+SetShopGeneralTitle := doroGui.Add("Text", "R1", "===普通商店===")
+doroGui.Tips.SetTip(SetShopCashTitle, "General shop")
+g_settingPages["Shop"].Push(SetShopGeneralTitle)
+SetShopGeneralFree := AddCheckboxSetting(doroGui, "ShopGeneralFree", "购买普通商店免费商品", "R1")
+doroGui.Tips.SetTip(SetShopGeneralFree, "Automatically purchase free item when they appear in the General shop")
+g_settingPages["Shop"].Push(SetShopGeneralFree)
+SetShopGeneralDust := AddCheckboxSetting(doroGui, "ShopGeneralDust", "用信用点买芯尘盒", "R1")
+doroGui.Tips.SetTip(SetShopGeneralDust, "Automatically purchase Core Dust Case using Credit when they appear in the General shop")
+g_settingPages["Shop"].Push(SetShopGeneralDust)
+SetShopGeneralPackage := AddCheckboxSetting(doroGui, "ShopGeneralPackage", "购买简介个性化礼包", "R1")
+doroGui.Tips.SetTip(SetShopGeneralPackage, "Automatically purchase Profile Custom Pack in the General shop")
+g_settingPages["Shop"].Push(SetShopGeneralPackage)
 SetShopArenaTitle := doroGui.Add("Text", " R1 xs +0x0100", "===竞技场商店===")
-doroGui.Tips.SetTip(SetShopArenaTitle, "设置与游戏内竞技场商店（使用竞技场代币购买）相关选项")
+doroGui.Tips.SetTip(SetShopArenaTitle, "Arena Shop")
 g_settingPages["Shop"].Push(SetShopArenaTitle)
 ; SetShopArena := AddCheckboxSetting(doroGui, "ShopArena", "总开关", "R1")
 ; g_settingPages["Shop"].Push(SetShopArena)
 SetShopArenaBookFire := AddCheckboxSetting(doroGui, "ShopArenaBookFire", "燃烧", "R1")
-doroGui.Tips.SetTip(SetShopArenaBookFire, "在竞技场商店中自动购买所有的燃烧代码手册")
+doroGui.Tips.SetTip(SetShopArenaBookFire, "Fire")
 g_settingPages["Shop"].Push(SetShopArenaBookFire)
 SetShopArenaBookWater := AddCheckboxSetting(doroGui, "ShopArenaBookWater", "水冷", "R1 X+0.1")
-doroGui.Tips.SetTip(SetShopArenaBookWater, "在竞技场商店中自动购买所有的水冷代码手册")
+doroGui.Tips.SetTip(SetShopArenaBookWater, "Water")
 g_settingPages["Shop"].Push(SetShopArenaBookWater)
 SetShopArenaBookWind := AddCheckboxSetting(doroGui, "ShopArenaBookWind", "风压", "R1 X+0.1")
-doroGui.Tips.SetTip(SetShopArenaBookWind, "在竞技场商店中自动购买所有的风压代码手册")
+doroGui.Tips.SetTip(SetShopArenaBookWind, "Wind")
 g_settingPages["Shop"].Push(SetShopArenaBookWind)
 SetShopArenaBookElec := AddCheckboxSetting(doroGui, "ShopArenaBookElec", "电击", "R1 X+0.1")
-doroGui.Tips.SetTip(SetShopArenaBookElec, "在竞技场商店中自动购买所有的电击代码手册")
+doroGui.Tips.SetTip(SetShopArenaBookElec, "Electric")
 g_settingPages["Shop"].Push(SetShopArenaBookElec)
 SetShopArenaBookIron := AddCheckboxSetting(doroGui, "ShopArenaBookIron", "铁甲", "R1 X+0.1")
-doroGui.Tips.SetTip(SetShopArenaBookIron, "在竞技场商店中自动购买所有的铁甲代码手册")
+doroGui.Tips.SetTip(SetShopArenaBookIron, "Iron")
 g_settingPages["Shop"].Push(SetShopArenaBookIron)
 SetShopArenaBookBox := AddCheckboxSetting(doroGui, "ShopArenaBookBox", "购买代码手册宝箱", "xs R1.2")
-doroGui.Tips.SetTip(SetShopArenaBookBox, "在竞技场商店中自动购买代码手册宝箱，可随机开出各种属性的代码手册")
+doroGui.Tips.SetTip(SetShopArenaBookBox, "Automatically purchase Code Manual Selection Box when they appear in the Arena shop")
 g_settingPages["Shop"].Push(SetShopArenaBookBox)
 SetShopArenaPackage := AddCheckboxSetting(doroGui, "ShopArenaPackage", "购买简介个性化礼包", "R1.2")
-doroGui.Tips.SetTip(SetShopArenaPackage, "在竞技场商店自动购买简介个性化礼包")
+doroGui.Tips.SetTip(SetShopArenaPackage, "Automatically purchase Profile Custom Pack in the Arena shop")
 g_settingPages["Shop"].Push(SetShopArenaPackage)
 SetShopArenaFurnace := AddCheckboxSetting(doroGui, "ShopArenaFurnace", "购买公司武器熔炉", "R1.2")
-doroGui.Tips.SetTip(SetShopArenaFurnace, "在竞技场商店中自动购买公司武器熔炉，用于装备转化")
+doroGui.Tips.SetTip(SetShopArenaFurnace, "Automatically purchase Manufacturer Arms Furnace in the Arena shop")
 g_settingPages["Shop"].Push(SetShopArenaFurnace)
-SetShopScrapTitle := doroGui.Add("Text", "R1 xs Section +0x0100", "===废铁商店===")
-g_settingPages["Shop"].Push(SetShopScrapTitle)
-; SetShopScrap := AddCheckboxSetting(doroGui, "ShopScrap", "总开关", "R1")
-; g_settingPages["Shop"].Push(SetShopScrap)
-SetShopScrapGem := AddCheckboxSetting(doroGui, "ShopScrapGem", "购买珠宝", "R1.2")
-doroGui.Tips.SetTip(SetShopScrapGem, "在废铁商店中自动购买珠宝")
-g_settingPages["Shop"].Push(SetShopScrapGem)
-SetShopScrapVoucher := AddCheckboxSetting(doroGui, "ShopScrapVoucher", "购买全部好感券", "R1.2")
-g_settingPages["Shop"].Push(SetShopScrapVoucher)
-SetShopScrapResources := AddCheckboxSetting(doroGui, "ShopScrapResources", "购买全部养成资源", "R1.2")
-g_settingPages["Shop"].Push(SetShopScrapResources)
-SetScrapTeamworkBox := AddCheckboxSetting(doroGui, "ShopScrapTeamworkBox", "购买团队协作宝箱", "R1.2")
-g_settingPages["Shop"].Push(SetScrapTeamworkBox)
-SetShopScrapKitBox := AddCheckboxSetting(doroGui, "ShopScrapKitBox", "购买保养工具箱", "R1.2")
-g_settingPages["Shop"].Push(SetShopScrapKitBox)
-SetShopScrapArmsBox := AddCheckboxSetting(doroGui, "ShopScrapArms", "购买企业精选武装", "R1.2")
-g_settingPages["Shop"].Push(SetShopScrapArmsBox)
+SetShopRecyclingTitle := doroGui.Add("Text", "R1 xs Section +0x0100", "===废铁商店===")
+doroGui.Tips.SetTip(SetShopRecyclingTitle, "Recycling Shop")
+g_settingPages["Shop"].Push(SetShopRecyclingTitle)
+; SetShopRecycling := AddCheckboxSetting(doroGui, "ShopRecycling", "总开关", "R1")
+; g_settingPages["Shop"].Push(SetShopRecycling)
+SetShopRecyclingGem := AddCheckboxSetting(doroGui, "ShopRecyclingGem", "购买珠宝", "R1.2")
+doroGui.Tips.SetTip(SetShopRecyclingGem, "Automatically purchase Gems when they appear in the Recycling shop")
+g_settingPages["Shop"].Push(SetShopRecyclingGem)
+SetShopRecyclingVoucher := AddCheckboxSetting(doroGui, "ShopRecyclingVoucher", "购买全部好感券", "R1.2")
+doroGui.Tips.SetTip(SetShopRecyclingVoucher, "Automatically purchase all types of Vouchers when they appear in the Recycling shop")
+g_settingPages["Shop"].Push(SetShopRecyclingVoucher)
+SetShopRecyclingResources := AddCheckboxSetting(doroGui, "ShopRecyclingResources", "购买全部养成资源", "R1.2")
+doroGui.Tips.SetTip(SetShopRecyclingResources, "Automatically purchase all types of Development Resources when they appear in the Recycling shop")
+g_settingPages["Shop"].Push(SetShopRecyclingResources)
+SetRecyclingTeamworkBox := AddCheckboxSetting(doroGui, "ShopRecyclingTeamworkBox", "购买团队协作宝箱", "R1.2")
+doroGui.Tips.SetTip(SetRecyclingTeamworkBox, "Automatically purchase Teamwork Box when they appear in the Recycling shop")
+g_settingPages["Shop"].Push(SetRecyclingTeamworkBox)
+SetShopRecyclingKitBox := AddCheckboxSetting(doroGui, "ShopRecyclingKitBox", "购买保养工具箱", "R1.2")
+doroGui.Tips.SetTip(SetShopRecyclingKitBox, "Automatically purchase Maintenance Kit Box when they appear in the Recycling shop")
+g_settingPages["Shop"].Push(SetShopRecyclingKitBox)
+SetShopRecyclingArmsBox := AddCheckboxSetting(doroGui, "ShopRecyclingArms", "购买企业精选武装", "R1.2")
+doroGui.Tips.SetTip(SetShopRecyclingArmsBox, "Automatically purchase Manufacturer Arms when they appear in the Recycling shop")
+g_settingPages["Shop"].Push(SetShopRecyclingArmsBox)
 ;tag 二级模拟室SimulationRoom
 SetSimulationTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====模拟室选项====")
 g_settingPages["SimulationRoom"].Push(SetSimulationTitle)
 SetSimulationNormal := AddCheckboxSetting(doroGui, "SimulationNormal", "普通模拟室", "R1")
-doroGui.Tips.SetTip(SetSimulationNormal, "勾选后，自动进行普通模拟室超频挑战`r`n此功能需要你在游戏内已经解锁了快速模拟功能才能正常使用，需要预勾选5C")
+doroGui.Tips.SetTip(SetSimulationNormal, "此功能需要你在游戏内已经解锁了快速模拟功能才能正常使用，需要预勾选5C`nNormal Simulation Room:This feature requires you to have unlocked the Quick Simulation function in the game to work properly, and you need to pre-check 5C")
 g_settingPages["SimulationRoom"].Push(SetSimulationNormal)
 SetSimulationOverClock := AddCheckboxSetting(doroGui, "SimulationOverClock", "模拟室超频", "R1")
-doroGui.Tips.SetTip(SetSimulationOverClock, "勾选后，自动进行模拟室超频挑战`r`n程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合`r`n挑战难度必须是25，且需要勾选「禁止无关人员进入」和「好战型战术」")
+doroGui.Tips.SetTip(SetSimulationOverClock, "程序会默认尝试使用你上次进行超频挑战时选择的增益标签组合。挑战难度必须是25，且需要勾选「禁止无关人员进入」和「好战型战术」`nSimulationOverClock:The program will by default try to use the combination of boost tags you selected the last time you did an overclock challenge. The challenge difficulty must be 25, and you need to check 'Relevant Personnel Only' and 'Aggressive Tactics'")
 g_settingPages["SimulationRoom"].Push(SetSimulationOverClock)
 ;tag 二级竞技场Arena
 SetArenaTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====竞技场选项====")
 g_settingPages["Arena"].Push(SetArenaTitle)
 SetAwardArena := AddCheckboxSetting(doroGui, "AwardArena", "竞技场收菜", "R1")
-doroGui.Tips.SetTip(SetAwardArena, "领取竞技场每日奖励")
+doroGui.Tips.SetTip(SetAwardArena, "Claim Arena Accumulated Rewards")
 g_settingPages["Arena"].Push(SetAwardArena)
 SetArenaRookie := AddCheckboxSetting(doroGui, "ArenaRookie", "新人竞技场", "R1")
-doroGui.Tips.SetTip(SetArenaRookie, "使用五次每日免费挑战次数挑战第三位")
+doroGui.Tips.SetTip(SetArenaRookie, "使用五次每日免费挑战次数挑战第三位`nRookie Arena:Use five daily free challenge attempts to challenge the third place")
 g_settingPages["Arena"].Push(SetArenaRookie)
 SetArenaSpecial := AddCheckboxSetting(doroGui, "ArenaSpecial", "特殊竞技场", "R1")
-doroGui.Tips.SetTip(SetArenaSpecial, "使用两次每日免费挑战次数挑战第三位")
+doroGui.Tips.SetTip(SetArenaSpecial, "使用两次每日免费挑战次数挑战第三位`nSpecial Arena:Use two daily free challenge attempts to challenge the third place")
 g_settingPages["Arena"].Push(SetArenaSpecial)
 SetArenaChampion := AddCheckboxSetting(doroGui, "ArenaChampion", "冠军竞技场", "R1")
-doroGui.Tips.SetTip(SetArenaChampion, "在活动期间进行跟风竞猜")
+doroGui.Tips.SetTip(SetArenaChampion, "在活动期间进行跟风竞猜`nChampion Arena:Follow the Trend with your event predictions.")
 g_settingPages["Arena"].Push(SetArenaChampion)
 ;tag 二级无限之塔Tower
 SetTowerTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====无限之塔选项====")
 g_settingPages["Tower"].Push(SetTowerTitle)
 SetTowerCompany := AddCheckboxSetting(doroGui, "TowerCompany", "爬企业塔", "R1")
-doroGui.Tips.SetTip(SetTowerCompany, "勾选后，自动挑战当前可进入的所有企业塔，直到无法通关或每日次数用尽`r`n只要有一个是0/3就会判定为打过了从而跳过该任务")
+doroGui.Tips.SetTip(SetTowerCompany, "自动挑战当前可进入的所有企业塔，直到无法通关或次数用尽`nCompany Tower:Automatically challenge all currently accessible company towers until you can no longer pass or run out of attempts")
 g_settingPages["Tower"].Push(SetTowerCompany)
 SetTowerUniversal := AddCheckboxSetting(doroGui, "TowerUniversal", "爬通用塔", "R1")
-doroGui.Tips.SetTip(SetTowerUniversal, "勾选后，自动挑战通用无限之塔，直到无法通关")
+doroGui.Tips.SetTip(SetTowerUniversal, "自动挑战通用无限之塔，直到无法通关`nUniversal Tower:Automatically challenge the Tribe Tower until you can no longer pass")
 g_settingPages["Tower"].Push(SetTowerUniversal)
 ;tag 二级拦截战Interception
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
 g_settingPages["Interception"].Push(SetInterceptionTitle)
 SetInterceptionNormal := AddCheckboxSetting(doroGui, "InterceptionNormal", "普通拦截(暂不支持)", "R1")
+doroGui.Tips.SetTip(SetInterceptionNormal, "暂不支持`nNormal Interception:Not supported yet")
 g_settingPages["Interception"].Push(SetInterceptionNormal)
 SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
+doroGui.Tips.SetTip(SetInterceptionAnomaly, "Anomaly Interception")
 g_settingPages["Interception"].Push(SetInterceptionAnomaly)
-DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯(石)，编队1", "镜像容器(手)，编队2", "茵迪维利亚(衣)，编队3", "过激派(头)，编队4", "死神(脚)，编队5"])
-doroGui.Tips.SetTip(DropDownListBoss, "在此选择异常拦截任务中优先挑战的BOSS`r`n请确保游戏内对应编号的队伍已经配置好针对该BOSS的阵容`r`n例如，选择克拉肯(石)，编队1，则程序会使用你的编队1去挑战克拉肯")
+DropDownListBoss := doroGui.Add("DropDownList", "Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯，编队1", "镜像容器，编队2", "茵迪维利亚，编队3", "过激派，编队4", "死神，编队5"])
+doroGui.Tips.SetTip(DropDownListBoss, "例如，选择克拉肯(模组)，编队1，则程序会使用你的编队1去挑战克拉肯`nfor example, if you choose Kraken, Team 1, the program will use your Team 1 to challenge the Kraken`n克拉肯(模组):Kraken(Module)`n镜像容器(手):Mirage Container(Hand)`n茵迪维利亚(衣):Indivilia(Clothes)`n过激派(头):UItra(Head)`n死神(脚):Harvester(foot)")
 DropDownListBoss.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBoss"] := Ctrl.Value)
 g_settingPages["Interception"].Push(DropDownListBoss)
-SetInterceptionNormalTitle := doroGui.Add("Text", "R1", "===基础选项===")
+SetInterceptionNormalTitle := doroGui.Add("Text", "R1 +0x0100", "===基础选项===")
+doroGui.Tips.SetTip(SetInterceptionNormalTitle, "Basic Options")
 g_settingPages["Interception"].Push(SetInterceptionNormalTitle)
 SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
-doroGui.Tips.SetTip(SetInterceptionScreenshot, "勾选后，在每次异常拦截战斗结束后，自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中")
+doroGui.Tips.SetTip(SetInterceptionScreenshot, "自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中`nAutomatic screenshot of the settlement screen, saved in the '截图' folder in the program directory")
 g_settingPages["Interception"].Push(SetInterceptionScreenshot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
-doroGui.Tips.SetTip(SetRedCircle, "勾选后，在异常拦截中遇到克拉肯时会自动进行红圈攻击`n请务必在设置-战斗-全部中勾选「同步游标与准星」`n只对克拉肯有效")
+doroGui.Tips.SetTip(SetRedCircle, "请务必在设置-战斗-控制中开启「同步游标与准星」|只对克拉肯有效`nMake sure to turn on 'Sync Cursor and Crosshair' in Settings - Combat - Controls | Only effective for Kraken")
 g_settingPages["Interception"].Push(SetRedCircle)
 SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro]", "R1.2")
-doroGui.Tips.SetTip(SetInterceptionExit7, "免责声明：如果遇到任何问题导致提前退出请自行承担损失")
+doroGui.Tips.SetTip(SetInterceptionExit7, "Exit immediately after the Boss reaches phase 7[Gold Doro]")
 g_settingPages["Interception"].Push(SetInterceptionExit7)
 ;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")
 g_settingPages["Award"].Push(SetAwardTitle)
 SetAwardNormalTitle := doroGui.Add("Text", "R1", "===常规奖励===")
+doroGui.Tips.SetTip(SetAwardNormalTitle, "Regular Awards")
 g_settingPages["Award"].Push(SetAwardNormalTitle)
 SetAwardOutpost := AddCheckboxSetting(doroGui, "AwardOutpost", "领取前哨基地防御奖励+1次免费歼灭", "R1")
-doroGui.Tips.SetTip(SetAwardOutpost, "自动领取前哨基地的离线挂机收益，并执行一次每日免费的快速歼灭以获取额外资源")
+doroGui.Tips.SetTip(SetAwardOutpost, "Automatically collects the Outpost Defense rewards and uses 1 free annihilation.")
 g_settingPages["Award"].Push(SetAwardOutpost)
-SetAwardOutpostExpedition := AddCheckboxSetting(doroGui, "AwardOutpostExpedition", "领取并重新派遣委托", "R1 xs+15")
-doroGui.Tips.SetTip(SetAwardOutpostExpedition, "自动领取已完成的派遣委托奖励，并根据当前可用妮姬重新派遣新的委托任务")
-g_settingPages["Award"].Push(SetAwardOutpostExpedition)
-SetAwardLoveTalking := AddCheckboxSetting(doroGui, "AwardLoveTalking", "咨询妮姬", "R1 xs Section")
-doroGui.Tips.SetTip(SetAwardLoveTalking, "自动进行每日的妮姬咨询，以提升好感度`r`n你可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`r`n会循环直到次数耗尽")
-g_settingPages["Award"].Push(SetAwardLoveTalking)
-SetAwardLoveTalkingAward := AddCheckboxSetting(doroGui, "AwardLoveTalkingAward", "自动观看新花絮[金Doro]", "R1 xs+15")
-doroGui.Tips.SetTip(SetAwardLoveTalkingAward, "自动观看妮姬升级产生的新花絮并领取奖励")
-g_settingPages["Award"].Push(SetAwardLoveTalkingAward)
+SetAwardOutpostDispatch := AddCheckboxSetting(doroGui, "AwardOutpostDispatch", "领取并重新派遣委托", "R1 xs+15")
+doroGui.Tips.SetTip(SetAwardOutpostDispatch, "Automatically collects and redeploys Outpost Dispatchs")
+g_settingPages["Award"].Push(SetAwardOutpostDispatch)
+SetAwardAdvise := AddCheckboxSetting(doroGui, "AwardAdvise", "咨询妮姬", "R1 xs Section")
+doroGui.Tips.SetTip(SetAwardAdvise, "你可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`nNikke Advise:You can adjust the priority of consultation by setting Nikke to the collection status in the game")
+g_settingPages["Award"].Push(SetAwardAdvise)
+SetAwardAdviseAward := AddCheckboxSetting(doroGui, "AwardAdviseAward", "自动观看新花絮[金Doro]", "R1 xs+15")
+doroGui.Tips.SetTip(SetAwardAdviseAward, "自动观看妮姬升级产生的新花絮并领取奖励`nAdviseAward[Gold Doro]:automatically watch new Episode generated by Nikke's upgrade and receive rewards")
+g_settingPages["Award"].Push(SetAwardAdviseAward)
 SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏会", "R1 xs+15")
-doroGui.Tips.SetTip(SetAwardAppreciation, "自动观看并领取花絮鉴赏会中当前可领取的奖励")
+doroGui.Tips.SetTip(SetAwardAppreciation, "Episode Viewing")
 g_settingPages["Award"].Push(SetAwardAppreciation)
-SetAwardFriendPoint := AddCheckboxSetting(doroGui, "AwardFriendPoint", "好友点数收取", "R1 xs")
-doroGui.Tips.SetTip(SetAwardFriendPoint, "收取并回赠好友点数")
+SetAwardFriendPoint := AddCheckboxSetting(doroGui, "AwardFriendPoint", "好友点数收发", "R1 xs")
+doroGui.Tips.SetTip(SetAwardFriendPoint, "Receive and send Social Points")
 g_settingPages["Award"].Push(SetAwardFriendPoint)
 SetAwardMail := AddCheckboxSetting(doroGui, "AwardMail", "邮箱收取", "R1.2")
-doroGui.Tips.SetTip(SetAwardMail, "收取邮箱中所有奖励")
+doroGui.Tips.SetTip(SetAwardMail, "Automatically collect all items in the mailbox")
 g_settingPages["Award"].Push(SetAwardMail)
 SetAwardRanking := AddCheckboxSetting(doroGui, "AwardRanking", "方舟排名奖励", "R1.2")
-doroGui.Tips.SetTip(SetAwardRanking, "自动领取方舟内各类排名活动（如无限之塔排名、竞技场排名等）的结算奖励")
+doroGui.Tips.SetTip(SetAwardRanking, "Automatically collect Ark Ranking Rewards")
 g_settingPages["Award"].Push(SetAwardRanking)
 SetAwardDaily := AddCheckboxSetting(doroGui, "AwardDaily", "任务收取", "R1.2")
-doroGui.Tips.SetTip(SetAwardDaily, "收取每日任务、每周任务、主线任务以及成就等已完成任务的奖励")
+doroGui.Tips.SetTip(SetAwardDaily, "收取每日任务、每周任务、主线任务以及成就等已完成任务的奖励`nDailyAward:Automatically collect rewards for completed Daily, Weekly, Main, and Achievement tasks")
 g_settingPages["Award"].Push(SetAwardDaily)
 SetAwardPass := AddCheckboxSetting(doroGui, "AwardPass", "通行证收取", "R1.2")
-doroGui.Tips.SetTip(SetAwardPass, "收取当前通行证中所有可领取的等级奖励")
+doroGui.Tips.SetTip(SetAwardPass, "Collect rewards in the pass")
 g_settingPages["Award"].Push(SetAwardPass)
 SetAwardCooperate := AddCheckboxSetting(doroGui, "AwardCooperate", "协同作战", "R1.2")
-doroGui.Tips.SetTip(SetAwardCooperate, "参与每日三次的普通难度协同作战`r`n也可参与大活动的协同作战")
+doroGui.Tips.SetTip(SetAwardCooperate, "参与每日三次的普通难度协同作战|也可参与大活动的协同作战`nCooperate:Participate in the three daily normal difficulty cooperative battles | You can also participate in the cooperative battles of events")
 g_settingPages["Award"].Push(SetAwardCooperate)
 SetAwardSoloRaid := AddCheckboxSetting(doroGui, "AwardSoloRaid", "单人突击日常", "R1.2")
-doroGui.Tips.SetTip(SetAwardSoloRaid, "参与单人突击，自动对最新的关卡进行战斗或快速战斗")
+doroGui.Tips.SetTip(SetAwardSoloRaid, "参与单人突击，自动对最新的关卡进行战斗或快速战斗`nSolo Raid:Participate in Solo Raid, automatically fight or quick fight the latest level")
 g_settingPages["Award"].Push(SetAwardSoloRaid)
 SetLimitedAwardTitle := doroGui.Add("Text", "R1 Section +0x0100", "===限时奖励===")
-doroGui.Tips.SetTip(SetLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动")
+doroGui.Tips.SetTip(SetLimitedAwardTitle, "设置在特定活动期间可领取的限时奖励或可参与的限时活动`nSet time-limited rewards or time-limited activities that can be participated in during specific events")
 g_settingPages["Award"].Push(SetLimitedAwardTitle)
 SetAwardFreeRecruit := AddCheckboxSetting(doroGui, "AwardFreeRecruit", "活动期间每日免费招募", "R1.2")
-doroGui.Tips.SetTip(SetAwardFreeRecruit, "勾选后，如果在特定活动期间有每日免费招募机会，则自动进行募")
+doroGui.Tips.SetTip(SetAwardFreeRecruit, "如果在特定活动期间有每日免费招募机会，则自动进行募`nFree Recruit:if there is a daily free recruitment opportunity during a specific event, it will be recruited automatically")
 g_settingPages["Award"].Push(SetAwardFreeRecruit)
 ;tag 二级活动Event
 SetEventUniversal := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====通用选项====")
+doroGui.Tips.SetTip(SetEventUniversal, "Universal Options")
 g_settingPages["Event"].Push(SetEventUniversal)
-SetAutoFill := AddCheckboxSetting(doroGui, "AutoFill", "剧情活动自动添加妮姬[金Doro]", "R1 ")
+SetAutoFill := AddCheckboxSetting(doroGui, "AutoFill", "剧情活动自动添加妮姬[金Doro]", "R1")
+doroGui.Tips.SetTip(SetAutoFill, "Automatically add Nikke for story events[Gold Doro]")
 g_settingPages["Event"].Push(SetAutoFill)
 SetEventTitle := doroGui.Add("Text", "R1 +0x0100", "====活动选项====")
+doroGui.Tips.SetTip(SetEventTitle, "Event Options")
 g_settingPages["Event"].Push(SetEventTitle)
 SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动[银Doro](未开放)", "R1")
+doroGui.Tips.SetTip(SetEventSmall, "Small Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventSmall)
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSmallChallenge, "Small Events Challenge")
 g_settingPages["Event"].Push(SetEventSmallChallenge)
 SetEventSmallStory := AddCheckboxSetting(doroGui, "EventSmallStory", "小活动剧情", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSmallStory, "Small Events Story")
 g_settingPages["Event"].Push(SetEventSmallStory)
 SetEventSmallMission := AddCheckboxSetting(doroGui, "EventSmallMission", "小活动任务", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSmallMission, "Small Events Mission")
 g_settingPages["Event"].Push(SetEventSmallMission)
 SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动[银Doro](REBORN EVIL)", "R1 xs")
+doroGui.Tips.SetTip(SetEventLarge, "Large Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeSign, "Large Events Sign-in")
 g_settingPages["Event"].Push(SetEventLargeSign)
 SetEventLargeChallenge := AddCheckboxSetting(doroGui, "EventLargeChallenge", "大活动挑战", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeChallenge, "Large Events Challenge")
 g_settingPages["Event"].Push(SetEventLargeChallenge)
 SetEventLargeStory := AddCheckboxSetting(doroGui, "EventLargeStory", "大活动剧情", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeStory, "Large Events Story")
 g_settingPages["Event"].Push(SetEventLargeStory)
 SetEventLargeCooperate := AddCheckboxSetting(doroGui, "EventLargeCooperate", "大活动协同作战", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeCooperate, "Large Events Cooperate")
 g_settingPages["Event"].Push(SetEventLargeCooperate)
 SetEventLargeMinigame := AddCheckboxSetting(doroGui, "EventLargeMinigame", "大活动小游戏", "R1 xs+15")
-doroGui.Tips.SetTip(SetEventLargeMinigame, "购买「扩充物品栏」后需要开启蓝色药丸")
+doroGui.Tips.SetTip(SetEventLargeMinigame, "Large Event Minigame")
 g_settingPages["Event"].Push(SetEventLargeMinigame)
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventLargeDaily, "Large Events Daily Rewards")
 g_settingPages["Event"].Push(SetEventLargeDaily)
 SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动[银Doro](未开放)", "R1 xs")
+doroGui.Tips.SetTip(SetEventSpecial, "Special Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventSpecial)
 SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊活动签到", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSpecialSign, "Special Events Sign-in")
 g_settingPages["Event"].Push(SetEventSpecialSign)
 SetEventSpecialChallenge := AddCheckboxSetting(doroGui, "EventSpecialChallenge", "特殊活动挑战", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSpecialChallenge, "Special Events Challenge")
 g_settingPages["Event"].Push(SetEventSpecialChallenge)
 SetEventSpecialStory := AddCheckboxSetting(doroGui, "EventSpecialStory", "特殊活动剧情❔️", "R1 xs+15")
-doroGui.Tips.SetTip(SetEventSpecialStory, "部分关卡可能有特殊关，此时需要手动完成任务")
+doroGui.Tips.SetTip(SetEventSpecialStory, "部分关卡可能有特殊关，此时需要手动完成任务`nSpecial Events Story:Some levels may have special stages, which need to be completed manually")
 g_settingPages["Event"].Push(SetEventSpecialStory)
 SetEventSpecialCooperate := AddCheckboxSetting(doroGui, "EventSpecialCooperate", "特殊活动协同作战", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSpecialCooperate, "Special Events Cooperate")
 g_settingPages["Event"].Push(SetEventSpecialCooperate)
 SetEventSpecialMinigame := AddCheckboxSetting(doroGui, "EventSpecialMinigame", "特殊活动小游戏", "R1 xs+15")
-doroGui.Tips.SetTip(SetEventSpecialMinigame, "默认不使用技能，开启蓝色药丸后使用技能")
+doroGui.Tips.SetTip(SetEventSpecialMinigame, "Special Event Minigame")
 g_settingPages["Event"].Push(SetEventSpecialMinigame)
 SetEventSpecialDaily := AddCheckboxSetting(doroGui, "EventSpecialDaily", "特殊活动奖励", "R1 xs+15")
+doroGui.Tips.SetTip(SetEventSpecialDaily, "Special Events Daily Rewards")
 g_settingPages["Event"].Push(SetEventSpecialDaily)
 ;tag 二级设置After
 SetAfterTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====任务完成后====")
 g_settingPages["After"].Push(SetAfterTitle)
 cbClearRed := AddCheckboxSetting(doroGui, "ClearRed", "任务完成后[金Doro]", "R1")
 g_settingPages["After"].Push(cbClearRed)
-cbClearRedRecycling := AddCheckboxSetting(doroGui, "ClearRedRecycling", "自动升级循环室", "R1 xs+15")
+cbClearRedRecycling := AddCheckboxSetting(doroGui, "ClearRedRecycling", "升级循环室", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedRecycling, "Upgrade Recycle Room")
 g_settingPages["After"].Push(cbClearRedRecycling)
-cbClearRedSynchro := AddCheckboxSetting(doroGui, "ClearRedSynchro", "自动升级同步器", "R1 xs+15")
+cbClearRedSynchro := AddCheckboxSetting(doroGui, "ClearRedSynchro", "升级同步器", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedSynchro, "Upgrade Synchro Device")
 g_settingPages["After"].Push(cbClearRedSynchro)
 cbClearRedSynchroForce := AddCheckboxSetting(doroGui, "ClearRedSynchroForce", "开箱子", "R1 x+5")
+doroGui.Tips.SetTip(cbClearRedSynchroForce, "Open Resource Cases")
 g_settingPages["After"].Push(cbClearRedSynchroForce)
-cbClearRedLimit := AddCheckboxSetting(doroGui, "ClearRedLimit", "自动突破/强化妮姬", "R1 xs+15")
+cbClearRedLimit := AddCheckboxSetting(doroGui, "ClearRedLimit", "突破/强化妮姬", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedLimit, "Limit Break/Enhance Nikke")
 g_settingPages["After"].Push(cbClearRedLimit)
-cbClearRedCube := AddCheckboxSetting(doroGui, "ClearRedCube", "自动升级魔方", "R1 xs+15")
+cbClearRedCube := AddCheckboxSetting(doroGui, "ClearRedCube", "升级魔方", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedCube, "Upgrade Cubes")
 g_settingPages["After"].Push(cbClearRedCube)
 cbClearRedNotice := AddCheckboxSetting(doroGui, "ClearRedNotice", "清除公告红点", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedNotice, "Clear Notice Red Dot")
 g_settingPages["After"].Push(cbClearRedNotice)
 cbClearRedWallpaper := AddCheckboxSetting(doroGui, "ClearRedWallpaper", "清除壁纸红点", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedWallpaper, "Clear Wallpaper Red Dot")
 g_settingPages["After"].Push(cbClearRedWallpaper)
 cbClearRedProfile := AddCheckboxSetting(doroGui, "ClearRedProfile", "清除个人页红点", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedProfile, "Clear Profile Red Dot")
 g_settingPages["After"].Push(cbClearRedProfile)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "打开Blablalink", "R1 xs")
-doroGui.Tips.SetTip(cbOpenBlablalink, "勾选后，当 DoroHelper 完成所有已选任务后，会自动在你的默认浏览器中打开 Blablalink 网站")
+doroGui.Tips.SetTip(cbOpenBlablalink, "Open the Blablalink website")
 g_settingPages["After"].Push(cbOpenBlablalink)
 cbCheckEvent := AddCheckboxSetting(doroGui, "CheckEvent", "活动结束提醒", "R1")
-doroGui.Tips.SetTip(cbCheckEvent, "勾选后，DoroHelper 会在大小活动结束前进行提醒")
+doroGui.Tips.SetTip(cbCheckEvent, "在大小活动结束前进行提醒`nEvent End Reminder:remind you before the end of major and minor events")
 g_settingPages["After"].Push(cbCheckEvent)
 cbDoroClosing := AddCheckboxSetting(doroGui, "DoroClosing", "关闭DoroHelper", "R1")
+doroGui.Tips.SetTip(cbDoroClosing, "Close DoroHelper")
 g_settingPages["After"].Push(cbDoroClosing)
 ;tag 妙妙工具
 doroGui.SetFont('s12')
 doroGui.AddGroupBox("x600 y10 w400 h240 Section", "妙妙工具")
 MiaoInfo := doroGui.Add("Text", "xp+70 yp-1 R1 +0x0100", "❔️")
-doroGui.Tips.SetTip(MiaoInfo, "提供一些与日常任务流程无关的额外小功能")
-doroGui.Add("Button", "xp xs+10 w80 h30", "仓库地址").OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper"))
-doroGui.Add("Button", "x+10 w80 h30", "Blablalink").OnEvent("Click", (*) => Run("https://www.blablalink.com/"))
-doroGui.Add("Button", "x+10 w80 h30", "CDK兑换").OnEvent("Click", (*) => Run("https://nikke.hayasa.link/"))
-doroGui.Add("Button", "x+10 w100 h30", "加入反馈群").OnEvent("Click", (*) => Run("https://qm.qq.com/q/ZhvLeKMO2q"))
+doroGui.Tips.SetTip(MiaoInfo, "提供一些与日常任务流程无关的额外小功能`nProvides ancillary features that operate outside the scope of the daily task workflow.")
+; 仓库地址
+btnRepository := doroGui.Add("Button", "xp xs+10 w80 h30", "仓库地址")
+doroGui.Tips.SetTip(btnRepository, "github repository")
+btnRepository.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper"))
+; Blablalink
+btnBlablalink := doroGui.Add("Button", "x+10 w80 h30", "Blablalink")
+btnBlablalink.OnEvent("Click", (*) => Run("https://www.blablalink.com/"))
+; CDK兑换
+btnCDK := doroGui.Add("Button", "x+10 w80 h30", "CDK兑换")
+doroGui.Tips.SetTip(btnCDK, "Nikke CDK Exchange")
+btnCDK.OnEvent("Click", (*) => Run("https://nikke.hayasa.link/"))
+; 反馈群
+btnFeedback := doroGui.Add("Button", "x+10 w100 h30", "加入反馈群")
+doroGui.Tips.SetTip(btnFeedback, "Join the feedback group")
+btnFeedback.OnEvent("Click", (*) => Run("https://qm.qq.com/q/ZhvLeKMO2q"))
+; 剧情模式
 TextStoryModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "剧情模式")
-doroGui.Tips.SetTip(TextStoryModeLabel, "尝试自动点击对话选项`r`n自动进行下一段剧情，自动启动auto")
-AddCheckboxSetting(doroGui, "StoryModeAutoStar", "自动收藏", "x+5  R1")
-AddCheckboxSetting(doroGui, "StoryModeAutoChoose", "自动抉择", "x+5 R1")
-BtnStoryMode := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", StoryMode)
+doroGui.Tips.SetTip(TextStoryModeLabel, "自动点击对话选项，自动进行下一段剧情，自动启动auto`nAutomatically click dialogue options, automatically proceed to the next segment of the story, automatically start auto")
+cbStoryModeAutoStar := AddCheckboxSetting(doroGui, "StoryModeAutoStar", "自动收藏", "x+5  R1")
+doroGui.Tips.SetTip(cbStoryModeAutoStar, "Automatically bookmark the current story")
+cbStoryModeAutoChoose := AddCheckboxSetting(doroGui, "StoryModeAutoChoose", "自动抉择", "x+5 R1")
+doroGui.Tips.SetTip(cbStoryModeAutoChoose, "Automatically choose the first option in choices")
+BtnStoryMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", StoryMode)
 TextTestModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "调试模式")
-doroGui.Tips.SetTip(TextTestModeLabel, "根据输入的函数直接执行对应任务")
+doroGui.Tips.SetTip(TextTestModeLabel, "根据输入的函数直接执行对应任务`nTestMode:Directly execute the corresponding task according to the input function")
 TestModeEditControl := doroGui.Add("Edit", "x+10 yp w145 h20")
-doroGui.Tips.SetTip(TestModeEditControl, "输入要执行的任务的函数名")
 TestModeEditControl.Value := g_numeric_settings["TestModeValue"]
-BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", TestMode)
+BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", TestMode)
 TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "快速爆裂模式")
-doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快。`n默认先A后S。适合凹分时解手")
-BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", QuickBurst)
+doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快。`n默认先A后S`nAfter starting, Burst will be used automatically, Fater than the built-in auto.`nBy default, A is used before S")
+BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", QuickBurst)
 TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta[金Doro]")
-doroGui.Tips.SetTip(TextAutoAdvance, "半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关")
-BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w60 h30", "←启动").OnEvent("Click", AutoAdvance)
+doroGui.Tips.SetTip(TextAutoAdvance, "半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关`nMap Advancement:Semi-automatic map advancement. Set the view to the maximum. Start near the monster in the map, sometimes you need to manually find monsters and mechanisms")
+BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
+doroGui.Tips.SetTip(BtnBluePill, "Blue Pill")
 BtnRedPill := AddCheckboxSetting(doroGui, "RedPill", "红色药丸", "x+10 R1 +0x0100")
-doroGui.Add("Text", "x+10 +0x0100", "←特定情况下勾选")
+doroGui.Tips.SetTip(BtnRedPill, "Red Pill")
+TextPillinfo := doroGui.Add("Text", "x+10 +0x0100", "←特定情况下勾选")
+doroGui.Tips.SetTip(TextPillinfo, "Check the box in specific circumstances")
 ;tag 日志
 doroGui.AddGroupBox("x600 y260 w400 h390 Section", "日志")
-doroGui.Add("Button", "xp+320 yp-5 w80 h30", "导出日志").OnEvent("Click", CopyLog)
+btnCopyLog := doroGui.Add("Button", "xp+320 yp-5 w80 h30", "导出日志")
+doroGui.Tips.SetTip(btnCopyLog, "Export log")
+btnCopyLog.OnEvent("Click", CopyLog)
 doroGui.SetFont('s10')
 LogBox := RichEdit(doroGui, "xs+10 ys+30 w380 h340 -HScroll +0x80 ReadOnly")
 LogBox.WordWrap(true)
@@ -768,12 +866,12 @@ ClickOnDoro(*) {
     if g_settings["Shop"] {
         if g_settings["ShopCashFree"]
             ShopCash()
-        if g_settings["ShopNormal"]
-            ShopNormal()
+        if g_settings["ShopGeneral"]
+            ShopGeneral()
         if g_settings["ShopArena"]
             ShopArena()
-        if g_settings["ShopScrap"]
-            ShopScrap()
+        if g_settings["ShopRecycling"]
+            ShopRecycling()
         BackToHall
     }
     if g_settings["SimulationRoom"] {
@@ -813,8 +911,8 @@ ClickOnDoro(*) {
     if g_settings["Award"] {
         if g_settings["AwardOutpost"] ;使用键名检查 Map
             AwardOutpost()
-        if g_settings["AwardLoveTalking"]
-            AwardLoveTalking()
+        if g_settings["AwardAdvise"]
+            AwardAdvise()
         if g_settings["AwardFriendPoint"]
             AwardFriendPoint()
         if g_settings["AwardMail"]
@@ -2489,20 +2587,41 @@ CheckEvent(*) {
         MsgBox "小活动ABSOLUTE将在今天结束，请尽快搬空商店！"
     }
 }
+;tag 获取系统区域设置
+GetUserLocaleName() {
+    MaxLen := 85
+    BufferSize := MaxLen * 2
+    LocaleBuffer := Buffer(BufferSize, 0)
+    Result := DllCall("Kernel32\GetUserDefaultLocaleName", "Ptr", LocaleBuffer, "UInt", MaxLen, "UInt")
+    if (Result == 0) {
+        return ""
+    }
+    LocaleName := StrGet(LocaleBuffer, "UTF-16")
+    return LocaleName
+}
 MsgSponsor(*) {
-    global guiTier, guiDuration, guiSponsor, guiPriceText
+    global guiTier, guiDuration, guiSponsor, guiPriceText, Unitprice, Currency
     guiSponsor := Gui("+Resize", "赞助")
+    guiSponsor.Tips := GuiCtrlTips(guiSponsor)
+    guiSponsor.Tips.SetBkColor(0xFFFFFF)
+    guiSponsor.Tips.SetTxColor(0x000000)
+    guiSponsor.Tips.SetMargins(3, 3, 3, 3)
+    guiSponsor.Tips.SetDelayTime("AUTOPOP", 10000)
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
-    guiSponsor.Add("Text", "w400 Wrap", "现在 DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    guiSponsor.Add("Text", "xm w400 Wrap", "赞助信息与当前设备绑定。需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
-    LV := guiSponsor.Add("ListView", "w400 h200", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
-    LV.Add(, "每月价格", "免费", "1欧润吉", "3欧润吉", "5欧润吉")
-    LV.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
-    LV.Add(, "移除广告提示", "", "✅️", "✅️", "✅️")
-    LV.Add(, "轮换活动", "", "", "✅️", "✅️")
-    LV.Add(, "路径和定时启动", "", "", "", "✅️")
-    LV.Add(, "自动推图", "", "", "", "✅️")
-    LV.Add(, "其他最新功能", "", "", "", "✅️")
+    Text1 := guiSponsor.Add("Text", "w400 +0x0100 Wrap", "现在 DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    guiSponsor.Tips.SetTip(Text1, "Currently, I am the primary contributor to DoroHelper, handling most of the maintenance and new feature development. `nThis demands a significant amount of my time and energy. `nIf you find it valuable and are in a position to help, your support would be greatly appreciated.")
+    Text2 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "赞助信息与当前设备绑定。需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
+    guiSponsor.Tips.SetTip(Text2, "Sponsorship information is tied to the current device. `nPlease note that sponsorship does not constitute a commercial transaction. `nIn the event of unforeseen circumstances, I reserve the right to discontinue maintenance at any time. `nThe final interpretation rights belong to me.")
+    LVZH := guiSponsor.Add("ListView", "w400 h200", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
+    LVZH.Add(, "每月价格", "免费", "1欧润吉", "3欧润吉", "5欧润吉")
+    LVZH.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
+    LVZH.Add(, "移除广告提示", "", "✅️", "✅️", "✅️")
+    LVZH.Add(, "轮换活动", "", "", "✅️", "✅️")
+    LVZH.Add(, "路径和定时启动", "", "", "", "✅️")
+    LVZH.Add(, "自动推图", "", "", "", "✅️")
+    LVZH.Add(, "其他最新功能", "", "", "", "✅️")
+    Text3 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "总结：铜Doro免除广告、银Doro能做活动、金Doro能用全部功能")
+    guiSponsor.Tips.SetTip(Text3, "Summary: Copper Doro removes ads and the price is 1 ORANGE per month.Silver Doro enables event features and the price is 3 ORANGE per month.Gold Doro unlocks all functionalities and the price is 5 ORANGE per month.")
     ; ahk版
     if (scriptExtension = "ahk") {
         picUrl1 := "img\weixin.png"
@@ -2520,7 +2639,7 @@ MsgSponsor(*) {
         Download picUrl2, tempFile2
     }
     try {
-        guiSponsor.Add("Picture", "w200 h200", tempFile1)
+        guiSponsor.Add("Picture", "x10 w200 h200", tempFile1)
         guiSponsor.Add("Picture", "yp w200 h200", tempFile2)
     }
     catch {
@@ -2529,14 +2648,45 @@ MsgSponsor(*) {
     guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
     ; guiSponsor.Add("Text", "xm w400 Wrap cred", "为庆祝1.6版本，在9月4日游戏版本更新前包年免两月`n已包年的用户请凭付款截图联系续期三个月")
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
-    guiSponsor.Add("Button", "xm", "我无法使用以上支付方式").OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
-    guiSponsor.Add("Text", "xm w280 Wrap", "赞助信息生成器")
+    btn1 := guiSponsor.Add("Button", "xm+120", "我无法使用以上支付方式")
+    guiSponsor.Tips.SetTip(btn1, "I am unable to use the above payment methods")
+    btn1.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
+    text4 := guiSponsor.Add("Text", "xp+15 y+10 +0x0100", "===赞助信息生成器===")
+    guiSponsor.Tips.SetTip(text4, "Sponsorship Information Generator")
     ; 添加 Choose1 确保默认选中
-    guiTier := guiSponsor.Add("DropDownList", "Choose1 w120", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
-    guiDuration := guiSponsor.Add("DropDownList", "yp x150 Choose1 w120", ["1个月", "3个月", "6个月", "12个月", "36个月"])
-    guiSponsor.Add("Text", "xm r1", "需要赞助：")
-    guiPriceText := guiSponsor.Add("Text", "x+5 w60", "")
-    guiSponsor.Add("Button", "yp x150 h30", "我已赞助，生成信息").OnEvent("Click", CalculateSponsorInfo)
+    guiTier := guiSponsor.Add("DropDownList", "Choose1 x130 w100", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
+    guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
+    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月", "36个月"])
+    guiSponsor.Tips.SetTip(guiDuration, "月: Month")
+    ; 货币价格映射表
+    PriceMap := Map(
+        "zh-CN", { Unitprice: 6, Currency: "CNY" },
+        "zh-TW", { Unitprice: 30, Currency: "TWD" }, ; 示例：台湾
+        "en-US", { Unitprice: 1, Currency: "USD" }, ; 示例：美国
+    )
+    DefaultPriceData := { Unitprice: 1, Currency: "USD" }
+    ; 检查 Map 中是否存在该地区名称
+    if (PriceMap.Has(LocaleName)) {
+        ; 如果存在，获取对应的价格数据对象
+        PriceData := PriceMap.Get(LocaleName)
+    }
+    else {
+        ; 如果不存在，使用默认价格数据
+        PriceData := DefaultPriceData
+    }
+    ; 从 PriceData 对象中提取最终的 Unitprice 和 Currency
+    Unitprice := PriceData.Unitprice
+    Currency := PriceData.Currency
+    text5 := guiSponsor.Add("Text", "xm+125 r1 +0x0100", "您当前所在的地区为：" . LocaleName)
+    guiSponsor.Tips.SetTip(text5, "Your current region is: ")
+    text6 := guiSponsor.Add("Text", "xm+130 r1 +0x0100", "当地欧润吉单价为：" . Unitprice . " " . Currency)
+    guiSponsor.Tips.SetTip(text6, "The local price per ORANGE is: ")
+    text7 := guiSponsor.Add("Text", "xm+160 r1 +0x0100", "需要赞助：")
+    guiSponsor.Tips.SetTip(text7, "Amount to sponsor: ")
+    guiPriceText := guiSponsor.Add("Text", "x+5 w60 +0x0100", "")
+    btn2 := guiSponsor.Add("Button", "xm+145 h30 +0x0100", "  我已赞助，生成信息")
+    guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
+    btn2.OnEvent("Click", CalculateSponsorInfo)
     ; 确保回调函数正确绑定
     guiTier.OnEvent("Change", UpdateSponsorPrice)
     guiDuration.OnEvent("Change", UpdateSponsorPrice)
@@ -2555,9 +2705,9 @@ UpdateSponsorPrice(*) {
     }
     ; 定义价格映射
     priceMap := Map(
-        "铜Doro会员", 6,
-        "银Doro会员", 18,
-        "金Doro会员", 30,
+        "铜Doro会员", 1,
+        "银Doro会员", 3,
+        "金Doro会员", 5,
         "管理员", -1
     )
     ; 从 durationSelected 中提取月份数
@@ -2569,10 +2719,7 @@ UpdateSponsorPrice(*) {
     months := Integer(monthsText)
     ; 计算总价格
     pricePerMonth := priceMap[tierSelected]
-    totalPrice := pricePerMonth * months . "元"
-    ; if months = 12 {
-    ;     totalPrice := pricePerMonth * (months - 2) . "元"
-    ; }
+    totalPrice := pricePerMonth * Unitprice * months . " " . Currency
     ; 更新文本控件的内容
     guiPriceText.Text := totalPrice
 }
@@ -3594,8 +3741,8 @@ ShopCash() {
     BackToHall
 }
 ;tag 普通商店
-ShopNormal() {
-    if g_settings["ShopNormalFree"] = False and g_settings["ShopNormalDust"] = False and g_settings["ShopNormalPackage"] = False {
+ShopGeneral() {
+    if g_settings["ShopGeneralFree"] = False and g_settings["ShopGeneralDust"] = False and g_settings["ShopGeneralPackage"] = False {
         AddLog("普通商店购买选项均未启用，跳过此任务", "Fuchsia")
         return
     }
@@ -3615,15 +3762,15 @@ ShopNormal() {
     PurchaseItems := Map(
         "免费商品", {
             Text: FindText().PicLib("红点"),
-            Setting: g_settings["ShopNormalFree"],
+            Setting: g_settings["ShopGeneralFree"],
             Tolerance: 0.4 * PicTolerance },
         "芯尘盒", {
             Text: FindText().PicLib("芯尘盒"),
-            Setting: g_settings["ShopNormalDust"],
+            Setting: g_settings["ShopGeneralDust"],
             Tolerance: 0.2 * PicTolerance },
         "简介个性化礼包", {
             Text: FindText().PicLib("简介个性化礼包"),
-            Setting: g_settings["ShopNormalPackage"],
+            Setting: g_settings["ShopGeneralPackage"],
             Tolerance: 0.2 * PicTolerance }
     )
     loop 2 {
@@ -3744,7 +3891,7 @@ ShopArena() {
     }
 }
 ;tag 废铁商店
-ShopScrap() {
+ShopRecycling() {
     Reopen := false
     AddLog("开始任务：废铁商店", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.355 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.355 * NikkeH + 0.555 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("废铁商店的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -3761,31 +3908,31 @@ ShopScrap() {
     PurchaseItems := Map(
         "珠宝", {
             Text: FindText().PicLib("珠宝"),
-            Setting: g_settings["ShopScrapGem"],
+            Setting: g_settings["ShopRecyclingGem"],
             Tolerance: 0.2 * PicTolerance },
         "好感券", {
             Text: FindText().PicLib("黄色的礼物图标"),
-            Setting: g_settings["ShopScrapVoucher"],
+            Setting: g_settings["ShopRecyclingVoucher"],
             Tolerance: 0.3 * PicTolerance },
         "养成资源", {
             Text: FindText().PicLib("资源的图标"),
-            Setting: g_settings["ShopScrapResources"],
+            Setting: g_settings["ShopRecyclingResources"],
             Tolerance: 0.2 * PicTolerance },
         "信用点", {
             Text: FindText().PicLib("黄色的信用点图标"),
-            Setting: g_settings["ShopScrapResources"],
+            Setting: g_settings["ShopRecyclingResources"],
             Tolerance: 0.3 * PicTolerance },
         "团队合作宝箱", {
             Text: FindText().PicLib("团队合作宝箱图标"),
-            Setting: g_settings["ShopScrapTeamworkBox"],
+            Setting: g_settings["ShopRecyclingTeamworkBox"],
             Tolerance: 0.25 * PicTolerance },
         "保养工具箱", {
             Text: FindText().PicLib("保养工具箱图标"),
-            Setting: g_settings["ShopScrapKitBox"],
+            Setting: g_settings["ShopRecyclingKitBox"],
             Tolerance: 0.3 * PicTolerance },
         "企业精选武装", {
             Text: FindText().PicLib("企业精选武装图标"),
-            Setting: g_settings["ShopScrapArms"],
+            Setting: g_settings["ShopRecyclingArms"],
             Tolerance: 0.3 * PicTolerance }
     )
     ; 遍历并购买所有物品
@@ -3822,7 +3969,7 @@ ShopScrap() {
         UserMove(384, 1244, TrueRatio)
         Send "{WheelDown 5}"
         Sleep 1000
-        ShopScrap
+        ShopRecycling
     }
 }
 ;endregion 商店
@@ -4468,12 +4615,12 @@ AwardOutpost() {
         Confirm
     }
     AddLog("已返回前哨基地主页面")
-    if g_settings["AwardOutpostExpedition"] ;派遣
-        AwardOutpostExpedition()
+    if g_settings["AwardOutpostDispatch"] ;派遣
+        AwardOutpostDispatch()
     BackToHall(True)
 }
 ;tag 派遣
-AwardOutpostExpedition() {
+AwardOutpostDispatch() {
     AddLog("开始任务：派遣委托", "Fuchsia")
     AddLog("查找派遣公告栏")
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.500 * NikkeW . " ", NikkeY + 0.901 * NikkeH . " ", NikkeX + 0.500 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.901 * NikkeH + 0.092 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("派遣公告栏的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -4506,7 +4653,7 @@ AwardOutpostExpedition() {
 ;endregion 前哨基地
 ;region 咨询
 ;tag 好感度咨询
-AwardLoveTalking() {
+AwardAdvise() {
     while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.009 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.009 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , , , , , , TrueRatio, TrueRatio)) {
         UserClick(1493, 1949, TrueRatio)
         AddLog("点击妮姬的图标，进入好感度咨询")

@@ -134,13 +134,28 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
 
 ## 支持和鼓励
 
+知一一：前任作者[牢 H](https://github.com/kyokakawaii) 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下
+
+### 国内
+
 <table>
   <tr>
-<img alt="支付宝收款码" src="./img/alipay.png" width="200" height="200" /><img alt="微信收款码" src="./img/weixin.png" width="200" height="200" />
+<img alt="支付宝收款码" src="./img/alipay.png" width="200" height="200" />
+<img alt="微信收款码" src="./img/weixin.png" width="200" height="200" />
   </tr>
 </table>
 
-知一一：前任作者[牢 H](https://github.com/kyokakawaii) 停更后，DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下
+### 国外(global)
+
+<table>
+  <tr>
+<img alt="全球收款码" src="./img/global.png" width="200" height="200" />
+  </tr>
+</table>
+
+Currently available platforms：
+
+Hanpass|PandaRemit|WireBarley|GmoneyTrans|Debunk|PayForex|koala transfer|Sendly|GME
 
 ## 星标历程
 

@@ -2404,8 +2404,10 @@ CheckUserGroup() {
             try TraySetIcon("doro.ico") ; 普通用户或过期会员
         }
         AddLog("当前用户组：" UserGroup . " (有效期至" tempExpiryDate . ")", "Green")
+        AddLog("欢迎加入会员qq群759311938", "Green")
     } else {
         AddLog("当前设备非会员，用户组：普通用户（或已过期）")
+        AddLog("欢迎加入反馈qq群759311938")
         try TraySetIcon("doro.ico") ; 恢复默认图标
     }
     ; 缓存结果并标记已运行

@@ -5704,9 +5704,9 @@ ClearRedCube() {
                         break
                     }
                 }
-                BackToHall()
             }
         }
+        BackToHall()
     }
     else AddLog("未发现方舟红点")
 }

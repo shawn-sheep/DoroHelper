@@ -1354,6 +1354,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
     local localScriptPath := A_ScriptDir "\DoroHelper.ahk"
     local localSha := ""
     local localLastModified := ""
+    local localLastModifiedUTC := "" ; 新增变量，用于存储本地文件的UTC时间
     local shouldDownload := false ; 新增旗帜，用于控制是否执行下载
     ; --- 1. 获取远程文件信息 ---
     try {
@@ -1412,24 +1413,32 @@ CheckForUpdate_AHK_File(isManualCheck) {
         result.Set("message", "无法获取远程文件信息，无法检查更新。")
         return result
     }
-    ; --- 2. 获取本地文件信息 ---
+    ; --- 2. 获取本地文件信息并转换为UTC ---
     try {
         if !FileExist(localScriptPath) {
             localSha := "" ; 表示文件缺失
             localLastModified := "0" ; 视为非常旧
+            localLastModifiedUTC := "0" ; UTC版本也视为非常旧
         } else {
             localSha := HashGitSHA1(localScriptPath)
-            localLastModified := FileGetTime(localScriptPath, "M")
+            localLastModified := FileGetTime(localScriptPath, "M") ; 获取本地修改时间 (当地时区)
+            ; 将本地时间转换为UTC时间进行比较
+            ; A_TimeZone 是本地时间与UTC时间的分钟差。
+            ; UTC = 本地时间 + A_TimeZone。例如，如果本地时区是 GMT+8，A_TimeZone 是 -480 分钟。
+            ; 所以 localLastModifiedUTC = DateAdd(localLastModified, A_TimeZone, "minutes")
+            A_TimeZone := DateDiff(A_NowUTC, A_Now, "Minutes")
+            localLastModifiedUTC := DateAdd(localLastModified, A_TimeZone, "minutes")
         }
     } catch as e {
-        AddLog("计算本地文件哈希或获取修改时间失败，错误信息: " . e.Message, "Red")
+        AddLog("计算本地文件哈希、获取修改时间或转换时区失败，错误信息: " . e.Message, "Red")
         result.Set("message", "计算本地文件哈希或获取修改时间时出错，无法检查更新。")
         return result
     }
     AddLog("远程文件哈希值: " remoteSha)
     AddLog("本地文件哈希值: " localSha)
-    AddLog("远程文件修改时间: " (remoteLastModified != "" ? remoteLastModified : "未获取到"))
-    AddLog("本地文件修改时间: " localLastModified)
+    ; 修改日志和MsgBox说明，以清晰指出是以UTC时间进行比较
+    AddLog("远程文件修改时间 (UTC): " (remoteLastModified != "" ? remoteLastModified : "未获取到"))
+    AddLog("本地文件修改时间 (UTC): " localLastModifiedUTC)
     ; --- 3. 比较并决定是否更新 ---
     ; 情况 1: 哈希一致 -> 已是最新版本
     if (remoteSha = localSha) {
@@ -1443,20 +1452,21 @@ CheckForUpdate_AHK_File(isManualCheck) {
     }
     ; 情况 2: 哈希不一致 -> 可能有更新，需要进一步判断
     else { ; remoteSha != localSha
-        if (remoteLastModified != "" && localLastModified != "") {
-            if (remoteLastModified > localLastModified) {
+        ; 确保 remoteLastModified 和 localLastModifiedUTC 都已有效获取
+        if (remoteLastModified != "" && localLastModifiedUTC != "0") {
+            if (remoteLastModified > localLastModifiedUTC) {
                 ; 远程文件的时间戳更新，这是正常的更新情况
                 AddLog("检测到远程 AHK 文件版本 (" . remoteSha . ") 较新，本地版本 (" . localSha . ") 较旧。", "Green")
                 shouldDownload := true
-            } else { ; remoteLastModified <= localLastModified
-                ; 哈希不一致，但本地文件的时间戳更近或相同。
+            } else { ; remoteLastModified <= localLastModifiedUTC
+                ; 哈希不一致，但本地文件的时间戳更近或相同 (在UTC下)。
                 ; 这通常意味着本地文件被修改过，或者远程的时间戳有问题。
-                AddLog("警告: 检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (" . localLastModified . ") 晚于或等于远程 (" . remoteLastModified . ")。", "Red")
+                AddLog("警告: 检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC: " . localLastModifiedUTC . ") 晚于或等于远程 (UTC: " . remoteLastModified . ")。", "Red")
                 if (isManualCheck) {
-                    local userChoice := MsgBox("检测到 AHK 脚本哈希不匹配，但本地文件修改时间晚于或等于线上版本。这可能意味着您本地做过更改，或者线上有新更新但时间戳较老。`n`n远程哈希 (截短): " . SubStr(remoteSha, 1, 7)
+                    local userChoice := MsgBox("检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC) 晚于或等于线上版本。这可能意味着您本地做过更改，或者线上有新更新但时间戳较老。`n`n远程哈希 (截短): " . SubStr(remoteSha, 1, 7)
                     . "`n本地哈希 (截短): " . SubStr(localSha, 1, 7)
-                    . "`n远程修改时间: " . remoteLastModified
-                    . "`n本地修改时间: " . localLastModified
+                    . "`n远程修改时间 (UTC): " . remoteLastModified
+                    . "`n本地修改时间 (UTC): " . localLastModifiedUTC
                     . "`n`n是否强制更新本地脚本为线上版本？(建议在备份后操作)", "AHK强制更新提示", "YesNo")
                     if (userChoice == "Yes") {
                         AddLog("用户选择强制更新 AHK 脚本。", "Red")
@@ -1470,7 +1480,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
                 } else {
                     AddLog("自动检查中检测到 AHK 文件哈希不匹配但本地修改时间问题，跳过自动更新。", "Red")
                     result.Set("success", false)
-                    result.Set("message", "自动检查中 AHK 脚本哈希不匹配且本地修改时间晚于或等于远程，跳过。")
+                    result.Set("message", "自动检查中 AHK 脚本哈希不匹配且本地修改时间晚于或等于远程 (UTC)，跳过。")
                     return result
                 }
             }
@@ -1555,6 +1565,7 @@ CheckForResourceUpdate(isManualCheck) {
                     errorMsg .= "。API 消息: " . errorJson.Get("message", "")
                 }
             } catch {
+                ; JSON解析失败，忽略
             }
             throw Error("GitHub API 请求失败", -1, errorMsg)
         }
@@ -1577,7 +1588,7 @@ CheckForResourceUpdate(isManualCheck) {
             local remoteSha := (fileData is Object) ? fileData.Get("sha", "") : ""
             local remoteDownloadUrl := (fileData is Object) ? fileData.Get("download_url", "") : ""
             if (remoteFileName == "" || remoteFileType == "" || remoteSha == "" || remoteDownloadUrl == "") {
-                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"))
+                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"), "Yellow")
                 continue
             }
             local currentFileExtension := ""
@@ -1587,12 +1598,16 @@ CheckForResourceUpdate(isManualCheck) {
                 local localFilePath := libDir . "\" . remoteFileName
                 local localSha := ""
                 local localLastModified := "0"
+                local localLastModifiedUTC := "0" ; 为资源文件新增UTC时间变量
                 if FileExist(localFilePath) {
                     try {
                         localSha := HashGitSHA1(localFilePath)
                         localLastModified := FileGetTime(localFilePath, "M")
+                        ; 转换为UTC时间进行比较
+                        A_TimeZone := DateDiff(A_NowUTC, A_Now, "Minutes")
+                        localLastModifiedUTC := DateAdd(localLastModified, A_TimeZone, "minutes")
                     } catch as e {
-                        AddLog("错误: 计算本地文件 " . remoteFileName . " 哈希或获取修改时间失败: " . e.Message, "Red")
+                        AddLog("错误: 计算本地文件 " . remoteFileName . " 哈希、获取修改时间或转换时区失败: " . e.Message, "Red")
                         failedFiles.Push(remoteFileName)
                         continue
                     }
@@ -1616,8 +1631,9 @@ CheckForResourceUpdate(isManualCheck) {
                 } else if (!FileExist(localFilePath)) {
                     AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "Red")
                     needsUpdate := true
-                } else if (remoteLastModifiedFromDetails != "" && localLastModified != "" && remoteLastModifiedFromDetails > localLastModified) {
-                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (" . remoteLastModifiedFromDetails . ") 晚于本地 (" . localLastModified . ")。", "Red")
+                } else if (remoteLastModifiedFromDetails != "" && localLastModifiedUTC != "0" && remoteLastModifiedFromDetails > localLastModifiedUTC) {
+                    ; 使用UTC时间进行比较
+                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (UTC: " . remoteLastModifiedFromDetails . ") 晚于本地 (UTC: " . localLastModifiedUTC . ")。", "Red")
                     needsUpdate := true
                 }
                 if (needsUpdate) {

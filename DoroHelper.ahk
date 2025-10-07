@@ -4759,6 +4759,10 @@ AwardAdvise() {
                 Send "{WheelDown 3}"
                 Sleep 1000
             }
+            loop 3 {
+                Confirm
+                Sleep 500
+            }
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.970 * NikkeW . " ", NikkeY + 0.403 * NikkeH . " ", NikkeX + 0.970 * NikkeW + 0.024 * NikkeW . " ", NikkeY + 0.403 * NikkeH + 0.067 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询·向右的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("下一个妮姬")

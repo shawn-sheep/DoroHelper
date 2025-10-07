@@ -784,7 +784,7 @@ CheckSequence(key_char) {
     }
     ; 检查当前的历史记录是否与目标代码完全匹配
     if (key_history == konami_code) {
-        AddLog("🎉 彩蛋触发！ 🎉！Konami Code 已输入！")
+        AddLog("🎉 彩蛋触发！ 🎉！Konami Code 已输入！", "Blue")
         VariableUserGroup.Value := "炫彩Doro"
         key_history := ""    ; 重置历史记录，以便可以再次触发
         UserLevel := 0
@@ -1081,7 +1081,7 @@ AutoStartNikke() {
             }
             ; 检查是否超时
             if (A_TickCount - startTime >= timeout) {
-                AddLog("启动超时，未能检测到游戏进程", "Maroon")
+                AddLog("启动超时，未能检测到游戏进程", "Red")
             }
             break
         }
@@ -1150,7 +1150,7 @@ Initialization() {
     AddLog("游戏画面比例是" GameRatio)
     AddLog("图片缩放系数是" Round(TrueRatio, 3))
     if GameRatio = 1.779 or GameRatio = 1.778 or GameRatio = 1.777 {
-        AddLog("游戏是标准的16：9尺寸")
+        AddLog("游戏是标准的16：9尺寸", "Green")
     }
     else MsgBox("请在nikke设置中将画面比例调整为16:9")
     ; 尝试归类为2160p (4K) 及其变种
@@ -1374,7 +1374,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
                 if (parsedTime != "") {
                     remoteLastModified := parsedTime
                 } else {
-                    AddLog("警告: 无法解析 Last-Modified HTTP头时间: " . lastModifiedHeader)
+                    AddLog("警告: 无法解析 Last-Modified HTTP头时间: " . lastModifiedHeader, "MAROON")
                 }
             } else {
                 AddLog("警告: 未在HTTP头中找到 Last-Modified。")
@@ -1456,7 +1456,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
         if (remoteLastModified != "" && localLastModifiedUTC != "0") {
             if (remoteLastModified > localLastModifiedUTC) {
                 ; 远程文件的时间戳更新，这是正常的更新情况
-                AddLog("检测到远程 AHK 文件版本 (" . remoteSha . ") 较新，本地版本 (" . localSha . ") 较旧。", "Green")
+                AddLog("检测到远程 AHK 文件版本 (" . remoteSha . ") 较新，本地版本 (" . localSha . ") 较旧。", "BLUE")
                 shouldDownload := true
             } else { ; remoteLastModified <= localLastModifiedUTC
                 ; 哈希不一致，但本地文件的时间戳更近或相同 (在UTC下)。
@@ -1588,7 +1588,7 @@ CheckForResourceUpdate(isManualCheck) {
             local remoteSha := (fileData is Object) ? fileData.Get("sha", "") : ""
             local remoteDownloadUrl := (fileData is Object) ? fileData.Get("download_url", "") : ""
             if (remoteFileName == "" || remoteFileType == "" || remoteSha == "" || remoteDownloadUrl == "") {
-                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"), "Yellow")
+                AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"), "MAROON")
                 continue
             }
             local currentFileExtension := ""
@@ -1626,14 +1626,14 @@ CheckForResourceUpdate(isManualCheck) {
                 local remoteLastModifiedFromDetails := remoteFileDetails.Get("remoteLastModified", "")
                 local needsUpdate := false
                 if (localSha != remoteSha) {
-                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "Red")
+                    AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "BLUE")
                     needsUpdate := true
                 } else if (!FileExist(localFilePath)) {
-                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "Red")
+                    AddLog("文件 " . remoteFileName . ": 本地文件缺失，需要下载。", "BLUE")
                     needsUpdate := true
                 } else if (remoteLastModifiedFromDetails != "" && localLastModifiedUTC != "0" && remoteLastModifiedFromDetails > localLastModifiedUTC) {
                     ; 使用UTC时间进行比较
-                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (UTC: " . remoteLastModifiedFromDetails . ") 晚于本地 (UTC: " . localLastModifiedUTC . ")。", "Red")
+                    AddLog("文件 " . remoteFileName . ": 远程修改时间 (UTC: " . remoteLastModifiedFromDetails . ") 晚于本地 (UTC: " . localLastModifiedUTC . ")。", "BLUE")
                     needsUpdate := true
                 }
                 if (needsUpdate) {
@@ -1916,13 +1916,13 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
                     }
                     if (assetEntry.HasProp("name") && InStr(assetEntry.name, "DoroHelper", false) && InStr(assetEntry.name, ".exe", false)) {
                         targetAssetEntry := assetEntry
-                        AddLog(sourceName . " 警告: 回退到最新 EXE 文件 " . assetEntry.name . "，版本 " . assetEntry.version, "Red")
+                        AddLog(latestObjMapOut.Get("display_name") . " 警告: 回退到最新 EXE 文件 " . assetEntry.name . "，版本 " . assetEntry.version, "MAROON")
                         break
                     }
                 }
                 if !IsObject(targetAssetEntry) && allReleaseAssets.Length > 0 {
                     targetAssetEntry := allReleaseAssets[1]
-                    AddLog(sourceName . " 警告: 无法匹配到 DoroHelper*.exe，回退到最新 Release 的第一个发现的资产。", "Red")
+                    AddLog(sourceName . " 警告: 无法匹配到 DoroHelper*.exe，回退到最新 Release 的第一个发现的资产。", "MAROON")
                 }
                 if !IsObject(targetAssetEntry) || !(targetAssetEntry.HasProp("version")) {
                     latestObjMapOut.Set("message", sourceName . " 更新检查：未找到任何有效的 Release Assets。")
@@ -1948,7 +1948,7 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
             return false
         }
         if (!targetAssetEntry.HasProp("downloadURL") || latestObjMapOut.Get("download_url") == "") {
-            AddLog(sourceName . " 警告: 未能为版本 " . latestObjMapOut.Get("version") . " 找到有效的下载链接。", "Red")
+            AddLog(sourceName . " 警告: 未能为版本 " . latestObjMapOut.Get("version") . " 找到有效的下载链接。", "MAROON")
         }
         AddLog(sourceName . " 更新检查：获取到版本 " . latestObjMapOut.Get("version") . (latestObjMapOut.Get("download_url") ? "" : " (下载链接未找到)"))
         if (CompareVersionsSemVer(latestObjMapOut.Get("version"), currentVersion) > 0) {
@@ -2215,7 +2215,7 @@ DownloadUrlContent(url) {
                 DllCall("OleAut32\SafeArrayUnaccessData", "Ptr", ComObjValue(responseBody))
                 return content
             } else {
-                AddLog("下载 URL 内容警告: SafeArray 大小为0或无效，URL: " . url)
+                AddLog("下载 URL 内容警告: SafeArray 大小为0或无效，URL: " . url, "MAROON")
                 return ""
             }
         } else if IsObject(responseBody) { ; Other COM object, try ADODB.Stream
@@ -2230,7 +2230,7 @@ DownloadUrlContent(url) {
             Stream.Close()
             return content
         } else { ; Not a COM object, fallback to ResponseText (may have encoding issues)
-            AddLog("下载 URL 内容警告: ResponseBody 不是预期类型，回退到 ResponseText，URL: " . url)
+            AddLog("下载 URL 内容警告: ResponseBody 不是预期类型，回退到 ResponseText，URL: " . url, "MAROON")
             return whr.ResponseText
         }
     } catch as e {
@@ -2424,7 +2424,7 @@ CheckUserGroup() {
         cpuSerial := GetCpuSerial()
         diskSerials := GetDiskSerialsForValidation()
         if (diskSerials.Length = 0) {
-            AddLog("警告: 未检测到任何硬盘序列号。")
+            AddLog("警告: 未检测到任何硬盘序列号。", "MAROON")
         }
     } catch as e {
         AddLog("获取硬件信息失败: " e.Message, "Red")
@@ -2485,10 +2485,10 @@ CheckUserGroup() {
                         isMember := true
                         break ; 找到有效的匹配项，退出内部循环 (groupData loop)
                     } else {
-                        AddLog("会员已过期 (到期日: " tempExpiryDate ")。已降级为普通用户", "Red")
+                        AddLog("会员已过期 (到期日: " tempExpiryDate ")。已降级为普通用户", "MAROON")
                     }
                 } else {
-                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)", "Red")
+                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)", "MAROON")
                 }
             }
             if (isMember) {
@@ -3370,7 +3370,7 @@ BattleSettlement(modes*) {
             break
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.012 * NikkeW . " ", NikkeY + 0.921 * NikkeH . " ", NikkeX + 0.012 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.921 * NikkeH + 0.072 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("重播的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-            AddLog("[竞技场快速战斗失败]重播的图标已命中")
+            AddLog("[竞技场快速战斗失败]重播的图标已命中", "MAROON")
             break
         }
         else if (ok := FindText(&X, &Y, NikkeX + 0.484 * NikkeW . " ", NikkeY + 0.877 * NikkeH . " ", NikkeX + 0.484 * NikkeW + 0.032 * NikkeW . " ", NikkeY + 0.877 * NikkeH + 0.035 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("ESC"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -3399,14 +3399,14 @@ BattleSettlement(modes*) {
     }
     ;有编队代表输了，点Esc
     if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("编队的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("战斗失败！尝试返回")
+        AddLog("战斗失败！尝试返回", "MAROON")
         GoBack
         Sleep 1000
         return False
     }
     ;如果有下一关，就点下一关（爬塔的情况）
     else if (ok := FindText(&X, &Y, NikkeX + 0.889 * NikkeW . " ", NikkeY + 0.912 * NikkeH . " ", NikkeX + 0.889 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.912 * NikkeH + 0.081 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的下一关卡"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("战斗成功！尝试进入下一关")
+        AddLog("战斗成功！尝试进入下一关", "GREEN")
         Victory := Victory + 1
         if Victory > 1 {
             AddLog("共胜利" Victory "次")
@@ -4093,7 +4093,7 @@ SimulationOverClock(mode := "") {
         AddLog("难度正确")
     }
     else {
-        AddLog("难度不是25，跳过")
+        AddLog("难度不是25，跳过", "MAROON")
         return
     }
     if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.373 * NikkeW . " ", NikkeY + 0.878 * NikkeH . " ", NikkeX + 0.373 * NikkeW + 0.253 * NikkeW . " ", NikkeY + 0.878 * NikkeH + 0.058 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("开始模拟"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -4370,7 +4370,7 @@ TowerCompany() {
         Sleep 1000
     }
     else {
-        AddLog("进入无限之塔失败，跳过任务")
+        AddLog("进入无限之塔失败，跳过任务", "MAROON")
         return
     }
     TowerArray := []
@@ -4482,7 +4482,7 @@ InterceptionAnomaly() {
     while !(ok := FindText(&X, &Y, NikkeX + 0.580 * NikkeW . " ", NikkeY + 0.956 * NikkeH . " ", NikkeX + 0.580 * NikkeW + 0.074 * NikkeW . " ", NikkeY + 0.956 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红字的异常"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
         if A_Index > 20 {
-            MsgBox("异常个体拦截战未解锁！本脚本暂不支持普通拦截！")
+            MsgBox("异常个体拦截战未解锁！本脚本暂不支持普通拦截！", "MAROON")
             Pause
         }
     }
@@ -4568,7 +4568,7 @@ InterceptionAnomaly() {
             Skipping
         }
         else {
-            AddLog("异常拦截次数已耗尽")
+            AddLog("异常拦截次数已耗尽", "MAROON")
             break
         }
         modes := []
@@ -4580,7 +4580,7 @@ InterceptionAnomaly() {
             modes.Push("Exit7")
         global BattleActive := 1
         if g_settings["InterceptionRedCircle"] or g_settings["InterceptionExit7"] {
-            AddLog("有概率误判，请谨慎开启该功能")
+            AddLog("有概率误判，请谨慎开启该功能", "MAROON")
         }
         BattleSettlement(modes*)  ; 使用*展开数组为多个参数
         Sleep 2000
@@ -4619,14 +4619,14 @@ AwardOutpost() {
             }
         }
     }
-    else AddLog("没有免费一举歼灭")
+    else AddLog("没有免费一举歼灭", "MAROON")
     AddLog("尝试常规收菜")
     if (ok := FindText(&X, &Y, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.825 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.121 * NikkeW . " ", NikkeY + 0.825 * NikkeH + 0.059 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击收菜")
         FindText().Click(X, Y, "L")
         Sleep 1000
     }
-    else AddLog("没有可收取的资源")
+    else AddLog("没有可收取的资源", "MAROON")
     AddLog("尝试返回前哨基地主页面")
     while !(ok := FindText(&X, &Y, NikkeX + 0.884 * NikkeW . " ", NikkeY + 0.904 * NikkeH . " ", NikkeX + 0.884 * NikkeW + 0.114 * NikkeW . " ", NikkeY + 0.904 * NikkeH + 0.079 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("溢出资源的图标"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
@@ -4648,7 +4648,7 @@ AwardOutpostDispatch() {
             AddLog("点击全部领取")
             FindText().Click(X + 100 * TrueRatio, Y, "L")
         }
-        else AddLog("没有可领取的奖励")
+        else AddLog("没有可领取的奖励", "MAROON")
         while !(ok := FindText(&X, &Y, NikkeX + 0.378 * NikkeW . " ", NikkeY + 0.137 * NikkeH . " ", NikkeX + 0.378 * NikkeW + 0.085 * NikkeW . " ", NikkeY + 0.137 * NikkeH + 0.040 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("派遣公告栏最左上角的派遣"), , , , , , , TrueRatio, TrueRatio)) {
             UserClick(1595, 1806, TrueRatio)
             Sleep 500
@@ -4697,11 +4697,11 @@ AwardAdvise() {
     AddLog("开始任务：妮姬咨询", "Fuchsia")
     while true {
         if (ok := FindText(&X, &Y, NikkeX + 0.572 * NikkeW . " ", NikkeY + 0.835 * NikkeH . " ", NikkeX + 0.572 * NikkeW + 0.008 * NikkeW . " ", NikkeY + 0.835 * NikkeH + 0.013 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("灰色的咨询次数0"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("咨询次数已耗尽")
+            AddLog("咨询次数已耗尽", "MAROON")
             break
         }
         if A_Index > 20 {
-            AddLog("妮姬咨询任务已超过20次，结束任务")
+            AddLog("妮姬咨询任务已超过20次，结束任务", "MAROON")
             break
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.637 * NikkeW . " ", NikkeY + 0.672 * NikkeH . " ", NikkeX + 0.637 * NikkeW + 0.004 * NikkeW . " ", NikkeY + 0.672 * NikkeH + 0.013 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红色的20进度"), , , , , , , TrueRatio, TrueRatio)) {
@@ -4719,7 +4719,7 @@ AwardAdvise() {
                 Sleep 1000
                 if (ok := FindText(&X, &Y, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.600 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.125 * NikkeW . " ", NikkeY + 0.600 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(X, Y, "L")
-                    AddLog("已咨询" A_Index "次")
+                    AddLog("已咨询" A_Index "次", "GREEN")
                     Sleep 1000
                 }
             }
@@ -4798,7 +4798,7 @@ AwardAppreciation() {
         AddLog("点击花絮")
     }
     else {
-        AddLog("未找到花絮鉴赏会的N图标")
+        AddLog("未找到花絮鉴赏会的N图标", "MAROON")
         return
     }
     while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.363 * NikkeW . " ", NikkeY + 0.550 * NikkeH . " ", NikkeX + 0.363 * NikkeW + 0.270 * NikkeW . " ", NikkeY + 0.550 * NikkeH + 0.316 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("EPI"), , , , , , 1, TrueRatio, TrueRatio)) {
@@ -5029,7 +5029,7 @@ AwardCooperate() {
             Sleep 500
         }
         if (A_Index > 15) {
-            AddLog("未能找到协同作战")
+            AddLog("未能找到协同作战", "MAROON")
             return
         }
     }
@@ -5045,11 +5045,11 @@ AwardCooperateBattle() {
             Sleep 500
         }
         else {
-            AddLog("协同作战次数已耗尽或未在开放时间")
+            AddLog("协同作战次数已耗尽或未在开放时间", "MAROON")
             return
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.508 * NikkeW . " ", NikkeY + 0.600 * NikkeH . " ", NikkeX + 0.508 * NikkeW + 0.120 * NikkeW . " ", NikkeY + 0.600 * NikkeH + 0.053 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("协同作战次数已耗尽")
+            AddLog("协同作战次数已耗尽", "MAROON")
             return
         }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.375 * NikkeW . " ", NikkeY + 0.436 * NikkeH . " ", NikkeX + 0.375 * NikkeW + 0.250 * NikkeW . " ", NikkeY + 0.436 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("普通"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5083,19 +5083,19 @@ AwardSoloRaid(stage7 := True) {
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.172 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.093 * NikkeW . " ", NikkeY + 0.172 * NikkeH + 0.350 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("RAID"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
     } else {
-        AddLog("不在单人突击活动时间")
+        AddLog("不在单人突击活动时间", "MAROON")
         return
     }
     while !(ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
         Confirm
         if A_Index > 3 {
-            AddLog("未能找到单人突击活动")
+            AddLog("未能找到单人突击活动", "MAROON")
             return
         }
     }
     Confirm
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.417 * NikkeW . " ", NikkeY + 0.806 * NikkeH . " ", NikkeX + 0.417 * NikkeW + 0.164 * NikkeW . " ", NikkeY + 0.806 * NikkeH + 0.073 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的挑战"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("不在单人突击活动时间")
+        AddLog("不在单人突击活动时间", "MAROON")
         BackToHall
         return
     }
@@ -5112,7 +5112,7 @@ AwardSoloRaid(stage7 := True) {
         }
         AddLog("检测快速战斗")
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.728 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.144 * NikkeW . " ", NikkeY + 0.728 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("快速战斗已激活")
+            AddLog("快速战斗已激活", "GREEN")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
             Sleep 500
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.683 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.683 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5152,13 +5152,13 @@ AwardSoloRaid(stage7 := True) {
             }
         }
         if stage7 {
-            AddLog("第七关未开放")
+            AddLog("第七关未开放", "MAROON")
             BackToHall
             AwardSoloRaid(stage7 := false)
             return
         }
         if !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.413 * NikkeW . " ", NikkeY + 0.800 * NikkeH . " ", NikkeX + 0.413 * NikkeW + 0.176 * NikkeW . " ", NikkeY + 0.800 * NikkeH + 0.085 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("单人突击·挑战"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("已无挑战次数，返回")
+            AddLog("已无挑战次数，返回", "MAROON")
             BackToHall
             return
         }
@@ -5180,7 +5180,7 @@ EventSmall() {
                 break
             }
             else {
-                AddLog("未找到小活动，可能是活动已结束或已完成或有新剧情")
+                AddLog("未找到小活动，可能是活动已结束或已完成或有新剧情", "MAROON")
                 return
             }
         }

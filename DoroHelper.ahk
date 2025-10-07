@@ -3745,10 +3745,17 @@ ShopArena() {
 }
 ;tag 废铁商店
 ShopScrap() {
+    Reopen := false
     AddLog("开始任务：废铁商店", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.355 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.355 * NikkeH + 0.555 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("废铁商店的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
+    }
+    ; 检查是否有限时商品
+    if (ok := FindText(&X, &Y, NikkeX + 0.053 * NikkeW . " ", NikkeY + 0.482 * NikkeH . " ", NikkeX + 0.053 * NikkeW + 0.938 * NikkeW . " ", NikkeY + 0.482 * NikkeH + 0.236 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("商店·限时图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if ok.Length = 10 {
+            Reopen := true
+        }
     }
     ; 定义所有可购买物品的信息 (使用 Map)
     PurchaseItems := Map(
@@ -3792,7 +3799,7 @@ ShopScrap() {
                 FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
                 AddLog("已找到" . Name)
                 Sleep 1000
-                if (okMax := FindText(&X := "wait", &Y := 2, NikkeX + 0.590 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.590 * NikkeW + 0.035 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.045 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , TrueRatio, TrueRatio)) {
+                if (okMax := FindText(&X := "wait", &Y := 2, NikkeX + 0.590 * NikkeW . " ", NikkeY + 0.595 * NikkeH . " ", NikkeX + 0.590 * NikkeW + 0.038 * NikkeW . " ", NikkeY + 0.595 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("MAX"), , 0, , , , , TrueRatio, TrueRatio)) {
                     ; AddLog("点击max")
                     FindText().Click(X, Y, "L")
                     Sleep 1000
@@ -3809,6 +3816,13 @@ ShopScrap() {
         } else {
             AddLog(Name . "未找到，跳过购买")
         }
+    }
+    if Reopen {
+        AddLog("存在限时商品")
+        UserMove(384, 1244, TrueRatio)
+        Send "{WheelDown 5}"
+        Sleep 1000
+        ShopScrap
     }
 }
 ;endregion 商店

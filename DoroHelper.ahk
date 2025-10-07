@@ -131,6 +131,7 @@ global g_settings := Map(
     ;启动/退出相关
     "CloseAdvertisement", 0,     ;关闭广告提示
     "CloseHelp", 0,              ;关闭帮助提示
+    "AutoSwitchLanguage", 0,     ;自动切换语言
     "AutoCheckUpdate", 0,        ;自动检查更新
     "AutoCheckUserGroup", 1,     ;自动检查会员组
     "AutoDeleteOldFile", 0,      ;自动删除旧版本
@@ -155,6 +156,7 @@ global g_numeric_settings := Map(
     "StartupPath", "",              ;启动路径
     "SleepTime", 1000,              ;默认等待时间
     "InterceptionBoss", 1,          ;拦截战BOSS选择
+    "LanguageList", 1,              ;语言选择
     "Tolerance", 1,                 ;宽容度
     "MirrorCDK", "",                ;Mirror酱的CDK
     "Version", currentVersion,      ;版本号
@@ -391,6 +393,13 @@ g_settingPages["Settings"].Push(SetNormalTitle)
 cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示[铜Doro]", "R1")
 doroGui.Tips.SetTip(cbCloseAdvertisement, "Remove ads[Copper Doro]")
 g_settingPages["Settings"].Push(cbCloseAdvertisement)
+cbAutoSwitchLanguage := AddCheckboxSetting(doroGui, "AutoSwitchLanguage", "自动切换语言", "R1")
+doroGui.Tips.SetTip(cbAutoSwitchLanguage, "Switch language automatically")
+g_settingPages["Settings"].Push(cbAutoSwitchLanguage)
+DropDownListLanguage := doroGui.Add("DropDownList", "w150 Choose" g_numeric_settings["LanguageList"], ["ENGLISH", "日本语", "中文 (繁体)", "中文 (简体)"])
+doroGui.Tips.SetTip(DropDownListLanguage, "程序会最终切换回你选择的语言`nThe program will eventually switch back to the language you have chosen")
+DropDownListLanguage.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["LanguageList"] := Ctrl.Value)
+g_settingPages["Settings"].Push(DropDownListLanguage)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1")
 doroGui.Tips.SetTip(cbAutoCheckVersion, "Check for updates automatically at startup")
 g_settingPages["Settings"].Push(cbAutoCheckVersion)
@@ -864,6 +873,8 @@ ClickOnDoro(*) {
         CheckUserGroup
     if g_settings["Login"]
         Login() ;登陆到主界面
+    if g_settings["AutoSwitchLanguage"]
+        AutoSwitchLanguage()
     if g_settings["Shop"] {
         if g_settings["ShopCashFree"]
             ShopCash()
@@ -1006,6 +1017,8 @@ ClickOnDoro(*) {
         }
         BackToHall
     }
+    if g_settings["AutoSwitchLanguage"]
+        AutoSwitchLanguage()
     if g_settings["LoopMode"] {
         WinClose winID
         SaveAndRestart
@@ -3666,6 +3679,64 @@ Login() {
     AddLog("已处于大厅页面，登录成功")
 }
 ;endregion 登录
+;region 语言切换
+AutoSwitchLanguage() {
+    if (ok := FindText(&X, &Y, NikkeX + 0.972 * NikkeW . " ", NikkeY + 0.016 * NikkeH . " ", NikkeX + 0.972 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.016 * NikkeH + 0.039 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("右上角的SUBMENU图标"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+        if (ok := FindText(&X, &Y, NikkeX + 0.396 * NikkeW . " ", NikkeY + 0.454 * NikkeH . " ", NikkeX + 0.396 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.454 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("账号的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            if (ok := FindText(&X, &Y, NikkeX + 0.595 * NikkeW . " ", NikkeY + 0.247 * NikkeH . " ", NikkeX + 0.595 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.247 * NikkeH + 0.041 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("账号·向下的三角"), , , , , , , TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                ; 找得到中文，说明是非中文界面，应该改成中文之后重新运行
+                if (ok := FindText(&X, &Y, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.242 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.122 * NikkeW . " ", NikkeY + 0.242 * NikkeH + 0.377 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("(简体)"), , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                        Login
+                        return
+                    }
+                }
+                ; 找不到中文，说明已经是中文界面，应该改回原语言之后重新运行
+                else {
+                    switch g_numeric_settings["LanguageList"] {
+                        case 1:
+                        {
+                            language := FindText().PicLib("ENGLISH")
+                        }
+                        case 2:
+                        {
+                            language := FindText().PicLib("日本语")
+                        }
+                        case 3:
+                        {
+                            language := FindText().PicLib("(繁体)")
+                        }
+                        case 4:
+                        {
+                            language := FindText().PicLib("(简体)")
+                        }
+                    }
+                    if (ok := FindText(&X, &Y, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.327 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, language, , , , , , , TrueRatio, TrueRatio)) {
+                        FindText().Click(X, Y, "L")
+                        Sleep 1000
+                        if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                            FindText().Click(X, Y, "L")
+                            Sleep 1000
+                            Login
+                            return
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+;endregion 语言切换
 ;region 商店
 ;tag 付费商店
 ShopCash() {

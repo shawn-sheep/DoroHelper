@@ -30,139 +30,139 @@ repo := "DoroHelper"
 ;tag 简单开关
 global g_settings := Map(
     ;登录游戏
-    "Login", 0,                  ;登录游戏总开关
+    "Login", 0,                         ; 登录游戏总开关
     ;商店
-    "Shop", 0,                   ;商店总开关
-    "ShopCash", 1,               ;付费商店
-    "ShopCashFree", 0,           ;付费商店免费物品
-    "ShopCashFreePackage", 0,     ;付费商店免费STEPUP
-    "ShopGeneral", 1,             ;普通商店
-    "ShopGeneralFree", 0,         ;普通商店：免费物品
-    "ShopGeneralDust", 0,         ;普通商店：芯尘盒
-    "ShopGeneralPackage", 0,      ;普通商店：简介个性化礼包
-    "ShopArena", 1,              ;竞技场商店
-    "ShopArenaBookFire", 0,      ;竞技场商店：燃烧手册
-    "ShopArenaBookWater", 0,     ;竞技场商店：水冷手册
-    "ShopArenaBookWind", 0,      ;竞技场商店：风压手册
-    "ShopArenaBookElec", 0,      ;竞技场商店：电击手册
-    "ShopArenaBookIron", 0,      ;竞技场商店：铁甲手册
-    "ShopArenaBookBox", 0,       ;竞技场商店：手册宝箱
-    "ShopArenaPackage", 0,       ;竞技场商店：简介个性化礼包
-    "ShopArenaFurnace", 0,       ;竞技场商店：公司武器熔炉
-    "ShopRecycling", 1,              ;废铁商店
-    "ShopRecyclingGem", 0,           ;废铁商店：珠宝
-    "ShopRecyclingVoucher", 0,       ;废铁商店：好感券
-    "ShopRecyclingResources", 0,     ;废铁商店：养成资源
-    "ShopRecyclingTeamworkBox", 0,   ;废铁商店：团队合作宝箱
-    "ShopRecyclingKitBox", 0,        ;废铁商店：保养工具箱
-    "ShopRecyclingArms", 0,          ;废铁商店：企业精选武装
+    "Shop", 0,                          ; 商店总开关
+    "ShopCash", 1,                      ; 付费商店
+    "ShopCashFree", 0,                  ; 付费商店免费物品
+    "ShopCashFreePackage", 0,           ; 付费商店免费STEPUP
+    "ShopGeneral", 1,                   ; 普通商店
+    "ShopGeneralFree", 0,               ; 普通商店：免费物品
+    "ShopGeneralDust", 0,               ; 普通商店：芯尘盒
+    "ShopGeneralPackage", 0,            ; 普通商店：简介个性化礼包
+    "ShopArena", 1,                     ; 竞技场商店
+    "ShopArenaBookFire", 0,             ; 竞技场商店：燃烧手册
+    "ShopArenaBookWater", 0,            ; 竞技场商店：水冷手册
+    "ShopArenaBookWind", 0,             ; 竞技场商店：风压手册
+    "ShopArenaBookElec", 0,             ; 竞技场商店：电击手册
+    "ShopArenaBookIron", 0,             ; 竞技场商店：铁甲手册
+    "ShopArenaBookBox", 0,              ; 竞技场商店：手册宝箱
+    "ShopArenaPackage", 0,              ; 竞技场商店：简介个性化礼包
+    "ShopArenaFurnace", 0,              ; 竞技场商店：公司武器熔炉
+    "ShopRecycling", 1,                 ; 废铁商店
+    "ShopRecyclingGem", 0,              ; 废铁商店：珠宝
+    "ShopRecyclingVoucher", 0,          ; 废铁商店：好感券
+    "ShopRecyclingResources", 0,        ; 废铁商店：养成资源
+    "ShopRecyclingTeamworkBox", 0,      ; 废铁商店：团队合作宝箱
+    "ShopRecyclingKitBox", 0,           ; 废铁商店：保养工具箱
+    "ShopRecyclingArms", 0,             ; 废铁商店：企业精选武装
     ;模拟室
-    "SimulationRoom", 0,         ;模拟室
-    "SimulationNormal", 0,       ;普通模拟室
-    "SimulationOverClock", 0,    ;模拟室超频
+    "SimulationRoom", 0,                ; 模拟室
+    "SimulationNormal", 0,              ; 普通模拟室
+    "SimulationOverClock", 0,           ; 模拟室超频
     ;竞技场
-    "Arena", 0,                  ;竞技场总开关
-    "AwardArena", 0,             ;竞技场收菜
-    "ArenaRookie", 0,            ;新人竞技场
-    "ArenaSpecial", 0,           ;特殊竞技场
-    "ArenaChampion", 0,          ;冠军竞技场
+    "Arena", 0,                         ; 竞技场总开关
+    "AwardArena", 0,                    ; 竞技场收菜
+    "ArenaRookie", 0,                   ; 新人竞技场
+    "ArenaSpecial", 0,                  ; 特殊竞技场
+    "ArenaChampion", 0,                 ; 冠军竞技场
     ;无限之塔
-    "Tower", 0,                  ;无限之塔总开关
-    "TowerCompany", 0,           ;企业塔
-    "TowerUniversal", 0,         ;通用塔
+    "Tower", 0,                         ; 无限之塔总开关
+    "TowerCompany", 0,                  ; 企业塔
+    "TowerUniversal", 0,                ; 通用塔
     ;异常拦截
-    "Interception", 0,           ;拦截战
-    "InterceptionNormal", 0,     ;普通拦截战
-    "InterceptionAnomaly", 0,    ;异常拦截战
-    "InterceptionScreenshot", 0, ;拦截截图
-    "InterceptionRedCircle", 0,  ;拦截红圈
-    "InterceptionExit7", 0,      ;满7退出
+    "Interception", 0,                  ; 拦截战
+    "InterceptionNormal", 0,            ; 普通拦截战
+    "InterceptionAnomaly", 0,           ; 异常拦截战
+    "InterceptionScreenshot", 0,        ; 拦截截图
+    "InterceptionRedCircle", 0,         ; 拦截红圈
+    "InterceptionExit7", 0,             ; 满7退出
     ;常规奖励
-    "Award", 0,                  ;奖励领取总开关
-    "AwardOutpost", 0,           ;前哨基地收菜
-    "AwardOutpostDispatch", 0, ;派遣
-    "AwardAdvise", 0,       ;咨询
-    "AwardAdviseAward", 0,  ;咨询奖励
-    "AwardAppreciation", 0,      ;花絮鉴赏会
-    "AwardFriendPoint", 0,       ;好友点数
-    "AwardMail", 0,              ;邮箱
-    "AwardRanking", 0,           ;排名奖励
-    "AwardDaily", 0,             ;任务
-    "AwardPass", 0,              ;通行证
+    "Award", 0,                         ; 奖励领取总开关
+    "AwardOutpost", 0,                  ; 前哨基地收菜
+    "AwardOutpostDispatch", 0,          ; 派遣
+    "AwardAdvise", 0,                   ; 咨询
+    "AwardAdviseAward", 0,              ; 咨询奖励
+    "AwardAppreciation", 0,             ; 花絮鉴赏会
+    "AwardFriendPoint", 0,              ; 好友点数
+    "AwardMail", 0,                     ; 邮箱
+    "AwardRanking", 0,                  ; 排名奖励
+    "AwardDaily", 0,                    ; 任务
+    "AwardPass", 0,                     ; 通行证
     ;小活动
-    "Event", 0,                  ;活动总开关
-    "EventSmall", 0,             ;小活动
-    "EventSmallChallenge", 0,    ;小活动挑战
-    "EventSmallStory", 0,        ;小活动剧情
-    "EventSmallMission", 0,      ;小活动任务
+    "Event", 0,                         ; 活动总开关
+    "EventSmall", 0,                    ; 小活动
+    "EventSmallChallenge", 0,           ; 小活动挑战
+    "EventSmallStory", 0,               ; 小活动剧情
+    "EventSmallMission", 0,             ; 小活动任务
     ;大活动
-    "EventLarge", 0,             ;大活动
-    "EventLargeSign", 0,         ;大活动签到
-    "EventLargeChallenge", 0,    ;大活动挑战
-    "EventLargeStory", 0,        ;大活动剧情
-    "EventLargeCooperate", 0,    ;大活动协同作战
-    "EventLargeMinigame", 0,     ;大活动小游戏
-    "EventLargeDaily", 0,        ;大活动奖励
+    "EventLarge", 0,                    ; 大活动
+    "EventLargeSign", 0,                ; 大活动签到
+    "EventLargeChallenge", 0,           ; 大活动挑战
+    "EventLargeStory", 0,               ; 大活动剧情
+    "EventLargeCooperate", 0,           ; 大活动协同作战
+    "EventLargeMinigame", 0,            ; 大活动小游戏
+    "EventLargeDaily", 0,               ; 大活动奖励
     ;特殊活动
-    "EventSpecial", 0,           ;特殊活动
-    "EventSpecialSign", 0,       ;特殊活动签到
-    "EventSpecialChallenge", 0,  ;特殊活动挑战
-    "EventSpecialStory", 0,      ;特殊活动剧情
-    "EventSpecialCooperate", 0,  ;特殊活动协同作战
-    "EventSpecialMinigame", 0,   ;特殊活动小游戏
-    "EventSpecialDaily", 0,      ;特殊活动奖励
+    "EventSpecial", 0,                  ; 特殊活动
+    "EventSpecialSign", 0,              ; 特殊活动签到
+    "EventSpecialChallenge", 0,         ; 特殊活动挑战
+    "EventSpecialStory", 0,             ; 特殊活动剧情
+    "EventSpecialCooperate", 0,         ; 特殊活动协同作战
+    "EventSpecialMinigame", 0,          ; 特殊活动小游戏
+    "EventSpecialDaily", 0,             ; 特殊活动奖励
     ;限时奖励
-    "AwardFreeRecruit", 0,       ;活动期间每日免费招募
-    "AwardCooperate", 0,         ;协同作战
-    "AwardSoloRaid", 0,          ;个人突击
+    "AwardFreeRecruit", 0,              ; 活动期间每日免费招募
+    "AwardCooperate", 0,                ; 协同作战
+    "AwardSoloRaid", 0,                 ; 个人突击
     ;妙妙工具
-    "StoryModeAutoStar", 0,      ;剧情模式自动收藏
-    "StoryModeAutoChoose", 0,    ;剧情模式自动选择
+    "StoryModeAutoStar", 0,             ; 剧情模式自动收藏
+    "StoryModeAutoChoose", 0,           ; 剧情模式自动选择
     ;清除红点
-    "ClearRed", 0,               ;总开关
-    "ClearRedNotice", 0,         ;清除公告红点
-    "ClearRedWallpaper", 0,      ;清除壁纸红点
-    "ClearRedRecycling", 0,      ;自动升级循环室
-    "ClearRedSynchro", 0,        ;自动升级同步器
-    "ClearRedCube", 0,           ;自动升级魔方
-    "ClearRedSynchroForce", 0,   ;开箱子
-    "ClearRedLimit", 0,          ;自动突破妮姬
-    "ClearRedProfile", 0,        ;清除个人页红点
+    "ClearRed", 0,                      ; 总开关
+    "ClearRedNotice", 0,                ; 清除公告红点
+    "ClearRedWallpaper", 0,             ; 清除壁纸红点
+    "ClearRedRecycling", 0,             ; 自动升级循环室
+    "ClearRedSynchro", 0,               ; 自动升级同步器
+    "ClearRedCube", 0,                  ; 自动升级魔方
+    "ClearRedSynchroForce", 0,          ; 开箱子
+    "ClearRedLimit", 0,                 ; 自动突破妮姬
+    "ClearRedProfile", 0,               ; 清除个人页红点
     ;启动/退出相关
-    "CloseAdvertisement", 0,     ;关闭广告提示
-    "CloseHelp", 0,              ;关闭帮助提示
-    "AutoSwitchLanguage", 0,     ;自动切换语言
-    "AutoCheckUpdate", 0,        ;自动检查更新
-    "AutoCheckUserGroup", 1,     ;自动检查会员组
-    "AutoDeleteOldFile", 0,      ;自动删除旧版本
-    "DoroClosing", 0,            ;完成后自动关闭Doro
-    "LoopMode", 0,               ;完成后自动关闭游戏
-    "OpenBlablalink", 0,         ;完成后打开Blablalink
-    "CheckEvent", 0,             ;活动结束提醒
-    "AutoStartNikke", 0,         ;使用脚本启动NIKKE
-    "Timedstart", 0,             ;定时启动
+    "CloseAdvertisement", 0,            ; 关闭广告提示
+    "CloseHelp", 0,                     ; 关闭帮助提示
+    "AutoSwitchLanguage", 0,            ; 自动切换语言
+    "AutoCheckUpdate", 0,               ; 自动检查更新
+    "AutoCheckUserGroup", 1,            ; 自动检查会员组
+    "AutoDeleteOldFile", 0,             ; 自动删除旧版本
+    "DoroClosing", 0,                   ; 完成后自动关闭Doro
+    "LoopMode", 0,                      ; 完成后自动关闭游戏
+    "OpenBlablalink", 0,                ; 完成后打开Blablalink
+    "CheckEvent", 0,                    ; 活动结束提醒
+    "AutoStartNikke", 0,                ; 使用脚本启动NIKKE
+    "Timedstart", 0,                    ; 定时启动
     ;其他
-    "AutoFill", 0,               ;自动填充加成妮姬
-    "CheckAuto", 0,              ;开启自动射击和爆裂
-    "BluePill", 0,               ;万用开关
-    "RedPill", 0                 ;万用开关
+    "AutoFill", 0,                      ; 自动填充加成妮姬
+    "CheckAuto", 0,                     ; 开启自动射击和爆裂
+    "BluePill", 0,                      ; 万用开关
+    "RedPill", 0                        ; 万用开关
 )
 ;tag 其他非简单开关
 global g_numeric_settings := Map(
-    "doroGuiX", 200,                ;DoroHelper窗口X坐标
-    "doroGuiY", 200,                ;DoroHelper窗口Y坐标
-    "TestModeValue", "",            ;调试模式值
-    "StartupTime", "",              ;定时启动时间
-    "StartupPath", "",              ;启动路径
-    "SleepTime", 1000,              ;默认等待时间
-    "InterceptionBoss", 1,          ;拦截战BOSS选择
-    "LanguageList", 1,              ;语言选择
-    "Tolerance", 1,                 ;宽容度
-    "MirrorCDK", "",                ;Mirror酱的CDK
-    "Version", currentVersion,      ;版本号
-    "UpdateChannels", "正式版",      ;更新渠道
-    "DownloadSource", "GitHub",     ;下载源
-    "UserGroup", "普通用户"          ;用户组
+    "doroGuiX", 200,                    ; DoroHelper窗口X坐标
+    "doroGuiY", 200,                    ; DoroHelper窗口Y坐标
+    "TestModeValue", "",                ; 调试模式值
+    "StartupTime", "",                  ; 定时启动时间
+    "StartupPath", "",                  ; 启动路径
+    "SleepTime", 1000,                  ; 默认等待时间
+    "InterceptionBoss", 1,              ; 拦截战BOSS选择
+    "LanguageList", 1,                  ; 语言选择
+    "Tolerance", 1,                     ; 宽容度
+    "MirrorCDK", "",                    ; Mirror酱的CDK
+    "Version", currentVersion,          ; 版本号
+    "UpdateChannels", "正式版",         ; 更新渠道
+    "DownloadSource", "GitHub",         ; 下载源
+    "UserGroup", "普通用户"             ; 用户组
 )
 ;tag 其他全局变量
 outputText := ""

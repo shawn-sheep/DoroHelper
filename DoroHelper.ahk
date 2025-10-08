@@ -5479,8 +5479,7 @@ EventLargeMinigame() {
     Sleep 1000
     AddLog("点第二个START")
     UserClick(1911, 1743, TrueRatio)
-    Sleep 3000
-    if (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
         loop {
             if (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
                 AddLog("点击扩充")

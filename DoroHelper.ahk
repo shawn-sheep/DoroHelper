@@ -16,7 +16,7 @@ if !A_IsAdmin {
 }
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.8.0"
+currentVersion := "v1.8.1"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -3683,17 +3683,46 @@ Login() {
 ;endregion 登录
 ;region 语言切换
 AutoSwitchLanguage() {
-    if (ok := FindText(&X, &Y, NikkeX + 0.972 * NikkeW . " ", NikkeY + 0.016 * NikkeH . " ", NikkeX + 0.972 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.016 * NikkeH + 0.039 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("右上角的SUBMENU图标"), , , , , , , TrueRatio, TrueRatio)) {
+    UserClick(3770, 70, TrueRatio) ; 点右上角的SUB
+    Sleep 1000
+    if (ok := FindText(&X, &Y, NikkeX + 0.396 * NikkeW . " ", NikkeY + 0.454 * NikkeH . " ", NikkeX + 0.396 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.454 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("账号的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
-        if (ok := FindText(&X, &Y, NikkeX + 0.396 * NikkeW . " ", NikkeY + 0.454 * NikkeH . " ", NikkeX + 0.396 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.454 * NikkeH + 0.069 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("账号的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.595 * NikkeW . " ", NikkeY + 0.247 * NikkeH . " ", NikkeX + 0.595 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.247 * NikkeH + 0.041 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("账号·向下的三角"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep 1000
-            if (ok := FindText(&X, &Y, NikkeX + 0.595 * NikkeW . " ", NikkeY + 0.247 * NikkeH . " ", NikkeX + 0.595 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.247 * NikkeH + 0.041 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("账号·向下的三角"), , , , , , , TrueRatio, TrueRatio)) {
+            ; 找得到中文，说明是非中文界面，应该改成中文之后重新运行
+            if (ok := FindText(&X, &Y, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.242 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.122 * NikkeW . " ", NikkeY + 0.242 * NikkeH + 0.377 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("(简体)"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y, "L")
                 Sleep 1000
-                ; 找得到中文，说明是非中文界面，应该改成中文之后重新运行
-                if (ok := FindText(&X, &Y, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.242 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.122 * NikkeW . " ", NikkeY + 0.242 * NikkeH + 0.377 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("(简体)"), , , , , , , TrueRatio, TrueRatio)) {
+                if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    Login
+                    return
+                }
+            }
+            ; 找不到中文，说明已经是中文界面，应该改回原语言之后重新运行
+            else {
+                switch g_numeric_settings["LanguageList"] {
+                    case 1:
+                    {
+                        language := FindText().PicLib("ENGLISH")
+                    }
+                    case 2:
+                    {
+                        language := FindText().PicLib("日本语")
+                    }
+                    case 3:
+                    {
+                        language := FindText().PicLib("(繁体)")
+                    }
+                    case 4:
+                    {
+                        language := FindText().PicLib("(简体)")
+                    }
+                }
+                if (ok := FindText(&X, &Y, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.327 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, language, , , , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(X, Y, "L")
                     Sleep 1000
                     if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
@@ -3701,37 +3730,6 @@ AutoSwitchLanguage() {
                         Sleep 1000
                         Login
                         return
-                    }
-                }
-                ; 找不到中文，说明已经是中文界面，应该改回原语言之后重新运行
-                else {
-                    switch g_numeric_settings["LanguageList"] {
-                        case 1:
-                        {
-                            language := FindText().PicLib("ENGLISH")
-                        }
-                        case 2:
-                        {
-                            language := FindText().PicLib("日本语")
-                        }
-                        case 3:
-                        {
-                            language := FindText().PicLib("(繁体)")
-                        }
-                        case 4:
-                        {
-                            language := FindText().PicLib("(简体)")
-                        }
-                    }
-                    if (ok := FindText(&X, &Y, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.283 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.283 * NikkeH + 0.327 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, language, , , , , , , TrueRatio, TrueRatio)) {
-                        FindText().Click(X, Y, "L")
-                        Sleep 1000
-                        if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-                            FindText().Click(X, Y, "L")
-                            Sleep 1000
-                            Login
-                            return
-                        }
                     }
                 }
             }

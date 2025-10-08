@@ -4037,7 +4037,7 @@ ShopRecycling() {
         if (!item.Setting) {
             continue ; 如果设置未开启，则跳过此物品
         }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.054 * NikkeW . " ", NikkeY + 0.479 * NikkeH . " ", NikkeX + 0.054 * NikkeW + 0.934 * NikkeW . " ", NikkeY + 0.479 * NikkeH + 0.344 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , 1, TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.049 * NikkeW . " ", NikkeY + 0.479 * NikkeH . " ", NikkeX + 0.049 * NikkeW + 0.940 * NikkeW . " ", NikkeY + 0.479 * NikkeH + 0.439 * NikkeH . " ", item.Tolerance, item.Tolerance, item.Text, , , , , , 1, TrueRatio, TrueRatio)) {
             ; 根据找到的同类图标数量进行循环购买
             loop ok.Length {
                 FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")

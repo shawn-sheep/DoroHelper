@@ -3923,6 +3923,10 @@ ShopArena() {
         FindText().Click(X, Y, "L")
         Sleep 1000
     }
+    else {
+        AddLog("竞技场商店图标未找到", "Red")
+        return
+    }
     ; 定义所有可购买物品的信息 (使用 Map)
     PurchaseItems := Map(
         "燃烧代码手册", {

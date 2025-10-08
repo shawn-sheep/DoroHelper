@@ -7,16 +7,9 @@
 #Include <RichEdit>
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
-;退出时保存设置
-OnExit(WriteSettings)
-;检测管理员身份
-if !A_IsAdmin {
-    MsgBox "请以管理员身份运行Doro"
-    ExitApp
-}
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.8.1"
+currentVersion := "v1.8.2"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -189,6 +182,13 @@ TrueRatio := 1
 BattleActive := 1
 ; 确定地区
 LocaleName := GetUserLocaleName()
+;退出时保存设置
+OnExit(WriteSettings)
+;检测管理员身份
+if !A_IsAdmin {
+    MsgBox "请以管理员身份运行DoroHelper！`nPlease run DoroHelper as administrator!"
+    ExitApp
+}
 ;tag 彩蛋
 konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
 key_history := ""           ; 用于存储用户按键历史的变量

@@ -734,16 +734,20 @@ btnRepository := doroGui.Add("Button", "xp xs+10 w80 h30", "仓库地址")
 doroGui.Tips.SetTip(btnRepository, "github repository")
 btnRepository.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper"))
 ; Blablalink
-btnBlablalink := doroGui.Add("Button", "x+10 w80 h30", "Blablalink")
+btnBlablalink := doroGui.Add("Button", "x+10 w60 h30", "Blalink")
 btnBlablalink.OnEvent("Click", (*) => Run("https://www.blablalink.com/"))
 ; CDK兑换
 btnCDK := doroGui.Add("Button", "x+10 w80 h30", "CDK兑换")
 doroGui.Tips.SetTip(btnCDK, "Nikke CDK Exchange")
 btnCDK.OnEvent("Click", (*) => Run("https://nikke.hayasa.link/"))
-; 反馈群
-btnFeedback := doroGui.Add("Button", "x+10 w100 h30", "加入反馈群")
-doroGui.Tips.SetTip(btnFeedback, "Join the feedback group")
-btnFeedback.OnEvent("Click", (*) => Run("https://qm.qq.com/q/ZhvLeKMO2q"))
+; 反馈qq群
+btnFeedbackQQ := doroGui.Add("Button", "x+10 w50 h30", "qq群")
+doroGui.Tips.SetTip(btnFeedbackQQ, "Join the feedback group")
+btnFeedbackQQ.OnEvent("Click", (*) => Run("https://qm.qq.com/q/ZhvLeKMO2q"))
+; 反馈 dc群
+btnFeedbackDC := doroGui.Add("Button", "x+10 w70 h30", "Discord")
+doroGui.Tips.SetTip(btnFeedbackDC, "Join the feedback group")
+btnFeedbackDC.OnEvent("Click", (*) => Run("https://discord.gg/WtSxX6q6"))
 ; 剧情模式
 TextStoryModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "剧情模式")
 doroGui.Tips.SetTip(TextStoryModeLabel, "自动点击对话选项，自动进行下一段剧情，自动启动auto`nAutomatically click dialogue options, automatically proceed to the next segment of the story, automatically start auto")

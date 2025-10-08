@@ -188,10 +188,6 @@ TrueRatio := 1
 BattleActive := 1
 ; 确定地区
 LocaleName := GetUserLocaleName()
-if !(LocaleName = "zh-CN") {
-    AddLog("Hover your mouse over to view the English translatio, except for the content of the log")
-    AddLog("For our international users,this will be a much faster and better way to get support. Here's the invite link:https://discord.gg/WtSxX6q6")
-}
 ;tag 彩蛋
 konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
 key_history := ""           ; 用于存储用户按键历史的变量
@@ -811,6 +807,11 @@ try {
 }
 ;endregion 彩蛋
 ;region 前置任务
+;tag 语言提示
+if !(LocaleName = "zh-CN") {
+    AddLog("Hover your mouse over to view the English translatio, except for the content of the log")
+    AddLog("For our international users,this will be a much faster and better way to get support. Here's the invite link:https://discord.gg/WtSxX6q6")
+}
 ;tag 检查用户组
 if g_settings["AutoCheckUserGroup"]
     CheckUserGroup

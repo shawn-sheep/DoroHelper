@@ -128,6 +128,7 @@ global g_settings := Map(
     "ClearRedSynchroForce", 0,          ; 开箱子
     "ClearRedLimit", 0,                 ; 自动突破妮姬
     "ClearRedProfile", 0,               ; 清除个人页红点
+    "ClearRedBla", 0,                   ; 清除Bla红点
     ;启动/退出相关
     "CloseAdvertisement", 0,            ; 关闭广告提示
     "CloseHelp", 0,                     ; 关闭帮助提示
@@ -711,6 +712,9 @@ g_settingPages["After"].Push(cbClearRedWallpaper)
 cbClearRedProfile := AddCheckboxSetting(doroGui, "ClearRedProfile", "清除个人页红点", "R1 xs+15")
 doroGui.Tips.SetTip(cbClearRedProfile, "Clear Profile Red Dot")
 g_settingPages["After"].Push(cbClearRedProfile)
+cbClearRedBla := AddCheckboxSetting(doroGui, "ClearRedBla", "清除blabla红点", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedBla, "Clear blabla Red Dot")
+g_settingPages["After"].Push(cbClearRedBla)
 cbOpenBlablalink := AddCheckboxSetting(doroGui, "OpenBlablalink", "打开Blablalink", "R1 xs")
 doroGui.Tips.SetTip(cbOpenBlablalink, "Open the Blablalink website")
 g_settingPages["After"].Push(cbOpenBlablalink)
@@ -5540,7 +5544,7 @@ EventLargeDaily() {
 EventSpecial() {
 }
 ;endregion 特殊活动
-;region 清除红点
+;region 任务完成后
 ;tag 自动升级循环室
 ClearRedRecycling() {
     AddLog("自动升级循环室", "Fuchsia")
@@ -5926,7 +5930,16 @@ ClearRedProfile() {
     }
     else AddLog("未发现个人页红点")
 }
-;endregion 清除红点
+;tag 清除bla红点
+ClearRedBla() {
+    AddLog("清除bla红点", "Fuchsia")
+    if (ok := FindText(&X, &Y, NikkeX + 0.008 * NikkeW . " ", NikkeY + 0.174 * NikkeH . " ", NikkeX + 0.008 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.174 * NikkeH + 0.084 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("Bla的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        FindText().Click(X, Y, "L")
+        Sleep 1000
+    }
+    BackToHall()
+}
+;endregion 任务完成后
 ;region 妙妙工具
 ;tag 剧情模式
 StoryMode(*) {

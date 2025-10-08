@@ -3997,9 +3997,7 @@ ShopRecycling() {
     }
     ; 检查是否有限时商品
     if (ok := FindText(&X, &Y, NikkeX + 0.053 * NikkeW . " ", NikkeY + 0.482 * NikkeH . " ", NikkeX + 0.053 * NikkeW + 0.938 * NikkeW . " ", NikkeY + 0.482 * NikkeH + 0.236 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("商店·限时图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-        if ok.Length = 10 {
-            Reopen := true
-        }
+        Reopen := true
     }
     ; 定义所有可购买物品的信息 (使用 Map)
     PurchaseItems := Map(

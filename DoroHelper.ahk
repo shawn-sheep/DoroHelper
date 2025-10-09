@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.8.2"
+currentVersion := "v1.8.3"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -5943,8 +5943,10 @@ ClearRedBla() {
     AddLog("清除bla红点", "Fuchsia")
     if (ok := FindText(&X, &Y, NikkeX + 0.008 * NikkeW . " ", NikkeY + 0.174 * NikkeH . " ", NikkeX + 0.008 * NikkeW + 0.041 * NikkeW . " ", NikkeY + 0.174 * NikkeH + 0.084 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("Bla的图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
-        Sleep 1000
+        Sleep 3000
     }
+    UserClick(1554, 464, TrueRatio)
+    Sleep 1000
     BackToHall()
 }
 ;endregion 任务完成后

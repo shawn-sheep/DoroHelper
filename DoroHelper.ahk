@@ -892,6 +892,9 @@ ClickOnDoro(*) {
     if g_settings["Shop"] {
         if g_settings["ShopCashFree"]
             ShopCash()
+        if g_settings["ShopGeneral"] or g_settings["ShopArena"] or g_settings["ShopRecycling"] {
+            Shop()
+        }
         if g_settings["ShopGeneral"]
             ShopGeneral()
         if g_settings["ShopArena"]
@@ -3851,13 +3854,8 @@ ShopCash() {
     }
     BackToHall
 }
-;tag 普通商店
-ShopGeneral() {
-    if g_settings["ShopGeneralFree"] = False and g_settings["ShopGeneralDust"] = False and g_settings["ShopGeneralPackage"] = False {
-        AddLog("普通商店购买选项均未启用，跳过此任务", "Fuchsia")
-        return
-    }
-    AddLog("开始任务：普通商店", "Fuchsia")
+;tag 进入商店
+Shop() {
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.236 * NikkeW . " ", NikkeY + 0.633 * NikkeH . " ", NikkeX + 0.236 * NikkeW + 0.118 * NikkeW . " ", NikkeY + 0.633 * NikkeH + 0.103 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击商店图标")
         FindText().Click(X + 20 * TrueRatio, Y - 20 * TrueRatio, "L")
@@ -3867,6 +3865,14 @@ ShopGeneral() {
     }
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("左上角的百货商店"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("已进入百货商店")
+    }
+}
+;tag 普通商店
+ShopGeneral() {
+    AddLog("开始任务：普通商店", "Fuchsia")
+    if g_settings["ShopGeneralFree"] = False and g_settings["ShopGeneralDust"] = False and g_settings["ShopGeneralPackage"] = False {
+        AddLog("普通商店购买选项均未启用，跳过此任务", "Fuchsia")
+        return
     }
     Sleep 1000
     ; 定义所有可购买物品的信息 (使用 Map)

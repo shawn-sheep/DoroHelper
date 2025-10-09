@@ -1279,7 +1279,6 @@ StartDailyTimer() {
 CheckForUpdate(isManualCheck) {
     global currentVersion, usr, repo, latestObj, g_settings, g_numeric_settings, scriptExtension
     ; 重置 latestObj 以确保每次检查都是新的状态
-    ; 此处不直接重建Map，而是清空内容，以避免垃圾回收开销和可能的引用问题。
     if (!IsObject(latestObj) || Type(latestObj) != "Map") {
         AddLog("警告: latestObj 未初始化或类型错误，重新初始化。", "Red")
         latestObj := Map("version", "", "change_notes", "无更新说明", "download_url", "", "source", "", "display_name", "")
@@ -1292,24 +1291,28 @@ CheckForUpdate(isManualCheck) {
     }
     local checkSucceeded := false
     local channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
+    ; 新增变量以追踪A_ScriptFullPath和lib库是否需要重启
+    local ahkScriptNeedsReload := false
+    local libResourcesNeedsReload := false
     ; ==================== AHK 文件更新检查 (脚本本体更新) =====================
     if (scriptExtension = "ahk") {
         AddLog("开始检查 DoroHelper.ahk 本体更新……")
-        local ahkResult := CheckForUpdate_AHK_File(isManualCheck) ; 该函数返回其自身的 Map 结果，不直接修改 latestObj
+        local ahkResult := CheckForUpdate_AHK_File(isManualCheck)
         if (ahkResult.Get("success", false)) {
             AddLog("DoroHelper.ahk 本体更新检查成功: " . ahkResult.Get("message", "本地版本已是最新或已修改。"), "Green")
+            if (ahkResult.Get("needsReload", false)) {
+                ahkScriptNeedsReload := true
+            }
         } else {
             AddLog("DoroHelper.ahk 本体更新检查失败或被跳过: " . ahkResult.Get("message", "未知错误"), "Red")
         }
         AddLog("开始检查函数库文件更新 (资源更新)……")
-        local resourceUpdateResult := CheckForResourceUpdate(isManualCheck) ; 该函数也返回其自身的 Map 结果。
+        local resourceUpdateResult := CheckForResourceUpdate(isManualCheck)
         if (resourceUpdateResult.Get("success", false)) {
             AddLog("函数库文件更新检查完成。")
             if (resourceUpdateResult.Get("updatedCount", 0) > 0) {
-                AddLog("已更新 " . resourceUpdateResult.Get("updatedCount") . " 个函数库文件。请重启脚本以加载新文件。", "Green")
-                if (isManualCheck) {
-                    MsgBox("已更新 " . resourceUpdateResult.Get("updatedCount") . " 个函数库文件。请重启 DoroHelper 以加载新文件。", "资源更新完成", "IconI")
-                }
+                AddLog("已更新 " . resourceUpdateResult.Get("updatedCount") . " 个函数库文件。", "Green")
+                libResourcesNeedsReload := true
             } else {
                 AddLog("所有函数库文件更新检查成功: 本地版本已是最新或已修改，无需下载。", "Green")
                 if (isManualCheck) {
@@ -1321,6 +1324,16 @@ CheckForUpdate(isManualCheck) {
             if (isManualCheck) {
                 MsgBox("函数库文件更新检查失败: " . resourceUpdateResult.Get("message", "未知错误"), "资源更新错误", "IconX")
             }
+        }
+        ; 如果任何部分需要重启，则执行一次重启
+        if (ahkScriptNeedsReload || libResourcesNeedsReload) {
+            AddLog("检测到 AHK 脚本本体或函数库文件已更新，DoroHelper 将重启。")
+            if (isManualCheck) {
+                MsgBox("检测到 DoroHelper.ahk 本体或函数库文件已更新，脚本将重启以加载新版本。", "更新完成，即将重启", "IconI")
+            }
+            Reload() ; 执行一次重启
+        } else if (isManualCheck) {
+            MsgBox("当前已是最新版本，无需更新。", "AHK更新提示", "IconI")
         }
         return ; AHK 版本的更新逻辑（本体+资源）是独立的，处理完后直接返回
     }
@@ -1368,7 +1381,7 @@ CheckForUpdate(isManualCheck) {
 ;tag AHK文件更新检查子函数
 CheckForUpdate_AHK_File(isManualCheck) {
     global currentVersion, usr, repo, scriptExtension
-    local result := Map("success", false, "message", "未知错误")
+    local result := Map("success", false, "message", "未知错误", "needsReload", false) ; 添加 needsReload 标志
     if (scriptExtension = "exe") {
         result.Set("message", "exe版本不可直接更新至ahk版本，请查看群公告下载完整的ahk版本文件")
         if (isManualCheck) {
@@ -1471,9 +1484,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
     ; 情况 1: 哈希一致 -> 已是最新版本
     if (remoteSha = localSha) {
         AddLog("文件哈希一致，当前已是最新版本。", "Green")
-        if (isManualCheck) {
-            MsgBox("当前已是最新版本，无需更新。", "AHK更新提示", "IconI")
-        }
+        ; 不再弹出MsgBox，统一由CheckForUpdate处理
         result.Set("success", true)
         result.Set("message", "AHK脚本已是最新版本。")
         return result
@@ -1534,14 +1545,13 @@ CheckForUpdate_AHK_File(isManualCheck) {
             result.Set("message", "下载失败: " . e.Message)
             return result
         }
-        MsgBox("发现新版本！已下载至同目录下，软件即将退出以完成更新。", "AHK更新")
-        ; 重命名当前运行的脚本为旧版本，然后将新脚本重命名为 DoroHelper.ahk
+        ; 不再此处立即重启，而是设置 needsReload 标志
         local OldFileName := "DoroHelper_old_" . A_Now . ".ahk"
         try {
             FileMove A_ScriptFullPath, A_ScriptDir . "\" . OldFileName, 1 ; 覆盖旧备份文件
             FileMove localNewFilePath, A_ScriptDir . "\DoroHelper.ahk"
             AddLog("AHK 脚本更新成功。旧版本已备份为 '" . OldFileName . "'。", "Green")
-            ExitApp ; 退出以加载新脚本
+            result.Set("needsReload", true) ; 标记需要重启
         } catch as e {
             MsgBox "更新后的文件重命名失败: " . e.Message . "`n请手动将下载的 '" . NewFileName . "' 文件重命名为 'DoroHelper.ahk' 并替换现有文件。", "错误", "IconX"
             AddLog("更新后的文件重命名失败: " . e.Message, "Red")
@@ -1551,19 +1561,15 @@ CheckForUpdate_AHK_File(isManualCheck) {
     } else {
         ; 如果 shouldDownload 为 false，表示不需要下载或用户已取消
         AddLog("AHK 脚本无需更新或用户选择取消。", "Blue")
-        result.Set("success", true)
-        result.Set("message", "AHK 脚本无需更新或用户选择取消。")
-        return result
     }
-    ; 这一行在 ExitApp 之后不会被执行，仅作为逻辑完整性展示（但实际上不会到达）
     result.Set("success", true)
-    result.Set("message", "AHK 脚本更新流程完成，脚本已重启。")
+    result.Set("message", "AHK 脚本更新流程完成。")
     return result
 }
 ;tag AHK资源文件更新检查子函数
 CheckForResourceUpdate(isManualCheck) {
     global usr, repo
-    local result := Map("success", false, "message", "未知错误", "updatedCount", 0)
+    local result := Map("success", false, "message", "未知错误", "updatedCount", 0, "needsReload", false) ; 添加 needsReload 标志
     local libDir := A_ScriptDir "\lib"
     local updatedFiles := []
     local failedFiles := []
@@ -1671,6 +1677,7 @@ CheckForResourceUpdate(isManualCheck) {
                         AddLog("成功更新文件: " . remoteFileName, "Green")
                         updatedFiles.Push(remoteFileName)
                         updatedCount++
+                        result.Set("needsReload", true) ; 任何文件更新都标记需要重启
                     } catch as e {
                         AddLog("下载或替换文件 " . remoteFileName . " 失败: " . e.Message, "Red")
                         failedFiles.Push(remoteFileName)

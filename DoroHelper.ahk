@@ -5028,11 +5028,9 @@ AwardPass() {
         ; 检查红点并执行通行证
         if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.982 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.982 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.032 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X - 50 * TrueRatio, Y + 50 * TrueRatio, "L")
-            if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.227 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.090 * NikkeW . " ", NikkeY + 0.227 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("购买PASS的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                t := t + 1
-                AddLog("执行第" t "个通行证")
-                OneAwardPass()
-            }
+            t := t + 1
+            AddLog("执行第" t "个通行证")
+            OneAwardPass()
             BackToHall()
             continue
         }
@@ -5049,8 +5047,8 @@ AwardPass() {
 }
 ;tag 执行一次通行证
 OneAwardPass() {
+    Sleep 3000
     loop 2 {
-        Sleep 2000
         if A_Index = 1 {
             UserClick(2184, 670, TrueRatio) ;点任务
             Sleep 1000
@@ -5060,8 +5058,10 @@ OneAwardPass() {
             Sleep 1000
         }
         while !(ok := FindText(&X, &Y, NikkeX + 0.429 * NikkeW . " ", NikkeY + 0.903 * NikkeH . " ", NikkeX + 0.429 * NikkeW + 0.143 * NikkeW . " ", NikkeY + 0.903 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的全部"), , , , , , , TrueRatio, TrueRatio)) and !(ok := FindText(&X, &Y, NikkeX + 0.429 * NikkeW . " ", NikkeY + 0.903 * NikkeH . " ", NikkeX + 0.429 * NikkeW + 0.143 * NikkeW . " ", NikkeY + 0.903 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("SP灰色的全部"), , , , , , , TrueRatio, TrueRatio)) {
-            UserClick(2168, 2020, TrueRatio) ;点领取
-            Sleep 500
+            loop 3 {
+                UserClick(2168, 2020, TrueRatio) ;点领取
+                Sleep 500
+            }
         }
     }
     GoBack()

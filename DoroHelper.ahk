@@ -63,7 +63,7 @@ global g_settings := Map(
     "Tower", 0,                         ; 无限之塔总开关
     "TowerCompany", 0,                  ; 企业塔
     "TowerUniversal", 0,                ; 通用塔
-    ;异常拦截
+    ;拦截
     "Interception", 0,                  ; 拦截战
     "InterceptionNormal", 0,            ; 普通拦截战
     "InterceptionAnomaly", 0,           ; 异常拦截战
@@ -149,7 +149,8 @@ global g_numeric_settings := Map(
     "StartupTime", "",                  ; 定时启动时间
     "StartupPath", "",                  ; 启动路径
     "SleepTime", 1000,                  ; 默认等待时间
-    "InterceptionBoss", 1,              ; 拦截战BOSS选择
+    "InterceptionBossNormal", 1,        ; 普通拦截战BOSS选择
+    "InterceptionBoss", 1,              ; 异常拦截战BOSS选择
     "LanguageList", 1,                  ; 语言选择
     "Tolerance", 1,                     ; 宽容度
     "MirrorCDK", "",                    ; Mirror酱的CDK
@@ -549,17 +550,20 @@ g_settingPages["Tower"].Push(SetTowerUniversal)
 ;tag 二级拦截战Interception
 SetInterceptionTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====拦截战选项====")
 g_settingPages["Interception"].Push(SetInterceptionTitle)
-SetInterceptionNormal := AddCheckboxSetting(doroGui, "InterceptionNormal", "普通拦截(暂不支持)", "R1")
+SetInterceptionNormal := AddCheckboxSetting(doroGui, "InterceptionNormal", "普通拦截", "R1")
 doroGui.Tips.SetTip(SetInterceptionNormal, "暂不支持`nNormal Interception:Not supported yet")
 g_settingPages["Interception"].Push(SetInterceptionNormal)
-SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1")
+DropDownListBossNormal := doroGui.Add("DropDownList", "x+10 w150 Choose" g_numeric_settings["InterceptionBossNormal"], ["Level D", "Level S", "特殊目标拦截战"])
+DropDownListBossNormal.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBossNormal"] := Ctrl.Value)
+g_settingPages["Interception"].Push(DropDownListBossNormal)
+SetInterceptionAnomaly := AddCheckboxSetting(doroGui, "InterceptionAnomaly", "异常拦截", "R1 xs")
 doroGui.Tips.SetTip(SetInterceptionAnomaly, "Anomaly Interception")
 g_settingPages["Interception"].Push(SetInterceptionAnomaly)
-DropDownListBoss := doroGui.Add("DropDownList", "w150 Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯，编队1", "镜像容器，编队2", "茵迪维利亚，编队3", "过激派，编队4", "死神，编队5"])
+DropDownListBoss := doroGui.Add("DropDownList", "x+10 w150 Choose" g_numeric_settings["InterceptionBoss"], ["克拉肯，编队1", "镜像容器，编队2", "茵迪维利亚，编队3", "过激派，编队4", "死神，编队5"])
 doroGui.Tips.SetTip(DropDownListBoss, "例如，选择克拉肯(模组)，编队1，则程序会使用你的编队1去挑战克拉肯`nfor example, if you choose Kraken, Team 1, the program will use your Team 1 to challenge the Kraken`n克拉肯(模组):Kraken(Module)`n镜像容器(手):Mirage Container(Hand)`n茵迪维利亚(衣):Indivilia(Clothes)`n过激派(头):UItra(Head)`n死神(脚):Harvester(foot)")
 DropDownListBoss.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["InterceptionBoss"] := Ctrl.Value)
 g_settingPages["Interception"].Push(DropDownListBoss)
-SetInterceptionNormalTitle := doroGui.Add("Text", "R1 +0x0100", "===基础选项===")
+SetInterceptionNormalTitle := doroGui.Add("Text", "R1 +0x0100 xs", "===基础选项===")
 doroGui.Tips.SetTip(SetInterceptionNormalTitle, "Basic Options")
 g_settingPages["Interception"].Push(SetInterceptionNormalTitle)
 SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
@@ -925,7 +929,9 @@ ClickOnDoro(*) {
         GoBack
     }
     if g_settings["Interception"] {
-        if g_settings["InterceptionAnomaly"]
+        if g_settings["InterceptionNormal"] ;普通拦截
+            InterceptionNormal()
+        if g_settings["InterceptionAnomaly"] ;异常拦截
             InterceptionAnomaly()
     }
     BackToHall
@@ -4551,6 +4557,74 @@ TowerUniversal() {
 }
 ;endregion 无限之塔
 ;region 拦截战
+;tag 普通拦截
+InterceptionNormal() {
+    EnterToArk
+    AddLog("开始任务：普通拦截", "Fuchsia")
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.401 * NikkeW . " ", NikkeY + 0.813 * NikkeH . " ", NikkeX + 0.401 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.813 * NikkeH + 0.028 * NikkeH . " ", 0.45 * PicTolerance, 0.45 * PicTolerance, FindText().PicLib("拦截战"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("进入拦截战")
+        FindText().Click(X, Y - 50 * TrueRatio, "L")
+        Sleep 1000
+    }
+    Confirm
+    UserClick(2120, 1956, TrueRatio) ; 点击普通拦截
+    Sleep 1000
+    loop 3 {
+        Confirm
+    }
+    AddLog("已进入普通拦截界面")
+    switch g_numeric_settings["InterceptionBossNormal"] {
+        case 1:
+            UserClick(1623, 953, TrueRatio)
+            sleep 1000
+            AddLog("已选择Level D")
+        case 2:
+            UserClick(2425, 1120, TrueRatio)
+            sleep 1000
+            AddLog("已选择Level S")
+        case 3:
+            UserClick(2136, 1675, TrueRatio)
+            sleep 1000
+            AddLog("已选择特殊目标拦截战")
+        default:
+            MsgBox "BOSS选择错误！"
+            Pause
+    }
+    Sleep 1000
+    while True {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("已激活快速战斗")
+            Sleep 500
+            FindText().Click(X + 50 * TrueRatio, Y, "L")
+            Sleep 500
+            FindText().Click(X + 50 * TrueRatio, Y, "L")
+            Sleep 500
+        }
+        else if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.879 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.879 * NikkeH + 0.102 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·进入战斗的进"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("未激活快速战斗，尝试普通战斗")
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            Skipping
+        }
+        else {
+            AddLog("拦截次数已耗尽", "MAROON")
+            break
+        }
+        modes := []
+        if g_settings["InterceptionRedCircle"]
+            modes.Push("RedCircle")
+        if g_settings["InterceptionScreenshot"]
+            modes.Push("Screenshot")
+        if g_settings["InterceptionExit7"] and UserLevel >= 3
+            modes.Push("Exit7")
+        global BattleActive := 1
+        if g_settings["InterceptionRedCircle"] or g_settings["InterceptionExit7"] {
+            AddLog("有概率误判，请谨慎开启该功能", "MAROON")
+        }
+        BattleSettlement(modes*)  ; 使用*展开数组为多个参数
+        Sleep 2000
+    }
+}
 ;tag 异常拦截
 InterceptionAnomaly() {
     EnterToArk
@@ -4564,7 +4638,7 @@ InterceptionAnomaly() {
     while !(ok := FindText(&X, &Y, NikkeX + 0.580 * NikkeW . " ", NikkeY + 0.956 * NikkeH . " ", NikkeX + 0.580 * NikkeW + 0.074 * NikkeW . " ", NikkeY + 0.956 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红字的异常"), , , , , , , TrueRatio, TrueRatio)) {
         Confirm
         if A_Index > 20 {
-            MsgBox("异常个体拦截战未解锁！本脚本暂不支持普通拦截！", "MAROON")
+            MsgBox("异常个体拦截战未解锁！", "MAROON")
             Pause
         }
     }
@@ -4650,7 +4724,7 @@ InterceptionAnomaly() {
             Skipping
         }
         else {
-            AddLog("异常拦截次数已耗尽", "MAROON")
+            AddLog("拦截次数已耗尽", "MAROON")
             break
         }
         modes := []

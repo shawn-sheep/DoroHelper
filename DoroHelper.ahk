@@ -788,6 +788,7 @@ LogBox.WordWrap(true)
 LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
+doroGui.OnEvent("Close", (*) => ExitApp())
 doroGui.Show("x" g_numeric_settings["doroGuiX"] " y" g_numeric_settings["doroGuiY"])
 ;endregion 创建GUI
 ;region 彩蛋

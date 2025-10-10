@@ -157,7 +157,8 @@ global g_numeric_settings := Map(
     "Version", currentVersion,          ; 版本号
     "UpdateChannels", "正式版",         ; 更新渠道
     "DownloadSource", "GitHub",         ; 下载源
-    "UserGroup", "普通用户"             ; 用户组
+    "UserGroup", "普通用户",             ; 用户组
+    "UserLevel", 0                      ; 用户级别
 )
 ;tag 其他全局变量
 outputText := ""
@@ -183,6 +184,21 @@ TrueRatio := 1
 BattleActive := 1
 ; 确定地区
 LocaleName := GetUserLocaleName()
+; 会员等级定义
+g_MembershipLevels := Map(
+    "普通用户", { monthlyCost: 0, userLevel: 0 },
+    "铜Doro会员", { monthlyCost: 1, userLevel: 1 },
+    "银Doro会员", { monthlyCost: 3, userLevel: 2 },
+    "金Doro会员", { monthlyCost: 5, userLevel: 3 },
+    "管理员", { monthlyCost: 999, userLevel: 10 }
+)
+; 地区价格映射表
+defaultPriceData := { Unitprice: 1, Currency: "USD", currencySymbol: "$" }
+g_PriceMap := Map(
+    "zh-CN", { Unitprice: 6, Currency: "CNY", currencySymbol: "¥" },
+    "en-US", defaultPriceData, ; 示例：美国
+)
+g_DefaultRegionPriceData := defaultPriceData
 ;退出时保存设置
 OnExit(WriteSettings)
 ;检测管理员身份
@@ -222,24 +238,6 @@ try {
 catch {
     WriteSettings()
 }
-;tag 初始化用户组
-;0是普通用户，1是铜Doro会员，2是银Doro会员，3是金Doro会员，10是管理员
-UserGroup := g_numeric_settings["UserGroup"]
-if UserGroup = "管理员" {
-    UserLevel := 10
-}
-if UserGroup = "金Doro会员" {
-    UserLevel := 3
-}
-if UserGroup = "银Doro会员" {
-    UserLevel := 2
-}
-if UserGroup = "铜Doro会员" {
-    UserLevel := 1
-}
-if UserGroup = "普通用户" {
-    UserLevel := 0
-}
 ;endregion 读取设置
 ;region 创建GUI
 ;tag 基础配置
@@ -274,7 +272,7 @@ doroGui.Tips.SetTip(TextVersion, "Version")
 ;tag 用户组
 TextUserGroup := doroGui.Add("Text", "x20 y+5 R1 +0x0100 Section", "用户组：")
 doroGui.Tips.SetTip(TextUserGroup, "你可以通点击上方的赞助按钮来获得更高级的用户组`nUserGroup:You can upgrade your membership by clicking the Sponsor button above`n普通用户:Normal User|铜:Copper|银:Silver|金:Gold")
-VariableUserGroup := doroGui.Add("Text", "x+0.5  R1 +0x0100", g_numeric_settings["UserGroup"])
+VariableUserGroup := doroGui.Add("Text", "x+0.5 w100 R1 +0x0100", g_numeric_settings["UserGroup"])
 ;tag 更新渠道
 TextUpdateChannels := doroGui.Add("Text", "Section x20 y+8 R1 +0x0100", "更新渠道")
 doroGui.Tips.SetTip(TextUpdateChannels, "UpdateChannels`n正式版:稳定，适合大多数用户|Stable: Reliable, recommended for most users.`n测试版:现已弃用|Beta: Now deprecated.`nAHK版:源代码版本，第一时间体验最新功能|AHK: Source code version with earliest access to new features.")
@@ -766,7 +764,7 @@ TestModeEditControl := doroGui.Add("Edit", "x+10 yp w145 h20")
 TestModeEditControl.Value := g_numeric_settings["TestModeValue"]
 BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", TestMode)
 TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "快速爆裂模式")
-doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快。`n默认先A后S`nAfter starting, Burst will be used automatically, Fater than the built-in auto.`nBy default, A is used before S")
+doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快`n默认先A后S`nAfter starting, Burst will be used automatically, Fater than the built-in auto.`nBy default, A is used before S")
 BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", QuickBurst)
 TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta[金Doro]")
 doroGui.Tips.SetTip(TextAutoAdvance, "半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关`nMap Advancement:Semi-automatic map advancement. Set the view to the maximum. Start near the monster in the map, sometimes you need to manually find monsters and mechanisms")
@@ -785,15 +783,14 @@ btnCopyLog.OnEvent("Click", CopyLog)
 doroGui.SetFont('s10')
 LogBox := RichEdit(doroGui, "xs+10 ys+30 w380 h340 -HScroll +0x80 ReadOnly")
 LogBox.WordWrap(true)
-LogBox.Value := "日志开始……`r`n" ;初始内容
 HideAllSettings()
 ShowSetting("Default")
 doroGui.OnEvent("Close", (*) => ExitApp())
 doroGui.Show("x" g_numeric_settings["doroGuiX"] " y" g_numeric_settings["doroGuiY"])
 ;endregion 创建GUI
-;region 彩蛋
+;tag 彩蛋
 CheckSequence(key_char) {
-    global key_history, konami_code, UserLevel
+    global key_history, konami_code, g_numeric_settings ; 移除 UserLevel，添加 g_numeric_settings
     ; 将当前按键对应的字符追加到历史记录中
     key_history .= key_char
     ; 为了防止历史记录字符串无限变长，我们只保留和目标代码一样长的末尾部分
@@ -805,7 +802,7 @@ CheckSequence(key_char) {
         AddLog("🎉 彩蛋触发！ 🎉！Konami Code 已输入！", "Blue")
         VariableUserGroup.Value := "炫彩Doro"
         key_history := ""    ; 重置历史记录，以便可以再次触发
-        UserLevel := 0
+        g_numeric_settings["UserLevel"] := 0 ; 直接修改 Map 中的值
     }
 }
 try {
@@ -818,7 +815,6 @@ try {
     ~a:: CheckSequence("A")
     #HotIf
 }
-;endregion 彩蛋
 ;region 前置任务
 ;tag 语言提示
 if !(LocaleName = "zh-CN") {
@@ -827,14 +823,14 @@ if !(LocaleName = "zh-CN") {
 }
 ;tag 检查用户组
 if g_settings["AutoCheckUserGroup"]
-    CheckUserGroup
+    CheckUserGroup(true)
 ;tag 广告
 ; 如果满足以下任一条件，则显示广告：
 ; 1. 未勾选关闭广告 (无论用户是谁)
 ; 2. 是普通用户 (无论是否勾选了关闭广告，因为普通用户无法关闭)
-if (!g_settings["CloseAdvertisement"] OR UserLevel < 1) {
+if (!g_settings["CloseAdvertisement"] OR g_numeric_settings["UserLevel"] < 1) { ; 直接使用 g_numeric_settings["UserLevel"]
     ; 额外判断，如果用户是普通用户且勾选了关闭广告，则弹窗提示
-    if (g_settings["CloseAdvertisement"] and UserLevel < 1) {
+    if (g_settings["CloseAdvertisement"] and g_numeric_settings["UserLevel"] < 1) { ; 直接使用 g_numeric_settings["UserLevel"]
         MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
     }
     Advertisement
@@ -850,7 +846,7 @@ if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
 ;tag 定时启动
 if g_settings["Timedstart"] {
-    if UserLevel >= 3 {
+    if g_numeric_settings["UserLevel"] >= 3 { ; 直接使用 g_numeric_settings["UserLevel"]
         if !g_numeric_settings["StartupTime"] {
             MsgBox("请设置定时启动时间")
             Pause
@@ -863,7 +859,7 @@ if g_settings["Timedstart"] {
     }
 }
 ;endregion 前置任务
-;region 点击运行
+;tag 点击运行
 ClickOnDoro(*) {
     ;清空文本
     LogBox.Value := ""
@@ -873,8 +869,8 @@ ClickOnDoro(*) {
     SetTitleMatchMode 3
     if g_settings["Login"] {
         if g_settings["AutoStartNikke"] {
-            if UserLevel >= 3 {
-                AutoStartNikke() ;登陆到主界面
+            if g_numeric_settings["UserLevel"] >= 3 {
+                AutoStartNikke()
             }
             else {
                 MsgBox("当前用户组不支持定时启动，请点击左上角赞助按钮升级会员组或取消勾选该功能，脚本即将暂停")
@@ -884,9 +880,9 @@ ClickOnDoro(*) {
     }
     Initialization
     if !g_settings["AutoCheckUserGroup"]
-        CheckUserGroup
+        CheckUserGroup(true)
     if g_settings["Login"]
-        Login() ;登陆到主界面
+        Login()
     if g_settings["AutoSwitchLanguage"]
         AutoSwitchLanguage()
     if g_settings["Shop"] {
@@ -904,23 +900,23 @@ ClickOnDoro(*) {
         BackToHall
     }
     if g_settings["SimulationRoom"] {
-        if g_settings["SimulationNormal"] ;模拟室超频
+        if g_settings["SimulationNormal"]
             SimulationNormal()
-        if g_settings["SimulationOverClock"] ;模拟室超频
+        if g_settings["SimulationOverClock"]
             SimulationOverClock()
         GoBack
     }
     if g_settings["Arena"] {
-        if g_settings["AwardArena"] ;竞技场收菜
+        if g_settings["AwardArena"]
             AwardArena()
         if g_settings["ArenaRookie"] or g_settings["ArenaSpecial"] or g_settings["ArenaChampion"] {
             EnterToArk()
             EnterToArena()
-            if g_settings["ArenaRookie"] ;新人竞技场
+            if g_settings["ArenaRookie"]
                 ArenaRookie()
-            if g_settings["ArenaSpecial"] ;特殊竞技场
+            if g_settings["ArenaSpecial"]
                 ArenaSpecial()
-            if g_settings["ArenaChampion"] ;冠军竞技场
+            if g_settings["ArenaChampion"]
                 ArenaChampion()
             GoBack
         }
@@ -933,14 +929,14 @@ ClickOnDoro(*) {
         GoBack
     }
     if g_settings["Interception"] {
-        if g_settings["InterceptionNormal"] ;普通拦截
+        if g_settings["InterceptionNormal"]
             InterceptionNormal()
-        if g_settings["InterceptionAnomaly"] ;异常拦截
+        if g_settings["InterceptionAnomaly"]
             InterceptionAnomaly()
     }
     BackToHall
     if g_settings["Award"] {
-        if g_settings["AwardOutpost"] ;使用键名检查 Map
+        if g_settings["AwardOutpost"]
             AwardOutpost()
         if g_settings["AwardAdvise"]
             AwardAdvise()
@@ -948,7 +944,7 @@ ClickOnDoro(*) {
             AwardFriendPoint()
         if g_settings["AwardMail"]
             AwardMail()
-        if g_settings["AwardRanking"] ;方舟排名奖励
+        if g_settings["AwardRanking"]
             AwardRanking()
         if g_settings["AwardDaily"]
             AwardDaily()
@@ -962,7 +958,7 @@ ClickOnDoro(*) {
             AwardSoloRaid()
     }
     if g_settings["Event"] {
-        if UserLevel < 2 {
+        if g_numeric_settings["UserLevel"] < 2 {
             MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
             Pause
         }
@@ -1001,7 +997,7 @@ ClickOnDoro(*) {
             }
             BackToHall
             if g_settings["AwardPass"] {
-                AwardPass() ; 大活动通行证
+                AwardPass()
             }
         }
         if g_settings["EventSpecial"] {
@@ -1009,30 +1005,30 @@ ClickOnDoro(*) {
         }
     }
     if g_settings["ClearRed"] {
-        if UserLevel < 3 {
+        if g_numeric_settings["UserLevel"] < 3 {
             MsgBox("当前用户组不支持清除红点，请点击赞助按钮升级会员组")
             Pause
         }
         if g_settings["ClearRedRecycling"] {
-            ClearRedRecycling() ; 自动升级循环室
+            ClearRedRecycling()
         }
         if g_settings["ClearRedSynchro"] {
-            ClearRedSynchro() ; 自动升级同步器
+            ClearRedSynchro()
         }
         if g_settings["ClearRedLimit"] {
-            ClearRedLimit() ; 自动突破妮姬 (限界突破/核心强化)
+            ClearRedLimit()
         }
         if g_settings["ClearRedCube"] {
-            ClearRedCube() ; 自动升级魔方
+            ClearRedCube()
         }
         if g_settings["ClearRedNotice"] {
-            ClearRedNotice()   ; 清除公告红点
+            ClearRedNotice()
         }
         if g_settings["ClearRedWallpaper"] {
-            ClearRedWallpaper()  ; 清除壁纸红点
+            ClearRedWallpaper()
         }
         if g_settings["ClearRedProfile"] {
-            ClearRedProfile() ; 清除个人页红点
+            ClearRedProfile()
         }
         BackToHall
     }
@@ -1046,28 +1042,34 @@ ClickOnDoro(*) {
         CheckEvent()
     }
     CalculateAndShowSpan()
-    if UserLevel < 1 or !g_settings["CloseAdvertisement"] {
-        Result := MsgBox("Doro完成任务！" outputText "`n可以支持一下Doro吗", , "YesNo")
+    finalMessageTitle := "DoroHelper任务完成！"
+    finalMessageText := "Doro完成任务！" . outputText
+    if g_numeric_settings["UserLevel"] < 1 or !g_settings["CloseAdvertisement"] {
+        finalMessageText .= "`n可以支持一下Doro吗"
+        Result := MsgBox(finalMessageText, finalMessageTitle, "YesNo IconI")
         if Result = "Yes"
             MsgSponsor
     }
-    if UserLevel > 0 and UserLevel < 10 and g_settings["CloseAdvertisement"] {
-        Result := MsgBox("Doro完成任务！" outputText "`n感谢你的支持～")
+    else if g_numeric_settings["UserLevel"] < 10 {
+        ; 普通会员
+        finalMessageText .= "`n感谢你的支持～"
+        MsgBox(finalMessageText, finalMessageTitle, "IconI")
     }
-    if UserLevel = 10 and g_settings["CloseAdvertisement"] {
-        Result := MsgBox("Doro完成任务！" outputText "`n感谢你的辛苦付出～")
+    else {
+        ; 管理员
+        finalMessageText .= "`n感谢你的辛苦付出～"
+        MsgBox(finalMessageText, finalMessageTitle, "IconI")
     }
     if g_settings["OpenBlablalink"]
         Run("https://www.blablalink.com/")
     if g_settings["DoroClosing"] {
         if InStr(currentVersion, "beta") {
-            MsgBox ("测试版本禁用自动关闭！")
+            MsgBox ("测试版本禁用自动关闭！", "DoroHelper提示", "IconW")
             Pause
         }
         ExitApp
     }
 }
-;endregion 点击运行
 ;region 启动辅助函数
 ;tag 脚本启动NIKKE
 AutoStartNikke() {
@@ -1081,9 +1083,9 @@ AutoStartNikke() {
         return
     }
     while g_numeric_settings["StartupPath"] != "" {
-        SetTitleMatchMode 2 ; 使用部分匹配模式
+        SetTitleMatchMode 2
         targetExe := "nikke_launcher.exe"
-        gameExe := "nikke.exe" ; 游戏主进程
+        gameExe := "nikke.exe"
         ; 尝试找到标题包含"NIKKE"的主窗口
         mainWindowID := WinExist("NIKKE ahk_exe " . targetExe)
         if mainWindowID {
@@ -1102,11 +1104,11 @@ AutoStartNikke() {
                 ; 检查游戏是否已经启动
                 if ProcessExist(gameExe) {
                     AddLog("检测到游戏进程 " gameExe " 已启动，停止点击")
-                    Sleep 10000 ; 等待游戏稳定
-                    break 2 ; 跳出两层循环
+                    Sleep 10000
+                    break 2
                 }
                 ; 执行点击启动按钮
-                AddLog("点击启动按钮...")
+                AddLog("点击启动按钮……")
                 UserClick(594, 1924, TrueRatio)
                 ; 等待一段时间再次点击（例如3-5秒）
                 Sleep 3000
@@ -1118,10 +1120,10 @@ AutoStartNikke() {
             break
         }
         else if WinExist("ahk_exe " . targetExe) {
-            AddLog("启动器已运行但未找到主窗口，等待主窗口出现...")
+            AddLog("启动器已运行但未找到主窗口，等待主窗口出现……")
             ; 等待主窗口出现
             startTime := A_TickCount
-            timeout := 30000 ; 等待30秒
+            timeout := 30000
             while (A_TickCount - startTime < timeout) {
                 if WinExist("NIKKE ahk_exe " . targetExe) {
                     AddLog("主窗口出现，重新检测")
@@ -1151,8 +1153,8 @@ Initialization() {
     LogBox.SetText()
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {
-        global winID := WinExist("ahk_exe " . targetExe) ;获取窗口ID
-        actualWinTitle := WinGetTitle(winID)      ;获取实际窗口标题
+        global winID := WinExist("ahk_exe " . targetExe)
+        actualWinTitle := WinGetTitle(winID)
         if WinGetCount("ahk_exe " . targetExe) > 1 {
             MsgBox("金Doro会员支持多开自动运行")
         }
@@ -1173,7 +1175,7 @@ Initialization() {
     nikkeID := winID
     WinGetClientPos &NikkeX, &NikkeY, &NikkeW, &NikkeH, nikkeID
     WinGetPos &NikkeXP, &NikkeYP, &NikkeWP, &NikkeHP, nikkeID
-    global TrueRatio := NikkeH / stdScreenH ;确定nikke尺寸之于额定尺寸（4K）的比例
+    global TrueRatio := NikkeH / stdScreenH
     GameRatio := Round(NikkeW / NikkeH, 3)
     AddLog("项目地址https://github.com/1204244136/DoroHelper")
     AddLog("当前的doro版本是" currentVersion)
@@ -1243,7 +1245,7 @@ StartDailyTimer() {
     target_time_string := g_numeric_settings["StartupTime"]
     ; 2. 创建一个表示今天目标时间的时间戳，例如 "20250806080000"
     today_target_time := A_YYYY . A_MM . A_DD . target_time_string
-    local next_run_time ; 声明为局部变量
+    next_run_time ; 声明为局部变量
     ; 3. 比较当前时间 A_Now 和今天目标时间
     if (A_Now > today_target_time) {
         ; 如果当前时间已过，则将目标设置为明天的同一时间
@@ -1262,9 +1264,9 @@ StartDailyTimer() {
     ; 5. 将秒转换为毫秒
     milliseconds := seconds_until_next_run * 1000
     ; 计算小时、分钟和秒
-    local hours_until := seconds_until_next_run // 3600
-    local minutes_until := Mod(seconds_until_next_run, 3600) // 60
-    local seconds_until := Mod(seconds_until_next_run, 60)
+    hours_until := seconds_until_next_run // 3600
+    minutes_until := Mod(seconds_until_next_run, 3600) // 60
+    seconds_until := Mod(seconds_until_next_run, 60)
     ; 6. 格式化日志输出，方便阅读和调试
     AddLog("定时器已设置。下一次执行时间："
         . SubStr(next_run_time, 1, 4) . "-"
@@ -1293,15 +1295,15 @@ CheckForUpdate(isManualCheck) {
             latestObj.Delete(k)
         }
     }
-    local checkSucceeded := false
-    local channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
+    checkSucceeded := false
+    channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
     ; 新增变量以追踪A_ScriptFullPath和lib库是否需要重启
-    local ahkScriptNeedsReload := false
-    local libResourcesNeedsReload := false
+    ahkScriptNeedsReload := false
+    libResourcesNeedsReload := false
     ; ==================== AHK 文件更新检查 (脚本本体更新) =====================
     if (scriptExtension = "ahk") {
         AddLog("开始检查 DoroHelper.ahk 本体更新……")
-        local ahkResult := CheckForUpdate_AHK_File(isManualCheck)
+        ahkResult := CheckForUpdate_AHK_File(isManualCheck)
         if (ahkResult.Get("success", false)) {
             AddLog("DoroHelper.ahk 本体更新检查成功: " . ahkResult.Get("message", "本地版本已是最新或已修改。"), "Green")
             if (ahkResult.Get("needsReload", false)) {
@@ -1311,7 +1313,7 @@ CheckForUpdate(isManualCheck) {
             AddLog("DoroHelper.ahk 本体更新检查失败或被跳过: " . ahkResult.Get("message", "未知错误"), "Red")
         }
         AddLog("开始检查函数库文件更新 (资源更新)……")
-        local resourceUpdateResult := CheckForResourceUpdate(isManualCheck)
+        resourceUpdateResult := CheckForResourceUpdate(isManualCheck)
         if (resourceUpdateResult.Get("success", false)) {
             AddLog("函数库文件更新检查完成。")
             if (resourceUpdateResult.Get("updatedCount", 0) > 0) {
@@ -1335,36 +1337,36 @@ CheckForUpdate(isManualCheck) {
             if (isManualCheck) {
                 MsgBox("检测到 DoroHelper.ahk 本体或函数库文件已更新，脚本将重启以加载新版本。", "更新完成，即将重启", "IconI")
             }
-            Reload() ; 执行一次重启
+            Reload()
         } else if (isManualCheck) {
             MsgBox("当前已是最新版本，无需更新。", "AHK更新提示", "IconI")
         }
-        return ; AHK 版本的更新逻辑（本体+资源）是独立的，处理完后直接返回
+        return
     }
     ; ==================== EXE 版本更新检查（Mirror酱 或 Github） ====================
     ; 确定更新来源是 Mirror酱 还是 Github (只针对 EXE 版本)
     latestObj.Set("version", "")
     latestObj.Set("change_notes", "无更新说明")
     latestObj.Set("download_url", "")
-    latestObj.Set("foundNewVersion", false) ; 确保此标志也已被重置
+    latestObj.Set("foundNewVersion", false)
     if (g_numeric_settings.Get("DownloadSource") == "Mirror酱") {
         latestObj.Set("source", "mirror")
         latestObj.Set("display_name", "Mirror酱")
-        checkSucceeded := CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObj) ; 将 latestObj 作为引用传递
+        checkSucceeded := CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObj)
     } else {
         latestObj.Set("source", "github")
         latestObj.Set("display_name", "Github")
-        checkSucceeded := CheckForUpdate_Github(isManualCheck, channelInfo, &latestObj) ; 将 latestObj 作为引用传递
+        checkSucceeded := CheckForUpdate_Github(isManualCheck, channelInfo, &latestObj)
     }
     ; ==================== 处理最终检查结果 (适用于 EXE 版本) ====================
     if (checkSucceeded && latestObj.Get("foundNewVersion", false)) {
         ; 直接使用 latestObj，因为它已通过引用被填充
         AddLog(latestObj.Get("display_name") . " 更新检查：发现新版本 " . latestObj.Get("version") . "，准备提示用户", "Green")
-        local downloadUrl := latestObj.Get("download_url", "")
+        downloadUrl := latestObj.Get("download_url", "")
         if (downloadUrl == "" && isManualCheck) {
             MsgBox("已检测到新版本 " . latestObj.Get("version") . "，但未能获取到下载链接。请检查 " . latestObj.Get("display_name") . " 库或手动下载", "更新提示", "IconWarning")
         }
-        DisplayUpdateNotification() ; 使用全局 latestObj
+        DisplayUpdateNotification()
     } else if (checkSucceeded && latestObj.Get("version", "") != "") {
         AddLog(latestObj.Get("display_name") . " 更新检查：当前已是最新版本 " . currentVersion, "Green")
         if (isManualCheck) {
@@ -1372,8 +1374,8 @@ CheckForUpdate(isManualCheck) {
         }
     } else {
         ; 如果 checkSucceeded 为 false，表示发生错误，或者即使成功但版本为空（现在不太可能）
-        local displayMessage := latestObj.Get("message", "")
-        if (displayMessage == "") { ; 如果没有设置具体的错误消息，则使用备用消息
+        displayMessage := latestObj.Get("message", "")
+        if (displayMessage == "") {
             displayMessage := (latestObj.Get("display_name") ? latestObj.Get("display_name") : "更新") . " 更新检查：未能获取到有效的版本信息或检查被中止"
         }
         AddLog(displayMessage, "Red")
@@ -1385,7 +1387,7 @@ CheckForUpdate(isManualCheck) {
 ;tag AHK文件更新检查子函数
 CheckForUpdate_AHK_File(isManualCheck) {
     global currentVersion, usr, repo, scriptExtension
-    local result := Map("success", false, "message", "未知错误", "needsReload", false) ; 添加 needsReload 标志
+    result := Map("success", false, "message", "未知错误", "needsReload", false)
     if (scriptExtension = "exe") {
         result.Set("message", "exe版本不可直接更新至ahk版本，请查看群公告下载完整的ahk版本文件")
         if (isManualCheck) {
@@ -1393,19 +1395,19 @@ CheckForUpdate_AHK_File(isManualCheck) {
         }
         return result
     }
-    local path := "DoroHelper.ahk"
-    local remoteSha := ""
-    local remoteLastModified := ""
-    local localScriptPath := A_ScriptDir "\DoroHelper.ahk"
-    local localSha := ""
-    local localLastModified := ""
-    local localLastModifiedUTC := "" ; 新增变量，用于存储本地文件的UTC时间
-    local shouldDownload := false ; 新增旗帜，用于控制是否执行下载
+    path := "DoroHelper.ahk"
+    remoteSha := ""
+    remoteLastModified := ""
+    localScriptPath := A_ScriptDir "\DoroHelper.ahk"
+    localSha := ""
+    localLastModified := ""
+    localLastModifiedUTC := ""
+    shouldDownload := false
     ; --- 1. 获取远程文件信息 ---
     try {
         AddLog("正在从 GitHub API 获取最新版本文件哈希值及修改时间……")
-        local whr := ComObject("WinHttp.WinHttpRequest.5.1")
-        local apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/" . path
+        whr := ComObject("WinHttp.WinHttpRequest.5.1")
+        apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/" . path
         whr.Open("GET", apiUrl, false)
         whr.SetRequestHeader("User-Agent", "DoroHelper-AHK-Script")
         whr.Send()
@@ -1413,9 +1415,9 @@ CheckForUpdate_AHK_File(isManualCheck) {
             throw Error("API请求失败", -1, "状态码: " . whr.Status)
         }
         try {
-            local lastModifiedHeader := whr.GetResponseHeader("Last-Modified")
+            lastModifiedHeader := whr.GetResponseHeader("Last-Modified")
             if (lastModifiedHeader != "") {
-                local parsedTime := ParseDateTimeString(lastModifiedHeader)
+                parsedTime := ParseDateTimeString(lastModifiedHeader)
                 if (parsedTime != "") {
                     remoteLastModified := parsedTime
                 } else {
@@ -1427,18 +1429,18 @@ CheckForUpdate_AHK_File(isManualCheck) {
         } catch as e_header {
             AddLog("警告: 获取 Last-Modified HTTP头失败: " . e_header.Message)
         }
-        local responseText := whr.ResponseText
-        local shaMatch := ""
+        responseText := whr.ResponseText
+        shaMatch := ""
         if (RegExMatch(responseText, '"sha"\s*:\s*"(.*?)"', &shaMatch)) {
             remoteSha := shaMatch[1]
         } else {
             throw Error("JSON解析失败", -1, "未能从API响应中找到'sha'字段。")
         }
-        if (remoteLastModified = "") { ; Fallback for remoteLastModified if not found in header
-            local commitDateMatch := ""
+        if (remoteLastModified = "") {
+            commitDateMatch := ""
             if (RegExMatch(responseText, '"commit":\s*\{.*?\"author\":\s*\{.*?\"date\":\s*\"(.*?)\"', &commitDateMatch)) {
-                local commitDateStr := commitDateMatch[1]
-                local parsedCommitTime := ParseDateTimeString(commitDateStr)
+                commitDateStr := commitDateMatch[1]
+                parsedCommitTime := ParseDateTimeString(commitDateStr)
                 if (parsedCommitTime != "") {
                     remoteLastModified := parsedCommitTime
                 } else {
@@ -1461,12 +1463,12 @@ CheckForUpdate_AHK_File(isManualCheck) {
     ; --- 2. 获取本地文件信息并转换为UTC ---
     try {
         if !FileExist(localScriptPath) {
-            localSha := "" ; 表示文件缺失
-            localLastModified := "0" ; 视为非常旧
-            localLastModifiedUTC := "0" ; UTC版本也视为非常旧
+            localSha := ""
+            localLastModified := "0"
+            localLastModifiedUTC := "0"
         } else {
             localSha := HashGitSHA1(localScriptPath)
-            localLastModified := FileGetTime(localScriptPath, "M") ; 获取本地修改时间 (当地时区)
+            localLastModified := FileGetTime(localScriptPath, "M")
             ; 将本地时间转换为UTC时间进行比较
             ; A_TimeZone 是本地时间与UTC时间的分钟差。
             ; UTC = 本地时间 + A_TimeZone。例如，如果本地时区是 GMT+8，A_TimeZone 是 -480 分钟。
@@ -1494,19 +1496,19 @@ CheckForUpdate_AHK_File(isManualCheck) {
         return result
     }
     ; 情况 2: 哈希不一致 -> 可能有更新，需要进一步判断
-    else { ; remoteSha != localSha
+    else {
         ; 确保 remoteLastModified 和 localLastModifiedUTC 都已有效获取
         if (remoteLastModified != "" && localLastModifiedUTC != "0") {
             if (remoteLastModified > localLastModifiedUTC) {
                 ; 远程文件的时间戳更新，这是正常的更新情况
                 AddLog("检测到远程 AHK 文件版本 (" . remoteSha . ") 较新，本地版本 (" . localSha . ") 较旧。", "BLUE")
                 shouldDownload := true
-            } else { ; remoteLastModified <= localLastModifiedUTC
+            } else {
                 ; 哈希不一致，但本地文件的时间戳更近或相同 (在UTC下)。
                 ; 这通常意味着本地文件被修改过，或者远程的时间戳有问题。
                 AddLog("警告: 检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC: " . localLastModifiedUTC . ") 晚于或等于远程 (UTC: " . remoteLastModified . ")。", "Red")
                 if (isManualCheck) {
-                    local userChoice := MsgBox("检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC) 晚于或等于线上版本。这可能意味着您本地做过更改，或者线上有新更新但时间戳较老。`n`n远程哈希 (截短): " . SubStr(remoteSha, 1, 7)
+                    userChoice := MsgBox("检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC) 晚于或等于线上版本。这可能意味着您本地做过更改，或者线上有新更新但时间戳较老`n`n远程哈希 (截短): " . SubStr(remoteSha, 1, 7)
                     . "`n本地哈希 (截短): " . SubStr(localSha, 1, 7)
                     . "`n远程修改时间 (UTC): " . remoteLastModified
                     . "`n本地修改时间 (UTC): " . localLastModifiedUTC
@@ -1516,7 +1518,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
                         shouldDownload := true
                     } else {
                         AddLog("用户取消强制更新 AHK 脚本。", "Blue")
-                        result.Set("success", true) ; 用户选择不更新，视为流程成功完成
+                        result.Set("success", true)
                         result.Set("message", "用户选择不强制更新 AHK 脚本。")
                         return result
                     }
@@ -1536,10 +1538,10 @@ CheckForUpdate_AHK_File(isManualCheck) {
     ; --- 4. 执行下载和替换（如果 `shouldDownload` 旗帜为真）---
     if (shouldDownload) {
         AddLog("准备下载 AHK 脚本新版本。", "Green")
-        local url := "https://raw.githubusercontent.com/" . usr . "/" . repo . "/main/" . path
-        local currentScriptDir := A_ScriptDir
-        local NewFileName := "DoroHelper_new_" . A_Now . ".ahk" ; 使用包含时间戳的唯一名称
-        local localNewFilePath := currentScriptDir . "\" . NewFileName
+        url := "https://raw.githubusercontent.com/" . usr . "/" . repo . "/main/" . path
+        currentScriptDir := A_ScriptDir
+        NewFileName := "DoroHelper_new_" . A_Now . ".ahk"
+        localNewFilePath := currentScriptDir . "\" . NewFileName
         try {
             AddLog("正在下载最新 AHK 版本，请稍等……")
             Download(url, localNewFilePath)
@@ -1550,12 +1552,12 @@ CheckForUpdate_AHK_File(isManualCheck) {
             return result
         }
         ; 不再此处立即重启，而是设置 needsReload 标志
-        local OldFileName := "DoroHelper_old_" . A_Now . ".ahk"
+        OldFileName := "DoroHelper_old_" . A_Now . ".ahk"
         try {
-            FileMove A_ScriptFullPath, A_ScriptDir . "\" . OldFileName, 1 ; 覆盖旧备份文件
+            FileMove A_ScriptFullPath, A_ScriptDir . "\" . OldFileName, 1
             FileMove localNewFilePath, A_ScriptDir . "\DoroHelper.ahk"
             AddLog("AHK 脚本更新成功。旧版本已备份为 '" . OldFileName . "'。", "Green")
-            result.Set("needsReload", true) ; 标记需要重启
+            result.Set("needsReload", true)
         } catch as e {
             MsgBox "更新后的文件重命名失败: " . e.Message . "`n请手动将下载的 '" . NewFileName . "' 文件重命名为 'DoroHelper.ahk' 并替换现有文件。", "错误", "IconX"
             AddLog("更新后的文件重命名失败: " . e.Message, "Red")
@@ -1573,11 +1575,11 @@ CheckForUpdate_AHK_File(isManualCheck) {
 ;tag AHK资源文件更新检查子函数
 CheckForResourceUpdate(isManualCheck) {
     global usr, repo
-    local result := Map("success", false, "message", "未知错误", "updatedCount", 0, "needsReload", false) ; 添加 needsReload 标志
-    local libDir := A_ScriptDir "\lib"
-    local updatedFiles := []
-    local failedFiles := []
-    local updatedCount := 0
+    result := Map("success", false, "message", "未知错误", "updatedCount", 0, "needsReload", false)
+    libDir := A_ScriptDir "\lib"
+    updatedFiles := []
+    failedFiles := []
+    updatedCount := 0
     AddLog("开始检查函数库文件更新 (lib 目录)……")
     if !DirExist(libDir) {
         AddLog("本地 lib 目录不存在，尝试创建: " . libDir)
@@ -1589,16 +1591,16 @@ CheckForResourceUpdate(isManualCheck) {
             return result
         }
     }
-    local apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/lib"
-    local whr := ComObject("WinHttp.WinHttpRequest.5.1")
+    apiUrl := "https://api.github.com/repos/" . usr . "/" . repo . "/contents/lib"
+    whr := ComObject("WinHttp.WinHttpRequest.5.1")
     try {
         whr.Open("GET", apiUrl, false)
         whr.SetRequestHeader("User-Agent", "DoroHelper-AHK-Script-ResourceChecker")
         whr.Send()
         if (whr.Status != 200) {
-            local errorMsg := "GitHub API 请求失败，状态码: " . whr.Status . ", URL: " . apiUrl
+            errorMsg := "GitHub API 请求失败，状态码: " . whr.Status . ", URL: " . apiUrl
             try {
-                local errorJson := Json.Load(whr.ResponseText)
+                errorJson := Json.Load(whr.ResponseText)
                 if (errorJson is Object && errorJson.Get("message", "") != "") {
                     errorMsg .= "。API 消息: " . errorJson.Get("message", "")
                 }
@@ -1607,10 +1609,10 @@ CheckForResourceUpdate(isManualCheck) {
             }
             throw Error("GitHub API 请求失败", -1, errorMsg)
         }
-        local responseText := whr.ResponseText
-        local remoteFilesData := Json.Load(&responseText)
+        responseText := whr.ResponseText
+        remoteFilesData := Json.Load(&responseText)
         if (!(remoteFilesData is Array)) {
-            AddLog("错误: GitHub API 返回的 lib 目录内容不是预期的数组类型或为空。原始响应 (前500字符): " . SubStr(responseText, 1, 500) . "...", "Red")
+            AddLog("错误: GitHub API 返回的 lib 目录内容不是预期的数组类型或为空。原始响应 (前500字符): " . SubStr(responseText, 1, 500) . "……", "Red")
             result.Set("message", "GitHub API 返回数据格式错误，可能远程 lib 目录不存在或API限速。")
             return result
         }
@@ -1621,22 +1623,22 @@ CheckForResourceUpdate(isManualCheck) {
             return result
         }
         for _, fileData in remoteFilesData {
-            local remoteFileName := (fileData is Object) ? fileData.Get("name", "") : ""
-            local remoteFileType := (fileData is Object) ? fileData.Get("type", "") : ""
-            local remoteSha := (fileData is Object) ? fileData.Get("sha", "") : ""
-            local remoteDownloadUrl := (fileData is Object) ? fileData.Get("download_url", "") : ""
+            remoteFileName := (fileData is Object) ? fileData.Get("name", "") : ""
+            remoteFileType := (fileData is Object) ? fileData.Get("type", "") : ""
+            remoteSha := (fileData is Object) ? fileData.Get("sha", "") : ""
+            remoteDownloadUrl := (fileData is Object) ? fileData.Get("download_url", "") : ""
             if (remoteFileName == "" || remoteFileType == "" || remoteSha == "" || remoteDownloadUrl == "") {
                 AddLog("警告: 远程文件数据缺少关键属性或属性值无效，跳过此项: " . (remoteFileName != "" ? remoteFileName : "未知文件"), "MAROON")
                 continue
             }
-            local currentFileExtension := ""
+            currentFileExtension := ""
             SplitPath remoteFileName, , , &currentFileExtension
             currentFileExtension := StrLower(currentFileExtension)
             if (remoteFileType == "file" && currentFileExtension == "ahk") {
-                local localFilePath := libDir . "\" . remoteFileName
-                local localSha := ""
-                local localLastModified := "0"
-                local localLastModifiedUTC := "0" ; 为资源文件新增UTC时间变量
+                localFilePath := libDir . "\" . remoteFileName
+                localSha := ""
+                localLastModified := "0"
+                localLastModifiedUTC := "0"
                 if FileExist(localFilePath) {
                     try {
                         localSha := HashGitSHA1(localFilePath)
@@ -1650,19 +1652,19 @@ CheckForResourceUpdate(isManualCheck) {
                         continue
                     }
                 }
-                local remoteFileDetails := Map()
-                local commitObj := (fileData is Object) ? fileData.Get("commit", "") : ""
+                remoteFileDetails := Map()
+                commitObj := (fileData is Object) ? fileData.Get("commit", "") : ""
                 if (commitObj is Object) {
-                    local authorObj := commitObj.Get("author", "")
+                    authorObj := commitObj.Get("author", "")
                     if (authorObj is Object) {
-                        local commitDateStr := authorObj.Get("date", "")
+                        commitDateStr := authorObj.Get("date", "")
                         if (commitDateStr != "") {
                             remoteFileDetails.Set("remoteLastModified", ParseDateTimeString(commitDateStr))
                         }
                     }
                 }
-                local remoteLastModifiedFromDetails := remoteFileDetails.Get("remoteLastModified", "")
-                local needsUpdate := false
+                remoteLastModifiedFromDetails := remoteFileDetails.Get("remoteLastModified", "")
+                needsUpdate := false
                 if (localSha != remoteSha) {
                     AddLog("文件 " . remoteFileName . ": 本地哈希 (" . (localSha != "" ? SubStr(localSha, 1, 7) : "无") . ") 与远程哈希 (" . SubStr(remoteSha, 1, 7) . ") 不一致。", "BLUE")
                     needsUpdate := true
@@ -1681,7 +1683,7 @@ CheckForResourceUpdate(isManualCheck) {
                         AddLog("成功更新文件: " . remoteFileName, "Green")
                         updatedFiles.Push(remoteFileName)
                         updatedCount++
-                        result.Set("needsReload", true) ; 任何文件更新都标记需要重启
+                        result.Set("needsReload", true)
                     } catch as e {
                         AddLog("下载或替换文件 " . remoteFileName . " 失败: " . e.Message, "Red")
                         failedFiles.Push(remoteFileName)
@@ -1712,32 +1714,32 @@ CheckForResourceUpdate(isManualCheck) {
 ;tag 日期时间解析辅助函数
 ParseDateTimeString(dateTimeStr) {
     dateTimeStr := Trim(dateTimeStr)
-    local isoMatch := ""
+    isoMatch := ""
     if RegExMatch(dateTimeStr, "(\d{4})-(\d{2})-(\d{2})[T ](\d{2}):(\d{2}):(\d{2})", &isoMatch) {
-        local year := isoMatch[1], month := isoMatch[2], day := isoMatch[3]
-        local hour := isoMatch[4], minute := isoMatch[5], second := isoMatch[6]
+        year := isoMatch[1], month := isoMatch[2], day := isoMatch[3]
+        hour := isoMatch[4], minute := isoMatch[5], second := isoMatch[6]
         return year . month . day . hour . minute . second
     }
-    local rfcMatch := ""
+    rfcMatch := ""
     if RegExMatch(dateTimeStr, "\d{1,2}\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{4}\s+\d{2}:\d{2}:\d{2}", &rfcMatch) {
-        local datePart := rfcMatch[0]
-        local parts := StrSplit(datePart, " ")
-        local day := parts[1]
-        local monthStr := parts[2]
-        local year := parts[3]
-        local timeStr := parts[4]
-        local monthMap := Map(
+        datePart := rfcMatch[0]
+        parts := StrSplit(datePart, " ")
+        day := parts[1]
+        monthStr := parts[2]
+        year := parts[3]
+        timeStr := parts[4]
+        monthMap := Map(
             "Jan", "01", "Feb", "02", "Mar", "03", "Apr", "04", "May", "05", "Jun", "06",
             "Jul", "07", "Aug", "08", "Sep", "09", "Oct", "10", "Nov", "11", "Dec", "12"
         )
-        local monthNum := monthMap.Get(monthStr, "")
+        monthNum := monthMap.Get(monthStr, "")
         if (monthNum == "") {
             return ""
         }
         if (StrLen(day) == 1) {
             day := "0" . day
         }
-        local finalDateTime := year . monthNum . day . StrReplace(timeStr, ":", "")
+        finalDateTime := year . monthNum . day . StrReplace(timeStr, ":", "")
         return finalDateTime
     }
     return ""
@@ -1745,9 +1747,9 @@ ParseDateTimeString(dateTimeStr) {
 ;tag Mirror酱更新检查子函数
 CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
     global currentVersion, g_numeric_settings
-    local sourceName := "Mirror酱"
-    latestObjMapOut.Set("message", "") ; 清除在主 CheckForUpdate 中设置的任何先前消息
-    latestObjMapOut.Set("foundNewVersion", false) ; 重置此标志
+    sourceName := "Mirror酱"
+    latestObjMapOut.Set("message", "")
+    latestObjMapOut.Set("foundNewVersion", false)
     AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
     if Trim(g_numeric_settings.Get("MirrorCDK")) == "" {
         latestObjMapOut.Set("message", "Mirror酱 CDK 为空，无法检查更新")
@@ -1755,16 +1757,16 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
             MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
         }
         AddLog(latestObjMapOut.Get("message"), "Red")
-        return false ; 表示失败
+        return false
     }
-    local apiUrl := "https://mirrorchyan.com/api/resources/DoroHelper/latest?"
+    apiUrl := "https://mirrorchyan.com/api/resources/DoroHelper/latest?"
     apiUrl .= "cdk=" . g_numeric_settings.Get("MirrorCDK")
     if (g_numeric_settings.Get("UpdateChannels") == "测试版") {
         apiUrl .= "&channel=beta"
     }
-    local HttpRequest := ""
-    local ResponseStatus := 0
-    local ResponseBody := ""
+    HttpRequest := ""
+    ResponseStatus := 0
+    ResponseBody := ""
     try {
         HttpRequest := ComObject("WinHttp.WinHttpRequest.5.1")
         HttpRequest.Open("GET", apiUrl, false)
@@ -1782,15 +1784,15 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
         AddLog(latestObjMapOut.Get("message"), "Red")
         return false
     }
-    local ResponseTextForJson := ""
+    ResponseTextForJson := ""
     if (ResponseStatus == 200) {
         ; 检查 ResponseBody 是否为 SafeArray 类型 (二进制数据)
         if (IsObject(ResponseBody) && (ComObjType(ResponseBody) & 0x2000)) {
             try {
-                local dataPtr := 0, lBound := 0, uBound := 0
+                dataPtr := 0, lBound := 0, uBound := 0
                 DllCall("OleAut32\SafeArrayGetLBound", "Ptr", ComObjValue(ResponseBody), "UInt", 1, "Int64*", &lBound)
                 DllCall("OleAut32\SafeArrayGetUBound", "Ptr", ComObjValue(ResponseBody), "UInt", 1, "Int64*", &uBound)
-                local actualSize := uBound - lBound + 1
+                actualSize := uBound - lBound + 1
                 if (actualSize > 0) {
                     DllCall("OleAut32\SafeArrayAccessData", "Ptr", ComObjValue(ResponseBody), "Ptr*", &dataPtr)
                     ResponseTextForJson := StrGet(dataPtr, actualSize, "UTF-8")
@@ -1808,13 +1810,13 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
         else if (IsObject(ResponseBody)) {
             AddLog(sourceName . " 警告: ResponseBody 是对象但不是 SafeArray (类型: " . ComObjType(ResponseBody, "Name") . ")，尝试 ADODB.Stream")
             try {
-                local Stream := ComObject("ADODB.Stream")
-                Stream.Type := 1 ; 设置为二进制模式
+                Stream := ComObject("ADODB.Stream")
+                Stream.Type := 1
                 Stream.Open()
                 Stream.Write(ResponseBody)
-                Stream.Position := 0 ; 重置流位置
-                Stream.Type := 2 ; 设置为文本模式
-                Stream.Charset := "utf-8" ; 指定字符编码
+                Stream.Position := 0
+                Stream.Type := 2
+                Stream.Charset := "utf-8"
                 ResponseTextForJson := Stream.ReadText()
                 Stream.Close()
             } catch as e_adodb {
@@ -1829,17 +1831,17 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
             ResponseTextForJson := HttpRequest.ResponseText
         }
         try {
-            local JsonData := Json.Load(&ResponseTextForJson)
+            JsonData := Json.Load(&ResponseTextForJson)
             if (!IsObject(JsonData)) {
                 latestObjMapOut.Set("message", sourceName . " API 响应格式错误")
                 if (isManualCheck) MsgBox(latestObjMapOut.Get("message"), sourceName . "检查更新错误", "IconX")
                     AddLog(latestObjMapOut.Get("message") . ". ResponseText (前200字符): " . SubStr(ResponseTextForJson, 1, 200), "Red")
                 return false
             }
-            local jsonDataCode := JsonData.Get("code", -1)
-            local potentialData := JsonData.Get("data", unset)
+            jsonDataCode := JsonData.Get("code", -1)
+            potentialData := JsonData.Get("data", unset)
             if (jsonDataCode != 0) {
-                local errorMsg := sourceName . " API 返回错误。 Code: " . jsonDataCode . "."
+                errorMsg := sourceName . " API 返回错误。 Code: " . jsonDataCode . "."
                 if (JsonData.Has("msg") && Trim(JsonData.Get("msg")) != "") {
                     errorMsg .= " 消息: " . JsonData.Get("msg")
                 } else {
@@ -1853,7 +1855,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
                 return false
             }
             if (!IsSet(potentialData) || !IsObject(potentialData)) {
-                local errorMsg := sourceName . " API 响应成功 (code 0)，但 'data' 字段缺失或非对象类型"
+                errorMsg := sourceName . " API 响应成功 (code 0)，但 'data' 字段缺失或非对象类型"
                 if (JsonData.Has("msg") && Trim(JsonData.Get("msg")) != "") {
                     errorMsg .= " API 消息: " . JsonData.Get("msg")
                 }
@@ -1864,7 +1866,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
                 AddLog(errorMsg . " 取回的 'data' 类型: " . Type(potentialData), "Red")
                 return false
             }
-            local mirrorData := potentialData
+            mirrorData := potentialData
             latestObjMapOut.Set("version", mirrorData.Get("version_name", ""))
             latestObjMapOut.Set("change_notes", mirrorData.Get("release_note", "无更新说明"))
             latestObjMapOut.Set("download_url", mirrorData.Get("url", ""))
@@ -1885,7 +1887,7 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
                 AddLog(sourceName . " 版本比较：当前已是最新或更新", "Green")
             }
         } catch as e {
-            local errorDetails := "错误类型: " . Type(e) . ", 消息: " . e.Message
+            errorDetails := "错误类型: " . Type(e) . ", 消息: " . e.Message
             if e.HasProp("What") errorDetails .= "`n触发对象/操作: " . e.What
                 if e.HasProp("File") errorDetails .= "`n文件: " . e.File
                     if e.HasProp("Line") errorDetails .= "`n行号: " . e.Line
@@ -1896,8 +1898,8 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
             return false
         }
     } else {
-        local errorResponseText := HttpRequest.ResponseText
-        local responseTextPreview := SubStr(errorResponseText, 1, 300)
+        errorResponseText := HttpRequest.ResponseText
+        responseTextPreview := SubStr(errorResponseText, 1, 300)
         latestObjMapOut.Set("message", sourceName . " API 请求失败！`n状态码: " . ResponseStatus . "`n响应预览:`n" . responseTextPreview)
         if (isManualCheck) {
             MsgBox(latestObjMapOut.Get("message"), sourceName . " API 错误", "IconX")
@@ -1910,12 +1912,12 @@ CheckForUpdate_Mirror(isManualCheck, channelInfo, &latestObjMapOut) {
 ;tag Github更新检查子函数
 CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
     global currentVersion, usr, repo, g_numeric_settings
-    local sourceName := "Github"
+    sourceName := "Github"
     latestObjMapOut.Set("message", "")
     latestObjMapOut.Set("foundNewVersion", false)
     AddLog(sourceName . " 更新检查：开始 (" . channelInfo . " 渠道)……")
     try {
-        local allReleaseAssets := Github.historicReleases(usr, repo)
+        allReleaseAssets := Github.historicReleases(usr, repo)
         if !(allReleaseAssets is Array) || !allReleaseAssets.Length {
             latestObjMapOut.Set("message", "无法获取 Github 版本列表或库返回空数据（非Array或空），请检查网络或仓库信息。")
             if (isManualCheck) {
@@ -1924,7 +1926,7 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
             AddLog(latestObjMapOut.Get("message"), "Red")
             return false
         }
-        local targetAssetEntry := ""
+        targetAssetEntry := ""
         if (g_numeric_settings.Get("UpdateChannels") == "测试版") {
             AddLog(sourceName . " 更新检查：测试版优先，已选定最新 Release Assets")
             targetAssetEntry := allReleaseAssets[1]
@@ -1940,7 +1942,7 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
                 if !IsObject(assetEntry) || !(assetEntry.HasProp("version")) {
                     continue
                 }
-                local current_release_version := assetEntry.version
+                current_release_version := assetEntry.version
                 if (assetEntry.HasProp("name") && InStr(assetEntry.name, "DoroHelper", false) && InStr(assetEntry.name, ".exe", false) && !(InStr(current_release_version, "beta", false) || InStr(current_release_version, "alpha", false) || InStr(current_release_version, "rc", false))) {
                     targetAssetEntry := assetEntry
                     AddLog(sourceName . " 更新检查：找到正式版下载文件 " . assetEntry.name . "，版本 " . current_release_version)
@@ -1998,16 +2000,16 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
             AddLog(sourceName . " 版本比较：当前已是最新或更新", "Green")
         }
     } catch as githubError {
-        local errorMessage := ""
+        errorMessage := ""
         if (IsObject(githubError)) {
-            local msg := githubError.Message
-            local extra := githubError.Extra
+            msg := githubError.Message
+            extra := githubError.Extra
             if (msg != "") {
                 errorMessage .= msg
             }
             else {
                 try {
-                    local tempStr := ""
+                    tempStr := ""
                     if (githubError.HasMethod("ToString")) {
                         tempStr := githubError.ToString()
                     }
@@ -2042,14 +2044,14 @@ CheckForUpdate_Github(isManualCheck, channelInfo, &latestObjMapOut) {
 ;tag 显示更新通知GUI
 DisplayUpdateNotification() {
     global currentVersion, latestObj, g_numeric_settings
-    local channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
-    local MyGui := Gui("+Resize", "更新提示 (" . latestObj.Get("display_name") . ")")
+    channelInfo := (g_numeric_settings.Get("UpdateChannels") == "测试版") ? "测试版" : "正式版"
+    MyGui := Gui("+Resize", "更新提示 (" . latestObj.Get("display_name") . ")")
     MyGui.SetFont("s10", "Microsoft YaHei UI")
     MyGui.Add("Text", "w300 xm ym", "发现 DoroHelper 新版本 (" . channelInfo . " - " . latestObj.Get("display_name") . "):")
     MyGui.Add("Text", "xp+10 yp+25 w300", "最新版本: " . latestObj.Get("version"))
     MyGui.Add("Text", "xp yp+20 w300", "当前版本: " . currentVersion)
     MyGui.Add("Text", "xp yp+25 w300", "更新内容:")
-    local notes_for_edit := latestObj.Get("change_notes")
+    notes_for_edit := latestObj.Get("change_notes")
     notes_for_edit := StrReplace(notes_for_edit, "`r`n", "`n")
     notes_for_edit := StrReplace(notes_for_edit, "`r", "`n")
     notes_for_edit := StrReplace(notes_for_edit, "`n", "`r`n")
@@ -2066,16 +2068,16 @@ DownloadUpdate(*) {
         AddLog("下载错误：latestObj 信息不完整。 Source: " . latestObj.Get("source", "N/A") . ", Version: " . latestObj.Get("version", "N/A"), "Red")
         return
     }
-    local downloadTempName := "DoroDownload.exe"
-    local finalName := "DoroHelper-" . latestObj.Get("version") . ".exe"
-    local downloadUrlToUse := latestObj.Get("download_url")
+    downloadTempName := "DoroDownload.exe"
+    finalName := "DoroHelper-" . latestObj.Get("version") . ".exe"
+    downloadUrlToUse := latestObj.Get("download_url")
     if downloadUrlToUse == "" {
         MsgBox("错误：找不到有效的 " . latestObj.Get("display_name") . " 下载链接", "下载错误", "IconX")
         AddLog(latestObj.Get("display_name") . " 下载错误：下载链接为空", "Red")
         return
     }
     AddLog(latestObj.Get("display_name") . " 下载：开始下载 " . downloadUrlToUse . " 到 " . A_ScriptDir . "\" . finalName)
-    local downloadStatusCode := 0
+    downloadStatusCode := 0
     try {
         if latestObj.Get("source") == "github" {
             ErrorLevel := 0
@@ -2132,8 +2134,8 @@ CompareVersionsSemVer(v1, v2) {
     v1CoreNums := StrSplit(v1Core, ".")
     v2CoreNums := StrSplit(v2Core, ".")
     loop 3 {
-        local seg1Str := A_Index <= v1CoreNums.Length ? Trim(v1CoreNums[A_Index]) : "0"
-        local seg2Str := A_Index <= v2CoreNums.Length ? Trim(v2CoreNums[A_Index]) : "0"
+        seg1Str := A_Index <= v1CoreNums.Length ? Trim(v1CoreNums[A_Index]) : "0"
+        seg2Str := A_Index <= v2CoreNums.Length ? Trim(v2CoreNums[A_Index]) : "0"
         if !_IsNumericString(seg1Str) {
             seg1Str := "0"
         }
@@ -2242,15 +2244,15 @@ DownloadUrlContent(url) {
             return ""
         }
         ; 尝试以 UTF-8 解码响应体
-        local responseBody := whr.ResponseBody
+        responseBody := whr.ResponseBody
         if (IsObject(responseBody) && ComObjType(responseBody) & 0x2000) { ; SafeArray (VT_ARRAY)
-            local dataPtr := 0, lBound := 0, uBound := 0
+            dataPtr := 0, lBound := 0, uBound := 0
             DllCall("OleAut32\SafeArrayGetLBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &lBound)
             DllCall("OleAut32\SafeArrayGetUBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &uBound)
-            local actualSize := uBound - lBound + 1
+            actualSize := uBound - lBound + 1
             if (actualSize > 0) {
                 DllCall("OleAut32\SafeArrayAccessData", "Ptr", ComObjValue(responseBody), "Ptr*", &dataPtr)
-                local content := StrGet(dataPtr, actualSize, "UTF-8")
+                content := StrGet(dataPtr, actualSize, "UTF-8")
                 DllCall("OleAut32\SafeArrayUnaccessData", "Ptr", ComObjValue(responseBody))
                 return content
             } else {
@@ -2258,14 +2260,14 @@ DownloadUrlContent(url) {
                 return ""
             }
         } else if IsObject(responseBody) { ; Other COM object, try ADODB.Stream
-            local Stream := ComObject("ADODB.Stream")
+            Stream := ComObject("ADODB.Stream")
             Stream.Type := 1 ; adTypeBinary
             Stream.Open()
             Stream.Write(responseBody)
             Stream.Position := 0
             Stream.Type := 2 ; adTypeText
             Stream.Charset := "utf-8"
-            local content := Stream.ReadText()
+            content := Stream.ReadText()
             Stream.Close()
             return content
         } else { ; Not a COM object, fallback to ResponseText (may have encoding issues)
@@ -2330,7 +2332,7 @@ HashSHA256(input) {
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash
 }
-;tag 计算Git SHA-1哈希值 (已修正行尾序列问题)
+;tag 计算GitSHA-1哈希值 (已修正行尾序列问题)
 HashGitSHA1(filePath) {
     if !FileExist(filePath) {
         throw Error("文件不存在", -1, "指定的Git SHA-1哈希文件路径无效: " . filePath)
@@ -2434,139 +2436,204 @@ GetDiskSerialsForValidation() {
     }
     return diskSerials
 }
+; 返回: 剩余价值 (数字)
+CalculateUserMembershipDollars(membershipType, expiryDate, unitPrice) {
+    global g_MembershipLevels
+    remainingValue := 0
+    if (!g_MembershipLevels.Has(membershipType)) {
+        return 0 ; 无效会员类型
+    }
+    levelInfo := g_MembershipLevels.Get(membershipType)
+    monthlyCost := levelInfo.monthlyCost
+    ; 将 YYYYMMDD 格式的过期日期转换为 AHK 内部时间戳，补足时分秒，与 A_Now 进行比较
+    ; 假定过期日期的结束是当天的最后一秒
+    currentExpiryTimestamp := expiryDate . "235959" ; YYYYMMDDHHmmss
+    ; 如果当前时间已超过或等于过期时间，则没有剩余价值
+    if (A_Now >= currentExpiryTimestamp) {
+        return 0
+    }
+    secondsRemaining := DateDiff(currentExpiryTimestamp, A_Now, "Seconds")
+    daysRemaining := Floor(secondsRemaining / (24 * 3600)) ; 精确到天
+    ; 这里按月计算价值 (向下取整)，不足一月不算
+    remainingMonthsFloor := Floor(daysRemaining / 30) ; 假设一个月30天，简化计算
+    ; 或者可以尝试更精确的月数计算，但 "向下取整" 对于不足一个月的部分会丢弃
+    ; remainingMonthsRaw := DateDiff(currentExpiryTimestamp, A_Now, "Months")
+    ; remainingMonthsFloor := Floor(remainingMonthsRaw)
+    if (remainingMonthsFloor > 0) {
+        remainingValue := monthlyCost * unitPrice * remainingMonthsFloor
+    }
+    return remainingValue
+}
 ;tag 确定用户组
-CheckUserGroup() {
-    global VariableUserGroup, UserGroup, UserLevel ; 声明为全局，以便修改GUI和UserLevel
-    ; 静态变量用于缓存结果和标记是否已运行
-    static cachedUserGroupInfo := unset
-    static hasRun := false
-    ; 如果函数已经执行过并且有缓存数据，则直接返回缓存结果
-    if (hasRun && IsObject(cachedUserGroupInfo)) {
-        ; 每次返回前，更新GUI显示和全局UserGroup/UserLevel
-        VariableUserGroup.Value := cachedUserGroupInfo.MembershipType
-        UserGroup := cachedUserGroupInfo.MembershipType
-        UserLevel := cachedUserGroupInfo.UserLevel
-        AddLog("从缓存获取用户组信息: " . cachedUserGroupInfo.MembershipType, "Blue")
+CheckUserGroup(forceUpdate := false) {
+    global VariableUserGroup, g_numeric_settings, g_MembershipLevels
+    static cachedUserGroupInfo := false
+    ; 首次运行时，cachedUserGroupInfo 是 false，需要初始化
+    if (!IsObject(cachedUserGroupInfo)) {
+        ; 从 g_numeric_settings 加载缓存的用户组信息
+        cachedUserGroupInfo := Map(
+            "MembershipType", g_numeric_settings.Get("UserGroup", "普通用户"),
+            "UserLevel", g_numeric_settings.Get("UserLevel", 0),
+            "ExpirationTime", "19991231"
+        )
+        ; 如果从 INI 加载的用户组是管理员，则设置一个永不过期的日期
+        if (cachedUserGroupInfo["MembershipType"] == "管理员") {
+            cachedUserGroupInfo["ExpirationTime"] := "99991231"
+        }
+    }
+    UserGroupInfo := Map(
+        "MembershipType", "普通用户",
+        "UserLevel", 0,
+        "ExpirationTime", "19991231"
+    )
+    ; 如果不是强制更新且缓存的用户等级不低于当前 g_numeric_settings["UserLevel"]，则直接返回缓存结果。
+    ; 还需要检查缓存是否过期。
+    cachedExpiryTimestamp := cachedUserGroupInfo["ExpirationTime"] . "235959"
+    if (!forceUpdate && cachedUserGroupInfo["UserLevel"] >= g_numeric_settings["UserLevel"] && A_Now < cachedExpiryTimestamp) {
+        if (IsSet(VariableUserGroup) && IsObject(VariableUserGroup)) {
+            VariableUserGroup.Value := cachedUserGroupInfo["MembershipType"]
+        }
+        ; 更新 g_numeric_settings (这是唯一的“全局”存储)
+        g_numeric_settings["UserGroup"] := cachedUserGroupInfo["MembershipType"]
+        g_numeric_settings["UserLevel"] := cachedUserGroupInfo["UserLevel"]
         return cachedUserGroupInfo
     }
-    AddLog("首次运行，正在检查用户组信息……", "Blue")
-    ; 1. 初始化默认用户组
-    try {
-        VariableUserGroup.Value := "普通用户"
-        UserGroup := "普通用户"
-        UserLevel := 0 ; 默认用户级别
-        expiryDate := "19991231"
-    }
+    AddLog(!forceUpdate ? "首次运行或强制更新，正在检查用户组信息……" : "强制检查用户组信息……", "Blue")
+    initialUserGroup := "普通用户"
+    initialUserLevel := 0
+    initialExpiryDate := "19991231"
     ; 2. 获取硬件信息
     try {
         mainBoardSerial := GetMainBoardSerial()
         cpuSerial := GetCpuSerial()
         diskSerials := GetDiskSerialsForValidation()
         if (diskSerials.Length = 0) {
-            AddLog("警告: 未检测到任何硬盘序列号。", "MAROON")
+            AddLog("警告: 未检测到任何硬盘序列号，可能影响用户组验证。", "MAROON")
         }
     } catch as e {
-        AddLog("获取硬件信息失败: " e.Message, "Red")
-        cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
-        hasRun := true
-        return cachedUserGroupInfo
+        AddLog("获取硬件信息失败: " . e.Message, "Red")
+        cachedUserGroupInfo := UserGroupInfo
+        g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
+        g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
+        return UserGroupInfo
     }
     ; 3. 从网络获取用户组数据
     jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
     jsonContent := DownloadUrlContent(jsonUrl)
     if (jsonContent = "") {
-        AddLog("无法获取用户组信息，请检查网络后尝试重启程序", "Red")
-        cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
-        hasRun := true
-        return cachedUserGroupInfo
+        AddLog("无法获取用户组信息，请检查网络后尝试重启程序。", "Red")
+        cachedUserGroupInfo := UserGroupInfo
+        g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
+        g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
+        return UserGroupInfo
     }
     ; 4. 解析JSON数据
     try {
         groupData := Json.Load(&jsonContent)
         if !IsObject(groupData) {
-            AddLog("解析 JSON 文件失败或格式不正确", "Red")
-            cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
-            hasRun := true
-            return cachedUserGroupInfo
+            AddLog("解析 JSON 文件失败或格式不正确。", "Red")
+            cachedUserGroupInfo := UserGroupInfo
+            g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
+            g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
+            return UserGroupInfo
         }
     } catch as e {
-        AddLog("解析 JSON 文件时发生错误: " e.Message, "Red")
-        cachedUserGroupInfo := { MembershipType: "普通用户", ExpirationTime: "19991231", UserLevel: 0 }
-        hasRun := true
-        return cachedUserGroupInfo
+        AddLog("解析 JSON 文件时发生错误: " . e.Message, "Red")
+        cachedUserGroupInfo := UserGroupInfo
+        g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
+        g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
+        return UserGroupInfo
     }
     ; 5. 校验用户组成员资格
     CurrentDate := A_YYYY A_MM A_DD
     isMember := false
-    local tempUserGroup := "普通用户"
-    local tempExpiryDate := "19991231"
-    local tempUserLevel := 0
-    ; 为每一块硬盘生成一个哈希值
+    tempUserGroup := initialUserGroup
+    tempExpiryDate := initialExpiryDate
+    tempUserLevel := initialUserLevel
+    highestLevelFound := 0
     for diskSerial in diskSerials {
-        local Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+        Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
         for _, memberInfo in groupData {
             if IsObject(memberInfo) && memberInfo.Has("hash") && (memberInfo["hash"] == Hashed) {
                 if memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
-                    tempExpiryDate := memberInfo["expiry_date"]
-                    if (tempExpiryDate >= CurrentDate) {
-                        tempUserGroup := memberInfo["tier"]
-                        if (tempUserGroup == "管理员") {
-                            tempUserLevel := 10
-                        } else if (tempUserGroup == "金Doro会员") {
-                            tempUserLevel := 3
-                        } else if (tempUserGroup == "银Doro会员") {
-                            tempUserLevel := 2
-                        } else if (tempUserGroup == "铜Doro会员") {
-                            tempUserLevel := 1
-                        } else {
-                            tempUserLevel := 0
-                        }
+                    memberExpiryDate := memberInfo["expiry_date"]
+                    memberTier := memberInfo["tier"]
+                    ; 查找对应的用户等级
+                    level := 0
+                    if (memberTier == "管理员") {
+                        level := 10
+                    } else if (memberTier == "金Doro会员") {
+                        level := 3
+                    } else if (memberTier == "银Doro会员") {
+                        level := 2
+                    } else if (memberTier == "铜Doro会员") {
+                        level := 1
+                    }
+                    ; 如果是管理员，直接设为最高等级且不过期
+                    if (level == 10) {
+                        tempUserGroup := "管理员"
+                        tempUserLevel := 10
+                        tempExpiryDate := "99991231"
                         isMember := true
-                        break ; 找到有效的匹配项，退出内部循环 (groupData loop)
-                    } else {
-                        AddLog("会员已过期 (到期日: " tempExpiryDate ")。已降级为普通用户", "MAROON")
+                        break
+                    }
+                    ; 只有当成员等级高于当前找到的最高等级时才更新
+                    if (level > highestLevelFound) {
+                        if (memberExpiryDate >= CurrentDate) {
+                            tempUserGroup := memberTier
+                            tempUserLevel := level
+                            tempExpiryDate := memberExpiryDate
+                            isMember := true
+                            highestLevelFound := level
+                        } else {
+                            AddLog("设备哈希匹配，但会员 " . memberTier . " 已过期 (到期日: " . memberExpiryDate . ").", "MAROON")
+                            ; 不更新 temp 变量，因为它可能已经被更高一级的有效会员覆盖
+                        }
                     }
                 } else {
-                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)", "MAROON")
+                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)，哈希: " . Hashed, "MAROON")
                 }
             }
-            if (isMember) {
-                break ; 找到有效的匹配项，退出内部循环 (groupData loop)
-            }
         }
-        if (isMember) {
-            break ; 找到有效的匹配项，退出外部循环 (diskSerials loop)
+        if (isMember && tempUserLevel >= 10) {
+            break
         }
     }
-    ; 更新全局变量和GUI显示
-    UserGroup := tempUserGroup
-    VariableUserGroup.Value := UserGroup
-    g_numeric_settings["UserGroup"] := UserGroup
-    UserLevel := tempUserLevel
-    if (isMember) {
-        if (UserGroup == "管理员") {
-            ; 管理员可以有特殊图标，根据你的实际情况设置
-            ; TraySetIcon("icon\AdminDoro.ico")
-        } else if (UserGroup == "金Doro会员") {
+    ; 更新 UserGroupInfo Map 的内容
+    UserGroupInfo["MembershipType"] := tempUserGroup
+    UserGroupInfo["UserLevel"] := tempUserLevel
+    UserGroupInfo["ExpirationTime"] := tempExpiryDate
+    ; 更新 g_numeric_settings (这是唯一的“全局”存储) 和 GUI显示
+    g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
+    if (IsSet(VariableUserGroup) && IsObject(VariableUserGroup)) {
+        VariableUserGroup.Value := g_numeric_settings["UserGroup"]
+    }
+    g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
+    ; 根据 g_numeric_settings["UserLevel"] 重新计算 IsPremium 和 IsAdmin
+    UserGroupInfo["IsPremium"] := g_numeric_settings["UserLevel"] > 0
+    UserGroupInfo["IsAdmin"] := g_numeric_settings["UserLevel"] >= 10
+    if (UserGroupInfo["IsPremium"] || UserGroupInfo["IsAdmin"]) {
+        if (UserGroupInfo["IsAdmin"]) {
+            ; TrySetIcon "icon\AdminDoro.ico"
+            AddLog("当前用户组：管理员", "Green")
+        } else if (g_numeric_settings["UserLevel"] == 3) {
             try TraySetIcon("icon\GoldDoro.ico")
-        } else if (UserGroup == "银Doro会员") {
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (金Doro会员 - 有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ✨", "Green")
+        } else if (g_numeric_settings["UserLevel"] == 2) {
             try TraySetIcon("icon\SilverDoro.ico")
-        } else if (UserGroup == "铜Doro会员") {
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (银Doro会员 - 有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") 🌟", "Green")
+        } else if (g_numeric_settings["UserLevel"] == 1) {
             try TraySetIcon("icon\CopperDoro.ico")
-        } else {
-            try TraySetIcon("doro.ico") ; 普通用户或过期会员
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (铜Doro会员 - 有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") 💫", "Green")
         }
-        AddLog("当前用户组：" UserGroup . " (有效期至" tempExpiryDate . ")", "Green")
         AddLog("欢迎加入会员qq群759311938", "Green")
     } else {
-        AddLog("当前设备非会员，用户组：普通用户（或已过期）")
+        AddLog("当前用户组：普通用户 (免费用户)")
         AddLog("欢迎加入反馈qq群759311938")
-        try TraySetIcon("doro.ico") ; 恢复默认图标
+        try TraySetIcon("doro.ico")
     }
-    ; 缓存结果并标记已运行
-    cachedUserGroupInfo := { MembershipType: UserGroup, ExpirationTime: tempExpiryDate, UserLevel: UserLevel }
-    hasRun := true
-    return cachedUserGroupInfo
+    cachedUserGroupInfo := UserGroupInfo
+    return UserGroupInfo
 }
 ;endregion 身份辅助函数
 ;region GUI辅助函数
@@ -2655,9 +2722,12 @@ GetUserLocaleName() {
     LocaleName := StrGet(LocaleBuffer, "UTF-16")
     return LocaleName
 }
+;tag 赞助界面
 MsgSponsor(*) {
-    global guiTier, guiDuration, guiSponsor, guiPriceText, Unitprice, Currency
-    guiSponsor := Gui("+Resize", "赞助")
+    global guiTier, guiDuration, guiSponsor, guiPriceText, guiCurrentMembership, guiCurrentExpiry
+    global g_PriceMap, g_DefaultRegionPriceData, g_MembershipLevels, LocaleName
+    guiSponsor := Gui("+Resize +Owner" doroGui.Hwnd, "赞助") ; 添加 +Owner 指定所属窗口
+    guiSponsor.Opt("+DPIScale") ; 确保赞助窗口也支持 DPI 缩放
     guiSponsor.Tips := GuiCtrlTips(guiSponsor)
     guiSponsor.Tips.SetBkColor(0xFFFFFF)
     guiSponsor.Tips.SetTxColor(0x000000)
@@ -2668,7 +2738,21 @@ MsgSponsor(*) {
     guiSponsor.Tips.SetTip(Text1, "Currently, I am the primary contributor to DoroHelper, handling most of the maintenance and new feature development. `nThis demands a significant amount of my time and energy. `nIf you find it valuable and are in a position to help, your support would be greatly appreciated.")
     Text2 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "赞助信息与当前设备绑定。需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
     guiSponsor.Tips.SetTip(Text2, "Sponsorship information is tied to the current device. `nPlease note that sponsorship does not constitute a commercial transaction. `nIn the event of unforeseen circumstances, I reserve the right to discontinue maintenance at any time. `nThe final interpretation rights belong to me.")
-    LVZH := guiSponsor.Add("ListView", "w400 h200", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
+    ; ========================= 显示当前会员信息 =========================
+    ; 显式地给变量赋默认初始值，消除静态分析器警告
+    currentType := "普通用户", currentExpDate := "19991231"
+    userGroupInfo := CheckUserGroup() ; 获取当前用户会员信息 (使用缓存，更快)
+    ; 确保变量被赋值为从 CheckUserGroup 获取的实际值
+    currentType := userGroupInfo["MembershipType"]
+    currentExpDate := userGroupInfo["ExpirationTime"]
+    currentExpDateFormatted := "N/A"
+    ; 如果当前会员组不是普通用户且未过期
+    if (userGroupInfo["UserLevel"] > 0 && A_Now < currentExpDate . "235959") {
+        currentExpDateFormatted := SubStr(currentExpDate, 1, 4) . "-" . SubStr(currentExpDate, 5, 2) . "-" . SubStr(currentExpDate, 7, 2)
+    } else if (userGroupInfo["UserLevel"] > 0 && A_Now >= currentExpDate . "235959") {
+        currentType := "普通用户(已过期)" ; 确保显示过期状态，这会更新到 guiCurrentMembership
+    }
+    LVZH := guiSponsor.Add("ListView", "xm w400 h200", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
     LVZH.Add(, "每月价格", "免费", "1欧润吉", "3欧润吉", "5欧润吉")
     LVZH.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
     LVZH.Add(, "移除广告提示", "", "✅️", "✅️", "✅️")
@@ -2691,135 +2775,273 @@ MsgSponsor(*) {
         picUrl2 := "https://s1.imagehub.cc/images/2025/09/12/f69df12697d7bb2a98ef61108e46e787.jpg"
         tempFile1 := A_Temp . "\weixin.jpg"
         tempFile2 := A_Temp . "\alipay.jpg"
-        Download picUrl1, tempFile1
-        Download picUrl2, tempFile2
+        ; 仅在文件不存在时下载，避免重复操作
+        if (!FileExist(tempFile1)) {
+            try {
+                Download picUrl1, tempFile1
+            } catch as e {
+                AddLog("下载微信支付二维码失败: " . e.Message, "Red")
+            }
+        }
+        if (!FileExist(tempFile2)) {
+            try {
+                Download picUrl2, tempFile2
+            } catch as e {
+                AddLog("下载支付宝支付二维码失败: " . e.Message, "Red")
+            }
+        }
     }
     try {
-        guiSponsor.Add("Picture", "x10 w200 h200", tempFile1)
-        guiSponsor.Add("Picture", "yp w200 h200", tempFile2)
+        pic_ctr_1 := guiSponsor.Add("Picture", "x10 w200 h200", tempFile1)
+        pic_ctr_2 := guiSponsor.Add("Picture", "yp w200 h200", tempFile2)
+        guiSponsor.Tips.SetTip(pic_ctr_1, "微信/WeChat") ; 为图片添加 tooltip
+        guiSponsor.Tips.SetTip(pic_ctr_2, "支付宝/Alipay") ; 为图片添加 tooltip
     }
     catch {
         guiSponsor.Add("Text", "w400 h200 Center", "无法加载赞助图片，请检查本地文件或网络连接。")
     }
-    guiSponsor.SetFont('s12', 'Microsoft YaHei UI')
-    ; guiSponsor.Add("Text", "xm w400 Wrap cred", "为庆祝1.6版本，在9月4日游戏版本更新前包年免两月`n已包年的用户请凭付款截图联系续期三个月")
-    guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
     btn1 := guiSponsor.Add("Button", "xm+120", "我无法使用以上支付方式")
     guiSponsor.Tips.SetTip(btn1, "I am unable to use the above payment methods")
     btn1.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
-    text4 := guiSponsor.Add("Text", "xp+15 y+10 +0x0100", "===赞助信息生成器===")
+    guiCurrentMembership := guiSponsor.Add("Text", "xm+130 y+10  +0x0100", "您当前的会员组：" . currentType)
+    guiCurrentExpiry := guiSponsor.Add("Text", "xm+130 y+5  +0x0100", "有效期至：" . currentExpDateFormatted)
+    text4 := guiSponsor.Add("Text", "xm+130 y+10 +0x0100", "===赞助信息生成器===")
     guiSponsor.Tips.SetTip(text4, "Sponsorship Information Generator")
-    ; 添加 Choose1 确保默认选中
-    guiTier := guiSponsor.Add("DropDownList", "Choose1 x130 w100", ["铜Doro会员", "银Doro会员", "金Doro会员", "管理员"])
+    ; 从 g_MembershipLevels 获取可选择的会员类型，排除 "普通用户" 和 "管理员"
+    availableTiers := []
+    for tierName, levelInfo in g_MembershipLevels {
+        if (tierName != "普通用户" && tierName != "管理员") {
+            availableTiers.Push(tierName)
+        }
+    }
+    ; ; 手动添加管理员选项，设为特殊情况（测试用）
+    ; availableTiers.Push("管理员") ; <-- 注释掉这行以移除管理员选项
+    ; 添加 Choose1 确保默认选中第一个
+    guiTier := guiSponsor.Add("DropDownList", "Choose1 x125 w100", availableTiers)
     guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
     guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月", "36个月"])
     guiSponsor.Tips.SetTip(guiDuration, "月: Month")
-    ; 货币价格映射表
-    PriceMap := Map(
-        "zh-CN", { Unitprice: 6, Currency: "CNY" },
-        "zh-TW", { Unitprice: 30, Currency: "TWD" }, ; 示例：台湾
-        "en-US", { Unitprice: 1, Currency: "USD" }, ; 示例：美国
-    )
-    DefaultPriceData := { Unitprice: 1, Currency: "USD" }
-    ; 检查 Map 中是否存在该地区名称
-    if (PriceMap.Has(LocaleName)) {
-        ; 如果存在，获取对应的价格数据对象
-        PriceData := PriceMap.Get(LocaleName)
-    }
-    else {
-        ; 如果不存在，使用默认价格数据
-        PriceData := DefaultPriceData
-    }
-    ; 从 PriceData 对象中提取最终的 Unitprice 和 Currency
-    Unitprice := PriceData.Unitprice
-    Currency := PriceData.Currency
-    text5 := guiSponsor.Add("Text", "xm+125 r1 +0x0100", "您当前所在的地区为：" . LocaleName)
-    guiSponsor.Tips.SetTip(text5, "Your current region is: ")
-    text6 := guiSponsor.Add("Text", "xm+130 r1 +0x0100", "当地欧润吉单价为：" . Unitprice . " " . Currency)
-    guiSponsor.Tips.SetTip(text6, "The local price per ORANGE is: ")
-    text7 := guiSponsor.Add("Text", "xm+160 r1 +0x0100", "需要赞助：")
-    guiSponsor.Tips.SetTip(text7, "Amount to sponsor: ")
-    guiPriceText := guiSponsor.Add("Text", "x+5 w60 +0x0100", "")
-    btn2 := guiSponsor.Add("Button", "xm+145 h30 +0x0100", "  我已赞助，生成信息")
+    ; 确定当地货币单位和符号
+    PriceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)
+    unitPrice := PriceData.Unitprice
+    currency := PriceData.Currency
+    text5 := guiSponsor.Add("Text", "xm+90 r1 +0x0100", "您所在的地区 " . LocaleName . " 欧润吉单价为：" . unitPrice . " " . currency)
+    guiSponsor.Tips.SetTip(text5, "Your current region is: " . LocaleName . ". The unit price of ORANGE is: " . unitPrice . " " . currency)
+    ; 修改价格显示 Text 控件，使其能显示更多信息
+    guiPriceText := guiSponsor.Add("Text", "xm+70 w300 h60 Center +0x0100", "计算中……")
+    guiSponsor.Tips.SetTip(guiPriceText, "您将支付的金额以及计算详情。")
+    btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
     guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
-    btn2.OnEvent("Click", CalculateSponsorInfo)
     ; 确保回调函数正确绑定
-    guiTier.OnEvent("Change", UpdateSponsorPrice)
-    guiDuration.OnEvent("Change", UpdateSponsorPrice)
+    guiTier.OnEvent("Change", (Ctrl, Info) => UpdateSponsorPrice(userGroupInfo))
+    guiDuration.OnEvent("Change", (Ctrl, Info) => UpdateSponsorPrice(userGroupInfo))
+    btn2.OnEvent("Click", CalculateSponsorInfo) ; 放在所有OnEvent之后绑定
     ; 初始化价格显示
-    UpdateSponsorPrice()
-    guiSponsor.Show()
+    UpdateSponsorPrice(userGroupInfo)
+    guiSponsor.Show("Center")
 }
-UpdateSponsorPrice(*) {
-    ; 获取当前选中的值
+;tag 根据选择更新价格显示
+UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo 参数
+    global guiTier, guiDuration, guiPriceText, guiCurrentMembership, guiCurrentExpiry
+    global g_MembershipLevels, g_PriceMap, LocaleName
+    global g_numeric_settings ; 需要访问 UserLevel
+    ; 如果赞助 GUI 控件还未完全初始化，则提前退出
+    if (!IsObject(guiPriceText) || !guiPriceText.Hwnd || !IsObject(guiTier) || !guiTier.Hwnd || !IsObject(guiDuration) || !guiDuration.Hwnd) {
+        return
+    }
+    ; 获取当前选中的赞助选项
     tierSelected := guiTier.Text
     durationSelected := guiDuration.Text
-    ; 检查是否为空值
-    if (tierSelected = "" or durationSelected = "") {
-        guiPriceText.Text := "赞助金额：请选择选项"
+    if (tierSelected = "" || durationSelected = "") {
+        guiPriceText.Text := "请选择会员类型和时长"
         return
     }
-    ; 定义价格映射
-    priceMap := Map(
-        "铜Doro会员", 1,
-        "银Doro会员", 3,
-        "金Doro会员", 5,
-        "管理员", -1
-    )
-    ; 从 durationSelected 中提取月份数
-    monthsText := StrReplace(durationSelected, "个月")
-    if (monthsText = "" or !IsNumber(monthsText)) {
-        guiPriceText.Text := "赞助金额：无效时长"
+    ; 获取当前区域的单价和货币名称
+    priceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)
+    unitPrice := priceData.Unitprice
+    currencyName := priceData.Currency
+    ; 检查是否传入了 userGroupInfo_param，如果传入则使用，否则调用 CheckUserGroup()
+    if (IsObject(userGroupInfo_param)) {
+        userGroupInfo := userGroupInfo_param
+    } else {
+        ; 理论上 MsgSponsor 应该已经传入了，这里是备用，避免重复在线检查
+        userGroupInfo := CheckUserGroup()
+    }
+    currentType := userGroupInfo["MembershipType"]
+    currentExpDate := userGroupInfo["ExpirationTime"] ; YYYYMMDD格式
+    currentLevel := userGroupInfo["UserLevel"]
+    ; 更新赞助界面顶部的当前会员信息 (为了实时性)
+    currentExpDateFormatted := "N/A"
+    if (currentLevel > 0 && A_Now < currentExpDate . "235959") {
+        currentExpDateFormatted := SubStr(currentExpDate, 1, 4) . "-" . SubStr(currentExpDate, 5, 2) . "-" . SubStr(currentExpDate, 7, 2)
+        guiCurrentMembership.Text := "您当前的会员组：" . currentType
+    } else if (currentLevel > 0 && A_Now >= currentExpDate . "235959") {
+        ; 用户是会员但已过期
+        currentType := "普通用户(已过期)" ; 确保后续逻辑中处理为普通用户状态
+        currentLevel := 0 ; 过期则视为普通用户
+        guiCurrentMembership.Text := "您当前的会员组：" . "普通用户 (已过期)"
+    } else {
+        ; 普通用户
+        guiCurrentMembership.Text := "您当前的会员组：" . currentType
+    }
+    guiCurrentExpiry.Text := "有效期至：" . currentExpDateFormatted
+    ; 1. 计算目标会员的总月数和每月成本
+    targetMonthsText := StrReplace(durationSelected, "个月")
+    if (!IsNumber(targetMonthsText)) {
+        guiPriceText.Text := "错误：无效的赞助时长。"
         return
     }
-    months := Integer(monthsText)
-    ; 计算总价格
-    pricePerMonth := priceMap[tierSelected]
-    totalPrice := pricePerMonth * Unitprice * months . " " . Currency
-    ; 更新文本控件的内容
-    guiPriceText.Text := totalPrice
+    targetMonths := Integer(targetMonthsText)
+    targetMonthlyCost := 0
+    targetUserLevel := 0
+    targetLevelInfo := g_MembershipLevels.Get(tierSelected)
+    if (!IsObject(targetLevelInfo)) {
+        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
+        if (tierSelected == "管理员") {
+            targetMonthlyCost := 999 ; 管理员的特殊价格
+            targetUserLevel := 10
+            ; 创建一个临时的 Map 对象，以便后续逻辑可以安全访问
+            targetLevelInfo := Map("monthlyCost", targetMonthlyCost, "userLevel", targetUserLevel)
+        } else {
+            guiPriceText.Text := "错误：无效的会员类型数据。"
+            AddLog("错误: 在 UpdateSponsorPrice 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
+            return
+        }
+    }
+    ; 确保 targetLevelInfo 此时是一个有效的 Map 对象
+    targetMonthlyCost := targetLevelInfo.monthlyCost
+    targetUserLevel := targetLevelInfo.userLevel
+    fullValueForTarget := targetMonthlyCost * unitPrice * targetMonths ; 没有任何减免的理论全价
+    ; 2. 计算当前会员的剩余价值 (如果存在且未过期)
+    remainingValue := 0
+    if (currentLevel > 0 && currentExpDate . "235959" > A_Now) {
+        remainingValue := CalculateUserMembershipDollars(currentType, currentExpDate, unitPrice)
+    }
+    displayMessage := ""
+    if (currentLevel == targetUserLevel) {
+        ; 购买类型与当前相同 (续费或普通用户新购同类型)
+        formattedPrice := Format("{:0.2f}", fullValueForTarget) . " " . currencyName
+        if (currentLevel > 0) {
+            displayMessage := "您当前是 " . currentType . "`n"
+                . "选择续费 " . tierSelected . " " . targetMonths . "个月`n"
+                . "总计需支付：" . formattedPrice
+        } else {
+            displayMessage := "您当前是普通用户`n"
+                . "选择开通 " . tierSelected . " " . targetMonths . "个月`n"
+                . "总计需支付：" . formattedPrice
+        }
+    } else if (currentLevel < targetUserLevel) {
+        ; 升级场景
+        upgradePrice := fullValueForTarget - remainingValue
+        if (upgradePrice > 0) {
+            ; 需要补差价
+            formattedUpgradePrice := Format("{:0.2f}", upgradePrice) . " " . currencyName
+            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
+            displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
+                . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
+                . "扣除当前剩余价值后，您需支付：" . formattedUpgradePrice
+        } else {
+            ; 虽然是升级，但由于剩余价值较高，无需补差价甚至为负数
+            ; 按照你说的逻辑，这里会显示目标会员的全额价格，并给出提示
+            formattedFullPrice := Format("{:0.2f}", fullValueForTarget) . " " . currencyName
+            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
+            displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
+                . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
+                . "您的剩余价值已足以覆盖升级，但系统暂不支持完全抵扣，`n"
+                . "建议支付全额作为新开通费用：" . formattedFullPrice
+        }
+    } else {
+        ; 降级场景 (用户选择的会员类型低于当前类型)
+        displayMessage := "无法降级：您当前是 " . currentType . "，`n请选择与当前会员组一致或更高级别的会员组。"
+    }
+    guiPriceText.Text := displayMessage
 }
+;tag 计算并生成赞助信息
 CalculateSponsorInfo(thisGuiButton, info) {
-    ; 步骤1：获取设备唯一标识
+    global guiTier, guiDuration, guiSponsor ; guiPriceText now read-only for final display
+    global g_MembershipLevels, g_PriceMap, LocaleName
     mainBoardSerial := GetMainBoardSerial()
     cpuSerial := GetCpuSerial()
     diskSerial := GetDiskSerial()
     Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
-    ; 步骤2：获取会员信息
     tierSelected := guiTier.Text
     durationSelected := guiDuration.Text
-    ; 步骤3：计算过期日期
-    Month := StrReplace(durationSelected, "个月")
-    UserGroupInfo := CheckUserGroup() ; 获取用户的会员信息
-    ; 检查用户是否已是会员且未过期
-    ; 注意：这里需要将过期时间补全至完整格式进行比较
-    if (UserGroupInfo.MembershipType != "免费用户" && UserGroupInfo.ExpirationTime . "000000" > A_Now) {
-        ; 如果是续费，检查续费类型是否与原有类型一致
-        if (UserGroupInfo.MembershipType != tierSelected) {
-            MsgBox("您已经是" . UserGroupInfo.MembershipType . "。如果想续费，请选择和现有会员类型一致的选项。")
-            return ; 终止函数
-        }
-        ; 从原有过期日期开始计算
-        expiryDate := DateAdd(UserGroupInfo.ExpirationTime . "000000", 30 * Month, "days")
-        UserStatus := "老用户续费" ; 新增：定义用户状态
-    } else {
-        ; 如果是新用户或已过期，则从今天开始计算
-        expiryDate := DateAdd(A_Now, 30 * Month, "days")
-        UserStatus := "新用户开通" ; 新增：定义用户状态
+    if (tierSelected == "管理员") {
+        MsgBox("管理员等级不能通过此方式赞助。", "赞助无效") ; 恢复无图标
+        return
     }
-    ; 步骤4：生成 JSON 字符串
+    targetMonthsText := StrReplace(durationSelected, "个月")
+    if (!IsNumber(targetMonthsText)) {
+        MsgBox("请选择有效的赞助时长。", "赞助信息错误") ; 恢复无图标
+        return
+    }
+    targetMonths := Integer(targetMonthsText)
+    currentUserInfo := CheckUserGroup
+    currentMembershipType := currentUserInfo["MembershipType"]
+    currentExpiryDate := currentUserInfo["ExpirationTime"] ; YYYYMMDD
+    currentLevel := currentUserInfo["UserLevel"]
+    targetLevelInfo := g_MembershipLevels.Get(tierSelected)
+    if (!IsObject(targetLevelInfo)) {
+        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
+        if (tierSelected == "管理员") {
+            ; 为管理员创建一个临时的 Map 对象，以便后续逻辑可以安全访问
+            targetLevelInfo := Map("monthlyCost", 999, "userLevel", 10)
+        } else {
+            MsgBox("错误：无效的会员类型数据。", "赞助信息错误")
+            AddLog("错误: 在 CalculateSponsorInfo 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
+            return
+        }
+    }
+    targetUserLevel := targetLevelInfo.userLevel
+    newExpiryDateTimestamp := "" ; Ahk时间戳格式 YYYYMMDDHHmmss
+    UserStatus := ""
+    ; 确保当前选择不是降级，因为UpdateSponsorPrice应该已经拦截了
+    if (currentLevel > targetUserLevel && targetMonths > 0) { ; 如果用户尝试生成降级信息
+        MsgBox("您不能将您的会员组从 " . currentMembershipType . " 降级到 " . tierSelected . "。", "赞助无效") ; 恢复无图标
+        return
+    }
+    ; 根据当前用户状态和目标选择决定到期日和 UserStatus
+    if (currentLevel == targetUserLevel) {
+        ; 续费或普通用户新购同类型
+        ; 检查是否为普通用户或已过期，如果不是，则视为续费
+        if (currentLevel == 0 || A_Now >= currentExpiryDate . "235959") {
+            UserStatus := "新用户开通"
+            newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
+        } else {
+            UserStatus := "老用户续费"
+            newExpiryDateTimestamp := DateAdd(currentExpiryDate . "235959", 30 * targetMonths, "days")
+        }
+    } else if (currentLevel < targetUserLevel) {
+        ; 升级
+        UserStatus := "用户组升级"
+        ; 升级的到期时间从当前开始计算
+        newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
+    } else {
+        ; 不正常情况 (降级且未被前端拦截), 理论上不应发生
+        MsgBox("发生意外错误：不允许降级。", "错误") ; 恢复无图标
+        return
+    }
     ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
+    finalExpiryDate := SubStr(newExpiryDateTimestamp, 1, 8)
     jsonString := UserStatus "`n"
-    jsonString .= "(将这段文字替换成你的付款截图)`n"
+    jsonString .= "(请将这段文字替换成您的付款截图)`n"
     jsonString .= "  {" . "`n"
     jsonString .= "    `"hash`": `"" Hashed "`"," . "`n"
     jsonString .= "`"tier`": `"" tierSelected "`"," . "`n"
-    jsonString .= "`"expiry_date`": `"" SubStr(expiryDate, 1, 8) "`"" . "`n"
+    jsonString .= "`"expiry_date`": `"" finalExpiryDate "`"" . "`n"
     jsonString .= "},"
-    ; 步骤5：复制到剪切板
     A_Clipboard := jsonString
-    ; 给出提示
-    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我。`n可以加入DoroHelper反馈群(584275905)并私信我`n也可以发我的 qq 邮箱(1204244136@qq.com)或海外邮箱(zhi.11@foxmail.com)`n（只选一个即可，邮箱标题建议注明几个月的金/银/铜oro，正文再复制赞助信息）`n24 小时内我会进行登记并通知，之后重启软件并勾选用户组的「自动检查」即可")
+    newExpiryDateFormatted := SubStr(finalExpiryDate, 1, 4) . "-" . SubStr(finalExpiryDate, 5, 2) . "-" . SubStr(finalExpiryDate, 7, 2)
+    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我`n"
+        . "状态: " . UserStatus . "`n"
+        . "您将获得的会员类型: " . tierSelected . "`n"
+        . "新会员到期日: " . newExpiryDateFormatted . "`n`n"
+        . "请将此信息与付款截图私发给我（QQ或邮箱），我将在24小时内为您登记`n"
+        . "QQ群: 759311938`n"
+        . "QQ邮箱: 1204244136@qq.com`n"
+        . "海外邮箱: zhi.11@foxmail.com"
+        , "赞助信息已复制！") ; 恢复无图标
+    guiSponsor.Destroy() ; 赞助信息生成后关闭赞助GUI
 }
 ;tag 帮助
 ClickOnHelp(*) {
@@ -2897,11 +3119,14 @@ LoadSettings() {
         readValue := IniRead("settings.ini", "Toggles", key, defaultValue)
         g_settings[key] := readValue
     }
-    default_numeric_settings := g_numeric_settings.Clone() ; 保留一份默认数值设置
+    default_numeric_settings := g_numeric_settings.Clone()
     for key, defaultValue in default_numeric_settings {
-        ; 不再检查是否为数字，直接读取并赋值
+        ; 读取并赋值到 g_numeric_settings Map
         readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
         g_numeric_settings[key] := readValue
+    }
+    if (g_numeric_settings["UserLevel"] > 0) {
+        AddLog("从本地设置加载用户组: " . g_numeric_settings["UserGroup"] . " (级别: " . g_numeric_settings["UserLevel"] . ")", "Blue")
     }
 }
 ;tag 保存数据
@@ -2924,22 +3149,22 @@ IsCheckedToString(foo) {
  * @param addToTaskList Boolean - (可选) 如果为 true, 则将此复选框添加到全局任务列表数组中.
  */
 AddCheckboxSetting(guiObj, settingKey, displayText, options := "", addToTaskList := false) {
-    global g_settings, g_taskListCheckboxes ;确保能访问全局变量
+    global g_settings, g_taskListCheckboxes
     ;检查 settingKey 是否存在于 g_settings 中
     if !g_settings.Has(settingKey) {
         MsgBox("错误: Setting key '" settingKey "' 在 g_settings 中未定义!", "添加控件错误", "IconX")
-        return ;或者抛出错误
+        return
     }
     ;构建选项字符串，确保 Checked/空字符串 在选项之后，文本之前
     initialState := IsCheckedToString(g_settings[settingKey])
-    fullOptions := options (options ? " " : "") initialState ;如果有 options，加空格分隔
+    fullOptions := options (options ? " " : "") initialState
     ;添加复选框控件，并将 displayText 作为第三个参数
     cbCtrl := guiObj.Add("Checkbox", fullOptions, displayText)
     ;给控件附加 settingKey，方便后面识别，并保存 displayText
     cbCtrl.settingKey := settingKey
-    cbCtrl.displayText := displayText ; 存储原始显示文本
+    cbCtrl.displayText := displayText
     ;绑定 Click 事件，使用胖箭头函数捕获当前的 settingKey 和 displayText
-    cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl.displayText, guiCtrl)) ; 传递 guiCtrl
+    cbCtrl.OnEvent("Click", (guiCtrl, eventInfo) => ToggleSetting(settingKey, guiCtrl.displayText, guiCtrl))
     ;如果指定，则添加到任务列表数组
     if (addToTaskList) {
         g_taskListCheckboxes.Push(cbCtrl)
@@ -2949,11 +3174,11 @@ AddCheckboxSetting(guiObj, settingKey, displayText, options := "", addToTaskList
 }
 ;通用函数，用于切换 g_settings Map 中的设置值，并进行会员等级检测
 ToggleSetting(settingKey, displayText, guiCtrl, *) {
-    global g_settings, UserLevel
+    global g_settings, g_numeric_settings
     ; 如果用户正在尝试勾选本选项 (即当前复选框的值将从0变为1)
-    if (guiCtrl.Value == 0) { ; guiCtrl.Value 是控件的当前状态 (0 未勾选, 1 勾选)，这里是点击前的值
-        local requiredLevel := 0
-        local memberType := ""
+    if (guiCtrl.Value == 0) {
+        requiredLevel := 0
+        memberType := ""
         ; 检查 displayText 是否包含会员等级信息
         if InStr(displayText, "[金Doro]") {
             requiredLevel := 3
@@ -2968,14 +3193,14 @@ ToggleSetting(settingKey, displayText, guiCtrl, *) {
         ; 如果检测到会员限制
         if (requiredLevel > 0) {
             ; 检查当前用户等级是否足够
-            if (UserLevel < requiredLevel) {
-                MsgBox("当前用户组 (" . UserGroup . ") 不足，需要 " . memberType . " 才能使用此功能。请点击左上角的“赞助”按钮升级会员组。", "会员功能限制", "")
+            if (g_numeric_settings["UserLevel"] < requiredLevel) {
+                MsgBox("当前用户组 (" . g_numeric_settings["UserGroup"] . ") 不足，需要 " . memberType . " 才能使用此功能。请点击左上角的“赞助”按钮升级会员组。", "会员功能限制", "")
                 ; 阻止勾选操作：在 Click 事件中，如果返回0或不修改控件值，将阻止状态改变
                 ; 但AutoHotkey GUI的Checkbox控件在Click事件中已经改变了值，所以需要手动改回去
-                guiCtrl.Value := 0 ; 手动取消勾选
-                g_settings[settingKey] := 0 ; 同步到内部设置Map
+                guiCtrl.Value := 0
+                g_settings[settingKey] := 0
                 AddLog("用户尝试勾选限制功能 '" . displayText . "' 失败，等级不足。", "Red")
-                WriteSettings() ; 强制保存设置以确保配置文件也是最新的
+                WriteSettings()
                 return
             }
         }
@@ -3059,11 +3284,42 @@ AdjustSize(TargetX, TargetY) {
 ;region 日志辅助函数
 ;tag 添加日志
 AddLog(text, color := "black") {
-    ; 确保 LogBox 控件存在
+    ; 静态变量用于存储在 LogBox 控件创建之前的日志
+    static logBuffer := []
+    ; 静态变量指示 LogBox 是否已准备好
+    static logBoxReady := false
+    ; 检查 LogBox 是否已创建并准备好
+    ; 使用 IsSet() 优先检查，避免对 unset 变量调用 IsObject() 报错
+    ; 并且确保 LogBox.Hwnd 存在，表示控件已实际创建
+    if (!logBoxReady && IsSet(LogBox) && IsObject(LogBox) && LogBox.Hwnd) {
+        logBoxReady := true
+        ; LogBox 刚刚准备好，现在可以清空缓冲并写入
+        if (logBuffer.Length > 0) {
+            for bufferedLog in logBuffer {
+                AddLogToControl(bufferedLog.text, bufferedLog.color)
+            }
+            logBuffer := [] ; 清空缓冲
+        }
+    }
+    ; 如果 LogBox 已经准备好，则直接写入当前日志
+    if (logBoxReady) {
+        AddLogToControl(text, color)
+    } else {
+        ; 如果 LogBox 尚未准备好，则将日志添加到缓冲
+        logBuffer.Push({ text: text, color: color })
+    }
+}
+; 辅助函数：实际将日志写入 RichEdit 控件
+; 这个函数不应该直接被外部调用，只由 AddLog 调用
+AddLogToControl(text, color) {
+    ; 确保 LogBox 控件存在且有效
+    ; 理论上，由于 logBoxReady 检查，这里 LogBox 应该总是有效的
     if (!IsObject(LogBox) || !LogBox.Hwnd) {
+        ; 如果 LogBox 意外地变得无效，可以打印到控制台或简单返回
+        ; FileAppend "Error: AddLogToControl called with invalid LogBox.`n", "*"
         return
     }
-    ;静态变量保存上一条内容
+    ;静态变量保存上一条内容，这里应该在 AddLogToControl 内部，因为它是实际写入的函数
     static lastText := ""
     ;如果内容与上一条相同则跳过
     if (text = lastText)
@@ -3098,12 +3354,10 @@ AddLog(text, color := "black") {
     font.Color := color
     LogBox.SetFont(font)
     ; 设置悬挂缩进 - 使用段落格式
-    ; 创建一个 PARAFORMAT2 对象来设置悬挂缩进
     PF2 := RichEdit.PARAFORMAT2()
     PF2.Mask := 0x05 ; PFM_STARTINDENT | PFM_OFFSET
-    PF2.StartIndent := 0   ; 总缩进量（缇单位，1缇=1/1440英寸）
-    PF2.Offset := 940       ; 悬挂缩进量（负值表示悬挂）
-    ; 应用段落格式到选中的文本
+    PF2.StartIndent := 0
+    PF2.Offset := 940
     SendMessage(0x0447, 0, PF2.Ptr, LogBox.Hwnd) ; EM_SETPARAFORMAT
     ; 取消选择并将光标移到底部
     LogBox.SetSel(-1, -1)
@@ -3133,11 +3387,11 @@ TimeToSeconds(timeStr) {
 ;tag 读取日志框内容 根据 HH:mm:ss 时间戳推算跨度，输出到日志框
 CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     global outputText
-    local logContent := LogBox.GetText()
+    logContent := LogBox.GetText()
     ; 使用正则表达式提取所有时间戳
-    local timestamps := []
-    local pos := 1
-    local match := ""
+    timestamps := []
+    pos := 1
+    match := ""
     while (pos := RegExMatch(logContent, "(?<time>\d{2}:\d{2}:\d{2})\s{2,}", &match, pos)) {
         timestamps.Push(match["time"])
         pos += match.Len
@@ -3147,22 +3401,22 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
         AddLog("推算跨度失败：需要至少两个时间戳")
         return
     }
-    local earliestTimeStr := timestamps[1]
-    local latestTimeStr := timestamps[timestamps.Length]
-    local earliestSeconds := TimeToSeconds(earliestTimeStr)
-    local latestSeconds := TimeToSeconds(latestTimeStr)
+    earliestTimeStr := timestamps[1]
+    latestTimeStr := timestamps[timestamps.Length]
+    earliestSeconds := TimeToSeconds(earliestTimeStr)
+    latestSeconds := TimeToSeconds(latestTimeStr)
     if (earliestSeconds = -1 || latestSeconds = -1) {
         AddLog("推算跨度失败：日志时间格式错误")
         return
     }
     ; 计算时间差（正确处理跨天）
-    local spanSeconds := latestSeconds - earliestSeconds
+    spanSeconds := latestSeconds - earliestSeconds
     ; 如果差值为负，说明可能跨天了
     if (spanSeconds < 0) {
         spanSeconds += 24 * 3600  ; 加上一天的秒数
     }
-    local spanMinutes := Floor(spanSeconds / 60)
-    local remainingSeconds := Mod(spanSeconds, 60)
+    spanMinutes := Floor(spanSeconds / 60)
+    remainingSeconds := Mod(spanSeconds, 60)
     outputText := "已帮你节省时间: "
     if (spanMinutes > 0) {
         outputText .= spanMinutes " 分 "
@@ -3567,7 +3821,7 @@ EnterToOutpost() {
 ;tag 自动填充加成妮姬
 AutoFill() {
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
-        if g_settings["AutoFill"] and UserLevel >= 3 {
+        if g_settings["AutoFill"] and g_numeric_settings["UserLevel"] >= 3 {
             AddLog("点击黑色的加号")
             FindText().Click(X, Y, "L")
             Sleep 500
@@ -4629,13 +4883,13 @@ InterceptionNormal() {
             modes.Push("RedCircle")
         if g_settings["InterceptionScreenshot"]
             modes.Push("Screenshot")
-        if g_settings["InterceptionExit7"] and UserLevel >= 3
+        if g_settings["InterceptionExit7"] and g_numeric_settings["UserLevel"] >= 3
             modes.Push("Exit7")
         global BattleActive := 1
         if g_settings["InterceptionRedCircle"] or g_settings["InterceptionExit7"] {
             AddLog("有概率误判，请谨慎开启该功能", "MAROON")
         }
-        BattleSettlement(modes*)  ; 使用*展开数组为多个参数
+        BattleSettlement(modes*)
         Sleep 2000
     }
 }
@@ -4746,13 +5000,13 @@ InterceptionAnomaly() {
             modes.Push("RedCircle")
         if g_settings["InterceptionScreenshot"]
             modes.Push("Screenshot")
-        if g_settings["InterceptionExit7"] and UserLevel >= 3
+        if g_settings["InterceptionExit7"] and g_numeric_settings["UserLevel"] >= 3
             modes.Push("Exit7")
         global BattleActive := 1
         if g_settings["InterceptionRedCircle"] or g_settings["InterceptionExit7"] {
             AddLog("有概率误判，请谨慎开启该功能", "MAROON")
         }
-        BattleSettlement(modes*)  ; 使用*展开数组为多个参数
+        BattleSettlement(modes*)
         Sleep 2000
     }
 }
@@ -4930,7 +5184,7 @@ AwardAdvise() {
             Confirm
         }
         ; 自动观看新花絮并领取奖励
-        if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) and UserLevel >= 3 {
+        if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) and g_numeric_settings["UserLevel"] >= 3 { ; 直接使用 g_numeric_settings["UserLevel"]
             AddLog("点击红点")
             FindText().Click(X, Y, "L")
             Sleep 2000
@@ -5246,7 +5500,7 @@ AwardCooperateBattle() {
     }
 }
 ;endregion 协同作战
-;region 单人突击
+;tag 单人突击
 AwardSoloRaid(stage7 := True) {
     if stage7 {
         AddLog("开始任务：单人突击", "Fuchsia")
@@ -5335,7 +5589,6 @@ AwardSoloRaid(stage7 := True) {
         }
     }
 }
-;endregion 单人突击
 ;region 小活动
 ;tag 入口
 EventSmall() {
@@ -6136,7 +6389,7 @@ TestMode(BtnTestMode, Info) {
         FuncName := Match[1]
         ParamString := Match[2]
     } else {
-        MsgBox("无效的输入格式。`n`n请使用 '函数名(参数1, 参数2, ...)' 的格式。")
+        MsgBox("无效的输入格式`n`n请使用 '函数名(参数1, 参数2, ……)' 的格式。")
         return
     }
     ; 3. 获取函数引用
@@ -6161,7 +6414,7 @@ TestMode(BtnTestMode, Info) {
     try {
         Result := fn.Call(ParamsArray*)
         if (Result != "") {
-            MsgBox("函数 '" FuncName "' 执行完毕。`n返回值: " Result)
+            MsgBox("函数 '" FuncName "' 执行完毕。")
         } else {
             MsgBox("函数 '" FuncName "' 执行完毕。")
         }
@@ -6187,7 +6440,7 @@ QuickBurst(*) {
 }
 ;tag 自动推图
 AutoAdvance(*) {
-    if UserLevel < 3 {
+    if g_numeric_settings["UserLevel"] < 3 { ; 直接使用 g_numeric_settings["UserLevel"]
         MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
         return
     }

@@ -1030,6 +1030,9 @@ ClickOnDoro(*) {
         if g_settings["ClearRedProfile"] {
             ClearRedProfile()
         }
+        if g_settings["ClearRedBla"] {
+            ClearRedBla()
+        }
         BackToHall
     }
     if g_settings["AutoSwitchLanguage"]

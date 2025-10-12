@@ -3775,6 +3775,9 @@ BackToHall(AD := False) {
             Send "{]}"
             RefuseSale
         }
+        if A_Index > 40 {
+            UserClick(1924, 1968, TrueRatio)
+        }
         if A_Index > 50 {
             MsgBox ("返回大厅失败，程序已中止")
             Pause

@@ -2979,7 +2979,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
         return
     }
     targetMonths := Integer(targetMonthsText)
-    currentUserInfo := CheckUserGroup
+    currentUserInfo := CheckUserGroup(true)
     currentMembershipType := currentUserInfo["MembershipType"]
     currentExpiryDate := currentUserInfo["ExpirationTime"] ; YYYYMMDD
     currentLevel := currentUserInfo["UserLevel"]

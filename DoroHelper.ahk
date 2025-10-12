@@ -3426,7 +3426,7 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
     }
     outputText .= remainingSeconds " 秒"
     AddLog(outputText)
-    if (spanSeconds < 10) {
+    if (spanSeconds < 5) {
         MsgBox("没怎么运行就结束了，任务列表勾了吗？还是没有进行详细的任务设置呢？")
     }
 }

@@ -3849,6 +3849,9 @@ AutoFill() {
 ;tag 推关模式
 AdvanceMode(Picture, Picture2?) {
     AddLog("进行活动推关")
+    UserMove(1978, 1088, TrueRatio)
+    Sleep 500
+    Send "{WheelDown 10}"
     Sleep 500
     Failed := false
     while true {

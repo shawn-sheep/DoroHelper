@@ -5197,7 +5197,7 @@ AwardAdvise() {
             AddLog("点击红点")
             FindText().Click(X, Y, "L")
             Sleep 2000
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.400 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.400 * NikkeH + 0.512 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.400 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.400 * NikkeH + 0.512 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
                 AddLog("播放新的片段")
                 FindText().Click(X, Y, "L")
                 Sleep 3000

@@ -6064,20 +6064,15 @@ ClearRedLimit() {
             while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.099 * NikkeW . " ", NikkeY + 0.284 * NikkeH . " ", NikkeX + 0.099 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.284 * NikkeH + 0.023 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("点击带有红点的妮姬")
                 FindText().Click(X, Y, "L")
-                Sleep 2000
+                Sleep 1000
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.858 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.858 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("珍藏品壁纸的图标"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("切换珍藏品样式")
+                    UserClick(94, 1888, TrueRatio)
+                }
                 if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.960 * NikkeW . " ", NikkeY + 0.487 * NikkeH . " ", NikkeX + 0.960 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.487 * NikkeH + 0.012 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("妮姬·极限突破的红色红点"), , , , , , , TrueRatio, TrueRatio)) {
                     AddLog("点击极限突破/核心强化的红点")
                     FindText().Click(X, Y, "L")
                     Sleep 1000
-                }
-                else {
-                    AddLog("切换珍藏品样式")
-                    UserClick(94, 1888, TrueRatio)
-                    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.960 * NikkeW . " ", NikkeY + 0.487 * NikkeH . " ", NikkeX + 0.960 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.487 * NikkeH + 0.012 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("妮姬·极限突破的红色红点"), , , , , , , TrueRatio, TrueRatio)) {
-                        AddLog("点击极限突破/核心强化的红点")
-                        FindText().Click(X, Y, "L")
-                        Sleep 1000
-                    }
                 }
                 if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.416 * NikkeW . " ", NikkeY + 0.822 * NikkeH . " ", NikkeX + 0.416 * NikkeW + 0.171 * NikkeW . " ", NikkeY + 0.822 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·极限突破"), , , , , , , TrueRatio, TrueRatio)) {
                     AddLog("点击极限突破")

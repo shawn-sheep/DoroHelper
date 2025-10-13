@@ -828,9 +828,9 @@ if g_settings["AutoCheckUserGroup"]
 ; 如果满足以下任一条件，则显示广告：
 ; 1. 未勾选关闭广告 (无论用户是谁)
 ; 2. 是普通用户 (无论是否勾选了关闭广告，因为普通用户无法关闭)
-if (!g_settings["CloseAdvertisement"] OR g_numeric_settings["UserLevel"] < 1) { ; 直接使用 g_numeric_settings["UserLevel"]
+if (!g_settings["CloseAdvertisement"] OR g_numeric_settings["UserLevel"] < 1) {
     ; 额外判断，如果用户是普通用户且勾选了关闭广告，则弹窗提示
-    if (g_settings["CloseAdvertisement"] and g_numeric_settings["UserLevel"] < 1) { ; 直接使用 g_numeric_settings["UserLevel"]
+    if (g_settings["CloseAdvertisement"] and g_numeric_settings["UserLevel"] < 1) {
         MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
     }
     Advertisement
@@ -846,7 +846,7 @@ if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
 ;tag 定时启动
 if g_settings["Timedstart"] {
-    if g_numeric_settings["UserLevel"] >= 3 { ; 直接使用 g_numeric_settings["UserLevel"]
+    if g_numeric_settings["UserLevel"] >= 3 {
         if !g_numeric_settings["StartupTime"] {
             MsgBox("请设置定时启动时间")
             Pause
@@ -5193,7 +5193,7 @@ AwardAdvise() {
             Confirm
         }
         ; 自动观看新花絮并领取奖励
-        if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) and g_numeric_settings["UserLevel"] >= 3 { ; 直接使用 g_numeric_settings["UserLevel"]
+        if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) and g_numeric_settings["UserLevel"] >= 3 {
             AddLog("点击红点")
             FindText().Click(X, Y, "L")
             Sleep 2000
@@ -6450,7 +6450,7 @@ QuickBurst(*) {
 }
 ;tag 自动推图
 AutoAdvance(*) {
-    if g_numeric_settings["UserLevel"] < 3 { ; 直接使用 g_numeric_settings["UserLevel"]
+    if g_numeric_settings["UserLevel"] < 3 {
         MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
         return
     }

@@ -5359,11 +5359,9 @@ AwardPass() {
             ; 检查红点并执行通行证
             if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.985 * NikkeW . " ", NikkeY + 0.124 * NikkeH . " ", NikkeX + 0.985 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.124 * NikkeH + 0.261 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X - 50 * TrueRatio, Y + 50 * TrueRatio, "L")
-                if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.553 * NikkeW . " ", NikkeY + 0.227 * NikkeH . " ", NikkeX + 0.553 * NikkeW + 0.091 * NikkeW . " ", NikkeY + 0.227 * NikkeH + 0.074 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("购买PASS的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                    t := t + 1
-                    AddLog("执行第" t "个通行证")
-                    OneAwardPass()
-                }
+                t := t + 1
+                AddLog("执行第" t "个通行证")
+                OneAwardPass()
                 BackToHall()
                 continue
             }

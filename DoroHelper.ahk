@@ -3039,7 +3039,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
         . "状态: " . UserStatus . "`n"
         . "您将获得的会员类型: " . tierSelected . "`n"
         . "新会员到期日: " . newExpiryDateFormatted . "`n`n"
-        . "请将此信息与付款截图私发给我（QQ或邮箱），我将在24小时内为您登记`n"
+        . "请将此剪贴板中的内容与付款截图私发给我（QQ或邮箱），我将在24小时内为您登记`n"
         . "QQ群: 759311938`n"
         . "QQ邮箱: 1204244136@qq.com`n"
         . "海外邮箱: zhi.11@foxmail.com"

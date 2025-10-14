@@ -2237,16 +2237,17 @@ DeleteOldFile(*) {
 DownloadUrlContent(url) {
     ; 这个函数是获取纯文本内容，而不是下载文件到磁盘。
     ; 请注意与 Download 命令的区别。
+    ; ----------------- 1. 尝试使用 WinHttp.WinHttpRequest.5.1 (首选) -----------------
     try {
         whr := ComObject("WinHttp.WinHttpRequest.5.1")
         whr.Open("GET", url, true)
         whr.Send()
         whr.WaitForResponse(10) ; 10 秒超时
         if (whr.Status != 200) {
-            AddLog("下载 URL 内容失败，HTTP状态码: " . whr.Status . " URL: " . url, "Red")
-            return ""
+            ; 遇到非200状态码，抛出异常，触发下面的MSXML2备用方案
+            throw Error("HTTP状态码非200 (WinHttp)", -1, "状态码: " . whr.Status)
         }
-        ; 尝试以 UTF-8 解码响应体
+        ; ----------------- WinHttp 内容解码逻辑 -----------------
         responseBody := whr.ResponseBody
         if (IsObject(responseBody) && ComObjType(responseBody) & 0x2000) { ; SafeArray (VT_ARRAY)
             dataPtr := 0, lBound := 0, uBound := 0
@@ -2277,9 +2278,55 @@ DownloadUrlContent(url) {
             AddLog("下载 URL 内容警告: ResponseBody 不是预期类型，回退到 ResponseText，URL: " . url, "MAROON")
             return whr.ResponseText
         }
-    } catch as e {
-        AddLog("下载 URL 内容时发生错误: " . e.Message . " URL: " . url, "Red")
-        return ""
+    } catch as e1 {
+        AddLog("使用 WinHttp.WinHttpRequest.5.1 失败，尝试备用方案。错误: " . e1.Message . " URL: " . url, "RED")
+        ; ----------------- 2. 尝试使用 MSXML2.XMLHTTP (备用) -----------------
+        try {
+            AddLog("尝试使用 MSXML2.XMLHTTP 备用方案下载...", "BLUE")
+            xhr := ComObject("MSXML2.XMLHTTP")
+            ; 备用方案使用同步请求 (false) 简化处理
+            xhr.Open("GET", url, false)
+            xhr.Send()
+            if (xhr.Status != 200) {
+                AddLog("备用方案下载 URL 内容失败，HTTP状态码: " . xhr.Status . " URL: " . url, "Red")
+                return ""
+            }
+            ; ----------------- MSXML2 内容解码逻辑 (与 WinHttp 逻辑相同) -----------------
+            responseBody := xhr.ResponseBody
+            if (IsObject(responseBody) && ComObjType(responseBody) & 0x2000) { ; SafeArray (VT_ARRAY)
+                dataPtr := 0, lBound := 0, uBound := 0
+                DllCall("OleAut32\SafeArrayGetLBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &lBound)
+                DllCall("OleAut32\SafeArrayGetUBound", "Ptr", ComObjValue(responseBody), "UInt", 1, "Int64*", &uBound)
+                actualSize := uBound - lBound + 1
+                if (actualSize > 0) {
+                    DllCall("OleAut32\SafeArrayAccessData", "Ptr", ComObjValue(responseBody), "Ptr*", &dataPtr)
+                    content := StrGet(dataPtr, actualSize, "UTF-8")
+                    DllCall("OleAut32\SafeArrayUnaccessData", "Ptr", ComObjValue(responseBody))
+                    return content
+                } else {
+                    AddLog("下载 URL 内容警告 (备用): SafeArray 大小为0或无效，URL: " . url, "MAROON")
+                    return ""
+                }
+            } else if IsObject(responseBody) { ; Other COM object, try ADODB.Stream
+                Stream := ComObject("ADODB.Stream")
+                Stream.Type := 1 ; adTypeBinary
+                Stream.Open()
+                Stream.Write(responseBody)
+                Stream.Position := 0
+                Stream.Type := 2 ; adTypeText
+                Stream.Charset := "utf-8"
+                content := Stream.ReadText()
+                Stream.Close()
+                return content
+            } else { ; Not a COM object, fallback to ResponseText (may have encoding issues)
+                AddLog("下载 URL 内容警告 (备用): ResponseBody 不是预期类型，回退到 ResponseText，URL: " . url, "MAROON")
+                return xhr.ResponseText
+            }
+        } catch as e2 {
+            ; MSXML2 备用方案也失败
+            AddLog("下载 URL 内容时发生错误: 两次尝试均失败。WinHttp错误: " . e1.Message . " | MSXML2错误: " . e2.Message . " URL: " . url, "Red")
+            return ""
+        }
     }
 }
 ;tag 计算SHA256哈希值

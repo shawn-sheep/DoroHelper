@@ -1248,7 +1248,8 @@ StartDailyTimer() {
     target_time_string := g_numeric_settings["StartupTime"]
     ; 2. 创建一个表示今天目标时间的时间戳，例如 "20250806080000"
     today_target_time := A_YYYY . A_MM . A_DD . target_time_string
-    next_run_time ; 声明为局部变量
+    ; 声明 next_run_time 为局部变量，并初始化，避免“未赋值”错误
+    local next_run_time := ""
     ; 3. 比较当前时间 A_Now 和今天目标时间
     if (A_Now > today_target_time) {
         ; 如果当前时间已过，则将目标设置为明天的同一时间

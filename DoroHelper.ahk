@@ -5820,7 +5820,7 @@ EventLargeStory() {
         Confirm
         Sleep 500
     }
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.448 * NikkeW . " ", NikkeY + 0.764 * NikkeH . " ", NikkeX + 0.448 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.764 * NikkeH + 0.056 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·剩余时间"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.416 * NikkeW . " ", NikkeY + 0.763 * NikkeH . " ", NikkeX + 0.416 * NikkeW + 0.062 * NikkeW . " ", NikkeY + 0.763 * NikkeH + 0.056 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·剩余时间"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入剧情活动页面")
         Sleep 500
         FindText().Click(X, Y - 100 * TrueRatio, "L")

@@ -749,7 +749,7 @@ btnFeedbackQQ.OnEvent("Click", (*) => Run("https://qm.qq.com/q/ZhvLeKMO2q"))
 ; 反馈 dc群
 btnFeedbackDC := doroGui.Add("Button", "x+10 w70 h30", "Discord")
 doroGui.Tips.SetTip(btnFeedbackDC, "Join the feedback group")
-btnFeedbackDC.OnEvent("Click", (*) => Run("https://discord.gg/WtSxX6q6"))
+btnFeedbackDC.OnEvent("Click", (*) => Run("https://discord.gg/f4rAWJVNJj"))
 ; 剧情模式
 TextStoryModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "剧情模式")
 doroGui.Tips.SetTip(TextStoryModeLabel, "自动点击对话选项，自动进行下一段剧情，自动启动auto`nAutomatically click dialogue options, automatically proceed to the next segment of the story, automatically start auto")

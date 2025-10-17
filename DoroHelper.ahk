@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.8.4"
+currentVersion := "v1.8.5"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -1149,10 +1149,7 @@ AutoStartNikke() {
 }
 ;tag 初始化
 Initialization() {
-    global NikkeX
-    global NikkeY
-    global NikkeW
-    global NikkeH
+    global NikkeX, NikkeY, NikkeW, NikkeH
     LogBox.SetText()
     targetExe := "nikke.exe"
     if WinExist("ahk_exe " . targetExe) {

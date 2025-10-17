@@ -3986,24 +3986,17 @@ Login() {
             continue
         }
         else check := 0
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.516 * NikkeW . " ", NikkeY + 0.844 * NikkeH . " ", NikkeX + 0.516 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.844 * NikkeH + 0.140 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到·全部领取的全部"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.533 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.533 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.059 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("签到·全部领取"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("领取签到奖励")
             FindText().Click(X, Y, "L")
             Sleep 1000
         }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.533 * NikkeW . " ", NikkeY + 0.908 * NikkeH . " ", NikkeX + 0.533 * NikkeW + 0.115 * NikkeW . " ", NikkeY + 0.908 * NikkeH + 0.059 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("获得奖励的图标"), , , , , , , TrueRatio * 0.8, TrueRatio * 0.8)) {
-            FindText().Click(X, Y, "L")
-            Sleep 1000
-        }
-        if (ok := FindText(&X, &Y, NikkeX + 0.356 * NikkeW . " ", NikkeY + 0.179 * NikkeH . " ", NikkeX + 0.356 * NikkeW + 0.287 * NikkeW . " ", NikkeY + 0.179 * NikkeH + 0.805 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("不再显示的框"), , 0, , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            Sleep 1000
-        }
-        if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.703 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.703 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.703 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.703 * NikkeH + 0.051 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("确认服务器")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
             Sleep 1000
         }
-        if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.610 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.090 * NikkeW . " ", NikkeY + 0.610 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.504 * NikkeW . " ", NikkeY + 0.610 * NikkeH . " ", NikkeX + 0.504 * NikkeW + 0.090 * NikkeW . " ", NikkeY + 0.610 * NikkeH + 0.056 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("确认下载内容")
             FindText().Click(X + 50 * TrueRatio, Y, "L")
             Sleep 1000

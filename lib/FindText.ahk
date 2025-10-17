@@ -1,5 +1,4 @@
-#Requires AutoHotkey v2.0
-FileEncoding "UTF-8"
+﻿#Requires AutoHotkey v2.0
 ;/*
 ;===========================================
 ;  FindText - 屏幕抓字生成字库工具与找字函数
@@ -3028,7 +3027,7 @@ int __attribute__((__stdcall__)) PicFind(
                 y := nY + CutUp + (nH - CutUp - CutDown) // 2
                 s := StrReplace(s, "Text.=", "Text:="), r := StrSplit(Lang["s8"] "|||||||", "|")
                 s := "`; #Include <FindText>"
-                    . "`n#Include `"PicLib(UTF-8BOM).ahk`""
+                    . "`n#Include `"PicLib.ahk`""
                     . "`ncurrentScale := A_ScreenDPI / 96"
                     . "`ntitle := `"ahk_exe nikke.exe`""
                     . "`nnikkeID := WinGetIDLast(title)"

@@ -2380,50 +2380,69 @@ HashSHA256(input) {
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash
 }
-;tag 计算GitSHA-1哈希值 (已修正行尾序列问题)
+;tag 计算GitSHA-1哈希值 (已修正行尾序列问题，并正确处理BOM)
 HashGitSHA1(filePath) {
     if !FileExist(filePath) {
         throw Error("文件不存在", -1, "指定的Git SHA-1哈希文件路径无效: " . filePath)
     }
-    fileObj := FileOpen(filePath, "r")
-    fileContentBuf := Buffer(fileObj.Length)
-    fileObj.RawRead(fileContentBuf, fileContentBuf.Size)
-    fileObj.Close()
-    normalizedContentBuf := Buffer(fileContentBuf.Size)
+    ; 使用 FileRead() 以 RAW 编码读取文件，获取原始字节流，包括 BOM（如果存在）。
+    ; FileRead(Filename, Encoding, MaxBytes)
+    ; 当 Encoding 为 "RAW" 时，FileRead 返回一个 Buffer 对象，包含文件的原始字节。
+    try {
+        fileContentRawBuffer := FileRead(filePath, "RAW")
+    } catch as e {
+        throw Error("读取文件失败", -1, "无法读取文件内容进行Git SHA-1哈希计算: " . filePath . " 错误: " . e.Message)
+    }
+    ; 创建一个新的 Buffer 来存储经过 Git 行尾标准化后的内容。
+    ; 初始大小设置为原始 Buffer 的大小，以防万一内容全部是 LF。
+    normalizedContentBuf := Buffer(fileContentRawBuffer.Size)
     newSize := 0
     i := 0
-    while i < fileContentBuf.Size {
-        byte := NumGet(fileContentBuf, i, "UChar")
-        if byte == 13 {
-            NumPut("UChar", 10, normalizedContentBuf, newSize)
+    ; 遍历原始字节流，进行 Git 风格的行尾标准化：
+    ; 将 CRLF (`\r\n`) 转换为 LF (`\n`)
+    ; 将单独的 CR (`\r`) 转换为 LF (`\n`)
+    while i < fileContentRawBuffer.Size {
+        byte := NumGet(fileContentRawBuffer, i, "UChar")
+        if byte == 0x0D { ; 检测到回车符 (CR)
+            ; 写入换行符 (LF)
+            NumPut("UChar", 0x0A, normalizedContentBuf, newSize)
             newSize += 1
-            if (i + 1 < fileContentBuf.Size && NumGet(fileContentBuf, i + 1, "UChar") == 10) {
-                i += 1
+            ; 如果 CR 后面紧跟着 LF，则跳过这个 LF，因为我们已经写入了一个 LF
+            if (i + 1 < fileContentRawBuffer.Size && NumGet(fileContentRawBuffer, i + 1, "UChar") == 0x0A) {
+                i += 1 ; 跳过 LF
             }
-        } else {
+        } else { ; 非 CR 字节，直接复制
             NumPut("UChar", byte, normalizedContentBuf, newSize)
             newSize += 1
         }
         i += 1
     }
+    ; 调整标准化后 Buffer 的实际大小
     normalizedContentBuf.Size := newSize
+    ; Git SHA-1 哈希计算需要一个特定的头部："blob <size>\0"
     gitHeaderStr := "blob " . newSize . Chr(0)
-    requiredSize := StrPut(gitHeaderStr, "UTF-8")
-    gitHeaderBuf := Buffer(requiredSize)
+    ; 计算头部字符串的 UTF-8 字节长度
+    ; StrPut 返回写入的字节数（包括 null 终止符），减去 1 得到实际内容长度
+    gitHeaderLen := StrPut(gitHeaderStr, "UTF-8") - 1
+    ; 创建一个 Buffer 来存储 Git 头部
+    gitHeaderBuf := Buffer(gitHeaderLen)
     StrPut(gitHeaderStr, gitHeaderBuf, "UTF-8")
-    gitHeaderLen := requiredSize - 1
+    ; 初始化加密上下文和哈希对象
     hProv := 0, hHash := 0
     if !DllCall("Advapi32\CryptAcquireContextW", "Ptr*", &hProv, "Ptr", 0, "Ptr", 0, "UInt", 24, "UInt", 0xF0000000) {
         throw Error("CryptAcquireContext 失败", -1, "无法获取加密服务提供者句柄")
     }
+    ; 使用 SHA-1 算法 (0x8004)
     if !DllCall("Advapi32\CryptCreateHash", "Ptr", hProv, "UInt", 0x8004, "Ptr", 0, "UInt", 0, "Ptr*", &hHash) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw Error("CryptCreateHash 失败", -1, "无法创建哈希对象")
     }
     try {
+        ; 1. 哈希 Git 头部
         if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", gitHeaderBuf, "UInt", gitHeaderLen, "UInt", 0) {
             throw Error("CryptHashData (头部) 失败", -1, "更新头部哈希数据时出错")
         }
+        ; 2. 哈希标准化后的文件内容
         if !DllCall("Advapi32\CryptHashData", "Ptr", hHash, "Ptr", normalizedContentBuf, "UInt", newSize, "UInt", 0) {
             throw Error("CryptHashData (内容) 失败", -1, "更新文件内容哈希数据时出错")
         }
@@ -2432,6 +2451,7 @@ HashGitSHA1(filePath) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw e
     }
+    ; 获取最终的 SHA-1 哈希值 (20 字节)
     hashSize := 20
     hashBuf := Buffer(hashSize)
     if !DllCall("Advapi32\CryptGetHashParam", "Ptr", hHash, "UInt", 2, "Ptr", hashBuf, "UInt*", &hashSize, "UInt", 0) {
@@ -2439,10 +2459,12 @@ HashGitSHA1(filePath) {
         DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
         throw Error("CryptGetHashParam 失败", -1, "无法获取最终的哈希值")
     }
+    ; 将字节数组转换为十六进制字符串
     hexHash := ""
     loop hashSize {
         hexHash .= Format("{:02x}", NumGet(hashBuf, A_Index - 1, "UChar"))
     }
+    ; 清理资源
     DllCall("Advapi32\CryptDestroyHash", "Ptr", hHash)
     DllCall("Advapi32\CryptReleaseContext", "Ptr", hProv, "UInt", 0)
     return hexHash
@@ -3731,7 +3753,7 @@ BattleSettlement(modes*) {
     if Screenshot {
         Sleep 1000
         TimeString := FormatTime(, "yyyyMMdd_HHmmss")
-        FindText().SavePic(A_ScriptDir "\截图\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
+        FindText().SavePic(A_ScriptDir "\Screenshot\" TimeString ".jpg", NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, ScreenShot := 1)
     }
     ;有灰色的锁代表赢了但次数耗尽
     if (ok := FindText(&X, &Y, NikkeX + 0.893 * NikkeW . " ", NikkeY + 0.920 * NikkeH . " ", NikkeX + 0.893 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.920 * NikkeH + 0.039 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的锁"), , , , , , , TrueRatio, TrueRatio)) {

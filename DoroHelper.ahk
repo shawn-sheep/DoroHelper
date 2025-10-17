@@ -2669,13 +2669,13 @@ CheckUserGroup(forceUpdate := false) {
             AddLog("当前用户组：管理员", "Green")
         } else if (g_numeric_settings["UserLevel"] == 3) {
             try TraySetIcon("icon\GoldDoro.ico")
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (金Doro会员 - 有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ✨", "Green")
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ", "Green")
         } else if (g_numeric_settings["UserLevel"] == 2) {
             try TraySetIcon("icon\SilverDoro.ico")
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (银Doro会员 - 有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") 🌟", "Green")
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ", "Green")
         } else if (g_numeric_settings["UserLevel"] == 1) {
             try TraySetIcon("icon\CopperDoro.ico")
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (铜Doro会员 - 有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") 💫", "Green")
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ", "Green")
         }
         AddLog("欢迎加入会员qq群759311938", "Green")
     } else {
@@ -3075,7 +3075,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
     finalExpiryDate := SubStr(newExpiryDateTimestamp, 1, 8)
     jsonString := UserStatus "`n"
-    jsonString .= "(请将这段文字替换成您的付款截图)`n"
+    jsonString .= "(请将这段文字替换成您的付款截图，邮件的图片请以附件形式发送)`n"
     jsonString .= "  {" . "`n"
     jsonString .= "    `"hash`": `"" Hashed "`"," . "`n"
     jsonString .= "`"tier`": `"" tierSelected "`"," . "`n"
@@ -3087,8 +3087,8 @@ CalculateSponsorInfo(thisGuiButton, info) {
         . "状态: " . UserStatus . "`n"
         . "您将获得的会员类型: " . tierSelected . "`n"
         . "新会员到期日: " . newExpiryDateFormatted . "`n`n"
-        . "请将此剪贴板中的内容与付款截图私发给我（QQ或邮箱），我将在24小时内为您登记`n"
-        . "QQ群: 759311938`n"
+        . "请将此剪贴板中的内容与付款截图私发给我，我将在24小时内为您登记`n"
+        . "QQ群: 584275905`n"
         . "QQ邮箱: 1204244136@qq.com`n"
         . "海外邮箱: zhi.11@foxmail.com"
         , "赞助信息已复制！") ; 恢复无图标

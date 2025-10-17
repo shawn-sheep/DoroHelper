@@ -3028,7 +3028,7 @@ int __attribute__((__stdcall__)) PicFind(
                 y := nY + CutUp + (nH - CutUp - CutDown) // 2
                 s := StrReplace(s, "Text.=", "Text:="), r := StrSplit(Lang["s8"] "|||||||", "|")
                 s := "`; #Include <FindText>"
-                    . "`n#Include `"PicLib.ahk`""
+                    . "`n#Include `"PicLib(UTF-8BOM).ahk`""
                     . "`ncurrentScale := A_ScreenDPI / 96"
                     . "`ntitle := `"ahk_exe nikke.exe`""
                     . "`nnikkeID := WinGetIDLast(title)"

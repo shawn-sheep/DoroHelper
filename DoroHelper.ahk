@@ -5322,7 +5322,7 @@ AwardAppreciation() {
 ;region 好友点数收取
 AwardFriendPoint() {
     AddLog("开始任务：好友点数", "Fuchsia")
-    while (ok := FindText(&X, &Y, NikkeX + 0.956 * NikkeW . " ", NikkeY + 0.211 * NikkeH . " ", NikkeX + 0.956 * NikkeW + 0.033 * NikkeW . " ", NikkeY + 0.211 * NikkeH + 0.068 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("好友的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.957 * NikkeW . " ", NikkeY + 0.216 * NikkeH . " ", NikkeX + 0.957 * NikkeW + 0.032 * NikkeW . " ", NikkeY + 0.216 * NikkeH + 0.111 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("好友的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击好友")
         FindText().Click(X, Y, "L")
         Sleep 2000

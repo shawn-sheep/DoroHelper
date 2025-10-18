@@ -2822,7 +2822,7 @@ MsgSponsor(*) {
     } else if (userGroupInfo["UserLevel"] > 0 && A_Now >= currentExpDate . "235959") {
         currentType := "普通用户(已过期)" ; 确保显示过期状态，这会更新到 guiCurrentMembership
     }
-    LVZH := guiSponsor.Add("ListView", "xm w400 h200", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
+    LVZH := guiSponsor.Add("ListView", "xm w400 h180", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
     LVZH.Add(, "每月价格", "免费", "1欧润吉", "3欧润吉", "5欧润吉")
     LVZH.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
     LVZH.Add(, "移除广告提示", "", "✅️", "✅️", "✅️")
@@ -2875,8 +2875,6 @@ MsgSponsor(*) {
     btn1.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
     guiCurrentMembership := guiSponsor.Add("Text", "xm+130 y+10  +0x0100", "您当前的会员组：" . currentType)
     guiCurrentExpiry := guiSponsor.Add("Text", "xm+130 y+5  +0x0100", "有效期至：" . currentExpDateFormatted)
-    text4 := guiSponsor.Add("Text", "xm+130 y+10 +0x0100", "===赞助信息生成器===")
-    guiSponsor.Tips.SetTip(text4, "Sponsorship Information Generator")
     ; 从 g_MembershipLevels 获取可选择的会员类型，排除 "普通用户" 和 "管理员"
     availableTiers := []
     for tierName, levelInfo in g_MembershipLevels {

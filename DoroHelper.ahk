@@ -5687,7 +5687,7 @@ EventSmall() {
 EventSmallChallenge() {
     AddLog("开始任务：小活动·挑战", "Fuchsia")
     while true {
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.357 * NikkeW . " ", NikkeY + 0.754 * NikkeH . " ", NikkeX + 0.357 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.754 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.357 * NikkeW . " ", NikkeY + 0.754 * NikkeH . " ", NikkeX + 0.357 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.754 * NikkeH + 0.070 * NikkeH . " ", 0.31 * PicTolerance, 0.31 * PicTolerance, FindText().PicLib("小活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             ; 挑战
             Challenge

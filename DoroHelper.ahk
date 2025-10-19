@@ -5913,6 +5913,8 @@ EventLargeMinigame() {
         UserClick(1938, 2030, TrueRatio)
         Sleep 1000
         if A_Index > 12 {
+            UserClick(1938, 2030, TrueRatio)
+            Sleep 1000
             AddLog("结算战斗")
             Send "{Esc}"
             Sleep 1000

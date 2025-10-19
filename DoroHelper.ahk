@@ -3973,6 +3973,7 @@ AdvanceMode(Picture, Picture2?) {
             }
             if (BattleActive == 0) {
                 AddLog("关卡无法进入，切换识图类型")
+                continue
             }
             else if (BattleActive == 2) {
                 AddLog("关卡次数耗尽")

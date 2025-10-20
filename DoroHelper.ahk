@@ -6111,6 +6111,7 @@ ClearRedLimit() {
     AddLog("自动突破妮姬", "Fuchsia")
     if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.395 * NikkeW . " ", NikkeY + 0.883 * NikkeH . " ", NikkeX + 0.395 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.883 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击进入妮姬")
+        Sleep 500
         FindText().Click(X, Y, "L")
         Sleep 1000
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.513 * NikkeW . " ", NikkeY + 0.191 * NikkeH . " ", NikkeX + 0.513 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.191 * NikkeH + 0.022 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·筛选红点"), , , , , , , TrueRatio, TrueRatio)) {

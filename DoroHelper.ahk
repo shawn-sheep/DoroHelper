@@ -5287,27 +5287,29 @@ AwardAdvise() {
             AddLog("确认咨询结算")
             Confirm
         }
-        ; 自动观看新花絮并领取奖励
-        if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) and g_numeric_settings["UserLevel"] >= 3 {
-            AddLog("点击红点")
-            FindText().Click(X, Y, "L")
-            Sleep 2000
-            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.400 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.400 * NikkeH + 0.512 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
-                AddLog("播放新的片段")
+        if g_settings["AwardAdviseAward"] and g_numeric_settings["UserLevel"] >= 3 {
+            ; 自动观看新花絮并领取奖励
+            if (ok := FindText(&X, &Y, NikkeX + 0.643 * NikkeW . " ", NikkeY + 0.480 * NikkeH . " ", NikkeX + 0.643 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.480 * NikkeH + 0.026 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , 1.2 * TrueRatio, 1.2 * TrueRatio)) {
+                AddLog("点击红点")
                 FindText().Click(X, Y, "L")
-                Sleep 3000
-                Send "{]}" ;尝试跳过
-                Sleep 3000
-                Confirm
-                Sleep 1000
-                GoBack
-                UserMove(1906, 1026, TrueRatio)
-                Send "{WheelDown 3}"
-                Sleep 1000
-            }
-            loop 3 {
-                Confirm
-                Sleep 500
+                Sleep 2000
+                while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.400 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.400 * NikkeH + 0.512 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
+                    AddLog("播放新的片段")
+                    FindText().Click(X, Y, "L")
+                    Sleep 3000
+                    Send "{]}" ;尝试跳过
+                    Sleep 3000
+                    Confirm
+                    Sleep 1000
+                    GoBack
+                    UserMove(1906, 1026, TrueRatio)
+                    Send "{WheelDown 3}"
+                    Sleep 1000
+                }
+                loop 3 {
+                    Confirm
+                    Sleep 500
+                }
             }
         }
         if (ok := FindText(&X, &Y, NikkeX + 0.970 * NikkeW . " ", NikkeY + 0.403 * NikkeH . " ", NikkeX + 0.970 * NikkeW + 0.024 * NikkeW . " ", NikkeY + 0.403 * NikkeH + 0.067 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("咨询·向右的图标"), , , , , , , TrueRatio, TrueRatio)) {

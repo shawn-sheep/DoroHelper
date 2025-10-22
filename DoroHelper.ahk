@@ -138,6 +138,7 @@ global g_settings := Map(
     ;其他
     "AutoFill", 0,                      ; 自动填充加成妮姬
     "CheckAuto", 0,                     ; 开启自动射击和爆裂
+    "TestModeInitialization", 1,       ; 调试模式预初始化
     "BluePill", 0,                      ; 万用开关
     "RedPill", 0                        ; 万用开关
 )
@@ -762,6 +763,8 @@ TextTestModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "调试模式")
 doroGui.Tips.SetTip(TextTestModeLabel, "根据输入的函数直接执行对应任务`nTestMode:Directly execute the corresponding task according to the input function")
 TestModeEditControl := doroGui.Add("Edit", "x+10 yp w145 h20")
 TestModeEditControl.Value := g_numeric_settings["TestModeValue"]
+cbTestModeInitialization := AddCheckboxSetting(doroGui, "TestModeInitialization", "预初始化", "x+5  R1")
+doroGui.Tips.SetTip(cbTestModeInitialization, "Initialize before executing tasks")
 BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", TestMode)
 TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "快速爆裂模式")
 doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快`n默认先A后S`nAfter starting, Burst will be used automatically, Fater than the built-in auto.`nBy default, A is used before S")
@@ -6520,7 +6523,9 @@ TestMode(BtnTestMode, Info) {
         }
     }
     ; 5. 初始化并执行
-    Initialization()
+    if g_settings["TestModeInitialization"] {
+        Initialization()
+    }
     try {
         Result := fn.Call(ParamsArray*)
         if (Result != "") {

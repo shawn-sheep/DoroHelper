@@ -2506,7 +2506,7 @@ GetDiskSerialsForValidation() {
     }
     return diskSerials
 }
-; 返回: 剩余价值 (数字)
+;tag 返回:剩余价值(数字)
 CalculateUserMembershipDollars(membershipType, expiryDate, unitPrice) {
     global g_MembershipLevels
     remainingValue := 0
@@ -2534,45 +2534,115 @@ CalculateUserMembershipDollars(membershipType, expiryDate, unitPrice) {
     }
     return remainingValue
 }
+; --- 新增私有辅助函数 ---
+; 私有函数：获取并解析用户组数据
+; 成功返回 Map 对象，失败抛出 Error
+_FetchAndParseGroupData() {
+    AddLog("正在从网络获取用户组数据……", "Blue")
+    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
+    jsonContent := DownloadUrlContent(jsonUrl)
+    if (jsonContent = "") {
+        AddLog("无法获取用户组信息，请检查网络。", "Red")
+        throw Error("无法获取用户组信息", -1, "网络或Gitee访问失败")
+    }
+    try {
+        groupData := Json.Load(&jsonContent)
+        if !IsObject(groupData) {
+            AddLog("解析用户组 JSON 文件失败或格式不正确。", "Red")
+            throw Error("解析 JSON 文件失败", -1, "JSON格式不正确")
+        }
+        return groupData
+    } catch as e {
+        AddLog("解析用户组 JSON 文件时发生错误: " . e.Message, "Red")
+        throw Error("解析 JSON 文件时发生错误", -1, e.Message)
+    }
+}
+; 私有函数：根据哈希值从用户组数据中获取会员信息
+; 返回一个 Map: {MembershipType: "...", UserLevel: N, ExpirationTime: "YYYYMMDD"}
+_GetMembershipInfoForHash(targetHash, groupData) {
+    local result := Map(
+        "MembershipType", "普通用户",
+        "UserLevel", 0,
+        "ExpirationTime", "19991231" ; 默认过期日期
+    )
+    local CurrentDate := A_YYYY A_MM A_DD
+    for _, memberInfo in groupData {
+        if IsObject(memberInfo) && memberInfo.Has("hash") && (memberInfo["hash"] == targetHash) {
+            if memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
+                local memberExpiryDate := memberInfo["expiry_date"]
+                local memberTier := memberInfo["tier"]
+                local level := 0
+                if (memberTier == "管理员") {
+                    level := 10
+                } else if (memberTier == "金Doro会员") {
+                    level := 3
+                } else if (memberTier == "银Doro会员") {
+                    level := 2
+                } else if (memberTier == "铜Doro会员") {
+                    level := 1
+                }
+                ; 如果是管理员，直接设为最高等级且永不过期
+                if (level == 10) {
+                    result["MembershipType"] := "管理员"
+                    result["UserLevel"] := 10
+                    result["ExpirationTime"] := "99991231"
+                    return result ; 管理员是最高优先级，直接返回
+                }
+                ; 只有当找到的会员等级更高时才更新结果
+                if (level > result["UserLevel"]) {
+                    if (memberExpiryDate >= CurrentDate) {
+                        result["MembershipType"] := memberTier
+                        result["UserLevel"] := level
+                        result["ExpirationTime"] := memberExpiryDate
+                    } else {
+                        AddLog("哈希 '" . targetHash . "' 匹配，但会员 " . memberTier . " 已过期 (到期日: " . memberExpiryDate . ").", "MAROON")
+                    }
+                }
+            } else {
+                AddLog("警告: 在JSON中找到哈希 '" . targetHash . "'，但会员信息不完整 (缺少tier或expiry_date)。", "MAROON")
+            }
+        }
+    }
+    return result
+}
 ;tag 确定用户组
 CheckUserGroup(forceUpdate := false) {
     global VariableUserGroup, g_numeric_settings, g_MembershipLevels
     static cachedUserGroupInfo := false
     ; 首次运行时，cachedUserGroupInfo 是 false，需要初始化
     if (!IsObject(cachedUserGroupInfo)) {
-        ; 从 g_numeric_settings 加载缓存的用户组信息
         cachedUserGroupInfo := Map(
             "MembershipType", g_numeric_settings.Get("UserGroup", "普通用户"),
             "UserLevel", g_numeric_settings.Get("UserLevel", 0),
             "ExpirationTime", "19991231"
         )
-        ; 如果从 INI 加载的用户组是管理员，则设置一个永不过期的日期
         if (cachedUserGroupInfo["MembershipType"] == "管理员") {
             cachedUserGroupInfo["ExpirationTime"] := "99991231"
         }
     }
-    UserGroupInfo := Map(
-        "MembershipType", "普通用户",
-        "UserLevel", 0,
-        "ExpirationTime", "19991231"
-    )
-    ; 如果不是强制更新且缓存的用户等级不低于当前 g_numeric_settings["UserLevel"]，则直接返回缓存结果。
-    ; 还需要检查缓存是否过期。
+    ; 检查缓存是否过期
     cachedExpiryTimestamp := cachedUserGroupInfo["ExpirationTime"] . "235959"
     if (!forceUpdate && cachedUserGroupInfo["UserLevel"] >= g_numeric_settings["UserLevel"] && A_Now < cachedExpiryTimestamp) {
         if (IsSet(VariableUserGroup) && IsObject(VariableUserGroup)) {
             VariableUserGroup.Value := cachedUserGroupInfo["MembershipType"]
         }
-        ; 更新 g_numeric_settings (这是唯一的“全局”存储)
         g_numeric_settings["UserGroup"] := cachedUserGroupInfo["MembershipType"]
         g_numeric_settings["UserLevel"] := cachedUserGroupInfo["UserLevel"]
         return cachedUserGroupInfo
     }
     AddLog(!forceUpdate ? "首次运行或强制更新，正在检查用户组信息……" : "强制检查用户组信息……", "Blue")
-    initialUserGroup := "普通用户"
-    initialUserLevel := 0
-    initialExpiryDate := "19991231"
+    try {
+        groupData := _FetchAndParseGroupData()
+    } catch as e {
+        AddLog("用户组检查失败: " . e.Message, "Red")
+        ; 失败时返回默认普通用户状态
+        cachedUserGroupInfo := Map("MembershipType", "普通用户", "UserLevel", 0, "ExpirationTime", "19991231")
+        g_numeric_settings["UserGroup"] := cachedUserGroupInfo["MembershipType"]
+        g_numeric_settings["UserLevel"] := cachedUserGroupInfo["UserLevel"]
+        return cachedUserGroupInfo
+    }
     ; 2. 获取硬件信息
+    local mainBoardSerial, cpuSerial, diskSerials
     try {
         mainBoardSerial := GetMainBoardSerial()
         cpuSerial := GetCpuSerial()
@@ -2582,119 +2652,53 @@ CheckUserGroup(forceUpdate := false) {
         }
     } catch as e {
         AddLog("获取硬件信息失败: " . e.Message, "Red")
-        cachedUserGroupInfo := UserGroupInfo
-        g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
-        g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
-        return UserGroupInfo
+        cachedUserGroupInfo := Map("MembershipType", "普通用户", "UserLevel", 0, "ExpirationTime", "19991231")
+        g_numeric_settings["UserGroup"] := cachedUserGroupInfo["MembershipType"]
+        g_numeric_settings["UserLevel"] := cachedUserGroupInfo["UserLevel"]
+        return cachedUserGroupInfo
     }
-    ; 3. 从网络获取用户组数据
-    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
-    jsonContent := DownloadUrlContent(jsonUrl)
-    if (jsonContent = "") {
-        AddLog("无法获取用户组信息，请检查网络后尝试重启程序。", "Red")
-        cachedUserGroupInfo := UserGroupInfo
-        g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
-        g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
-        return UserGroupInfo
-    }
-    ; 4. 解析JSON数据
-    try {
-        groupData := Json.Load(&jsonContent)
-        if !IsObject(groupData) {
-            AddLog("解析 JSON 文件失败或格式不正确。", "Red")
-            cachedUserGroupInfo := UserGroupInfo
-            g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
-            g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
-            return UserGroupInfo
-        }
-    } catch as e {
-        AddLog("解析 JSON 文件时发生错误: " . e.Message, "Red")
-        cachedUserGroupInfo := UserGroupInfo
-        g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
-        g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
-        return UserGroupInfo
-    }
-    ; 5. 校验用户组成员资格
-    CurrentDate := A_YYYY A_MM A_DD
-    isMember := false
-    tempUserGroup := initialUserGroup
-    tempExpiryDate := initialExpiryDate
-    tempUserLevel := initialUserLevel
-    highestLevelFound := 0
+    ; 3. 校验用户组成员资格
+    local highestMembership := Map(
+        "MembershipType", "普通用户",
+        "UserLevel", 0,
+        "ExpirationTime", "19991231"
+    )
     for diskSerial in diskSerials {
-        Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
-        for _, memberInfo in groupData {
-            if IsObject(memberInfo) && memberInfo.Has("hash") && (memberInfo["hash"] == Hashed) {
-                if memberInfo.Has("expiry_date") && memberInfo.Has("tier") {
-                    memberExpiryDate := memberInfo["expiry_date"]
-                    memberTier := memberInfo["tier"]
-                    ; 查找对应的用户等级
-                    level := 0
-                    if (memberTier == "管理员") {
-                        level := 10
-                    } else if (memberTier == "金Doro会员") {
-                        level := 3
-                    } else if (memberTier == "银Doro会员") {
-                        level := 2
-                    } else if (memberTier == "铜Doro会员") {
-                        level := 1
-                    }
-                    ; 如果是管理员，直接设为最高等级且不过期
-                    if (level == 10) {
-                        tempUserGroup := "管理员"
-                        tempUserLevel := 10
-                        tempExpiryDate := "99991231"
-                        isMember := true
-                        break
-                    }
-                    ; 只有当成员等级高于当前找到的最高等级时才更新
-                    if (level > highestLevelFound) {
-                        if (memberExpiryDate >= CurrentDate) {
-                            tempUserGroup := memberTier
-                            tempUserLevel := level
-                            tempExpiryDate := memberExpiryDate
-                            isMember := true
-                            highestLevelFound := level
-                        } else {
-                            AddLog("设备哈希匹配，但会员 " . memberTier . " 已过期 (到期日: " . memberExpiryDate . ").", "MAROON")
-                            ; 不更新 temp 变量，因为它可能已经被更高一级的有效会员覆盖
-                        }
-                    }
-                } else {
-                    AddLog("警告: 在JSON中找到设备ID，但会员信息不完整 (缺少tier或expiry_date)，哈希: " . Hashed, "MAROON")
-                }
-            }
-        }
-        if (isMember && tempUserLevel >= 10) {
+        local Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+        local currentHashInfo := _GetMembershipInfoForHash(Hashed, groupData)
+        ; 如果找到管理员，直接更新并跳出所有循环
+        if (currentHashInfo["UserLevel"] == 10) {
+            highestMembership := currentHashInfo
             break
         }
+        ; 如果当前哈希对应的会员等级更高，则更新最高会员信息
+        if (currentHashInfo["UserLevel"] > highestMembership["UserLevel"]) {
+            highestMembership := currentHashInfo
+        }
     }
-    ; 更新 UserGroupInfo Map 的内容
-    UserGroupInfo["MembershipType"] := tempUserGroup
-    UserGroupInfo["UserLevel"] := tempUserLevel
-    UserGroupInfo["ExpirationTime"] := tempExpiryDate
-    ; 更新 g_numeric_settings (这是唯一的“全局”存储) 和 GUI显示
-    g_numeric_settings["UserGroup"] := UserGroupInfo["MembershipType"]
+    ; 更新全局设置和GUI显示
+    g_numeric_settings["UserGroup"] := highestMembership["MembershipType"]
     if (IsSet(VariableUserGroup) && IsObject(VariableUserGroup)) {
         VariableUserGroup.Value := g_numeric_settings["UserGroup"]
     }
-    g_numeric_settings["UserLevel"] := UserGroupInfo["UserLevel"]
+    g_numeric_settings["UserLevel"] := highestMembership["UserLevel"]
     ; 根据 g_numeric_settings["UserLevel"] 重新计算 IsPremium 和 IsAdmin
-    UserGroupInfo["IsPremium"] := g_numeric_settings["UserLevel"] > 0
-    UserGroupInfo["IsAdmin"] := g_numeric_settings["UserLevel"] >= 10
-    if (UserGroupInfo["IsPremium"] || UserGroupInfo["IsAdmin"]) {
-        if (UserGroupInfo["IsAdmin"]) {
+    highestMembership["IsPremium"] := g_numeric_settings["UserLevel"] > 0
+    highestMembership["IsAdmin"] := g_numeric_settings["UserLevel"] >= 10
+    if (highestMembership["IsPremium"] || highestMembership["IsAdmin"]) {
+        if (highestMembership["IsAdmin"]) {
             ; TrySetIcon "icon\AdminDoro.ico"
             AddLog("当前用户组：管理员", "Green")
-        } else if (g_numeric_settings["UserLevel"] == 3) {
-            try TraySetIcon("icon\GoldDoro.ico")
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ", "Green")
-        } else if (g_numeric_settings["UserLevel"] == 2) {
-            try TraySetIcon("icon\SilverDoro.ico")
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ", "Green")
-        } else if (g_numeric_settings["UserLevel"] == 1) {
-            try TraySetIcon("icon\CopperDoro.ico")
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . SubStr(tempExpiryDate, 1, 4) . "-" . SubStr(tempExpiryDate, 5, 2) . "-" . SubStr(tempExpiryDate, 7, 2) . ") ", "Green")
+        } else {
+            local formattedExpiryDate := SubStr(highestMembership["ExpirationTime"], 1, 4) . "-" . SubStr(highestMembership["ExpirationTime"], 5, 2) . "-" . SubStr(highestMembership["ExpirationTime"], 7, 2)
+            if (g_numeric_settings["UserLevel"] == 3) {
+                try TraySetIcon("icon\GoldDoro.ico")
+            } else if (g_numeric_settings["UserLevel"] == 2) {
+                try TraySetIcon("icon\SilverDoro.ico")
+            } else if (g_numeric_settings["UserLevel"] == 1) {
+                try TraySetIcon("icon\CopperDoro.ico")
+            }
+            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . formattedExpiryDate . ") ", "Green")
         }
         AddLog("欢迎加入会员qq群759311938", "Green")
     } else {
@@ -2702,8 +2706,41 @@ CheckUserGroup(forceUpdate := false) {
         AddLog("欢迎加入反馈qq群759311938")
         try TraySetIcon("doro.ico")
     }
-    cachedUserGroupInfo := UserGroupInfo
-    return UserGroupInfo
+    cachedUserGroupInfo := highestMembership
+    return highestMembership
+}
+;tag 根据输入的哈希值检查用户组 (重构后)
+CheckUserGroupByHash(inputHash) {
+    global g_MembershipLevels
+    AddLog("开始检查输入哈希值 '" . inputHash . "' 的用户组信息……", "Blue")
+    if (Trim(inputHash) == "") {
+        MsgBox("请输入要查询的设备哈希值。", "输入错误", "IconW")
+        AddLog("用户未输入哈希值。", "MAROON")
+        return
+    }
+    try {
+        groupData := _FetchAndParseGroupData()
+        memberInfo := _GetMembershipInfoForHash(inputHash, groupData)
+        local resultMessage := "查询哈希值: " . inputHash . "`n"
+        if (memberInfo["UserLevel"] > 0) {
+            local formattedExpiryDate := memberInfo["ExpirationTime"]
+            if (formattedExpiryDate != "永不过期") {
+                formattedExpiryDate := SubStr(formattedExpiryDate, 1, 4) . "-" . SubStr(formattedExpiryDate, 5, 2) . "-" . SubStr(formattedExpiryDate, 7, 2)
+            }
+            resultMessage .= "用户组: " . memberInfo["MembershipType"] . "`n"
+            resultMessage .= "用户级别: " . memberInfo["UserLevel"] . "`n"
+            resultMessage .= "有效期至: " . formattedExpiryDate
+            MsgBox(resultMessage, "用户组查询结果", "IconI")
+            AddLog("哈希值 '" . inputHash . "' 的用户组信息查询成功。", "Green")
+        } else {
+            resultMessage .= "未找到匹配的用户组信息或已过期。"
+            MsgBox(resultMessage, "用户组查询结果", "IconW")
+            AddLog("哈希值 '" . inputHash . "' 未找到匹配的用户组信息或已过期。", "MAROON")
+        }
+    } catch as e {
+        MsgBox("检查用户组失败: " . e.Message, "错误", "IconX")
+        AddLog("检查用户组失败: " . e.Message, "Red")
+    }
 }
 ;endregion 身份辅助函数
 ;region GUI辅助函数

@@ -2871,7 +2871,7 @@ MsgSponsor(*) {
     LVZH.Add(, "自动推图", "", "", "", "✅️")
     LVZH.Add(, "其他最新功能", "", "", "", "✅️")
     Text3 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "总结：铜Doro免除广告、银Doro能做活动、金Doro能用全部功能")
-    guiSponsor.Tips.SetTip(Text3, "Summary: Copper Doro removes ads and the price is 1 ORANGE per month.Silver Doro enables event features and the price is 3 ORANGE per month.Gold Doro unlocks all functionalities and the price is 5 ORANGE per month.")
+    guiSponsor.Tips.SetTip(Text3, "Summary: `nCopper Doro removes ads and the price is 1 ORANGE per month.`nSilver Doro enables event features and the price is 3 ORANGE per month.`nGold Doro unlocks all functionalities and the price is 5 ORANGE per month.")
     ; ahk版
     if (scriptExtension = "ahk") {
         picUrl1 := "img\weixin.png"

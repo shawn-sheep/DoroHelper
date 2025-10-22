@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.8.5"
+currentVersion := "v1.8.6"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -5404,7 +5404,7 @@ AwardMail() {
 AwardRanking() {
     AddLog("开始任务：方舟排名奖励", "Fuchsia")
     EnterToArk()
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.979 * NikkeW . " ", NikkeY + 0.138 * NikkeH . " ", NikkeX + 0.979 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.138 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.973 * NikkeW . " ", NikkeY + 0.134 * NikkeH . " ", NikkeX + 0.973 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.134 * NikkeH + 0.083 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X - 30 * TrueRatio, Y + 30 * TrueRatio, "L")
     }
     else {

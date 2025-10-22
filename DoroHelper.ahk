@@ -2706,9 +2706,9 @@ CheckUserGroup(forceUpdate := false) {
         AddLog("欢迎加入会员qq群759311938", "Green")
     } else {
         AddLog("当前用户组：普通用户 (免费用户)")
-        AddLog("欢迎加入反馈qq群759311938")
         try TraySetIcon("doro.ico")
     }
+    AddLog("欢迎加入反馈qq群584275905")
     cachedUserGroupInfo := highestMembership
     return highestMembership
 }

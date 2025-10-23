@@ -3975,6 +3975,7 @@ AdvanceMode(Picture, Picture2?) {
             ok := ok_Pic
             currentPic := Picture
             hasAutoFill := true
+            AddLog("找到非扫荡关卡")
         }
         ; 2. 尝试匹配 Picture2 (低优先级，使用 else if 确保优先级)
         ; 无论 Picture 是否被跳过，如果 Picture 未找到，都会尝试 Picture2
@@ -3982,6 +3983,11 @@ AdvanceMode(Picture, Picture2?) {
             ok := ok_Pic2
             currentPic := Picture2
             hasAutoFill := false
+            AddLog("找到扫荡关卡")
+        }
+        else {
+            AddLog("未找到可用关卡，结束推关模式")
+            return
         }
         ; 3. 统一处理找到的图片逻辑
         if (ok && currentPic) {

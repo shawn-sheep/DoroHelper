@@ -3931,7 +3931,7 @@ EnterToOutpost() {
 }
 ;tag 自动填充加成妮姬
 AutoFill() {
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
         if g_settings["AutoFill"] and g_numeric_settings["UserLevel"] >= 3 {
             AddLog("点击黑色的加号")
             FindText().Click(X, Y, "L")
@@ -3959,6 +3959,11 @@ AutoFill() {
 }
 ;tag 推关模式
 AdvanceMode(Picture, Picture2?) {
+    while !(ok := FindText(&X, &Y, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.022 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.038 * NikkeW . " ", NikkeY + 0.022 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
+        Confirm
+    }
+    AddLog("进入活动关卡")
+    sleep 500
     AddLog("进行活动推关")
     Failed := false
     while true {
@@ -5762,10 +5767,6 @@ EventSmallStory() {
         FindText().Click(X, Y - 100 * TrueRatio, "L")
         Sleep 500
     }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.022 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.038 * NikkeW . " ", NikkeY + 0.022 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
-        Confirm
-    }
-    AddLog("进入活动关卡")
     AdvanceMode("小活动·关卡图标", "小活动·关卡图标2")
     Sleep 1000
     GoBack
@@ -5885,11 +5886,6 @@ EventLargeStory() {
         FindText().Click(X, Y - 100 * TrueRatio, "L")
         Sleep 1000
     }
-    while !(ok := FindText(&X, &Y, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.022 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.038 * NikkeW . " ", NikkeY + 0.022 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
-        Confirm
-    }
-    AddLog("进入活动关卡")
-    ; 执行剧情活动流程
     AdvanceMode("大活动·关卡图标", "大活动·关卡图标2")
     while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.29 * PicTolerance, 0.29 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试返回活动主页面")

@@ -6496,15 +6496,16 @@ TestMode(BtnTestMode, Info) {
     ; 1. 获取输入
     fullCallString := Trim(TestModeEditControl.Value)
     if (fullCallString = "") {
-        MsgBox("请输入要执行的函数调用，例如: MyFunc(`"param1`", 123)")
+        MsgBox("请输入要执行的函数调用，例如: MyFunc(`"param1`", 123) 或 MyFunc")
         return
     }
-    ; 2. 正则表达式解析 (允许函数名中带连字符)
-    if RegExMatch(fullCallString, "i)^([\w-]+)\s*\((.*)\)$", &Match) {
+    ; 2. 正则表达式解析 (允许函数名中带连字符，并使括号和参数可选)
+    if RegExMatch(fullCallString, "i)^([\w-]+)\s*(?:\((.*)\))?$", &Match) {
         FuncName := Match[1]
-        ParamString := Match[2]
+        ; Match[2] 将包含括号内的参数字符串，如果括号不存在，则 Match[2] 为空
+        ParamString := Match[2] ; 如果没有括号，Match[2] 会是空字符串
     } else {
-        MsgBox("无效的输入格式`n`n请使用 '函数名(参数1, 参数2, ……)' 的格式")
+        MsgBox("无效的输入格式`n`n请使用 '函数名(参数1, 参数2, ……)' 或 '函数名' 的格式")
         return
     }
     ; 3. 获取函数引用
@@ -6516,6 +6517,7 @@ TestMode(BtnTestMode, Info) {
     }
     ; 4. 解析参数 (简化版 - 直接传递变量名作为字符串)
     ParamsArray := []
+    ; 只有当 ParamString 不为空时才尝试解析参数
     if (Trim(ParamString) != "") {
         ParamList := StrSplit(ParamString, ",")
         for param in ParamList {
@@ -6524,14 +6526,17 @@ TestMode(BtnTestMode, Info) {
             ParamsArray.Push(cleanedParam)
         }
     }
+    ; 如果 ParamString 为空，ParamsArray 将保持为空，这正是我们无参数调用的期望
     ; 5. 初始化并执行
     if g_settings["TestModeInitialization"] {
         Initialization()
     }
     try {
+        ; 使用 ParamsArray* 进行可变参数调用
         Result := fn.Call(ParamsArray*)
+        ; 根据 Result 是否为空来决定消息，但通常函数执行完毕即可
         if (Result != "") {
-            MsgBox("函数 '" FuncName "' 执行完毕。")
+            MsgBox("函数 '" FuncName "' 执行完毕。结果: " Result)
         } else {
             MsgBox("函数 '" FuncName "' 执行完毕。")
         }

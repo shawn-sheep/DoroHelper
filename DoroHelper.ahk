@@ -5756,8 +5756,10 @@ EventSmallStory() {
         FindText().Click(X, Y - 100 * TrueRatio, "L")
         Sleep 500
     }
-    Sleep 1000
-    Confirm
+    while !(ok := FindText(&X, &Y, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.022 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.038 * NikkeW . " ", NikkeY + 0.022 * NikkeH + 0.027 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("活动关卡"), , , , , , , TrueRatio, TrueRatio)) {
+        Confirm
+    }
+    AddLog("进入活动关卡")
     AdvanceMode("小活动·关卡图标", "小活动·关卡图标2")
     Sleep 1000
     GoBack

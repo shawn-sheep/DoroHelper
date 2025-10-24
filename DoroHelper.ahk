@@ -5367,6 +5367,16 @@ AwardAdviseAward() {
             Send "{WheelDown 3}"
             Sleep 1000
         }
+        if (ok := FindText(&X, &Y, NikkeX + 0.616 * NikkeW . " ", NikkeY + 0.132 * NikkeH . " ", NikkeX + 0.616 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.132 * NikkeH + 0.024 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            AddLog("点击咨询图鉴")
+            Sleep 1000
+            if (ok := FindText(&X, &Y, NikkeX + 0.620 * NikkeW . " ", NikkeY + 0.829 * NikkeH . " ", NikkeX + 0.620 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.829 * NikkeH + 0.026 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                AddLog("点击领取奖励")
+                Sleep 1000
+            }
+        }
         loop 3 {
             Confirm
             Sleep 500

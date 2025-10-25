@@ -5724,10 +5724,9 @@ EventSmall() {
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·GO"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到小活动：GO!NINJA THIEF!")
-            UserClick(2782, 1816, TrueRatio)
             loop 3 {
+                UserClick(2782, 1816, TrueRatio)
                 Sleep 500
-                Confirm
             }
             break
         }
@@ -5811,10 +5810,9 @@ EventLarge() {
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·RE"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到大活动：REBORN EVIL")
-            UserClick(2782, 1816, TrueRatio)
             loop 3 {
+                UserClick(2782, 1816, TrueRatio)
                 Sleep 500
-                Confirm
             }
             break
         }

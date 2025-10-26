@@ -3140,7 +3140,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     jsonString .= "},"
     A_Clipboard := jsonString
     newExpiryDateFormatted := SubStr(finalExpiryDate, 1, 4) . "-" . SubStr(finalExpiryDate, 5, 2) . "-" . SubStr(finalExpiryDate, 7, 2)
-    MsgBox("赞助信息已生成并复制到剪贴板，请将其连同付款记录发给我`n"
+    MsgBox("赞助信息已生成并复制到剪贴板，请在对应页面按ctrl+v粘贴，然后连同付款记录发给我`n"
         . "状态: " . UserStatus . "`n"
         . "您将获得的会员类型: " . tierSelected . "`n"
         . "新会员到期日: " . newExpiryDateFormatted . "`n`n"

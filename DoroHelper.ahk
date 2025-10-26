@@ -566,7 +566,7 @@ SetInterceptionNormalTitle := doroGui.Add("Text", "R1 +0x0100 xs", "===基础选
 doroGui.Tips.SetTip(SetInterceptionNormalTitle, "Basic Options")
 g_settingPages["Interception"].Push(SetInterceptionNormalTitle)
 SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
-doroGui.Tips.SetTip(SetInterceptionScreenshot, "自动截取结算画面的图片，并保存在程序目录下的「截图」文件夹中`nAutomatic screenshot of the settlement screen, saved in the '截图' folder in the program directory")
+doroGui.Tips.SetTip(SetInterceptionScreenshot, "自动截取结算画面的图片，并保存在程序目录下的「Screenshot」文件夹中`nAutomatic screenshot of the settlement screen, saved in the 'Screenshot' folder in the program directory")
 g_settingPages["Interception"].Push(SetInterceptionScreenshot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
 doroGui.Tips.SetTip(SetRedCircle, "请务必在设置-战斗-控制中开启「同步游标与准星」|只对克拉肯有效`nMake sure to turn on 'Sync Cursor and Crosshair' in Settings - Combat - Controls | Only effective for Kraken")

@@ -2937,7 +2937,6 @@ MsgSponsor(*) {
     guiSponsor.Tips.SetTip(text5, "Your current region is: " . LocaleName . ". The unit price of ORANGE is: " . unitPrice . " " . currency)
     ; 修改价格显示 Text 控件，使其能显示更多信息
     guiPriceText := guiSponsor.Add("Text", "xm+70 w300 h60 Center +0x0100", "计算中……")
-    guiSponsor.Tips.SetTip(guiPriceText, "您将支付的金额以及计算详情。")
     btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
     guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
     ; 确保回调函数正确绑定

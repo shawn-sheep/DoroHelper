@@ -1041,7 +1041,12 @@ ClickOnDoro(*) {
     if g_settings["AutoSwitchLanguage"]
         AutoSwitchLanguage()
     if g_settings["LoopMode"] {
-        WinClose winID
+        BackToHall
+        Send "{Esc}"
+        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 500
+        }
         SaveAndRestart
     }
     if g_settings["CheckEvent"] {

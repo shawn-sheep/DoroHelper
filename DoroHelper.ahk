@@ -3821,7 +3821,6 @@ BattleSettlement(modes*) {
         GoBack
         Sleep 1000
         Send "{]}"
-        Confirm
         return True
     }
     ;递归结束时清零

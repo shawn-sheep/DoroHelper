@@ -5746,21 +5746,13 @@ EventSmall() {
 ;tag 挑战
 EventSmallChallenge() {
     AddLog("开始任务：小活动·挑战", "Fuchsia")
-    while true {
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.357 * NikkeW . " ", NikkeY + 0.754 * NikkeH . " ", NikkeX + 0.357 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.754 * NikkeH + 0.070 * NikkeH . " ", 0.31 * PicTolerance, 0.31 * PicTolerance, FindText().PicLib("小活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
-            FindText().Click(X, Y, "L")
-            ; 挑战
-            Challenge
-            break
-        }
-        if A_Index > 5 {
-            MsgBox("未找到小活动挑战")
-            Pause
-        }
-        sleep 1000
-        Confirm
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.357 * NikkeW . " ", NikkeY + 0.754 * NikkeH . " ", NikkeX + 0.357 * NikkeW + 0.136 * NikkeW . " ", NikkeY + 0.754 * NikkeH + 0.070 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("小活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("尝试进入对应活动页")
+        FindText().Click(X, Y, "L")
+        Sleep 500
     }
-    while (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("圈中的感叹号"), , 0, , , , , TrueRatio, TrueRatio)) {
+    Challenge
+    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("剧情活动"), , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试返回活动主页面")
         GoBack
         Sleep 1000
@@ -5859,7 +5851,7 @@ EventLargeChallenge() {
     AddLog("开始任务：大活动·挑战", "Fuchsia")
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.340 * NikkeW . " ", NikkeY + 0.812 * NikkeH . " ", NikkeX + 0.340 * NikkeW + 0.120 * NikkeW . " ", NikkeY + 0.812 * NikkeH + 0.049 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·挑战"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试进入对应活动页")
-        FindText().Click(X - 50 * TrueRatio, Y, "L")
+        FindText().Click(X, Y, "L")
         Sleep 500
     }
     Challenge

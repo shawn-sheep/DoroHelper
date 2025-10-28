@@ -3778,7 +3778,7 @@ BattleSettlement(modes*) {
             break
         }
         ; 基地防御等级提升的页面
-        if (ok := FindText(&X, &Y, NikkeX + 0.424 * NikkeW . " ", NikkeY + 0.424 * NikkeH . " ", NikkeX + 0.424 * NikkeW + 0.030 * NikkeW . " ", NikkeY + 0.424 * NikkeH + 0.030 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("LV."), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.490 * NikkeW . " ", NikkeY + 0.426 * NikkeH . " ", NikkeX + 0.490 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.426 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("蓝色的右箭头"), , , , , , , TrueRatio, TrueRatio)) {
             Confirm
         }
         ;间隔500ms

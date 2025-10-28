@@ -2584,13 +2584,6 @@ _GetMembershipInfoForHash(targetHash, groupData) {
                 } else if (memberTier == "铜Doro会员") {
                     level := 1
                 }
-                ; 如果是管理员，直接设为最高等级且永不过期
-                if (level == 10) {
-                    result["MembershipType"] := "管理员"
-                    result["UserLevel"] := 10
-                    result["ExpirationTime"] := "99991231"
-                    return result ; 管理员是最高优先级，直接返回
-                }
                 ; 只有当找到的会员等级更高时才更新结果
                 if (level > result["UserLevel"]) {
                     if (memberExpiryDate >= CurrentDate) {

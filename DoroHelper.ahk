@@ -1095,7 +1095,11 @@ AutoStartNikke() {
     }
     while g_numeric_settings["StartupPath"] != "" {
         SetTitleMatchMode 2
-        targetExe := "nikke_launcher.exe"
+        ; 从用户设置的启动路径中提取启动器文件名
+        launcherPath := g_numeric_settings["StartupPath"]
+        launcherFileName := ""
+        SplitPath launcherPath, &launcherFileName ; 提取文件名（例如：nikke_launcher.exe 或 nikke_launcher_hmt.exe）
+        targetExe := launcherFileName ; 使用实际的启动器文件名进行窗口检测
         gameExe := "nikke.exe"
         ; 尝试找到标题包含"NIKKE"的主窗口
         mainWindowID := WinExist("NIKKE ahk_exe " . targetExe)

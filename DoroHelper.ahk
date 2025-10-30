@@ -5820,8 +5820,8 @@ EventSmall() {
             Sleep 3000
         }
         if A_Index > 3 {
-            AddLog("未找到活动，可能是活动已结束")
-            return
+            MsgBox("未找到活动，可能是活动已结束")
+            Pause
         }
     }
     while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.35 * PicTolerance, 0.35 * PicTolerance, FindText().PicLib("剧情活动"), , 0, , , , , TrueRatio, TrueRatio)) {
@@ -5898,8 +5898,8 @@ EventLarge() {
             Sleep 3000
         }
         if A_Index > 3 {
-            AddLog("未找到活动，可能是活动已结束")
-            return
+            MsgBox("未找到活动，可能是活动已结束")
+            Pause
         }
     }
     while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.29 * PicTolerance, 0.29 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {

@@ -3639,8 +3639,8 @@ Recruit() {
         Confirm
     }
     FindText().Click(X, Y, "L") ;找到了就点
-    Sleep 1000
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.421 * NikkeW . " ", NikkeY + 0.889 * NikkeH . " ", NikkeX + 0.421 * NikkeW + 0.028 * NikkeW . " ", NikkeY + 0.889 * NikkeH + 0.027 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("确认"), , , , , , , TrueRatio, TrueRatio)) {
+    Sleep 3000
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.421 * NikkeW . " ", NikkeY + 0.889 * NikkeH . " ", NikkeX + 0.421 * NikkeW + 0.028 * NikkeW . " ", NikkeY + 0.889 * NikkeH + 0.027 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("确认"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 1000
     }
@@ -5625,16 +5625,16 @@ OneAwardPass() {
 ;tag 每日免费招募
 AwardFreeRecruit() {
     AddLog("开始任务：每日免费招募", "Fuchsia")
-    Text每天免费 := "|<每天免费>*156$64.wzzzzzbzz9zU0s03w1z00S01U0DU7zmNnzzyTwQzk0601ztzU07Abs07zby00Q00t6S00QttwNna9s01nba3aE01z3z00Q03167wDw03s0DgNzUTz9zbAw03wMzsbSNnk07Xky6Qt0TztsTVUs20kTyDbzbDUMTsU"
-    if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , 0, , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.585 * NikkeW . " ", NikkeY + 0.922 * NikkeH . " ", NikkeX + 0.585 * NikkeW + 0.051 * NikkeW . " ", NikkeY + 0.922 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的每天免费"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         AddLog("进入招募页面")
         Sleep 1000
-        while (ok := FindText(&X := "wait", &Y := 3, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, Text每天免费, , 0, , , , , TrueRatio, TrueRatio)) {
-            Text每日免费 := "|<每日免费>*122$73.szzs07z3zw00s01w01z07y00A00y00z03zU04TzzDwT3XzU0001zbyD007k0200Dnz7U01s00U07szXkkkw00MlXw01wQwS3W0E0y00y00C1l800D7wT007U04007byDk07s03a6Tnz7z0zwtll07tzXz2TyQss01w01z3DDA0w00y00y3X7UEDz1z00S3k30S3zVzbzDjw3Vzt"
-            if (ok := FindText(&X := "wait", &Y := 2, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, Text每日免费, , 0, , , , , TrueRatio, TrueRatio)) {
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.585 * NikkeW . " ", NikkeY + 0.922 * NikkeH . " ", NikkeX + 0.585 * NikkeW + 0.051 * NikkeW . " ", NikkeY + 0.922 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的每天免费"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.369 * NikkeW . " ", NikkeY + 0.819 * NikkeH . " ", NikkeX + 0.369 * NikkeW + 0.059 * NikkeW . " ", NikkeY + 0.819 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的每日免费"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("进行招募")
+                Sleep 1000
                 FindText().Click(X, Y, "L")
+                Sleep 1000
                 Recruit()
             }
             else {

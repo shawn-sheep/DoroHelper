@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.8.7"
+currentVersion := "v1.9.0"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -114,6 +114,7 @@ global g_settings := Map(
     ;清除红点
     "ClearRed", 0,                      ; 总开关
     "ClearRedNotice", 0,                ; 清除公告红点
+    "ClearRedShop", 0,                  ; 清除商店红点
     "ClearRedWallpaper", 0,             ; 清除壁纸红点
     "ClearRedRecycling", 0,             ; 自动升级循环室
     "ClearRedSynchro", 0,               ; 自动升级同步器
@@ -709,6 +710,9 @@ g_settingPages["After"].Push(cbClearRedCube)
 cbClearRedNotice := AddCheckboxSetting(doroGui, "ClearRedNotice", "清除公告红点", "R1 xs+15")
 doroGui.Tips.SetTip(cbClearRedNotice, "Clear Notice Red Dot")
 g_settingPages["After"].Push(cbClearRedNotice)
+cbClearRedShop := AddCheckboxSetting(doroGui, "ClearRedShop", "清除商店红点", "R1 xs+15")
+doroGui.Tips.SetTip(cbClearRedShop, "Clear Shop Red Dot")
+g_settingPages["After"].Push(cbClearRedShop)
 cbClearRedWallpaper := AddCheckboxSetting(doroGui, "ClearRedWallpaper", "清除壁纸红点", "R1 xs+15")
 doroGui.Tips.SetTip(cbClearRedWallpaper, "Clear Wallpaper Red Dot")
 g_settingPages["After"].Push(cbClearRedWallpaper)
@@ -1026,6 +1030,9 @@ ClickOnDoro(*) {
         }
         if g_settings["ClearRedNotice"] {
             ClearRedNotice()
+        }
+        if g_settings["ClearRedShop"] {
+            ClearRedShop()
         }
         if g_settings["ClearRedWallpaper"] {
             ClearRedWallpaper()
@@ -6346,6 +6353,29 @@ ClearRedCube() {
         BackToHall()
     }
     else AddLog("未发现方舟红点")
+}
+;tag 清除商店红点
+ClearRedShop() {
+    AddLog("寻找付费商店")
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.250 * NikkeW . " ", NikkeY + 0.599 * NikkeH . " ", NikkeX + 0.250 * NikkeW + 0.027 * NikkeW . " ", NikkeY + 0.599 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("付费商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击付费商店")
+        FindText().Click(X, Y, "L")
+        Sleep 2000
+        while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.001 * NikkeW . " ", NikkeY + 0.191 * NikkeH . " ", NikkeX + 0.001 * NikkeW + 0.292 * NikkeW . " ", NikkeY + 0.191 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , 0.83 * TrueRatio, 0.83 * TrueRatio)) {
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.249 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.367 * NikkeW . " ", NikkeY + 0.249 * NikkeH + 0.062 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("移除N标签")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                UserClick(238, 608, TrueRatio)
+                Sleep 1000
+                UserClick(100, 466, TrueRatio)
+                Sleep 1000
+            }
+        }
+    }
+    BackToHall
 }
 ;tag 清除公告红点
 ClearRedNotice() {

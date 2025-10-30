@@ -4230,11 +4230,18 @@ ShopCash() {
                 }
                 else break
             }
-            while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.259 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.351 * NikkeW . " ", NikkeY + 0.259 * NikkeH + 0.051 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.249 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.367 * NikkeW . " ", NikkeY + 0.249 * NikkeH + 0.062 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("点击二级页面")
                 FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                 Sleep 1000
-                if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.089 * NikkeW . " ", NikkeY + 0.334 * NikkeH . " ", NikkeX + 0.089 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.334 * NikkeH + 0.034 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , 5, TrueRatio, TrueRatio)) {
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.002 * NikkeW . " ", NikkeY + 0.249 * NikkeH . " ", NikkeX + 0.002 * NikkeW + 0.367 * NikkeW . " ", NikkeY + 0.249 * NikkeH + 0.062 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
+                    AddLog("移除N标签")
+                    FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    UserClick(238, 608, TrueRatio)
+                    Sleep 1000
+                }
+                if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.089 * NikkeW . " ", NikkeY + 0.334 * NikkeH . " ", NikkeX + 0.089 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.334 * NikkeH + 0.034 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , 5, TrueRatio, TrueRatio)) {
                     AddLog("点击三级页面")
                     FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
                     Sleep 1000

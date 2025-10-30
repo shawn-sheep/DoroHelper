@@ -2845,6 +2845,9 @@ GetUserLocaleName() {
 MsgSponsor(*) {
     global guiTier, guiDuration, guiSponsor, guiPriceText, guiCurrentMembership, guiCurrentExpiry
     global g_PriceMap, g_DefaultRegionPriceData, g_MembershipLevels, LocaleName
+    if g_numeric_settings["UserGroup"] = "普通用户" {
+        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记", "赞助说明", "iconi")
+    }
     guiSponsor := Gui("+Resize +Owner" doroGui.Hwnd, "赞助") ; 添加 +Owner 指定所属窗口
     guiSponsor.Opt("+DPIScale") ; 确保赞助窗口也支持 DPI 缩放
     guiSponsor.Tips := GuiCtrlTips(guiSponsor)

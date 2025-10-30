@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.9.0"
+currentVersion := "v1.9.1"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -773,7 +773,7 @@ BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Cli
 TextQuickBurst := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "快速爆裂模式")
 doroGui.Tips.SetTip(TextQuickBurst, "启动后，会自动使用爆裂，速度比自带的自动快`n默认先A后S`nAfter starting, Burst will be used automatically, Fater than the built-in auto.`nBy default, A is used before S")
 BtnQuickBurst := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", QuickBurst)
-TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta2[金Doro]")
+TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式beta3[金Doro]")
 doroGui.Tips.SetTip(TextAutoAdvance, "半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关`nMap Advancement:Semi-automatic map advancement. Set the view to the maximum. Start near the monster in the map, sometimes you need to manually find monsters and mechanisms")
 BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
@@ -6711,40 +6711,18 @@ AutoAdvance(*) {
         Sleep 1000
     }
     loop {
-        ; 自动捡垃圾
-        ; if (ok := FindText(&X := "wait", &Y := 1, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("黄色的遗失物品的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-        ;     AddLog("找到遗失物品！")
-        ;     FindText().Click(X, Y, "L")
-        ;     Sleep 1000
-        ;     if (ok := FindText(&X := "wait", &Y := 5, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
-        ;         Sleep 500
-        ;         FindText().Click(X, Y, "L")
-        ;     }
-        ; }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("点击小地图")
-            FindText().Click(X, Y, "L")
-        }
-        else {
-            EnterToBattle
-            if BattleActive = 1 {
-                modes := ["EventStory"]
-                if BattleSettlement(modes*) = False {
-                    MsgBox("本日の勝敗結果：`nDoroの敗北")
-                    return
-                }
-                else {
-                    while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
-                        Confirm
-                        Send "{]}"
-                    }
-                }
+        ; 找怪
+        loop {
+            if (ok := FindText(&X, &Y, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("点击小地图")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
             }
-        }
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.359 * NikkeW . " ", NikkeY + 0.251 * NikkeH . " ", NikkeX + 0.359 * NikkeW + 0.021 * NikkeW . " ", NikkeY + 0.251 * NikkeH + 0.040 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·缩小镜"), , , , , , , TrueRatio, TrueRatio)) {
-            AddLog("已进入小地图")
-            Sleep 1000
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.360 * NikkeW . " ", NikkeY + 0.254 * NikkeH . " ", NikkeX + 0.360 * NikkeW + 0.280 * NikkeW . " ", NikkeY + 0.254 * NikkeH + 0.495 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("推图·红色的三角"), , , , , , 9, TrueRatio * 0.8, TrueRatio * 0.8)) {
+            if k > 9 {
+                k := k - 9
+            }
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.326 * NikkeW . " ", NikkeY + 0.253 * NikkeH . " ", NikkeX + 0.326 * NikkeW + 0.340 * NikkeW . " ", NikkeY + 0.253 * NikkeH + 0.606 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("推图·红色的三角"), , , , , , k, TrueRatio * 0.8, TrueRatio * 0.8)) {
+                k := k + 2
                 Confirm
                 AddLog("找到敌人")
                 NikkeCenterX := NikkeX + NikkeW / 2
@@ -6758,11 +6736,46 @@ AutoAdvance(*) {
                 }
                 y := Y - 0.1 * NikkeH * DeviationY
                 FindText().Click(X, Y, "L")
-                Sleep 1000
+                Sleep 500
+                break
             }
-            else if A_Index > 5 {
+            Confirm
+            if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·红色的圈"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("备用方案：找到敌人")
+                FindText().Click(X, Y, "L")
+                Sleep 500
+                break
+            }
+            if A_Index > 10 {
                 MsgBox("小地图内找不到敌人，请重新开始")
                 return
+            }
+        }
+        ; 移动
+        t := 0
+        while (ok := FindText(&X, &Y, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("正在移动")
+            t := t + 1
+            Sleep 1000
+            if t > 5 {
+                AddLog("移动超时")
+                break
+            }
+        }
+        Sleep 1000
+        EnterToBattle
+        if BattleActive = 1 {
+            k := 9
+            modes := ["EventStory"]
+            if BattleSettlement(modes*) = False {
+                MsgBox("本日の勝敗結果：`nDoroの敗北")
+                return
+            }
+            else {
+                while !(ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.010 * NikkeW . " ", NikkeY + 0.084 * NikkeH . " ", NikkeX + 0.010 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.084 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·放大镜"), , , , , , , TrueRatio, TrueRatio)) {
+                    Confirm
+                    Send "{]}"
+                }
             }
         }
     }

@@ -2947,7 +2947,7 @@ MsgSponsor(*) {
     ; text5 := guiSponsor.Add("Text", "xm+90 r1 +0x0100", "您所在的地区欧润吉单价为：" . unitPrice . " " . currency)
     ; guiSponsor.Tips.SetTip(text5, "Your current region is: " . LocaleName . ". The unit price of ORANGE is: " . unitPrice . " " . currency)
     ; 修改价格显示 Text 控件，使其能显示更多信息
-    guiPriceText := guiSponsor.Add("Text", "xm+70 w300 h40 Center +0x0100", "计算中……")
+    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h60 Center +0x0100", "计算中……")
     btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
     guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
     ; 确保回调函数正确绑定
@@ -3081,66 +3081,66 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     if (currentLevel > 0 && currentExpDate . "235959" > A_Now) {
         remainingValue := CalculateUserMembershipDollars(currentType, currentExpDate, unitPrice)
     }
-    local cnyEquivalentString := ""
     local usdToCnyRate := 1.0
     if (currencyName = "USD") {
         usdToCnyRate := GetExchangeRate("USD", "CNY")
     }
     displayMessage := ""
-    if (currentLevel == targetUserLevel) {
-        ; 购买类型与当前相同 (续费或普通用户新购同类型)
-        formattedPrice := Format("{:0.2f}", fullValueForTarget) . " " . currencyName
-        if (currencyName = "USD") {
-            cnyAmount := Floor(fullValueForTarget * usdToCnyRate)
-            cnyEquivalentString := " (约 " . cnyAmount . " CNY)"
+    ; 辅助函数：格式化价格并添加可选的人民币估算
+    _formatPrice(amount, currency, rate) {
+        formatted := Format("{:0.2f}", amount) . " " . currency
+        if (currency = "USD") {
+            cnyAmount := Floor(amount * rate)
+            formatted .= " (约 " . cnyAmount . " CNY)"
         }
-        if (currentLevel > 0) {
-            displayMessage := "您当前是 " . currentType . "`n"
-                . "选择续费 " . tierSelected . " " . targetMonths . "个月`n"
-                . "总计需支付：" . formattedPrice . cnyEquivalentString
-        } else {
-            displayMessage := "您当前是普通用户`n"
-                . "选择开通 " . tierSelected . " " . targetMonths . "个月`n"
-                . "总计需支付：" . formattedPrice . cnyEquivalentString
-        }
-    } else if (currentLevel < targetUserLevel) {
-        ; 升级场景
-        upgradePrice := fullValueForTarget - remainingValue
-        if (upgradePrice > 0) {
-            ; 需要补差价
-            formattedUpgradePrice := Format("{:0.2f}", upgradePrice) . " " . currencyName
-            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
-            if (currencyName = "USD") {
-                cnyAmount := Floor(upgradePrice * usdToCnyRate)
-                cnyEquivalentString := " (约 " . cnyAmount . " CNY)"
-            }
-            displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
-                . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
-                . "扣除当前剩余价值后，您需支付：" . formattedUpgradePrice . cnyEquivalentString
-        } else {
-            ; 虽然是升级，但由于剩余价值较高，无需补差价甚至为负数
-            formattedFullPrice := Format("{:0.2f}", fullValueForTarget) . " " . currencyName
-            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
-            if (currencyName = "USD") {
-                cnyAmount := Floor(fullValueForTarget * usdToCnyRate) ; 即使无需补差价，也显示全额的CNY估算
-                cnyEquivalentString := " (约 " . cnyAmount . " CNY)"
-            }
-            displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
-                . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
-                . "您的剩余价值已足以覆盖升级，但系统暂不支持完全抵扣，`n"
-                . "建议支付全额作为新开通费用：" . formattedFullPrice . cnyEquivalentString
-        }
-    } else if (currentType == "管理员") { ; 管理员选择开通低级会员
-        formattedPrice := Format("{:0.2f}", fullValueForTarget) . " " . currencyName
-        if (currencyName = "USD") {
-            cnyAmount := Floor(fullValueForTarget * usdToCnyRate)
-            cnyEquivalentString := " (约 " . cnyAmount . " CNY)"
-        }
-        displayMessage := "您当前是管理员，选择开通 " . tierSelected . " " . targetMonths . "个月`n"
-            . "总计需支付：" . formattedPrice . cnyEquivalentString
-    } else {
-        ; 降级场景 (普通用户选择的会员类型低于当前类型)
+        return formatted
+    }
+    ; 场景1: 严格降级 (非管理员用户)
+    if (currentLevel > targetUserLevel && currentType != "管理员") {
         displayMessage := "无法降级：您当前是 " . currentType . "，`n请选择与当前会员组一致或更高级别的会员组。"
+    }
+    ; 场景2: 所有其他有效情况 (新购、续费、升级、管理员“降级”)
+    else {
+        ; 子场景2.1: 升级
+        if (currentLevel < targetUserLevel) {
+            upgradePrice := fullValueForTarget - remainingValue
+            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
+            if (currencyName = "USD") {
+                formattedRemainingValue .= " (约 " . Floor(remainingValue * usdToCnyRate) . " CNY)"
+            }
+            if (upgradePrice > 0) {
+                displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
+                    . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
+                    . "扣除当前剩余价值后，您需支付：" . _formatPrice(upgradePrice, currencyName, usdToCnyRate)
+            } else {
+                ; 尽管是升级，但由于剩余价值较高，无需额外支付或为负数。
+                ; 显示目标会员的全额价格并给出提示。
+                displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
+                    . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
+                    . "您的剩余价值已足以覆盖升级，但系统暂不支持完全抵扣，`n"
+                    . "建议支付全额作为新开通费用：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
+            }
+        }
+        ; 子场景2.2: 新购 / 续费 / 管理员“降级”
+        else {
+            local currentStatusText := ""
+            if (currentType == "管理员") {
+                currentStatusText := "您当前是管理员"
+            } else if (currentLevel > 0) { ; 续费
+                currentStatusText := "您当前是 " . currentType
+            } else { ; 新购 (currentLevel == 0)
+                currentStatusText := "您当前是普通用户"
+            }
+            local actionText := ""
+            if (currentLevel == targetUserLevel && currentLevel > 0) { ; 续费
+                actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
+            } else { ; 新购或管理员“降级”
+                actionText := "选择开通 " . tierSelected . " " . targetMonths . "个月"
+            }
+            displayMessage := currentStatusText . "`n"
+                . actionText . "`n"
+                . "总计需支付：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
+        }
     }
     guiPriceText.Text := displayMessage
 }

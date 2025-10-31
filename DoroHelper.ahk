@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.9.1"
+currentVersion := "v1.9.2"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -5982,7 +5982,7 @@ EventLargeStory() {
     }
     loop 3 {
         Confirm
-        Sleep 500
+        Sleep 1000
     }
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.457 * NikkeW . " ", NikkeY + 0.608 * NikkeH . " ", NikkeX + 0.457 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.608 * NikkeH + 0.026 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·剩余时间"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入剧情活动页面")

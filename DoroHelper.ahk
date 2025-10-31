@@ -6024,65 +6024,36 @@ EventLargeCooperate() {
 ;tag 小游戏
 EventLargeMinigame() {
     AddLog("开始任务：大活动·小游戏", "Fuchsia")
-    if 1 {
-        AddLog("本次小游戏未适配，跳过")
-        return
-    }
+    ; if 1 {
+    ;     AddLog("本次小游戏未适配，跳过")
+    ;     return
+    ; }
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.551 * NikkeW . " ", NikkeY + 0.715 * NikkeH . " ", NikkeX + 0.551 * NikkeW + 0.119 * NikkeW . " ", NikkeY + 0.715 * NikkeH + 0.044 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·小游戏"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试进入对应活动页")
         FindText().Click(X - 50 * TrueRatio, Y, "L")
         Send "{]}"
         Sleep 500
     }
-    Sleep 2000
+    Sleep 3000
     Send "{]}"
-    Confirm
-    AddLog("点第一个START")
-    UserClick(1974, 1418, TrueRatio)
-    Sleep 1000
-    AddLog("点第二个START")
-    UserClick(1911, 1743, TrueRatio)
-    if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
-        loop {
-            if (ok := FindText(&X, &Y, NikkeX + 0.370 * NikkeW . " ", NikkeY + 0.245 * NikkeH . " ", NikkeX + 0.370 * NikkeW + 0.259 * NikkeW . " ", NikkeY + 0.245 * NikkeH + 0.461 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·十字"), , , , , , 1, TrueRatio, TrueRatio)) {
-                AddLog("点击扩充")
-                FindText().Click(X, Y, "L")
-                Sleep 500
-            }
-            if (ok := FindText(&X, &Y, NikkeX + 0.499 * NikkeW . " ", NikkeY + 0.723 * NikkeH . " ", NikkeX + 0.499 * NikkeW + 0.142 * NikkeW . " ", NikkeY + 0.723 * NikkeH + 0.062 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏·扩充完成"), , , , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
-                Sleep 1000
-                break
-            }
-        }
+    loop 3 {
+        Confirm
     }
-    AddLog("点战斗开始")
-    UserClick(1938, 2030, TrueRatio)
-    Sleep 1000
-    loop {
-        Send "{Space}"
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.044 * NikkeW . " ", NikkeY + 0.136 * NikkeH . " ", NikkeX + 0.044 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.136 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("点击任务")
+        FindText().Click(X, Y, "L")
+        Sleep 2000
+        AddLog("点击领取奖励")
+        UserClick(1910, 1894, TrueRatio)
         Sleep 1000
-        Send "{1}"
-        Sleep 1000
-        UserClick(1938, 2030, TrueRatio)
-        Sleep 1000
-        if A_Index > 12 {
-            UserClick(1938, 2030, TrueRatio)
-            Sleep 1000
-            AddLog("结算战斗")
-            Send "{Esc}"
-            Sleep 1000
-            AddLog("点击快速完成")
-            UserClick(2120, 1858, TrueRatio)
-            Sleep 1000
-            AddLog("点击返回")
-            UserClick(1806, 1682, TrueRatio)
-            break
-        }
+        Confirm
     }
     while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.29 * PicTolerance, 0.29 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试返回活动主页面")
         GoBack
+        Sleep 1000
+        UserClick(2078, 1298, TrueRatio)
+        Sleep 1000
     }
     AddLog("已返回活动主页面")
 }

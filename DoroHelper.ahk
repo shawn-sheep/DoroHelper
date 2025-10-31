@@ -3643,9 +3643,9 @@ Recruit() {
     }
     FindText().Click(X, Y, "L") ;找到了就点
     Sleep 3000
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.421 * NikkeW . " ", NikkeY + 0.889 * NikkeH . " ", NikkeX + 0.421 * NikkeW + 0.028 * NikkeW . " ", NikkeY + 0.889 * NikkeH + 0.027 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("确认"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.421 * NikkeW . " ", NikkeY + 0.889 * NikkeH . " ", NikkeX + 0.421 * NikkeW + 0.028 * NikkeW . " ", NikkeY + 0.889 * NikkeH + 0.027 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("确认"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
-        Sleep 1000
+        Sleep 3000
     }
 }
 ;tag 点掉推销
@@ -5647,10 +5647,10 @@ AwardFreeRecruit() {
         AddLog("进入招募页面")
         Sleep 1000
         while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.585 * NikkeW . " ", NikkeY + 0.922 * NikkeH . " ", NikkeX + 0.585 * NikkeW + 0.051 * NikkeW . " ", NikkeY + 0.922 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的每天免费"), , , , , , , TrueRatio, TrueRatio)) {
-            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.369 * NikkeW . " ", NikkeY + 0.819 * NikkeH . " ", NikkeX + 0.369 * NikkeW + 0.059 * NikkeW . " ", NikkeY + 0.819 * NikkeH + 0.027 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的每日免费"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.379 * NikkeW . " ", NikkeY + 0.761 * NikkeH . " ", NikkeX + 0.379 * NikkeW + 0.047 * NikkeW . " ", NikkeY + 0.761 * NikkeH + 0.035 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("不获得"), , , , , , , TrueRatio, TrueRatio)) {
                 AddLog("进行招募")
                 Sleep 1000
-                FindText().Click(X, Y, "L")
+                FindText().Click(X, Y + 50 * TrueRatio, "L")
                 Sleep 1000
                 Recruit()
             }

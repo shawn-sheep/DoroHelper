@@ -6117,7 +6117,8 @@ EventSpecial() {
 ;tag 自动升级循环室
 ClearRedRecycling() {
     AddLog("自动升级循环室", "Fuchsia")
-    if (ok := FindText(&X, &Y, NikkeX + 0.344 * NikkeW . " ", NikkeY + 0.719 * NikkeH . " ", NikkeX + 0.344 * NikkeW + 0.011 * NikkeW . " ", NikkeY + 0.719 * NikkeH + 0.018 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX + 0.341 * NikkeW . " ", NikkeY + 0.714 * NikkeH . " ", NikkeX + 0.341 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.714 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio))
+    || (ok := FindText(&X, &Y, NikkeX + 0.341 * NikkeW . " ", NikkeY + 0.714 * NikkeH . " ", NikkeX + 0.341 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.714 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入前哨基地")
         FindText().Click(X, Y, "L")
         Sleep 1000

@@ -6241,7 +6241,7 @@ ClearRedLimit() {
         Sleep 500
         FindText().Click(X, Y, "L")
         Sleep 1000
-        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.513 * NikkeW . " ", NikkeY + 0.191 * NikkeH . " ", NikkeX + 0.513 * NikkeW + 0.014 * NikkeW . " ", NikkeY + 0.191 * NikkeH + 0.022 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·筛选红点"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.521 * NikkeW . " ", NikkeY + 0.182 * NikkeH . " ", NikkeX + 0.521 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.182 * NikkeH + 0.038 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("妮姬·筛选红点"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("点击筛选红点")
             FindText().Click(X, Y, "L")
             Sleep 1000

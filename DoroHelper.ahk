@@ -6034,10 +6034,10 @@ EventLargeMinigame() {
         Send "{]}"
         Sleep 500
     }
-    Sleep 3000
     Send "{]}"
-    loop 3 {
+    loop 5 {
         Confirm
+        Sleep 1000
     }
     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.044 * NikkeW . " ", NikkeY + 0.136 * NikkeH . " ", NikkeX + 0.044 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.136 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击任务")

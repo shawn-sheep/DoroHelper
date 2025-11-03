@@ -5662,7 +5662,9 @@ AwardFreeRecruit() {
             }
         }
     }
-    UserClick(1929, 1982, TrueRatio) ;点击大厅
+    loop 3 {
+        UserClick(1929, 1982, TrueRatio) ;点击大厅
+    }
 }
 ;endregion 招募
 ;region 协同作战

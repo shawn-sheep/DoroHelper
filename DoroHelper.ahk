@@ -395,7 +395,7 @@ cbAutoSwitchLanguage := AddCheckboxSetting(doroGui, "AutoSwitchLanguage", "自�
 doroGui.Tips.SetTip(cbAutoSwitchLanguage, "Switch language automatically")
 g_settingPages["Settings"].Push(cbAutoSwitchLanguage)
 DropDownListLanguage := doroGui.Add("DropDownList", "w150 Choose" g_numeric_settings["LanguageList"], ["ENGLISH", "日本语", "中文 (繁体)", "中文 (简体)"])
-doroGui.Tips.SetTip(DropDownListLanguage, "程序会最终切换回你选择的语言`nThe program will eventually switch back to the language you have chosen")
+doroGui.Tips.SetTip(DropDownListLanguage, "请以你选择的语言运行游戏。程序会最终切换回你选择的语言`nPlease run the game in the language of your choice. The program will eventually switch back to the language you have chosen")
 DropDownListLanguage.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["LanguageList"] := Ctrl.Value)
 g_settingPages["Settings"].Push(DropDownListLanguage)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1")
@@ -4165,9 +4165,9 @@ AutoSwitchLanguage() {
         if (ok := FindText(&X, &Y, NikkeX + 0.595 * NikkeW . " ", NikkeY + 0.247 * NikkeH . " ", NikkeX + 0.595 * NikkeW + 0.029 * NikkeW . " ", NikkeY + 0.247 * NikkeH + 0.041 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("账号·向下的三角"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep 1000
-            ; 找得到中文，说明是非中文界面，应该改成中文之后重新运行
-            if (ok := FindText(&X, &Y, NikkeX + 0.503 * NikkeW . " ", NikkeY + 0.242 * NikkeH . " ", NikkeX + 0.503 * NikkeW + 0.122 * NikkeW . " ", NikkeY + 0.242 * NikkeH + 0.377 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("(简体)"), , , , , , , TrueRatio, TrueRatio)) {
-                FindText().Click(X, Y, "L")
+            ; 找不到简体中文，应该改成简体中文之后重新运行
+            if !(ok := FindText(&X, &Y, NikkeX + 0.499 * NikkeW . " ", NikkeY + 0.240 * NikkeH . " ", NikkeX + 0.499 * NikkeW + 0.131 * NikkeW . " ", NikkeY + 0.240 * NikkeH + 0.055 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("简体"), , , , , , , TrueRatio, TrueRatio)) {
+                UserClick(2002, 1004, TrueRatio)
                 Sleep 1000
                 if (ok := FindText(&X, &Y, NikkeX + 0.518 * NikkeW . " ", NikkeY + 0.609 * NikkeH . " ", NikkeX + 0.518 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.609 * NikkeH + 0.033 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
                     FindText().Click(X, Y, "L")
@@ -4176,7 +4176,7 @@ AutoSwitchLanguage() {
                     return
                 }
             }
-            ; 找不到中文，说明已经是中文界面，应该改回原语言之后重新运行
+            ; 找得到简体中文，应该改回原语言之后重新运行
             else {
                 switch g_numeric_settings["LanguageList"] {
                     case 1:

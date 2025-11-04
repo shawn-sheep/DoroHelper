@@ -3961,15 +3961,17 @@ BackToHall(AD := False) {
                 break
             }
             else RefuseSale
-        } else {
+        }
+        else {
             ; 点左下角的小房子的位置
             UserClick(333, 2041, TrueRatio)
             Sleep 500
             Send "{]}"
             RefuseSale
         }
-        if A_Index > 40 {
+        if A_Index > 10 {
             UserClick(1924, 1968, TrueRatio)
+            Sleep 500
         }
         if A_Index > 50 {
             MsgBox ("返回大厅失败，程序已中止")

@@ -70,6 +70,7 @@ global g_settings := Map(
     "InterceptionScreenshot", 0,        ; 拦截截图
     "InterceptionRedCircle", 0,         ; 拦截红圈
     "InterceptionExit7", 0,             ; 满7退出
+    "InterceptionReminder", 0,          ; 快速战斗提醒
     ;常规奖励
     "Award", 0,                         ; 奖励领取总开关
     "AwardOutpost", 0,                  ; 前哨基地收菜
@@ -567,15 +568,18 @@ g_settingPages["Interception"].Push(DropDownListBoss)
 SetInterceptionNormalTitle := doroGui.Add("Text", "R1 +0x0100 xs", "===基础选项===")
 doroGui.Tips.SetTip(SetInterceptionNormalTitle, "Basic Options")
 g_settingPages["Interception"].Push(SetInterceptionNormalTitle)
-SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
-doroGui.Tips.SetTip(SetInterceptionScreenshot, "自动截取结算画面的图片，并保存在程序目录下的「Screenshot」文件夹中`nAutomatic screenshot of the settlement screen, saved in the 'Screenshot' folder in the program directory")
-g_settingPages["Interception"].Push(SetInterceptionScreenshot)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
-doroGui.Tips.SetTip(SetRedCircle, "请务必在设置-战斗-控制中开启「同步游标与准星」|只对克拉肯有效`nMake sure to turn on 'Sync Cursor and Crosshair' in Settings - Combat - Controls | Only effective for Kraken")
+doroGui.Tips.SetTip(SetRedCircle, "请务必在设置-战斗-控制中开启「同步游标与准星」|只对克拉肯有效`nAutomatically attack the red circle`nMake sure to turn on 'Sync Cursor and Crosshair' in Settings - Combat - Controls | Only effective for Kraken")
 g_settingPages["Interception"].Push(SetRedCircle)
 SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro]", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionExit7, "Exit immediately after the Boss reaches phase 7[Gold Doro]")
 g_settingPages["Interception"].Push(SetInterceptionExit7)
+SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
+doroGui.Tips.SetTip(SetInterceptionScreenshot, "自动截取结算画面的图片，并保存在程序目录下的「Screenshot」文件夹中`nAutomatic screenshot of the settlement screen, saved in the 'Screenshot' folder in the program directory")
+g_settingPages["Interception"].Push(SetInterceptionScreenshot)
+SetInterceptionReminder := AddCheckboxSetting(doroGui, "InterceptionReminder", "快速战斗刷新提醒", "R1.2")
+doroGui.Tips.SetTip(SetInterceptionReminder, "在每周快速战斗功能重置时进行提醒`nReminder for Quick Battle reset")
+g_settingPages["Interception"].Push(SetInterceptionReminder)
 ;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")
 g_settingPages["Award"].Push(SetAwardTitle)
@@ -5113,6 +5117,7 @@ InterceptionNormal() {
 }
 ;tag 异常拦截
 InterceptionAnomaly() {
+    global finalMessageText
     EnterToArk
     AddLog("开始任务：异常拦截", "Fuchsia")
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.401 * NikkeW . " ", NikkeY + 0.813 * NikkeH . " ", NikkeX + 0.401 * NikkeW + 0.069 * NikkeW . " ", NikkeY + 0.813 * NikkeH + 0.028 * NikkeH . " ", 0.45 * PicTolerance, 0.45 * PicTolerance, FindText().PicLib("拦截战"), , , , , , , TrueRatio, TrueRatio)) {
@@ -5195,6 +5200,14 @@ InterceptionAnomaly() {
     }
     Sleep 1000
     while True {
+        if g_settings["InterceptionReminder"] {
+            if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的快速战斗图标"), , , , , , , TrueRatio, TrueRatio)) {
+                AddLog("拦截战次数已重置，跳过任务")
+                finalMessageText := finalMessageText . "拦截战次数已重置`n"
+                BackToHall
+                return
+            }
+        }
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.826 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.145 * NikkeW . " ", NikkeY + 0.826 * NikkeH + 0.065 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("拦截战·快速战斗的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已激活快速战斗")
             Sleep 500

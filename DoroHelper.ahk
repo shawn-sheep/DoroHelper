@@ -164,6 +164,7 @@ global g_numeric_settings := Map(
 )
 ;tag 其他全局变量
 outputText := ""
+finalMessageText := ""
 Victory := 0
 BattleSkip := 0
 QuickBattle := 0
@@ -868,6 +869,7 @@ if g_settings["Timedstart"] {
 ;endregion 前置任务
 ;tag 点击运行
 ClickOnDoro(*) {
+    global finalMessageText
     ;清空文本
     LogBox.Value := ""
     ;写入设置
@@ -1061,7 +1063,7 @@ ClickOnDoro(*) {
     }
     CalculateAndShowSpan()
     finalMessageTitle := "DoroHelper任务完成！"
-    finalMessageText := "Doro完成任务！" . outputText
+    finalMessageText := finalMessageText . "Doro完成任务！" . outputText
     if g_numeric_settings["UserLevel"] < 1 or !g_settings["CloseAdvertisement"] {
         finalMessageText .= "`n可以支持一下Doro吗"
         Result := MsgBox(finalMessageText, finalMessageTitle, "YesNo IconI")

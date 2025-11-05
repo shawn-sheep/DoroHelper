@@ -2559,32 +2559,57 @@ CalculateUserMembershipDollars(membershipType, expiryDate, unitPrice) {
     }
     return remainingValue
 }
-; --- 新增私有辅助函数 ---
-; 私有函数：获取并解析用户组数据
+;tag 获取并解析用户组数据
 ; 成功返回 Map 对象，失败抛出 Error
-_FetchAndParseGroupData() {
+FetchAndParseGroupData() {
     AddLog("正在从网络获取用户组数据……", "Blue")
-    jsonUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
-    jsonContent := DownloadUrlContent(jsonUrl)
-    if (jsonContent = "") {
-        AddLog("无法获取用户组信息，请检查网络。", "Red")
-        throw Error("无法获取用户组信息", -1, "网络或Gitee访问失败")
-    }
+    giteeUrl := "https://gitee.com/con_sul/DoroHelper/raw/main/group/GroupArrayV3.json"
+    githubUrl := "https://raw.githubusercontent.com/1204244136/DoroHelper/refs/heads/main/group/GroupArrayV3.json"
+    jsonContent := ""
+    groupData := ""
+    giteeAttemptError := ""
+    ; --- 尝试从 Gitee 获取数据 ---
+    AddLog("尝试从 Gitee 获取用户组数据……", "Blue")
     try {
+        jsonContent := DownloadUrlContent(giteeUrl)
+        if (jsonContent = "") {
+            ; Gitee返回空内容，视为失败
+            throw Error("Gitee返回空内容", -1, "Gitee网络或文件访问失败")
+        }
         groupData := Json.Load(&jsonContent)
         if !IsObject(groupData) {
-            AddLog("解析用户组 JSON 文件失败或格式不正确。", "Red")
-            throw Error("解析 JSON 文件失败", -1, "JSON格式不正确")
+            throw Error("Gitee JSON格式不正确", -1, "Gitee JSON文件解析失败")
         }
+        AddLog("成功从 Gitee 获取并解析用户组数据。", "Green")
         return groupData
-    } catch as e {
-        AddLog("解析用户组 JSON 文件时发生错误: " . e.Message, "Red")
-        throw Error("解析 JSON 文件时发生错误", -1, e.Message)
+    } catch as e_gitee {
+        giteeAttemptError := "Gitee失败: " . e_gitee.Message
+        AddLog("从 Gitee 获取或解析用户组数据失败: " . giteeAttemptError . "。尝试从 GitHub 获取。", "Red")
+    }
+    ; --- 尝试从 GitHub 获取数据 (如果 Gitee 失败) ---
+    AddLog("尝试从 GitHub 获取用户组数据……", "Blue")
+    try {
+        jsonContent := DownloadUrlContent(githubUrl)
+        if (jsonContent = "") {
+            ; GitHub返回空内容，视为失败
+            throw Error("GitHub返回空内容", -1, "GitHub网络或文件访问失败")
+        }
+        groupData := Json.Load(&jsonContent)
+        if !IsObject(groupData) {
+            throw Error("GitHub JSON格式不正确", -1, "GitHub JSON文件解析失败")
+        }
+        AddLog("成功从 GitHub 获取并解析用户组数据。", "Green")
+        return groupData
+    } catch as e_github {
+        githubAttemptError := "GitHub失败: " . e_github.Message
+        AddLog("从 GitHub 获取或解析用户组数据失败: " . githubAttemptError . "。", "Red")
+        ; --- 如果 GitHub 也失败，抛出最终错误 ---
+        throw Error("无法获取用户组信息", -1, "网络或Gitee/GitHub访问失败: " . giteeAttemptError . " | " . githubAttemptError)
     }
 }
-; 私有函数：根据哈希值从用户组数据中获取会员信息
+;tag 根据哈希值从用户组数据中获取会员信息
 ; 返回一个 Map: {MembershipType: "...", UserLevel: N, ExpirationTime: "YYYYMMDD"}
-_GetMembershipInfoForHash(targetHash, groupData) {
+GetMembershipInfoForHash(targetHash, groupData) {
     local result := Map(
         "MembershipType", "普通用户",
         "UserLevel", 0,
@@ -2650,7 +2675,7 @@ CheckUserGroup(forceUpdate := false) {
     }
     AddLog(!forceUpdate ? "首次运行或强制更新，正在检查用户组信息……" : "强制检查用户组信息……", "Blue")
     try {
-        groupData := _FetchAndParseGroupData()
+        groupData := FetchAndParseGroupData()
     } catch as e {
         AddLog("用户组检查失败: " . e.Message, "Red")
         ; 失败时返回默认普通用户状态
@@ -2683,7 +2708,7 @@ CheckUserGroup(forceUpdate := false) {
     )
     for diskSerial in diskSerials {
         local Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
-        local currentHashInfo := _GetMembershipInfoForHash(Hashed, groupData)
+        local currentHashInfo := GetMembershipInfoForHash(Hashed, groupData)
         ; 如果找到管理员，直接更新并跳出所有循环
         if (currentHashInfo["UserLevel"] == 10) {
             highestMembership := currentHashInfo
@@ -2737,8 +2762,8 @@ CheckUserGroupByHash(inputHash) {
         return
     }
     try {
-        groupData := _FetchAndParseGroupData()
-        memberInfo := _GetMembershipInfoForHash(inputHash, groupData)
+        groupData := FetchAndParseGroupData()
+        memberInfo := GetMembershipInfoForHash(inputHash, groupData)
         local resultMessage := "查询哈希值: " . inputHash . "`n"
         if (memberInfo["UserLevel"] > 0) {
             local formattedExpiryDate := memberInfo["ExpirationTime"]

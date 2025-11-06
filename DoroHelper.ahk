@@ -6010,6 +6010,7 @@ EventLargeChallenge() {
 }
 ;tag 剧情活动
 EventLargeStory() {
+    Sleep 1000
     AddLog("开始任务：大活动·剧情活动", "Fuchsia")
     ; 先story2
     while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.339 * NikkeW . " ", NikkeY + 0.760 * NikkeH . " ", NikkeX + 0.339 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.760 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·STORY"), , , , , , , TrueRatio, TrueRatio)) {
@@ -6017,16 +6018,16 @@ EventLargeStory() {
         FindText().Click(X - 50 * TrueRatio, Y, "L")
         Sleep 500
     }
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.343 * NikkeW . " ", NikkeY + 0.707 * NikkeH . " ", NikkeX + 0.343 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.707 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·STORY"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X, &Y, NikkeX + 0.343 * NikkeW . " ", NikkeY + 0.707 * NikkeH . " ", NikkeX + 0.343 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.707 * NikkeH + 0.053 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·STORY"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试进入对应活动页")
         FindText().Click(X - 50 * TrueRatio, Y, "L")
         Sleep 500
     }
-    loop 3 {
+    loop 6 {
         Confirm
-        Sleep 1000
+        Sleep 500
     }
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.457 * NikkeW . " ", NikkeY + 0.608 * NikkeH . " ", NikkeX + 0.457 * NikkeW + 0.036 * NikkeW . " ", NikkeY + 0.608 * NikkeH + 0.026 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·剩余时间"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.778 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.045 * NikkeW . " ", NikkeY + 0.778 * NikkeH + 0.030 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·剩余时间"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("进入剧情活动页面")
         Sleep 500
         FindText().Click(X, Y - 100 * TrueRatio, "L")

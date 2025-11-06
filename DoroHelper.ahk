@@ -2978,7 +2978,7 @@ MsgSponsor(*) {
     ; text5 := guiSponsor.Add("Text", "xm+90 r1 +0x0100", "您所在的地区欧润吉单价为：" . unitPrice . " " . currency)
     ; guiSponsor.Tips.SetTip(text5, "Your current region is: " . LocaleName . ". The unit price of ORANGE is: " . unitPrice . " " . currency)
     ; 修改价格显示 Text 控件，使其能显示更多信息
-    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h60 Center +0x0100", "计算中……")
+    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h80 Center +0x0100", "计算中……")
     btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
     guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
     ; 确保回调函数正确绑定
@@ -3140,13 +3140,13 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
                 formattedRemainingValue .= " (约 " . Floor(remainingValue * usdToCnyRate) . " CNY)"
             }
             if (upgradePrice > 0) {
-                displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
+                displayMessage := "您当前是 " . currentType . "`n (剩余价值 " . formattedRemainingValue . ")`n"
                     . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
-                    . "扣除当前剩余价值后，您需支付：" . _formatPrice(upgradePrice, currencyName, usdToCnyRate)
+                    . "您仍需支付：" . _formatPrice(upgradePrice, currencyName, usdToCnyRate)
             } else {
                 ; 尽管是升级，但由于剩余价值较高，无需额外支付或为负数。
                 ; 显示目标会员的全额价格并给出提示。
-                displayMessage := "您当前是 " . currentType . " (剩余价值 " . formattedRemainingValue . ")`n"
+                displayMessage := "您当前是 " . currentType . "`n (剩余价值 " . formattedRemainingValue . ")`n"
                     . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
                     . "您的剩余价值已足以覆盖升级，但系统暂不支持完全抵扣，`n"
                     . "建议支付全额作为新开通费用：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
@@ -3166,7 +3166,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
             if (currentLevel == targetUserLevel && currentLevel > 0) { ; 续费
                 actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
             } else { ; 新购或管理员“降级”
-                actionText := "选择开通 " . tierSelected . " " . targetMonths . "个月"
+                actionText := "选择升级 " . tierSelected . " " . targetMonths . "个月"
             }
             displayMessage := currentStatusText . "`n"
                 . actionText . "`n"
@@ -3236,8 +3236,8 @@ CalculateSponsorInfo(thisGuiButton, info) {
         ; 升级的到期时间从当前开始计算
         newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
     } else { ; currentLevel > targetUserLevel 且 currentMembershipType == "管理员"
-        UserStatus := "管理员选择开通低级会员"
-        ; 对于管理员选择开通低级会员，到期时间从当前开始计算
+        UserStatus := "管理员选择升级低级会员"
+        ; 对于管理员选择升级低级会员，到期时间从当前开始计算
         newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
     }
     ; 确保 JSON 中的日期依然是 YYYYMMDD 格式

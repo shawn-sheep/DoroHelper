@@ -2547,17 +2547,18 @@ CalculateUserMembershipDollars(membershipType, expiryDate, unitPrice) {
     if (A_Now >= currentExpiryTimestamp) {
         return 0
     }
+    ; 计算剩余秒数
     secondsRemaining := DateDiff(currentExpiryTimestamp, A_Now, "Seconds")
-    daysRemaining := Floor(secondsRemaining / (24 * 3600)) ; 精确到天
-    ; 这里按月计算价值 (向下取整)，不足一月不算
-    remainingMonthsFloor := Floor(daysRemaining / 30) ; 假设一个月30天，简化计算
-    ; 或者可以尝试更精确的月数计算，但 "向下取整" 对于不足一个月的部分会丢弃
-    ; remainingMonthsRaw := DateDiff(currentExpiryTimestamp, A_Now, "Months")
-    ; remainingMonthsFloor := Floor(remainingMonthsRaw)
-    if (remainingMonthsFloor > 0) {
-        remainingValue := monthlyCost * unitPrice * remainingMonthsFloor
+    ; 将剩余秒数转换为天数，精确到小数，以便按天计算价值
+    daysRemaining := secondsRemaining / (24 * 3600)
+    ; 计算每日成本：每月成本 / 30天 (假设每月30天，与原逻辑保持一致)
+    ; 避免除以零，虽然 monthlyCost 应该大于0对于付费会员
+    if (monthlyCost > 0) {
+        dailyCost := (monthlyCost * unitPrice) / 30
+        remainingValue := dailyCost * daysRemaining
     }
-    return remainingValue
+    ; 确保返回的价值是正数
+    return Max(0, remainingValue)
 }
 ;tag 获取并解析用户组数据
 ; 成功返回 Map 对象，失败抛出 Error
@@ -3121,7 +3122,8 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     _formatPrice(amount, currency, rate) {
         formatted := Format("{:0.2f}", amount) . " " . currency
         if (currency = "USD") {
-            cnyAmount := Floor(amount * rate)
+            ; 将 Floor 改为 Round 以实现四舍五入到最近的整数
+            cnyAmount := Round(amount * rate)
             formatted .= " (约 " . cnyAmount . " CNY)"
         }
         return formatted

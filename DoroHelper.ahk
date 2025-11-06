@@ -5714,7 +5714,7 @@ AwardCooperate() {
     ;把鼠标移动到活动栏
     UserMove(150, 257, TrueRatio)
     while true {
-        if (ok := FindText(&X := "wait", &Y := 0.5, NikkeX + 0.005 * NikkeW . " ", NikkeY + 0.074 * NikkeH . " ", NikkeX + 0.005 * NikkeW + 0.124 * NikkeW . " ", NikkeY + 0.074 * NikkeH + 0.088 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("COOP的P"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 0.5, NikkeX + 0.064 * NikkeW . " ", NikkeY + 0.080 * NikkeH . " ", NikkeX + 0.064 * NikkeW + 0.066 * NikkeW . " ", NikkeY + 0.080 * NikkeH + 0.081 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("COOP的P"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L")
             Sleep 500
             break

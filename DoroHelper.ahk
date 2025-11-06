@@ -9,7 +9,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.9.2"
+currentVersion := "v1.9.3"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -578,7 +578,7 @@ SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot
 doroGui.Tips.SetTip(SetInterceptionScreenshot, "自动截取结算画面的图片，并保存在程序目录下的「Screenshot」文件夹中`nAutomatic screenshot of the settlement screen, saved in the 'Screenshot' folder in the program directory")
 g_settingPages["Interception"].Push(SetInterceptionScreenshot)
 SetInterceptionReminder := AddCheckboxSetting(doroGui, "InterceptionReminder", "快速战斗刷新提醒", "R1.2")
-doroGui.Tips.SetTip(SetInterceptionReminder, "在每周快速战斗功能重置时进行提醒`nReminder for Quick Battle reset")
+doroGui.Tips.SetTip(SetInterceptionReminder, "在每周快速战斗功能重置时进行提醒。`n勾选此项后，在手动战斗之前，不会自动战斗`nReminder for Quick Battle reset")
 g_settingPages["Interception"].Push(SetInterceptionReminder)
 ;tag 二级奖励Award
 SetAwardTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====奖励选项====")

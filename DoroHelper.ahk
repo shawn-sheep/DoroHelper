@@ -4613,10 +4613,14 @@ SimulationNormal() {
         return
     }
     Directly := false
-    if !(ok := FindText(&X, &Y, NikkeX + 0.469 * NikkeW . " ", NikkeY + 0.761 * NikkeH . " ", NikkeX + 0.469 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.761 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·蓝色的开关"), , , , , , , TrueRatio, TrueRatio)) {
+    while !(ok := FindText(&X, &Y, NikkeX + 0.469 * NikkeW . " ", NikkeY + 0.761 * NikkeH . " ", NikkeX + 0.469 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.761 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("模拟室·蓝色的开关"), , , , , , , TrueRatio, TrueRatio)) {
         UserClick(1850, 1710, TrueRatio)
         Sleep 500
         Directly := true
+        if A_Index >= 3 {
+            Directly := false
+            break
+        }
     }
     if !Directly {
         if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.501 * NikkeW . " ", NikkeY + 0.830 * NikkeH . " ", NikkeX + 0.501 * NikkeW + 0.150 * NikkeW . " ", NikkeY + 0.830 * NikkeH + 0.070 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("快速模拟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {

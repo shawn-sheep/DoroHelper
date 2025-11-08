@@ -166,7 +166,7 @@ global g_numeric_settings := Map(
 ;tag 其他全局变量
 outputText := ""
 finalMessageText := ""
-Victory := 0
+LastVictoryCount := 0
 BattleSkip := 0
 QuickBattle := 0
 PicTolerance := g_numeric_settings["Tolerance"]
@@ -3762,8 +3762,8 @@ EnterToBattle() {
     }
 }
 ;tag 战斗结算
-BattleSettlement(modes*) {
-    global Victory
+BattleSettlement(currentVictory := 0, modes*) {
+    global LastVictoryCount ; 声明要使用的全局变量
     Screenshot := false
     RedCircle := false
     Exit7 := false
@@ -3773,6 +3773,7 @@ BattleSettlement(modes*) {
         if BattleActive = 2 {
             Send "{Esc}"
         }
+        LastVictoryCount := currentVictory ; 更新全局变量
         return
     }
     for mode in modes {
@@ -3908,9 +3909,9 @@ BattleSettlement(modes*) {
     }
     ;有灰色的锁代表赢了但次数耗尽
     if (ok := FindText(&X, &Y, NikkeX + 0.893 * NikkeW . " ", NikkeY + 0.920 * NikkeH . " ", NikkeX + 0.893 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.920 * NikkeH + 0.039 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("灰色的锁"), , , , , , , TrueRatio, TrueRatio)) {
-        Victory := Victory + 1
-        if Victory > 1 {
-            AddLog("共胜利" Victory "次")
+        currentVictory := currentVictory + 1
+        if currentVictory > 1 {
+            AddLog("共胜利" currentVictory "次")
         }
     }
     ;有编队代表输了，点Esc
@@ -3918,22 +3919,23 @@ BattleSettlement(modes*) {
         AddLog("战斗失败！尝试返回", "MAROON")
         GoBack
         Sleep 1000
+        LastVictoryCount := currentVictory ; 更新全局变量
         return False
     }
     ;如果有下一关，就点下一关（爬塔的情况）
     else if (ok := FindText(&X, &Y, NikkeX + 0.889 * NikkeW . " ", NikkeY + 0.912 * NikkeH . " ", NikkeX + 0.889 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.912 * NikkeH + 0.081 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("白色的下一关卡"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("战斗成功！尝试进入下一关", "GREEN")
-        Victory := Victory + 1
-        if Victory > 1 {
-            AddLog("共胜利" Victory "次")
+        currentVictory := currentVictory + 1
+        if currentVictory > 1 {
+            AddLog("共胜利" currentVictory "次")
         }
         FindText().Click(X, Y + 20 * TrueRatio, "L")
         Sleep 5000
         if EventStory {
-            BattleSettlement("EventStory")
+            BattleSettlement(currentVictory, "EventStory")
         }
         else {
-            BattleSettlement()
+            BattleSettlement(currentVictory)
         }
     }
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
@@ -3942,10 +3944,9 @@ BattleSettlement(modes*) {
         GoBack
         Sleep 1000
         Send "{]}"
+        LastVictoryCount := currentVictory ; 更新全局变量
         return True
     }
-    ;递归结束时清零
-    Victory := 0
 }
 ;tag 活动挑战
 Challenge() {
@@ -4121,7 +4122,7 @@ AdvanceMode(Picture, Picture2?) {
             }
             ; 3.2 尝试进入战斗 (依赖 EnterToBattle 内部设置 BattleActive)
             EnterToBattle
-            BattleSettlement("EventStory")
+            BattleSettlement(0, "EventStory") ; 显式传递 0 作为 currentVictory 的初始值
             ; 区域变化的提示
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y + 400 * TrueRatio, "L")

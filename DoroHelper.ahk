@@ -2512,7 +2512,7 @@ GetDiskSerialsForValidation() {
     }
     return diskSerials
 }
-;tag 返回:剩余价值(数字)
+;tag 返回剩余价值
 CalculateUserMembershipDollars(membershipType, expiryDate, unitPrice) {
     global g_MembershipLevels
     remainingValue := 0
@@ -2859,7 +2859,7 @@ MsgSponsor(*) {
     global guiTier, guiDuration, guiSponsor, guiPriceText, guiCurrentMembership, guiCurrentExpiry
     global g_PriceMap, g_DefaultRegionPriceData, g_MembershipLevels, LocaleName
     if g_numeric_settings["UserGroup"] = "普通用户" {
-        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助。`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记。发送的将会是一段代码和赞助截图，而不是文本`n4、在收到已录入的信息后仍有几分钟的延迟，需要耐心等待", "赞助说明", "iconi")
+        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助。`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记。发送的将会是一段代码和赞助截图，而不是接下来的文本`n4、只需要在一个渠道发送录入后的文本。在收到已录入的信息后仍有几分钟的延迟，需要耐心等待", "赞助说明", "iconi")
     }
     guiSponsor := Gui("+Resize +Owner" doroGui.Hwnd, "赞助") ; 添加 +Owner 指定所属窗口
     guiSponsor.Opt("+DPIScale") ; 确保赞助窗口也支持 DPI 缩放
@@ -2871,8 +2871,6 @@ MsgSponsor(*) {
     guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
     Text1 := guiSponsor.Add("Text", "w400 +0x0100 Wrap", "现在 DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
     guiSponsor.Tips.SetTip(Text1, "Currently, I am the primary contributor to DoroHelper, handling most of the maintenance and new feature development. `nThis demands a significant amount of my time and energy. `nIf you find it valuable and are in a position to help, your support would be greatly appreciated.")
-    Text2 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "赞助信息与当前设备绑定。需要注意的是，赞助并不构成实际上的商业行为，如果遇到不可抗力因素，本人有权随时停止维护，最终解释权归本人所有")
-    guiSponsor.Tips.SetTip(Text2, "Sponsorship information is tied to the current device. `nPlease note that sponsorship does not constitute a commercial transaction. `nIn the event of unforeseen circumstances, I reserve the right to discontinue maintenance at any time. `nThe final interpretation rights belong to me.")
     ; ========================= 显示当前会员信息 =========================
     ; 显式地给变量赋默认初始值，消除静态分析器警告
     currentType := "普通用户", currentExpDate := "19991231"
@@ -3162,6 +3160,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
 CalculateSponsorInfo(thisGuiButton, info) {
     global guiTier, guiDuration, guiSponsor
     global g_MembershipLevels, g_PriceMap, LocaleName
+    MsgBox("需要按ctrl+v将信息粘贴，而不是将以下内容截图", "提示")
     mainBoardSerial := GetMainBoardSerial()
     cpuSerial := GetCpuSerial()
     diskSerial := GetDiskSerial()
@@ -3238,7 +3237,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
         . "状态: " . UserStatus . "`n"
         . "您将获得的会员类型: " . tierSelected . "`n"
         . "新会员到期日: " . newExpiryDateFormatted . "`n`n"
-        . "请将此剪贴板中的内容与付款截图私发给我，我将在24小时内为您登记`n"
+        . "注意这里的文本不是你应该复制的内容，剪贴板的才是`n"
         . "QQ群: 584275905`n"
         . "QQ邮箱: 1204244136@qq.com`n"
         . "海外邮箱: zhi.11@foxmail.com"

@@ -4126,6 +4126,11 @@ AdvanceMode(Picture, Picture2?) {
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y + 400 * TrueRatio, "L")
             }
+            ; 非扫荡关卡未能打满（即第11、12关）
+            if (LastVictoryCount != 5 && BattleActive = 1) {
+                AddLog("非扫荡关卡未能打满，切换识图类型")
+                continue
+            }
             ; 3.3 退出判断（仅扫荡成功时退出）
             if (QuickBattle = 1) {
                 AddLog("扫荡完成，退出推关模式")
@@ -4140,7 +4145,7 @@ AdvanceMode(Picture, Picture2?) {
                 AddLog("关卡无法进入，切换识图类型")
                 continue
             }
-            else if (BattleActive == 2) {
+            if (BattleActive == 2) {
                 AddLog("关卡次数耗尽")
                 return
             }

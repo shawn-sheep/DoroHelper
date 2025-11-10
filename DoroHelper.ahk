@@ -5,6 +5,11 @@
 #Include <PicLib>
 #Include <GuiCtrlTips>
 #Include <RichEdit>
+;检测管理员身份
+if !A_IsAdmin {
+    MsgBox "请以管理员身份运行DoroHelper！`nPlease run DoroHelper as administrator!"
+    ExitApp
+}
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
@@ -205,11 +210,6 @@ g_PriceMap := Map(
 g_DefaultRegionPriceData := defaultPriceData
 ;退出时保存设置
 OnExit(WriteSettings)
-;检测管理员身份
-if !A_IsAdmin {
-    MsgBox "请以管理员身份运行DoroHelper！`nPlease run DoroHelper as administrator!"
-    ExitApp
-}
 ;tag 彩蛋
 konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
 key_history := ""           ; 用于存储用户按键历史的变量

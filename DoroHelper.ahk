@@ -4024,7 +4024,7 @@ EnterToOutpost() {
         if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.240 * NikkeW . " ", NikkeY + 0.755 * NikkeH . " ", NikkeX + 0.240 * NikkeW + 0.048 * NikkeW . " ", NikkeY + 0.755 * NikkeH + 0.061 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("前哨基地的图标"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X, Y, "L") ;找得到就尝试进入
         }
-        if (ok := FindText(&X := "wait", &Y := 5, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.020 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.020 * NikkeH + 0.034 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.004 * NikkeW . " ", NikkeY + 0.020 * NikkeH . " ", NikkeX + 0.004 * NikkeW + 0.043 * NikkeW . " ", NikkeY + 0.020 * NikkeH + 0.034 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("左上角的前哨基地"), , , , , , , TrueRatio, TrueRatio)) {
             break
         }
         else BackToHall() ;找不到就先返回大厅

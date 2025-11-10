@@ -279,28 +279,15 @@ doroGui.Tips.SetTip(TextUserGroup, "你可以通点击上方的赞助按钮来�
 VariableUserGroup := doroGui.Add("Text", "x+0.5 w100 R1 +0x0100", g_numeric_settings["UserGroup"])
 ;tag 更新渠道
 TextUpdateChannels := doroGui.Add("Text", "Section x20 y+8 R1 +0x0100", "更新渠道")
-doroGui.Tips.SetTip(TextUpdateChannels, "UpdateChannels`n正式版:稳定，适合大多数用户|Stable: Reliable, recommended for most users.`n测试版:现已弃用|Beta: Now deprecated.`nAHK版:源代码版本，第一时间体验最新功能|AHK: Source code version with earliest access to new features.")
-if g_numeric_settings["UpdateChannels"] = "正式版" {
-    var := 1
-}
-else if g_numeric_settings["UpdateChannels"] = "测试版" {
-    var := 2
-}
-else {
-    var := 3
-}
-cbUpdateChannels := doroGui.Add("DropDownList", "x140 yp w100 Choose" var, ["正式版", "测试版", "AHK版"])
+doroGui.Tips.SetTip(TextUpdateChannels, "UpdateChannels`n正式版:稳定，适合大多数用户|Stable: Reliable, recommended for most users.`n测试版:现已弃用|Beta: Now deprecated.")
+cbUpdateChannels := doroGui.Add("DropDownList", "x140 yp w100", ["正式版", "测试版"])
+cbUpdateChannels.Text := g_numeric_settings["UpdateChannels"]
 cbUpdateChannels.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["UpdateChannels"] := Ctrl.Text)
 ;tag 资源下载
 TextDownloadSource := doroGui.Add("Text", "xs R1 +0x0100", "资源下载源")
 doroGui.Tips.SetTip(TextDownloadSource, "Download Source")
-if g_numeric_settings["DownloadSource"] = "GitHub" {
-    var := 1
-}
-else {
-    var := 2
-}
-cbDownloadSource := doroGui.AddDropDownList(" x140 yp w100 Choose" var, ["GitHub", "Mirror酱"])
+cbDownloadSource := doroGui.AddDropDownList(" x140 yp w100", ["GitHub", "Mirror酱"])
+cbDownloadSource.Text := g_numeric_settings["DownloadSource"]
 cbDownloadSource.OnEvent("Change", (Ctrl, Info) => ShowMirror(Ctrl, Info))
 ;tag Mirror酱
 MirrorText := doroGui.Add("Text", "xs R1 +0x0100", "Mirror酱CDK❔️")

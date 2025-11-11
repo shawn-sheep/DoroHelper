@@ -134,7 +134,6 @@ global g_settings := Map(
     "CloseHelp", 0,                     ; 关闭帮助提示
     "AutoSwitchLanguage", 0,            ; 自动切换语言
     "AutoCheckUpdate", 0,               ; 自动检查更新
-    "AutoCheckUserGroup", 1,            ; 自动检查会员组
     "AutoDeleteOldFile", 0,             ; 自动删除旧版本
     "DoroClosing", 0,                   ; 完成后自动关闭Doro
     "LoopMode", 0,                      ; 完成后自动关闭游戏
@@ -390,9 +389,6 @@ g_settingPages["Settings"].Push(DropDownListLanguage)
 cbAutoCheckVersion := AddCheckboxSetting(doroGui, "AutoCheckUpdate", "自动检查更新", "R1")
 doroGui.Tips.SetTip(cbAutoCheckVersion, "Check for updates automatically at startup")
 g_settingPages["Settings"].Push(cbAutoCheckVersion)
-cbAutoCheckUserGroup := AddCheckboxSetting(doroGui, "AutoCheckUserGroup", "自动检查用户组", "R1")
-doroGui.Tips.SetTip(cbAutoCheckUserGroup, "Check user group automatically at startup")
-g_settingPages["Settings"].Push(cbAutoCheckUserGroup)
 cbAutoDeleteOldFile := AddCheckboxSetting(doroGui, "AutoDeleteOldFile", "自动删除旧版本", "R1")
 doroGui.Tips.SetTip(cbAutoDeleteOldFile, "Delete old versions automatically after updating")
 g_settingPages["Settings"].Push(cbAutoDeleteOldFile)
@@ -821,8 +817,8 @@ if !(LocaleName = "zh-CN") {
     AddLog("For our international users,this will be a much faster and better way to get support. Here's the invite link:https://discord.gg/WtSxX6q6")
 }
 ;tag 检查用户组
-if g_settings["AutoCheckUserGroup"]
-    CheckUserGroup(true)
+if g_numeric_settings["UserGroup"] != "管理员"
+    CheckUserGroup
 ;tag 广告
 ; 如果满足以下任一条件，则显示广告：
 ; 1. 未勾选关闭广告 (无论用户是谁)
@@ -879,8 +875,6 @@ ClickOnDoro(*) {
         }
     }
     Initialization
-    if !g_settings["AutoCheckUserGroup"]
-        CheckUserGroup(true)
     if g_settings["Login"]
         Login()
     if g_settings["AutoSwitchLanguage"]
@@ -3332,9 +3326,6 @@ LoadSettings() {
         ; 读取并赋值到 g_numeric_settings Map
         readValue := IniRead("settings.ini", "NumericSettings", key, defaultValue)
         g_numeric_settings[key] := readValue
-    }
-    if (g_numeric_settings["UserLevel"] > 0) {
-        AddLog("从本地设置加载用户组: " . g_numeric_settings["UserGroup"] . " (级别: " . g_numeric_settings["UserLevel"] . ")", "Blue")
     }
 }
 ;tag 保存数据

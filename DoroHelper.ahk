@@ -14,7 +14,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.9.3"
+currentVersion := "v1.9.4"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2949,7 +2949,7 @@ MsgSponsor(*) {
     ; 添加 Choose1 确保默认选中第一个
     guiTier := guiSponsor.Add("DropDownList", "Choose1 x125 w100", availableTiers)
     guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
-    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月", "36个月"])
+    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月"])
     guiSponsor.Tips.SetTip(guiDuration, "月: Month")
     ; 确定当地货币单位和符号
     PriceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)

@@ -4105,7 +4105,10 @@ AdvanceMode(Picture, Picture2?) {
                 FindText().Click(X, Y + 400 * TrueRatio, "L")
             }
             ; 非扫荡关卡未能打满（即第11、12关）
-            if (LastVictoryCount != 5 && BattleActive = 1) {
+            if (LastVictoryCount != 5 && BattleActive = 1 && QuickBattle != 1) {
+                ; 补丁，防卡剧情
+                Sleep 3000
+                Send "{]}"
                 AddLog("非扫荡关卡未能打满，切换识图类型")
                 continue
             }

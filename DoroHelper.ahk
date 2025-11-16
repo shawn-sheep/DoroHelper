@@ -5931,7 +5931,7 @@ EventLarge() {
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·GODDESS FALL"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到大活动")
-            loop 3 {
+            while (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·GODDESS FALL"), , , , , , , TrueRatio, TrueRatio)) {
                 UserClick(2782, 1816, TrueRatio)
                 Sleep 500
             }

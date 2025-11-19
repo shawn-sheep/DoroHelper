@@ -2261,7 +2261,7 @@ MsgSponsor(*) {
     global guiTier, guiDuration, guiSponsor, guiPriceText, guiCurrentMembership, guiCurrentExpiry
     global g_PriceMap, g_DefaultRegionPriceData, g_MembershipLevels, LocaleName
     if g_numeric_settings["UserGroup"] = "普通用户" {
-        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助。`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记。发送的将会是一段代码和赞助截图，而不是接下来的文本`n4、只需要在一个渠道发送录入后的文本。在收到已录入的信息后仍有几分钟的延迟，需要耐心等待", "赞助说明", "iconi")
+        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助。`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记。发送的将会是一段代码和赞助截图，而不是接下来的文本`n4、只需要在一个渠道发送录入后的文本，不要每个渠道都发一遍。`n5、录入会在24小时内完成，届时会在对应渠道发送「已录入」的信息，根据网络延迟，会员资格会在收到信息后的5分钟内生效。因此在规定时间内，请不要催促作者，谢谢。", "赞助说明", "iconi")
     }
     guiSponsor := Gui("+Resize +Owner" doroGui.Hwnd, "赞助") ; 添加 +Owner 指定所属窗口
     guiSponsor.Opt("+DPIScale") ; 确保赞助窗口也支持 DPI 缩放
@@ -2562,7 +2562,6 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
 CalculateSponsorInfo(thisGuiButton, info) {
     global guiTier, guiDuration, guiSponsor
     global g_MembershipLevels, g_PriceMap, LocaleName
-    MsgBox("需要按ctrl+v将信息粘贴，而不是将以下内容截图", "提示")
     mainBoardSerial := GetMainBoardSerial()
     cpuSerial := GetCpuSerial()
     diskSerial := GetDiskSerial()

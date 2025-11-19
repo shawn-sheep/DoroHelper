@@ -2243,7 +2243,409 @@ DeleteOldFile(*) {
     }
 }
 ;endregion 更新辅助函数
-;region 身份辅助函数
+;region 会员辅助函数
+;tag 获取系统区域设置
+GetUserLocaleName() {
+    MaxLen := 85
+    BufferSize := MaxLen * 2
+    LocaleBuffer := Buffer(BufferSize, 0)
+    Result := DllCall("Kernel32\GetUserDefaultLocaleName", "Ptr", LocaleBuffer, "UInt", MaxLen, "UInt")
+    if (Result == 0) {
+        return ""
+    }
+    LocaleName := StrGet(LocaleBuffer, "UTF-16")
+    return LocaleName
+}
+;tag 赞助界面
+MsgSponsor(*) {
+    global guiTier, guiDuration, guiSponsor, guiPriceText, guiCurrentMembership, guiCurrentExpiry
+    global g_PriceMap, g_DefaultRegionPriceData, g_MembershipLevels, LocaleName
+    if g_numeric_settings["UserGroup"] = "普通用户" {
+        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助。`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记。发送的将会是一段代码和赞助截图，而不是接下来的文本`n4、只需要在一个渠道发送录入后的文本。在收到已录入的信息后仍有几分钟的延迟，需要耐心等待", "赞助说明", "iconi")
+    }
+    guiSponsor := Gui("+Resize +Owner" doroGui.Hwnd, "赞助") ; 添加 +Owner 指定所属窗口
+    guiSponsor.Opt("+DPIScale") ; 确保赞助窗口也支持 DPI 缩放
+    guiSponsor.Tips := GuiCtrlTips(guiSponsor)
+    guiSponsor.Tips.SetBkColor(0xFFFFFF)
+    guiSponsor.Tips.SetTxColor(0x000000)
+    guiSponsor.Tips.SetMargins(3, 3, 3, 3)
+    guiSponsor.Tips.SetDelayTime("AUTOPOP", 10000)
+    guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
+    Text1 := guiSponsor.Add("Text", "w400 +0x0100 Wrap", "现在 DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
+    guiSponsor.Tips.SetTip(Text1, "Currently, I am the primary contributor to DoroHelper, handling most of the maintenance and new feature development. `nThis demands a significant amount of my time and energy. `nIf you find it valuable and are in a position to help, your support would be greatly appreciated.")
+    ; ========================= 显示当前会员信息 =========================
+    ; 显式地给变量赋默认初始值，消除静态分析器警告
+    currentType := "普通用户", currentExpDate := "19991231"
+    userGroupInfo := CheckUserGroup() ; 获取当前用户会员信息 (使用缓存，更快)
+    ; 确保变量被赋值为从 CheckUserGroup 获取的实际值
+    currentType := userGroupInfo["MembershipType"]
+    currentExpDate := userGroupInfo["ExpirationTime"]
+    currentExpDateFormatted := "N/A"
+    ; 如果当前会员组不是普通用户且未过期
+    if (userGroupInfo["UserLevel"] > 0 && A_Now < currentExpDate . "235959") {
+        currentExpDateFormatted := SubStr(currentExpDate, 1, 4) . "-" . SubStr(currentExpDate, 5, 2) . "-" . SubStr(currentExpDate, 7, 2)
+    } else if (userGroupInfo["UserLevel"] > 0 && A_Now >= currentExpDate . "235959") {
+        currentType := "普通用户(已过期)" ; 确保显示过期状态，这会更新到 guiCurrentMembership
+    }
+    LVZH := guiSponsor.Add("ListView", "xm w400 h150", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
+    LVZH.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
+    LVZH.Add(, "移除广告提示", "", "✅️", "✅️", "✅️")
+    LVZH.Add(, "轮换活动", "", "", "✅️", "✅️")
+    LVZH.Add(, "路径和定时启动", "", "", "", "✅️")
+    LVZH.Add(, "自动推图", "", "", "", "✅️")
+    LVZH.Add(, "其他最新功能", "", "", "", "✅️")
+    Text3 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "总结：铜Doro免除广告、银Doro能做活动、金Doro能用全部功能")
+    guiSponsor.Tips.SetTip(Text3, "Summary: `nCopper Doro removes ads and the price is 1 ORANGE per month.`nSilver Doro enables event features and the price is 3 ORANGE per month.`nGold Doro unlocks all functionalities and the price is 5 ORANGE per month.")
+    ; ahk版
+    if (scriptExtension = "ahk") {
+        picUrl1 := "img\weixin.png"
+        picUrl2 := "img\alipay.png"
+        tempFile1 := picUrl1
+        tempFile2 := picUrl2
+    }
+    ; exe版
+    else {
+        picUrl1 := "https://s1.imagehub.cc/images/2025/09/12/c3fd38a9b6ae2e677b4e2f411ebc49a8.jpg"
+        picUrl2 := "https://s1.imagehub.cc/images/2025/09/12/f69df12697d7bb2a98ef61108e46e787.jpg"
+        tempFile1 := A_Temp . "\weixin.jpg"
+        tempFile2 := A_Temp . "\alipay.jpg"
+        ; 仅在文件不存在时下载，避免重复操作
+        if (!FileExist(tempFile1)) {
+            try {
+                Download picUrl1, tempFile1
+            } catch as e {
+                AddLog("下载微信支付二维码失败: " . e.Message, "Red")
+            }
+        }
+        if (!FileExist(tempFile2)) {
+            try {
+                Download picUrl2, tempFile2
+            } catch as e {
+                AddLog("下载支付宝支付二维码失败: " . e.Message, "Red")
+            }
+        }
+    }
+    try {
+        pic_ctr_1 := guiSponsor.Add("Picture", "x10 w200 h200", tempFile1)
+        pic_ctr_2 := guiSponsor.Add("Picture", "yp w200 h200", tempFile2)
+        guiSponsor.Tips.SetTip(pic_ctr_1, "微信/WeChat") ; 为图片添加 tooltip
+        guiSponsor.Tips.SetTip(pic_ctr_2, "支付宝/Alipay") ; 为图片添加 tooltip
+    }
+    catch {
+        guiSponsor.Add("Text", "w400 h200 Center", "无法加载赞助图片，请检查本地文件或网络连接。")
+    }
+    btn1 := guiSponsor.Add("Button", "xm+120", "我无法使用以上支付方式")
+    guiSponsor.Tips.SetTip(btn1, "I am unable to use the above payment methods")
+    btn1.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
+    guiCurrentMembership := guiSponsor.Add("Text", "xm+130 y+10  +0x0100", "您当前的会员组：" . currentType)
+    guiCurrentExpiry := guiSponsor.Add("Text", "xm+130 y+5  +0x0100", "有效期至：" . currentExpDateFormatted)
+    ; 从 g_MembershipLevels 获取可选择的会员类型，排除 "普通用户" 和 "管理员"
+    availableTiers := []
+    for tierName, levelInfo in g_MembershipLevels {
+        if (tierName != "普通用户" && tierName != "管理员") {
+            availableTiers.Push(tierName)
+        }
+    }
+    ; ; 手动添加管理员选项，设为特殊情况（测试用）
+    ; availableTiers.Push("管理员") ; <-- 注释掉这行以移除管理员选项
+    ; 添加 Choose1 确保默认选中第一个
+    guiTier := guiSponsor.Add("DropDownList", "Choose1 x125 w100", availableTiers)
+    guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
+    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月"])
+    guiSponsor.Tips.SetTip(guiDuration, "月: Month")
+    ; 确定当地货币单位和符号
+    PriceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)
+    unitPrice := PriceData.Unitprice
+    currency := PriceData.Currency
+    ; text5 := guiSponsor.Add("Text", "xm+90 r1 +0x0100", "您所在的地区欧润吉单价为：" . unitPrice . " " . currency)
+    ; guiSponsor.Tips.SetTip(text5, "Your current region is: " . LocaleName . ". The unit price of ORANGE is: " . unitPrice . " " . currency)
+    ; 修改价格显示 Text 控件，使其能显示更多信息
+    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h80 Center +0x0100", "计算中……")
+    btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
+    guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
+    ; 确保回调函数正确绑定
+    guiTier.OnEvent("Change", (Ctrl, Info) => UpdateSponsorPrice(userGroupInfo))
+    guiDuration.OnEvent("Change", (Ctrl, Info) => UpdateSponsorPrice(userGroupInfo))
+    btn2.OnEvent("Click", CalculateSponsorInfo) ; 放在所有OnEvent之后绑定
+    ; 初始化价格显示
+    UpdateSponsorPrice(userGroupInfo)
+    guiSponsor.Show("Center")
+}
+;tag 获取实时汇率
+GetExchangeRate(fromCurrency, toCurrency) {
+    static cache := Map() ; 汇率缓存
+    static cacheExpirySeconds := 3600 ; 缓存1小时
+    if (fromCurrency = toCurrency) {
+        return 1.0
+    }
+    cacheKey := fromCurrency . "_" . toCurrency
+    if (cache.Has(cacheKey)) {
+        cachedData := cache.Get(cacheKey)
+        ; 检查缓存是否过期
+        if (A_TickCount - cachedData.timestamp < cacheExpirySeconds * 1000) {
+            AddLog("从缓存获取汇率 " . fromCurrency . " 到 " . toCurrency . ": " . cachedData.rate, "Blue")
+            return cachedData.rate
+        }
+    }
+    AddLog("正在从 API 获取汇率 " . fromCurrency . " 到 " . toCurrency . "……", "Blue")
+    ; 使用 exchangerate-api.com 的免费层级API
+    apiUrl := "https://api.exchangerate-api.com/v4/latest/" . fromCurrency
+    jsonContent := DownloadUrlContent(apiUrl) ; 复用现有的 DownloadUrlContent 函数
+    if (jsonContent = "") {
+        AddLog("无法获取汇率信息，请检查网络或API服务。", "Red")
+        return 1.0 ; API失败时，默认返回1.0，避免计算错误
+    }
+    try {
+        jsonData := Json.Load(&jsonContent)
+        if (!IsObject(jsonData) || !jsonData.Has("rates")) {
+            AddLog("汇率 API 响应格式错误。", "Red")
+            return 1.0
+        }
+        rates := jsonData.Get("rates")
+        if (rates.Has(toCurrency)) {
+            rate := rates.Get(toCurrency)
+            ; 更新缓存
+            cache.Set(cacheKey, { rate: rate, timestamp: A_TickCount })
+            AddLog("成功获取汇率 " . fromCurrency . " 到 " . toCurrency . ": " . rate, "Green")
+            return rate
+        } else {
+            AddLog("API 响应中未找到目标货币 " . toCurrency . " 的汇率。", "Red")
+            return 1.0
+        }
+    } catch as e {
+        AddLog("解析汇率 JSON 失败: " . e.Message, "Red")
+        return 1.0
+    }
+}
+;tag 根据选择更新价格显示
+UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo 参数
+    global guiTier, guiDuration, guiPriceText, guiCurrentMembership, guiCurrentExpiry
+    global g_MembershipLevels, g_PriceMap, LocaleName
+    global g_numeric_settings ; 需要访问 UserLevel
+    ; 如果赞助 GUI 控件还未完全初始化，则提前退出
+    if (!IsObject(guiPriceText) || !guiPriceText.Hwnd || !IsObject(guiTier) || !guiTier.Hwnd || !IsObject(guiDuration) || !guiDuration.Hwnd) {
+        return
+    }
+    ; 获取当前选中的赞助选项
+    tierSelected := guiTier.Text
+    durationSelected := guiDuration.Text
+    if (tierSelected = "" || durationSelected = "") {
+        guiPriceText.Text := "请选择会员类型和时长"
+        return
+    }
+    ; 获取当前区域的单价和货币名称
+    priceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)
+    unitPrice := priceData.Unitprice
+    currencyName := priceData.Currency
+    ; 检查是否传入了 userGroupInfo_param，如果传入则使用，否则调用 CheckUserGroup()
+    if (IsObject(userGroupInfo_param)) {
+        userGroupInfo := userGroupInfo_param
+    } else {
+        ; 理论上 MsgSponsor 应该已经传入了，这里是备用，避免重复在线检查
+        userGroupInfo := CheckUserGroup()
+    }
+    currentType := userGroupInfo["MembershipType"]
+    currentExpDate := userGroupInfo["ExpirationTime"] ; YYYYMMDD格式
+    currentLevel := userGroupInfo["UserLevel"]
+    ; 更新赞助界面顶部的当前会员信息 (为了实时性)
+    currentExpDateFormatted := "N/A"
+    if (currentLevel > 0 && A_Now < currentExpDate . "235959") {
+        currentExpDateFormatted := SubStr(currentExpDate, 1, 4) . "-" . SubStr(currentExpDate, 5, 2) . "-" . SubStr(currentExpDate, 7, 2)
+        guiCurrentMembership.Text := "您当前的会员组：" . currentType
+    } else if (currentLevel > 0 && A_Now >= currentExpDate . "235959") {
+        ; 用户是会员但已过期
+        currentType := "普通用户(已过期)" ; 确保后续逻辑中处理为普通用户状态
+        currentLevel := 0 ; 过期则视为普通用户
+        guiCurrentMembership.Text := "您当前的会员组：" . "普通用户 (已过期)"
+    } else {
+        ; 普通用户
+        guiCurrentMembership.Text := "您当前的会员组：" . currentType
+    }
+    guiCurrentExpiry.Text := "有效期至：" . currentExpDateFormatted
+    ; 1. 计算目标会员的总月数和每月成本
+    targetMonthsText := StrReplace(durationSelected, "个月")
+    if (!IsNumber(targetMonthsText)) {
+        guiPriceText.Text := "错误：无效的赞助时长。"
+        return
+    }
+    targetMonths := Integer(targetMonthsText)
+    targetMonthlyCost := 0
+    targetUserLevel := 0
+    targetLevelInfo := g_MembershipLevels.Get(tierSelected)
+    if (!IsObject(targetLevelInfo)) {
+        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
+        if (tierSelected == "管理员") {
+            targetMonthlyCost := 999 ; 管理员的特殊价格
+            targetUserLevel := 10
+            ; 创建一个临时的 Map 对象，以便后续逻辑可以安全访问
+            targetLevelInfo := Map("monthlyCost", targetMonthlyCost, "userLevel", targetUserLevel)
+        } else {
+            guiPriceText.Text := "错误：无效的会员类型数据。"
+            AddLog("错误: 在 UpdateSponsorPrice 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
+            return
+        }
+    }
+    ; 确保 targetLevelInfo 此时是一个有效的 Map 对象
+    targetMonthlyCost := targetLevelInfo.monthlyCost
+    targetUserLevel := targetLevelInfo.userLevel
+    fullValueForTarget := targetMonthlyCost * unitPrice * targetMonths ; 没有任何减免的理论全价
+    ; 2. 计算当前会员的剩余价值 (如果存在且未过期)
+    remainingValue := 0
+    if (currentLevel > 0 && currentExpDate . "235959" > A_Now) {
+        remainingValue := CalculateUserMembershipDollars(currentType, currentExpDate, unitPrice)
+    }
+    local usdToCnyRate := 1.0
+    if (currencyName = "USD") {
+        usdToCnyRate := GetExchangeRate("USD", "CNY")
+    }
+    displayMessage := ""
+    ; 辅助函数：格式化价格并添加可选的人民币估算
+    _formatPrice(amount, currency, rate) {
+        formatted := Format("{:0.2f}", amount) . " " . currency
+        if (currency = "USD") {
+            ; 将 Floor 改为 Round 以实现四舍五入到最近的整数
+            cnyAmount := Round(amount * rate)
+            formatted .= " (约 " . cnyAmount . " CNY)"
+        }
+        return formatted
+    }
+    ; 场景1: 严格降级 (非管理员用户)
+    if (currentLevel > targetUserLevel && currentType != "管理员") {
+        displayMessage := "无法降级：您当前是 " . currentType . "，`n请选择与当前会员组一致或更高级别的会员组。"
+    }
+    ; 场景2: 所有其他有效情况 (新购、续费、升级、管理员“降级”)
+    else {
+        ; 子场景2.1: 升级
+        if (currentLevel < targetUserLevel) {
+            upgradePrice := fullValueForTarget - remainingValue
+            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
+            if (currencyName = "USD") {
+                formattedRemainingValue .= " (约 " . Floor(remainingValue * usdToCnyRate) . " CNY)"
+            }
+            if (upgradePrice > 0) {
+                displayMessage := "您当前是 " . currentType . "`n (剩余价值 " . formattedRemainingValue . ")`n"
+                    . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
+                    . "您仍需支付：" . _formatPrice(upgradePrice, currencyName, usdToCnyRate)
+            } else {
+                ; 尽管是升级，但由于剩余价值较高，无需额外支付或为负数。
+                ; 显示目标会员的全额价格并给出提示。
+                displayMessage := "您当前是 " . currentType . "`n (剩余价值 " . formattedRemainingValue . ")`n"
+                    . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
+                    . "您的剩余价值已足以覆盖升级，但系统暂不支持完全抵扣，`n"
+                    . "建议支付全额作为新开通费用：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
+            }
+        }
+        ; 子场景2.2: 新购 / 续费 / 管理员“降级”
+        else {
+            local currentStatusText := ""
+            if (currentType == "管理员") {
+                currentStatusText := "您当前是管理员"
+            } else if (currentLevel > 0) { ; 续费
+                currentStatusText := "您当前是 " . currentType
+            } else { ; 新购 (currentLevel == 0)
+                currentStatusText := "您当前是普通用户"
+            }
+            local actionText := ""
+            if (currentLevel == targetUserLevel && currentLevel > 0) { ; 续费
+                actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
+            } else { ; 新购或管理员“降级”
+                actionText := "选择升级 " . tierSelected . " " . targetMonths . "个月"
+            }
+            displayMessage := currentStatusText . "`n"
+                . actionText . "`n"
+                . "总计需支付：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
+        }
+    }
+    guiPriceText.Text := displayMessage
+}
+;tag 计算并生成赞助信息
+CalculateSponsorInfo(thisGuiButton, info) {
+    global guiTier, guiDuration, guiSponsor
+    global g_MembershipLevels, g_PriceMap, LocaleName
+    MsgBox("需要按ctrl+v将信息粘贴，而不是将以下内容截图", "提示")
+    mainBoardSerial := GetMainBoardSerial()
+    cpuSerial := GetCpuSerial()
+    diskSerial := GetDiskSerial()
+    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+    tierSelected := guiTier.Text
+    durationSelected := guiDuration.Text
+    if (tierSelected == "管理员") {
+        MsgBox("管理员等级不能通过此方式赞助。", "赞助无效") ; 恢复无图标
+        return
+    }
+    targetMonthsText := StrReplace(durationSelected, "个月")
+    if (!IsNumber(targetMonthsText)) {
+        MsgBox("请选择有效的赞助时长。", "赞助信息错误") ; 恢复无图标
+        return
+    }
+    targetMonths := Integer(targetMonthsText)
+    currentUserInfo := CheckUserGroup(true)
+    currentMembershipType := currentUserInfo["MembershipType"]
+    currentExpiryDate := currentUserInfo["ExpirationTime"] ; YYYYMMDD
+    currentLevel := currentUserInfo["UserLevel"]
+    targetLevelInfo := g_MembershipLevels.Get(tierSelected)
+    if (!IsObject(targetLevelInfo)) {
+        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
+        if (tierSelected == "管理员") {
+            ; 为管理员创建一个临时的 Map 对象，以便后续逻辑可以安全访问
+            targetLevelInfo := Map("monthlyCost", 999, "userLevel", 10)
+        } else {
+            MsgBox("错误：无效的会员类型数据。", "赞助信息错误")
+            AddLog("错误: 在 CalculateSponsorInfo 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
+            return
+        }
+    }
+    targetUserLevel := targetLevelInfo.userLevel
+    newExpiryDateTimestamp := "" ; Ahk时间戳格式 YYYYMMDDHHmmss
+    UserStatus := ""
+    ; 确保当前选择不是降级，除非是管理员
+    if (currentLevel > targetUserLevel && targetMonths > 0 && currentMembershipType != "管理员") { ; 如果用户尝试生成降级信息且不是管理员
+        MsgBox("您不能将您的会员组从 " . currentMembershipType . " 降级到 " . tierSelected . "。", "赞助无效") ; 恢复无图标
+        return
+    }
+    ; 根据当前用户状态和目标选择决定到期日和 UserStatus
+    if (currentLevel == targetUserLevel) {
+        ; 续费或普通用户新购同类型
+        ; 检查是否为普通用户或已过期，如果不是，则视为续费
+        if (currentLevel == 0 || A_Now >= currentExpiryDate . "235959") {
+            UserStatus := "新用户开通"
+            newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
+        } else {
+            UserStatus := "老用户续费"
+            newExpiryDateTimestamp := DateAdd(currentExpiryDate . "235959", 30 * targetMonths, "days")
+        }
+    } else if (currentLevel < targetUserLevel) {
+        ; 升级
+        UserStatus := "用户组升级"
+        ; 升级的到期时间从当前开始计算
+        newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
+    } else { ; currentLevel > targetUserLevel 且 currentMembershipType == "管理员"
+        UserStatus := "管理员选择升级低级会员"
+        ; 对于管理员选择升级低级会员，到期时间从当前开始计算
+        newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
+    }
+    ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
+    finalExpiryDate := SubStr(newExpiryDateTimestamp, 1, 8)
+    jsonString := UserStatus "`n"
+    jsonString .= "(请将这段文字替换成您的付款截图，邮件的图片请以附件形式发送)`n"
+    jsonString .= "  {" . "`n"
+    jsonString .= "    `"hash`": `"" Hashed "`"," . "`n"
+    jsonString .= "`"tier`": `"" tierSelected "`"," . "`n"
+    jsonString .= "`"expiry_date`": `"" finalExpiryDate "`"" . "`n"
+    jsonString .= "},"
+    A_Clipboard := jsonString
+    newExpiryDateFormatted := SubStr(finalExpiryDate, 1, 4) . "-" . SubStr(finalExpiryDate, 5, 2) . "-" . SubStr(finalExpiryDate, 7, 2)
+    MsgBox("赞助信息已生成并复制到剪贴板，请在对应页面按ctrl+v粘贴，然后连同付款记录发给我`n"
+        . "状态: " . UserStatus . "`n"
+        . "您将获得的会员类型: " . tierSelected . "`n"
+        . "新会员到期日: " . newExpiryDateFormatted . "`n`n"
+        . "注意这里的文本不是你应该复制的内容，剪贴板的才是`n"
+        . "QQ群: 584275905`n"
+        . "QQ邮箱: 1204244136@qq.com`n"
+        . "海外邮箱: zhi.11@foxmail.com"
+        , "赞助信息已复制！") ; 恢复无图标
+    guiSponsor.Destroy() ; 赞助信息生成后关闭赞助GUI
+}
 ;tag 下载指定URL的内容
 DownloadUrlContent(url) {
     ; 这个函数是获取纯文本内容，而不是下载文件到磁盘。
@@ -2774,7 +3176,7 @@ CheckUserGroupByHash(inputHash) {
         AddLog("检查用户组失败: " . e.Message, "Red")
     }
 }
-;endregion 身份辅助函数
+;endregion 会员辅助函数
 ;region GUI辅助函数
 ;tag 保存并重启
 SaveAndRestart(*) {
@@ -2848,408 +3250,6 @@ CheckEvent(*) {
     if MyFileShortHash = "20251126" {
         MsgBox "莉贝雷利奥的招募将在今天结束，需要抽突破的别忘了！"
     }
-}
-;tag 获取系统区域设置
-GetUserLocaleName() {
-    MaxLen := 85
-    BufferSize := MaxLen * 2
-    LocaleBuffer := Buffer(BufferSize, 0)
-    Result := DllCall("Kernel32\GetUserDefaultLocaleName", "Ptr", LocaleBuffer, "UInt", MaxLen, "UInt")
-    if (Result == 0) {
-        return ""
-    }
-    LocaleName := StrGet(LocaleBuffer, "UTF-16")
-    return LocaleName
-}
-;tag 赞助界面
-MsgSponsor(*) {
-    global guiTier, guiDuration, guiSponsor, guiPriceText, guiCurrentMembership, guiCurrentExpiry
-    global g_PriceMap, g_DefaultRegionPriceData, g_MembershipLevels, LocaleName
-    if g_numeric_settings["UserGroup"] = "普通用户" {
-        MsgBox("我已知晓：`n1、会员功能与设备绑定，更换设备后需要重新赞助。`n2、赞助并不构成实际上的商业行为，如果遇到不可抗力因素，作者有权随时停止维护，最终解释权归作者所有`n3、赞助完后需要点击底部的「生成信息」然后按ctrl+v发送给作者登记。发送的将会是一段代码和赞助截图，而不是接下来的文本`n4、只需要在一个渠道发送录入后的文本。在收到已录入的信息后仍有几分钟的延迟，需要耐心等待", "赞助说明", "iconi")
-    }
-    guiSponsor := Gui("+Resize +Owner" doroGui.Hwnd, "赞助") ; 添加 +Owner 指定所属窗口
-    guiSponsor.Opt("+DPIScale") ; 确保赞助窗口也支持 DPI 缩放
-    guiSponsor.Tips := GuiCtrlTips(guiSponsor)
-    guiSponsor.Tips.SetBkColor(0xFFFFFF)
-    guiSponsor.Tips.SetTxColor(0x000000)
-    guiSponsor.Tips.SetMargins(3, 3, 3, 3)
-    guiSponsor.Tips.SetDelayTime("AUTOPOP", 10000)
-    guiSponsor.SetFont('s10', 'Microsoft YaHei UI')
-    Text1 := guiSponsor.Add("Text", "w400 +0x0100 Wrap", "现在 DoroHelper 的绝大部分维护和新功能的添加都是我在做，这耗费了我大量时间和精力，希望有条件的小伙伴们能支持一下")
-    guiSponsor.Tips.SetTip(Text1, "Currently, I am the primary contributor to DoroHelper, handling most of the maintenance and new feature development. `nThis demands a significant amount of my time and energy. `nIf you find it valuable and are in a position to help, your support would be greatly appreciated.")
-    ; ========================= 显示当前会员信息 =========================
-    ; 显式地给变量赋默认初始值，消除静态分析器警告
-    currentType := "普通用户", currentExpDate := "19991231"
-    userGroupInfo := CheckUserGroup() ; 获取当前用户会员信息 (使用缓存，更快)
-    ; 确保变量被赋值为从 CheckUserGroup 获取的实际值
-    currentType := userGroupInfo["MembershipType"]
-    currentExpDate := userGroupInfo["ExpirationTime"]
-    currentExpDateFormatted := "N/A"
-    ; 如果当前会员组不是普通用户且未过期
-    if (userGroupInfo["UserLevel"] > 0 && A_Now < currentExpDate . "235959") {
-        currentExpDateFormatted := SubStr(currentExpDate, 1, 4) . "-" . SubStr(currentExpDate, 5, 2) . "-" . SubStr(currentExpDate, 7, 2)
-    } else if (userGroupInfo["UserLevel"] > 0 && A_Now >= currentExpDate . "235959") {
-        currentType := "普通用户(已过期)" ; 确保显示过期状态，这会更新到 guiCurrentMembership
-    }
-    LVZH := guiSponsor.Add("ListView", "xm w400 h150", ["　　　　　　　　", "普通用户", "铜 Doro", "银 Doro", "金 Doro"])
-    LVZH.Add(, "大部分功能", "✅️", "✅️", "✅️", "✅️")
-    LVZH.Add(, "移除广告提示", "", "✅️", "✅️", "✅️")
-    LVZH.Add(, "轮换活动", "", "", "✅️", "✅️")
-    LVZH.Add(, "路径和定时启动", "", "", "", "✅️")
-    LVZH.Add(, "自动推图", "", "", "", "✅️")
-    LVZH.Add(, "其他最新功能", "", "", "", "✅️")
-    Text3 := guiSponsor.Add("Text", "xm w400 +0x0100 Wrap", "总结：铜Doro免除广告、银Doro能做活动、金Doro能用全部功能")
-    guiSponsor.Tips.SetTip(Text3, "Summary: `nCopper Doro removes ads and the price is 1 ORANGE per month.`nSilver Doro enables event features and the price is 3 ORANGE per month.`nGold Doro unlocks all functionalities and the price is 5 ORANGE per month.")
-    ; ahk版
-    if (scriptExtension = "ahk") {
-        picUrl1 := "img\weixin.png"
-        picUrl2 := "img\alipay.png"
-        tempFile1 := picUrl1
-        tempFile2 := picUrl2
-    }
-    ; exe版
-    else {
-        picUrl1 := "https://s1.imagehub.cc/images/2025/09/12/c3fd38a9b6ae2e677b4e2f411ebc49a8.jpg"
-        picUrl2 := "https://s1.imagehub.cc/images/2025/09/12/f69df12697d7bb2a98ef61108e46e787.jpg"
-        tempFile1 := A_Temp . "\weixin.jpg"
-        tempFile2 := A_Temp . "\alipay.jpg"
-        ; 仅在文件不存在时下载，避免重复操作
-        if (!FileExist(tempFile1)) {
-            try {
-                Download picUrl1, tempFile1
-            } catch as e {
-                AddLog("下载微信支付二维码失败: " . e.Message, "Red")
-            }
-        }
-        if (!FileExist(tempFile2)) {
-            try {
-                Download picUrl2, tempFile2
-            } catch as e {
-                AddLog("下载支付宝支付二维码失败: " . e.Message, "Red")
-            }
-        }
-    }
-    try {
-        pic_ctr_1 := guiSponsor.Add("Picture", "x10 w200 h200", tempFile1)
-        pic_ctr_2 := guiSponsor.Add("Picture", "yp w200 h200", tempFile2)
-        guiSponsor.Tips.SetTip(pic_ctr_1, "微信/WeChat") ; 为图片添加 tooltip
-        guiSponsor.Tips.SetTip(pic_ctr_2, "支付宝/Alipay") ; 为图片添加 tooltip
-    }
-    catch {
-        guiSponsor.Add("Text", "w400 h200 Center", "无法加载赞助图片，请检查本地文件或网络连接。")
-    }
-    btn1 := guiSponsor.Add("Button", "xm+120", "我无法使用以上支付方式")
-    guiSponsor.Tips.SetTip(btn1, "I am unable to use the above payment methods")
-    btn1.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
-    guiCurrentMembership := guiSponsor.Add("Text", "xm+130 y+10  +0x0100", "您当前的会员组：" . currentType)
-    guiCurrentExpiry := guiSponsor.Add("Text", "xm+130 y+5  +0x0100", "有效期至：" . currentExpDateFormatted)
-    ; 从 g_MembershipLevels 获取可选择的会员类型，排除 "普通用户" 和 "管理员"
-    availableTiers := []
-    for tierName, levelInfo in g_MembershipLevels {
-        if (tierName != "普通用户" && tierName != "管理员") {
-            availableTiers.Push(tierName)
-        }
-    }
-    ; ; 手动添加管理员选项，设为特殊情况（测试用）
-    ; availableTiers.Push("管理员") ; <-- 注释掉这行以移除管理员选项
-    ; 添加 Choose1 确保默认选中第一个
-    guiTier := guiSponsor.Add("DropDownList", "Choose1 x125 w100", availableTiers)
-    guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
-    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月"])
-    guiSponsor.Tips.SetTip(guiDuration, "月: Month")
-    ; 确定当地货币单位和符号
-    PriceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)
-    unitPrice := PriceData.Unitprice
-    currency := PriceData.Currency
-    ; text5 := guiSponsor.Add("Text", "xm+90 r1 +0x0100", "您所在的地区欧润吉单价为：" . unitPrice . " " . currency)
-    ; guiSponsor.Tips.SetTip(text5, "Your current region is: " . LocaleName . ". The unit price of ORANGE is: " . unitPrice . " " . currency)
-    ; 修改价格显示 Text 控件，使其能显示更多信息
-    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h80 Center +0x0100", "计算中……")
-    btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
-    guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
-    ; 确保回调函数正确绑定
-    guiTier.OnEvent("Change", (Ctrl, Info) => UpdateSponsorPrice(userGroupInfo))
-    guiDuration.OnEvent("Change", (Ctrl, Info) => UpdateSponsorPrice(userGroupInfo))
-    btn2.OnEvent("Click", CalculateSponsorInfo) ; 放在所有OnEvent之后绑定
-    ; 初始化价格显示
-    UpdateSponsorPrice(userGroupInfo)
-    guiSponsor.Show("Center")
-}
-;tag 获取实时汇率
-GetExchangeRate(fromCurrency, toCurrency) {
-    static cache := Map() ; 汇率缓存
-    static cacheExpirySeconds := 3600 ; 缓存1小时
-    if (fromCurrency = toCurrency) {
-        return 1.0
-    }
-    cacheKey := fromCurrency . "_" . toCurrency
-    if (cache.Has(cacheKey)) {
-        cachedData := cache.Get(cacheKey)
-        ; 检查缓存是否过期
-        if (A_TickCount - cachedData.timestamp < cacheExpirySeconds * 1000) {
-            AddLog("从缓存获取汇率 " . fromCurrency . " 到 " . toCurrency . ": " . cachedData.rate, "Blue")
-            return cachedData.rate
-        }
-    }
-    AddLog("正在从 API 获取汇率 " . fromCurrency . " 到 " . toCurrency . "……", "Blue")
-    ; 使用 exchangerate-api.com 的免费层级API
-    apiUrl := "https://api.exchangerate-api.com/v4/latest/" . fromCurrency
-    jsonContent := DownloadUrlContent(apiUrl) ; 复用现有的 DownloadUrlContent 函数
-    if (jsonContent = "") {
-        AddLog("无法获取汇率信息，请检查网络或API服务。", "Red")
-        return 1.0 ; API失败时，默认返回1.0，避免计算错误
-    }
-    try {
-        jsonData := Json.Load(&jsonContent)
-        if (!IsObject(jsonData) || !jsonData.Has("rates")) {
-            AddLog("汇率 API 响应格式错误。", "Red")
-            return 1.0
-        }
-        rates := jsonData.Get("rates")
-        if (rates.Has(toCurrency)) {
-            rate := rates.Get(toCurrency)
-            ; 更新缓存
-            cache.Set(cacheKey, { rate: rate, timestamp: A_TickCount })
-            AddLog("成功获取汇率 " . fromCurrency . " 到 " . toCurrency . ": " . rate, "Green")
-            return rate
-        } else {
-            AddLog("API 响应中未找到目标货币 " . toCurrency . " 的汇率。", "Red")
-            return 1.0
-        }
-    } catch as e {
-        AddLog("解析汇率 JSON 失败: " . e.Message, "Red")
-        return 1.0
-    }
-}
-;tag 根据选择更新价格显示
-UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo 参数
-    global guiTier, guiDuration, guiPriceText, guiCurrentMembership, guiCurrentExpiry
-    global g_MembershipLevels, g_PriceMap, LocaleName
-    global g_numeric_settings ; 需要访问 UserLevel
-    ; 如果赞助 GUI 控件还未完全初始化，则提前退出
-    if (!IsObject(guiPriceText) || !guiPriceText.Hwnd || !IsObject(guiTier) || !guiTier.Hwnd || !IsObject(guiDuration) || !guiDuration.Hwnd) {
-        return
-    }
-    ; 获取当前选中的赞助选项
-    tierSelected := guiTier.Text
-    durationSelected := guiDuration.Text
-    if (tierSelected = "" || durationSelected = "") {
-        guiPriceText.Text := "请选择会员类型和时长"
-        return
-    }
-    ; 获取当前区域的单价和货币名称
-    priceData := g_PriceMap.Get(LocaleName, g_DefaultRegionPriceData)
-    unitPrice := priceData.Unitprice
-    currencyName := priceData.Currency
-    ; 检查是否传入了 userGroupInfo_param，如果传入则使用，否则调用 CheckUserGroup()
-    if (IsObject(userGroupInfo_param)) {
-        userGroupInfo := userGroupInfo_param
-    } else {
-        ; 理论上 MsgSponsor 应该已经传入了，这里是备用，避免重复在线检查
-        userGroupInfo := CheckUserGroup()
-    }
-    currentType := userGroupInfo["MembershipType"]
-    currentExpDate := userGroupInfo["ExpirationTime"] ; YYYYMMDD格式
-    currentLevel := userGroupInfo["UserLevel"]
-    ; 更新赞助界面顶部的当前会员信息 (为了实时性)
-    currentExpDateFormatted := "N/A"
-    if (currentLevel > 0 && A_Now < currentExpDate . "235959") {
-        currentExpDateFormatted := SubStr(currentExpDate, 1, 4) . "-" . SubStr(currentExpDate, 5, 2) . "-" . SubStr(currentExpDate, 7, 2)
-        guiCurrentMembership.Text := "您当前的会员组：" . currentType
-    } else if (currentLevel > 0 && A_Now >= currentExpDate . "235959") {
-        ; 用户是会员但已过期
-        currentType := "普通用户(已过期)" ; 确保后续逻辑中处理为普通用户状态
-        currentLevel := 0 ; 过期则视为普通用户
-        guiCurrentMembership.Text := "您当前的会员组：" . "普通用户 (已过期)"
-    } else {
-        ; 普通用户
-        guiCurrentMembership.Text := "您当前的会员组：" . currentType
-    }
-    guiCurrentExpiry.Text := "有效期至：" . currentExpDateFormatted
-    ; 1. 计算目标会员的总月数和每月成本
-    targetMonthsText := StrReplace(durationSelected, "个月")
-    if (!IsNumber(targetMonthsText)) {
-        guiPriceText.Text := "错误：无效的赞助时长。"
-        return
-    }
-    targetMonths := Integer(targetMonthsText)
-    targetMonthlyCost := 0
-    targetUserLevel := 0
-    targetLevelInfo := g_MembershipLevels.Get(tierSelected)
-    if (!IsObject(targetLevelInfo)) {
-        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
-        if (tierSelected == "管理员") {
-            targetMonthlyCost := 999 ; 管理员的特殊价格
-            targetUserLevel := 10
-            ; 创建一个临时的 Map 对象，以便后续逻辑可以安全访问
-            targetLevelInfo := Map("monthlyCost", targetMonthlyCost, "userLevel", targetUserLevel)
-        } else {
-            guiPriceText.Text := "错误：无效的会员类型数据。"
-            AddLog("错误: 在 UpdateSponsorPrice 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
-            return
-        }
-    }
-    ; 确保 targetLevelInfo 此时是一个有效的 Map 对象
-    targetMonthlyCost := targetLevelInfo.monthlyCost
-    targetUserLevel := targetLevelInfo.userLevel
-    fullValueForTarget := targetMonthlyCost * unitPrice * targetMonths ; 没有任何减免的理论全价
-    ; 2. 计算当前会员的剩余价值 (如果存在且未过期)
-    remainingValue := 0
-    if (currentLevel > 0 && currentExpDate . "235959" > A_Now) {
-        remainingValue := CalculateUserMembershipDollars(currentType, currentExpDate, unitPrice)
-    }
-    local usdToCnyRate := 1.0
-    if (currencyName = "USD") {
-        usdToCnyRate := GetExchangeRate("USD", "CNY")
-    }
-    displayMessage := ""
-    ; 辅助函数：格式化价格并添加可选的人民币估算
-    _formatPrice(amount, currency, rate) {
-        formatted := Format("{:0.2f}", amount) . " " . currency
-        if (currency = "USD") {
-            ; 将 Floor 改为 Round 以实现四舍五入到最近的整数
-            cnyAmount := Round(amount * rate)
-            formatted .= " (约 " . cnyAmount . " CNY)"
-        }
-        return formatted
-    }
-    ; 场景1: 严格降级 (非管理员用户)
-    if (currentLevel > targetUserLevel && currentType != "管理员") {
-        displayMessage := "无法降级：您当前是 " . currentType . "，`n请选择与当前会员组一致或更高级别的会员组。"
-    }
-    ; 场景2: 所有其他有效情况 (新购、续费、升级、管理员“降级”)
-    else {
-        ; 子场景2.1: 升级
-        if (currentLevel < targetUserLevel) {
-            upgradePrice := fullValueForTarget - remainingValue
-            formattedRemainingValue := Format("{:0.2f}", remainingValue) . " " . currencyName
-            if (currencyName = "USD") {
-                formattedRemainingValue .= " (约 " . Floor(remainingValue * usdToCnyRate) . " CNY)"
-            }
-            if (upgradePrice > 0) {
-                displayMessage := "您当前是 " . currentType . "`n (剩余价值 " . formattedRemainingValue . ")`n"
-                    . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
-                    . "您仍需支付：" . _formatPrice(upgradePrice, currencyName, usdToCnyRate)
-            } else {
-                ; 尽管是升级，但由于剩余价值较高，无需额外支付或为负数。
-                ; 显示目标会员的全额价格并给出提示。
-                displayMessage := "您当前是 " . currentType . "`n (剩余价值 " . formattedRemainingValue . ")`n"
-                    . "选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
-                    . "您的剩余价值已足以覆盖升级，但系统暂不支持完全抵扣，`n"
-                    . "建议支付全额作为新开通费用：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
-            }
-        }
-        ; 子场景2.2: 新购 / 续费 / 管理员“降级”
-        else {
-            local currentStatusText := ""
-            if (currentType == "管理员") {
-                currentStatusText := "您当前是管理员"
-            } else if (currentLevel > 0) { ; 续费
-                currentStatusText := "您当前是 " . currentType
-            } else { ; 新购 (currentLevel == 0)
-                currentStatusText := "您当前是普通用户"
-            }
-            local actionText := ""
-            if (currentLevel == targetUserLevel && currentLevel > 0) { ; 续费
-                actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
-            } else { ; 新购或管理员“降级”
-                actionText := "选择升级 " . tierSelected . " " . targetMonths . "个月"
-            }
-            displayMessage := currentStatusText . "`n"
-                . actionText . "`n"
-                . "总计需支付：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
-        }
-    }
-    guiPriceText.Text := displayMessage
-}
-;tag 计算并生成赞助信息
-CalculateSponsorInfo(thisGuiButton, info) {
-    global guiTier, guiDuration, guiSponsor
-    global g_MembershipLevels, g_PriceMap, LocaleName
-    MsgBox("需要按ctrl+v将信息粘贴，而不是将以下内容截图", "提示")
-    mainBoardSerial := GetMainBoardSerial()
-    cpuSerial := GetCpuSerial()
-    diskSerial := GetDiskSerial()
-    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
-    tierSelected := guiTier.Text
-    durationSelected := guiDuration.Text
-    if (tierSelected == "管理员") {
-        MsgBox("管理员等级不能通过此方式赞助。", "赞助无效") ; 恢复无图标
-        return
-    }
-    targetMonthsText := StrReplace(durationSelected, "个月")
-    if (!IsNumber(targetMonthsText)) {
-        MsgBox("请选择有效的赞助时长。", "赞助信息错误") ; 恢复无图标
-        return
-    }
-    targetMonths := Integer(targetMonthsText)
-    currentUserInfo := CheckUserGroup(true)
-    currentMembershipType := currentUserInfo["MembershipType"]
-    currentExpiryDate := currentUserInfo["ExpirationTime"] ; YYYYMMDD
-    currentLevel := currentUserInfo["UserLevel"]
-    targetLevelInfo := g_MembershipLevels.Get(tierSelected)
-    if (!IsObject(targetLevelInfo)) {
-        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
-        if (tierSelected == "管理员") {
-            ; 为管理员创建一个临时的 Map 对象，以便后续逻辑可以安全访问
-            targetLevelInfo := Map("monthlyCost", 999, "userLevel", 10)
-        } else {
-            MsgBox("错误：无效的会员类型数据。", "赞助信息错误")
-            AddLog("错误: 在 CalculateSponsorInfo 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
-            return
-        }
-    }
-    targetUserLevel := targetLevelInfo.userLevel
-    newExpiryDateTimestamp := "" ; Ahk时间戳格式 YYYYMMDDHHmmss
-    UserStatus := ""
-    ; 确保当前选择不是降级，除非是管理员
-    if (currentLevel > targetUserLevel && targetMonths > 0 && currentMembershipType != "管理员") { ; 如果用户尝试生成降级信息且不是管理员
-        MsgBox("您不能将您的会员组从 " . currentMembershipType . " 降级到 " . tierSelected . "。", "赞助无效") ; 恢复无图标
-        return
-    }
-    ; 根据当前用户状态和目标选择决定到期日和 UserStatus
-    if (currentLevel == targetUserLevel) {
-        ; 续费或普通用户新购同类型
-        ; 检查是否为普通用户或已过期，如果不是，则视为续费
-        if (currentLevel == 0 || A_Now >= currentExpiryDate . "235959") {
-            UserStatus := "新用户开通"
-            newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
-        } else {
-            UserStatus := "老用户续费"
-            newExpiryDateTimestamp := DateAdd(currentExpiryDate . "235959", 30 * targetMonths, "days")
-        }
-    } else if (currentLevel < targetUserLevel) {
-        ; 升级
-        UserStatus := "用户组升级"
-        ; 升级的到期时间从当前开始计算
-        newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
-    } else { ; currentLevel > targetUserLevel 且 currentMembershipType == "管理员"
-        UserStatus := "管理员选择升级低级会员"
-        ; 对于管理员选择升级低级会员，到期时间从当前开始计算
-        newExpiryDateTimestamp := DateAdd(A_Now, 30 * targetMonths, "days")
-    }
-    ; 确保 JSON 中的日期依然是 YYYYMMDD 格式
-    finalExpiryDate := SubStr(newExpiryDateTimestamp, 1, 8)
-    jsonString := UserStatus "`n"
-    jsonString .= "(请将这段文字替换成您的付款截图，邮件的图片请以附件形式发送)`n"
-    jsonString .= "  {" . "`n"
-    jsonString .= "    `"hash`": `"" Hashed "`"," . "`n"
-    jsonString .= "`"tier`": `"" tierSelected "`"," . "`n"
-    jsonString .= "`"expiry_date`": `"" finalExpiryDate "`"" . "`n"
-    jsonString .= "},"
-    A_Clipboard := jsonString
-    newExpiryDateFormatted := SubStr(finalExpiryDate, 1, 4) . "-" . SubStr(finalExpiryDate, 5, 2) . "-" . SubStr(finalExpiryDate, 7, 2)
-    MsgBox("赞助信息已生成并复制到剪贴板，请在对应页面按ctrl+v粘贴，然后连同付款记录发给我`n"
-        . "状态: " . UserStatus . "`n"
-        . "您将获得的会员类型: " . tierSelected . "`n"
-        . "新会员到期日: " . newExpiryDateFormatted . "`n`n"
-        . "注意这里的文本不是你应该复制的内容，剪贴板的才是`n"
-        . "QQ群: 584275905`n"
-        . "QQ邮箱: 1204244136@qq.com`n"
-        . "海外邮箱: zhi.11@foxmail.com"
-        , "赞助信息已复制！") ; 恢复无图标
-    guiSponsor.Destroy() ; 赞助信息生成后关闭赞助GUI
 }
 ;tag 帮助
 ClickOnHelp(*) {

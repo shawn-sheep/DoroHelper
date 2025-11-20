@@ -4101,11 +4101,11 @@ EnterToOutpost() {
 AutoFill() {
     if (ok := FindText(&X, &Y, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
         if g_settings["AutoFill"] and g_numeric_settings["UserLevel"] >= 3 {
-            AddLog("点击黑色的加号")
-            FindText().Click(X, Y, "L")
-            Sleep 500
-            FindText().Click(X, Y, "L")
-            Sleep 2000
+            while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.352 * NikkeW . " ", NikkeY + 0.713 * NikkeH . " ", NikkeX + 0.352 * NikkeW + 0.304 * NikkeW . " ", NikkeY + 0.713 * NikkeH + 0.107 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("剧情活动·黑色十字"), , , , , , 1, TrueRatio, TrueRatio)) {
+                AddLog("点击黑色的加号")
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+            }
             if (ok := FindText(&X, &Y, NikkeX + 0.034 * NikkeW . " ", NikkeY + 0.483 * NikkeH . " ", NikkeX + 0.034 * NikkeW + 0.564 * NikkeW . " ", NikkeY + 0.483 * NikkeH + 0.039 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("剧情活动·0%"), , , , , , 1, TrueRatio, TrueRatio)) {
                 loop ok.Length {
                     AddLog("添加第" A_Index "个妮姬")

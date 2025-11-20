@@ -6315,7 +6315,7 @@ ClearRedLimit() {
                     if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.505 * NikkeW . " ", NikkeY + 0.593 * NikkeH . " ", NikkeX + 0.505 * NikkeW + 0.123 * NikkeW . " ", NikkeY + 0.593 * NikkeH + 0.064 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , , , , , , TrueRatio, TrueRatio)) {
                         AddLog("确认核心强化")
                         FindText().Click(X, Y, "L")
-                        Sleep 1000
+                        Sleep 3000
                     }
                 }
                 loop 3 {

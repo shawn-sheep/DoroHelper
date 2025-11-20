@@ -6456,7 +6456,7 @@ ClearRedCube() {
 ;tag 清除商店红点
 ClearRedShop() {
     AddLog("寻找付费商店")
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.250 * NikkeW . " ", NikkeY + 0.599 * NikkeH . " ", NikkeX + 0.250 * NikkeW + 0.027 * NikkeW . " ", NikkeY + 0.599 * NikkeH + 0.047 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("付费商店的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.326 * NikkeW . " ", NikkeY + 0.582 * NikkeH . " ", NikkeX + 0.326 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.582 * NikkeH + 0.036 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("点击付费商店")
         FindText().Click(X, Y, "L")
         Sleep 2000

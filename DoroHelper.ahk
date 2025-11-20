@@ -209,6 +209,14 @@ g_PriceMap := Map(
 g_DefaultRegionPriceData := defaultPriceData
 ;退出时保存设置
 OnExit(WriteSettings)
+;检测管理员身份
+if !A_IsAdmin {
+    try Run('*RunAs "' A_ScriptFullPath '"', A_ScriptDir)
+    catch {
+        MsgBox "请以管理员身份运行DoroHelper！`nPlease run DoroHelper as administrator!"
+    }
+    ExitApp  ; 无论成功提权或失败提示，都退出当前非管理员实例
+}
 ;tag 彩蛋
 konami_code := "UUDDLRLRBA" ; 目标序列 (U=Up, D=Down, L=Left, R=Right)
 key_history := ""           ; 用于存储用户按键历史的变量

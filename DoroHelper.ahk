@@ -621,7 +621,7 @@ g_settingPages["Event"].Push(SetAutoFill)
 SetEventTitle := doroGui.Add("Text", "R1 +0x0100", "====活动选项====")
 doroGui.Tips.SetTip(SetEventTitle, "Event Options")
 g_settingPages["Event"].Push(SetEventTitle)
-SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动[银Doro](未开放)", "R1")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动[银Doro](BLANK TICKET)", "R1")
 doroGui.Tips.SetTip(SetEventSmall, "Small Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventSmall)
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
@@ -633,7 +633,7 @@ g_settingPages["Event"].Push(SetEventSmallStory)
 SetEventSmallMission := AddCheckboxSetting(doroGui, "EventSmallMission", "小活动任务", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSmallMission, "Small Events Mission")
 g_settingPages["Event"].Push(SetEventSmallMission)
-SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动[银Doro](GODDESS FALL)", "R1 xs")
+SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动[银Doro](未开放)", "R1 xs")
 doroGui.Tips.SetTip(SetEventLarge, "Large Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
@@ -5927,7 +5927,7 @@ AwardSoloRaid(stage7 := True) {
 EventSmall() {
     AddLog("开始任务：小活动", "Fuchsia")
     loop {
-        if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·GO"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("已找到小活动")
             loop 3 {
                 UserClick(2782, 1816, TrueRatio)
@@ -5971,7 +5971,7 @@ EventSmallChallenge() {
 ;tag 剧情活动
 EventSmallStory() {
     AddLog("开始任务：小活动·剧情活动", "Fuchsia")
-    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.723 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.020 * NikkeW . " ", NikkeY + 0.723 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·放大镜的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X := "wait", &Y := 3, NikkeX + 0.463 * NikkeW . " ", NikkeY + 0.703 * NikkeH . " ", NikkeX + 0.463 * NikkeW + 0.022 * NikkeW . " ", NikkeY + 0.703 * NikkeH + 0.031 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动·放大镜的图标"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试进入对应活动页")
         FindText().Click(X, Y - 100 * TrueRatio, "L")
         Sleep 500

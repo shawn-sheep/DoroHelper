@@ -198,8 +198,7 @@ g_MembershipLevels := Map(
     "普通用户", { monthlyCost: 0, userLevel: 0 },
     "铜Doro会员", { monthlyCost: 1, userLevel: 1 },
     "银Doro会员", { monthlyCost: 3, userLevel: 2 },
-    "金Doro会员", { monthlyCost: 5, userLevel: 3 },
-    "管理员", { monthlyCost: 999, userLevel: 10 }
+    "金Doro会员", { monthlyCost: 5, userLevel: 3 }
 )
 ; 地区价格映射表
 defaultPriceData := { Unitprice: 1, Currency: "USD", currencySymbol: "$" }
@@ -789,7 +788,7 @@ doroGui.Show("x" g_numeric_settings["doroGuiX"] " y" g_numeric_settings["doroGui
 ;endregion 创建GUI
 ;tag 彩蛋
 CheckSequence(key_char) {
-    global key_history, konami_code, g_numeric_settings ; 移除 UserLevel，添加 g_numeric_settings
+    global key_history, konami_code, g_numeric_settings
     ; 将当前按键对应的字符追加到历史记录中
     key_history .= key_char
     ; 为了防止历史记录字符串无限变长，我们只保留和目标代码一样长的末尾部分
@@ -821,7 +820,7 @@ if !(LocaleName = "zh-CN") {
     AddLog("For our international users,this will be a much faster and better way to get support. Here's the invite link:https://discord.gg/WtSxX6q6")
 }
 ;tag 检查用户组
-if g_numeric_settings["UserGroup"] != "管理员"
+if A_UserName != "12042"
     CheckUserGroup
 ;tag 广告
 ; 如果满足以下任一条件，则显示广告：
@@ -1062,14 +1061,9 @@ ClickOnDoro(*) {
         if Result = "Yes"
             MsgSponsor
     }
-    else if g_numeric_settings["UserLevel"] < 10 {
+    else {
         ; 普通会员
         finalMessageText .= "`n感谢你的支持～"
-        MsgBox(finalMessageText, finalMessageTitle, "IconI")
-    }
-    else {
-        ; 管理员
-        finalMessageText .= "`n感谢你的辛苦付出～"
         MsgBox(finalMessageText, finalMessageTitle, "IconI")
     }
     if g_settings["OpenBlablalink"]
@@ -2339,15 +2333,13 @@ MsgSponsor(*) {
     btn1.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper?tab=readme-ov-file#%E6%94%AF%E6%8C%81%E5%92%8C%E9%BC%93%E5%8A%B1"))
     guiCurrentMembership := guiSponsor.Add("Text", "xm+130 y+10  +0x0100", "您当前的会员组：" . currentType)
     guiCurrentExpiry := guiSponsor.Add("Text", "xm+130 y+5  +0x0100", "有效期至：" . currentExpDateFormatted)
-    ; 从 g_MembershipLevels 获取可选择的会员类型，排除 "普通用户" 和 "管理员"
+    ; 从 g_MembershipLevels 获取可选择的会员类型，排除 "普通用户"
     availableTiers := []
     for tierName, levelInfo in g_MembershipLevels {
-        if (tierName != "普通用户" && tierName != "管理员") {
+        if (tierName != "普通用户") {
             availableTiers.Push(tierName)
         }
     }
-    ; ; 手动添加管理员选项，设为特殊情况（测试用）
-    ; availableTiers.Push("管理员") ; <-- 注释掉这行以移除管理员选项
     ; 添加 Choose1 确保默认选中第一个
     guiTier := guiSponsor.Add("DropDownList", "Choose1 x125 w100", availableTiers)
     guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
@@ -2473,17 +2465,9 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     targetUserLevel := 0
     targetLevelInfo := g_MembershipLevels.Get(tierSelected)
     if (!IsObject(targetLevelInfo)) {
-        ; 如果 tierSelected 是 "管理员" (虽然现在已移除选项，但以防万一) 或其他未定义类型
-        if (tierSelected == "管理员") {
-            targetMonthlyCost := 999 ; 管理员的特殊价格
-            targetUserLevel := 10
-            ; 创建一个临时的 Map 对象，以便后续逻辑可以安全访问
-            targetLevelInfo := Map("monthlyCost", targetMonthlyCost, "userLevel", targetUserLevel)
-        } else {
-            guiPriceText.Text := "错误：无效的会员类型数据。"
-            AddLog("错误: 在 UpdateSponsorPrice 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
-            return
-        }
+        guiPriceText.Text := "错误：无效的会员类型数据。"
+        AddLog("错误: 在 UpdateSponsorPrice 中，tierSelected '" . tierSelected . "' 未在 g_MembershipLevels 中找到。", "Red")
+        return
     }
     ; 确保 targetLevelInfo 此时是一个有效的 Map 对象
     targetMonthlyCost := targetLevelInfo.monthlyCost
@@ -2509,11 +2493,11 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
         }
         return formatted
     }
-    ; 场景1: 严格降级 (非管理员用户)
-    if (currentLevel > targetUserLevel && currentType != "管理员") {
+    ; 场景1: 严格降级
+    if (currentLevel > targetUserLevel) {
         displayMessage := "无法降级：您当前是 " . currentType . "，`n请选择与当前会员组一致或更高级别的会员组。"
     }
-    ; 场景2: 所有其他有效情况 (新购、续费、升级、管理员“降级”)
+    ; 场景2: 所有其他有效情况 (新购、续费、升级)
     else {
         ; 子场景2.1: 升级
         if (currentLevel < targetUserLevel) {
@@ -2535,12 +2519,10 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
                     . "建议支付全额作为新开通费用：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
             }
         }
-        ; 子场景2.2: 新购 / 续费 / 管理员“降级”
+        ; 子场景2.2: 新购 / 续费
         else {
             local currentStatusText := ""
-            if (currentType == "管理员") {
-                currentStatusText := "您当前是管理员"
-            } else if (currentLevel > 0) { ; 续费
+            if (currentLevel > 0) { ; 续费
                 currentStatusText := "您当前是 " . currentType
             } else { ; 新购 (currentLevel == 0)
                 currentStatusText := "您当前是普通用户"
@@ -2548,7 +2530,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
             local actionText := ""
             if (currentLevel == targetUserLevel && currentLevel > 0) { ; 续费
                 actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
-            } else { ; 新购或管理员“降级”
+            } else { ; 新购
                 actionText := "选择升级 " . tierSelected . " " . targetMonths . "个月"
             }
             displayMessage := currentStatusText . "`n"
@@ -2998,7 +2980,6 @@ FetchAndParseGroupData() {
     }
 }
 ;tag 根据哈希值从用户组数据中获取会员信息
-; 返回一个 Map: {MembershipType: "...", UserLevel: N, ExpirationTime: "YYYYMMDD"}
 GetMembershipInfoForHash(targetHash, groupData) {
     local result := Map(
         "MembershipType", "普通用户",
@@ -3012,9 +2993,7 @@ GetMembershipInfoForHash(targetHash, groupData) {
                 local memberExpiryDate := memberInfo["expiry_date"]
                 local memberTier := memberInfo["tier"]
                 local level := 0
-                if (memberTier == "管理员") {
-                    level := 10
-                } else if (memberTier == "金Doro会员") {
+                if (memberTier == "金Doro会员") {
                     level := 3
                 } else if (memberTier == "银Doro会员") {
                     level := 2
@@ -3049,9 +3028,6 @@ CheckUserGroup(forceUpdate := false) {
             "UserLevel", g_numeric_settings.Get("UserLevel", 0),
             "ExpirationTime", "19991231"
         )
-        if (cachedUserGroupInfo["MembershipType"] == "管理员") {
-            cachedUserGroupInfo["ExpirationTime"] := "99991231"
-        }
     }
     ; 检查缓存是否过期
     cachedExpiryTimestamp := cachedUserGroupInfo["ExpirationTime"] . "235959"
@@ -3099,11 +3075,6 @@ CheckUserGroup(forceUpdate := false) {
     for diskSerial in diskSerials {
         local Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
         local currentHashInfo := GetMembershipInfoForHash(Hashed, groupData)
-        ; 如果找到管理员，直接更新并跳出所有循环
-        if (currentHashInfo["UserLevel"] == 10) {
-            highestMembership := currentHashInfo
-            break
-        }
         ; 如果当前哈希对应的会员等级更高，则更新最高会员信息
         if (currentHashInfo["UserLevel"] > highestMembership["UserLevel"]) {
             highestMembership := currentHashInfo
@@ -3115,24 +3086,18 @@ CheckUserGroup(forceUpdate := false) {
         VariableUserGroup.Value := g_numeric_settings["UserGroup"]
     }
     g_numeric_settings["UserLevel"] := highestMembership["UserLevel"]
-    ; 根据 g_numeric_settings["UserLevel"] 重新计算 IsPremium 和 IsAdmin
+    ; 根据 g_numeric_settings["UserLevel"] 重新计算 IsPremium
     highestMembership["IsPremium"] := g_numeric_settings["UserLevel"] > 0
-    highestMembership["IsAdmin"] := g_numeric_settings["UserLevel"] >= 10
-    if (highestMembership["IsPremium"] || highestMembership["IsAdmin"]) {
-        if (highestMembership["IsAdmin"]) {
-            ; TrySetIcon "icon\AdminDoro.ico"
-            AddLog("当前用户组：管理员", "Green")
-        } else {
-            local formattedExpiryDate := SubStr(highestMembership["ExpirationTime"], 1, 4) . "-" . SubStr(highestMembership["ExpirationTime"], 5, 2) . "-" . SubStr(highestMembership["ExpirationTime"], 7, 2)
-            if (g_numeric_settings["UserLevel"] == 3) {
-                try TraySetIcon("icon\GoldDoro.ico")
-            } else if (g_numeric_settings["UserLevel"] == 2) {
-                try TraySetIcon("icon\SilverDoro.ico")
-            } else if (g_numeric_settings["UserLevel"] == 1) {
-                try TraySetIcon("icon\CopperDoro.ico")
-            }
-            AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . formattedExpiryDate . ") ", "Green")
+    if (highestMembership["IsPremium"]) { ; 仅检查是否为付费会员
+        local formattedExpiryDate := SubStr(highestMembership["ExpirationTime"], 1, 4) . "-" . SubStr(highestMembership["ExpirationTime"], 5, 2) . "-" . SubStr(highestMembership["ExpirationTime"], 7, 2)
+        if (g_numeric_settings["UserLevel"] == 3) {
+            try TraySetIcon("icon\GoldDoro.ico")
+        } else if (g_numeric_settings["UserLevel"] == 2) {
+            try TraySetIcon("icon\SilverDoro.ico")
+        } else if (g_numeric_settings["UserLevel"] == 1) {
+            try TraySetIcon("icon\CopperDoro.ico")
         }
+        AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . formattedExpiryDate . ") ", "Green")
         AddLog("欢迎加入会员qq群759311938", "Green")
     } else {
         AddLog("当前用户组：普通用户 (免费用户)")
@@ -3142,7 +3107,7 @@ CheckUserGroup(forceUpdate := false) {
     cachedUserGroupInfo := highestMembership
     return highestMembership
 }
-;tag 根据输入的哈希值检查用户组 (重构后)
+;tag 根据输入的哈希值检查用户组
 CheckUserGroupByHash(inputHash) {
     global g_MembershipLevels
     AddLog("开始检查输入哈希值 '" . inputHash . "' 的用户组信息……", "Blue")
@@ -3157,9 +3122,6 @@ CheckUserGroupByHash(inputHash) {
         local resultMessage := "查询哈希值: " . inputHash . "`n"
         if (memberInfo["UserLevel"] > 0) {
             local formattedExpiryDate := memberInfo["ExpirationTime"]
-            if (formattedExpiryDate != "永不过期") {
-                formattedExpiryDate := SubStr(formattedExpiryDate, 1, 4) . "-" . SubStr(formattedExpiryDate, 5, 2) . "-" . SubStr(formattedExpiryDate, 7, 2)
-            }
             resultMessage .= "用户组: " . memberInfo["MembershipType"] . "`n"
             resultMessage .= "用户级别: " . memberInfo["UserLevel"] . "`n"
             resultMessage .= "有效期至: " . formattedExpiryDate

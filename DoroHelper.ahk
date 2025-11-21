@@ -963,10 +963,6 @@ ClickOnDoro(*) {
             AwardSoloRaid()
     }
     if g_settings["Event"] {
-        if g_numeric_settings["UserLevel"] < 2 {
-            MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
-            Pause
-        }
         if g_settings["EventSmall"] {
             EventSmall()
             if g_settings["EventSmallChallenge"] {
@@ -1010,10 +1006,7 @@ ClickOnDoro(*) {
         }
     }
     if g_settings["ClearRed"] {
-        if g_numeric_settings["UserLevel"] < 3 {
-            MsgBox("当前用户组不支持清除红点，请点击赞助按钮升级会员组")
-            Pause
-        }
+        ClearRed()
         if g_settings["ClearRedRecycling"] {
             ClearRedRecycling()
         }
@@ -5933,6 +5926,10 @@ AwardSoloRaid(stage7 := True) {
 ;region 小活动
 ;tag 入口
 EventSmall() {
+    if g_numeric_settings["UserLevel"] < 2 {
+        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
+        Pause
+    }
     AddLog("开始任务：小活动", "Fuchsia")
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -6011,6 +6008,10 @@ EventSmallMission() {
 ;region 大活动
 ;tag 入口
 EventLarge() {
+    if g_numeric_settings["UserLevel"] < 2 {
+        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
+        Pause
+    }
     AddLog("开始任务：大活动", "Fuchsia")
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·GODDESS FALL"), , , , , , , TrueRatio, TrueRatio)) {
@@ -6195,9 +6196,19 @@ EventLargeDaily() {
 ;endregion 大活动
 ;region 特殊活动
 EventSpecial() {
+    if g_numeric_settings["UserLevel"] < 2 {
+        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
+        Pause
+    }
 }
 ;endregion 特殊活动
 ;region 任务完成后
+ClearRed() {
+    if g_numeric_settings["UserLevel"] < 3 {
+        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
+        Pause
+    }
+}
 ;tag 自动升级循环室
 ClearRedRecycling() {
     AddLog("自动升级循环室", "Fuchsia")
@@ -6816,7 +6827,7 @@ QuickBurst(*) {
 ;tag 自动推图
 AutoAdvance(*) {
     if g_numeric_settings["UserLevel"] < 3 {
-        MsgBox("当前用户组不支持活动，请点击赞助按钮升级会员组")
+        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
         return
     }
     Initialization()

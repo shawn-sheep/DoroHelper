@@ -14,7 +14,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.9.4"
+currentVersion := "v1.9.5"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -6642,9 +6642,9 @@ CheckUnderGround(*) {
         Sleep 1000
         AddLog("点击任务")
         FindText().Click(X, Y, "L")
-        Sleep 1000
+        Sleep 3000
     }
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.593 * NikkeW . " ", NikkeY + 0.206 * NikkeH . " ", NikkeX + 0.593 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.206 * NikkeH + 0.019 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("地面玩法·21"), , , , , , , TrueRatio, TrueRatio)) {
+    if (ok := FindText(&X, &Y, NikkeX + 0.593 * NikkeW . " ", NikkeY + 0.206 * NikkeH . " ", NikkeX + 0.593 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.206 * NikkeH + 0.019 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("地面玩法·21"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("作战报告已达到上限")
         finalMessageText := finalMessageText . "作战报告已达到上限！`n"
         Sleep 1000

@@ -5702,7 +5702,7 @@ AwardPass() {
             AddLog("1通行证模式")
         }
         ; 检查红点并执行通行证
-        if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.982 * NikkeW . " ", NikkeY + 0.126 * NikkeH . " ", NikkeX + 0.982 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.126 * NikkeH + 0.032 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.983 * NikkeW . " ", NikkeY + 0.131 * NikkeH . " ", NikkeX + 0.983 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.131 * NikkeH + 0.029 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
             FindText().Click(X - 50 * TrueRatio, Y + 50 * TrueRatio, "L")
             t := t + 1
             AddLog("执行第" t "个通行证")

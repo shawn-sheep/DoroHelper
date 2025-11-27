@@ -3112,6 +3112,12 @@ CheckUserGroup(forceUpdate := false) {
             if (IsSet(VariableUserGroup) && IsObject(VariableUserGroup)) {
                 VariableUserGroup.Value := cachedUserGroupInfo["MembershipType"]
             }
+            ; 检查缓存中的到期日是否为明天
+            local tomorrowDate := SubStr(DateAdd(A_Now, 1, "Days"), 1, 8) ; 获取明天的日期 (YYYYMMDD)
+            if (cachedUserGroupInfo["UserLevel"] > 0 && cachedUserGroupInfo["VirtualExpiryDate"] == tomorrowDate) {
+                MsgBox("您的 " . cachedUserGroupInfo["MembershipType"] . " 会员将于明天到期，请及时续费！", "会员续费提醒", "IconI")
+                AddLog("会员续费提醒：您的会员将于明天到期。", "Orange")
+            }
             return cachedUserGroupInfo
         }
     }
@@ -3181,6 +3187,12 @@ CheckUserGroup(forceUpdate := false) {
         }
         AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . formattedExpiryDate . ") ", "Green")
         AddLog("欢迎加入会员qq群759311938", "Green")
+        ; 检查会员是否明天到期
+        local tomorrowDate := SubStr(DateAdd(A_Now, 1, "Days"), 1, 8) ; 获取明天的日期 (YYYYMMDD)
+        if (highestMembership["VirtualExpiryDate"] == tomorrowDate) {
+            MsgBox("您的 " . highestMembership["MembershipType"] . " 会员将于明天到期，请及时续费！", "会员续费提醒", "IconI")
+            AddLog("会员续费提醒：您的会员将于明天到期。", "Orange")
+        }
     } else {
         AddLog("当前用户组：普通用户 (免费用户)")
         try TraySetIcon("doro.ico")

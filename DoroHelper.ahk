@@ -14,7 +14,7 @@ CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
-currentVersion := "v1.9.5"
+currentVersion := "v1.9.6"
 ;tag 检查脚本哈希
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
@@ -2352,10 +2352,10 @@ MsgSponsor(*) {
     ; 添加 Choose1 确保默认选中第一个
     guiTier := guiSponsor.Add("DropDownList", "Choose1 x125 w100", availableTiers)
     guiSponsor.Tips.SetTip(guiTier, "铜:Copper|银:Silver|金:Gold")
-    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月"])
+    guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月", "0个月"])
     guiSponsor.Tips.SetTip(guiDuration, "月: Month")
     ; 修改价格显示 Text 控件，使其能显示更多信息
-    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h120 Center +0x0100", "计算中……") ; 将 h80 增加到 h120
+    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h140 Center +0x0100", "计算中……")
     btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
     guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
     ; 确保回调函数正确绑定
@@ -2480,9 +2480,10 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     ; 确保 targetLevelInfo 此时是一个有效的 Map 对象
     targetMonthlyCost := targetLevelInfo.monthlyCost
     targetUserLevel := targetLevelInfo.userLevel
-    fullValueForTarget := targetMonthlyCost * unitPrice * targetMonths ; 没有任何减免的理论全价
-    ; 2. 计算当前会员的剩余价值 (如果存在且有剩余额度)
-    local remainingValue := currentRemainingValue
+    ; 计算新购买的额度 (ORANGE)
+    newPurchaseOrangeValue := targetMonthlyCost * targetMonths
+    ; 计算总支付金额 (当地货币)
+    totalPaymentAmount := newPurchaseOrangeValue * unitPrice
     displayMessage := ""
     ; 辅助函数：格式化价格并添加可选的人民币估算
     _formatPrice(amount, currency, rate) {
@@ -2506,7 +2507,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
         currentStatusLines.Push("当前会员注册时间：" . formattedRegistrationDate) ; 新增此行
         currentStatusLines.Push("剩余额度：" . FormatOrangeValueWithLocalCurrency(currentRemainingValue, unitPrice, currencyName, usdToCnyRate))
         local formattedExpiryDate := SubStr(currentVirtualExpDate, 1, 4) . "-" . SubStr(currentVirtualExpDate, 5, 2) . "-" . SubStr(currentVirtualExpDate, 7, 2)
-        currentStatusLines.Push("预计有效期至：" . formattedExpiryDate)
+        currentStatusLines.Push("赞助前有效期至：" . formattedExpiryDate)
     } else if (currentLevel > 0 && currentRemainingValue <= 0.001) {
         currentStatusLines.Push("您当前是普通用户 (额度已用尽)")
     } else {
@@ -2519,34 +2520,34 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
         }
         statusString .= line
     }
-    ; 场景1: 严格降级
-    if (currentLevel > targetUserLevel) {
-        displayMessage := statusString . "`n" ; 使用拼接好的 statusString
-            . "无法降级：请选择与当前会员组一致或更高级别的会员组。"
+    ; --- 修改开始：统一处理升级、降级和续费的显示逻辑 ---
+    local actionText := ""
+    local newTotalOrangeValue := currentRemainingValue + newPurchaseOrangeValue
+    local tempMonthlyCostForNewTier := g_MembershipLevels.Get(tierSelected).monthlyCost
+    local tempDailyCostForNewTier := tempMonthlyCostForNewTier / 30.0
+    local newVirtualExpiryDate := "19991231"
+    if (newTotalOrangeValue > 0 && tempDailyCostForNewTier > 0) {
+        local tempDaysLeft := Floor(newTotalOrangeValue / tempDailyCostForNewTier)
+        newVirtualExpiryDate := SubStr(DateAdd(A_Now, tempDaysLeft, "Days"), 1, 8)
+    } else if (newTotalOrangeValue > 0 && tempDailyCostForNewTier == 0) {
+        newVirtualExpiryDate := "99991231" ; 永不过期
     }
-    ; 场景2: 所有其他有效情况 (新购、续费、升级)
-    else {
-        ; 子场景2.1: 升级 (根据新策略，升级时剩余价值作废)
-        if (currentLevel < targetUserLevel) {
-            ; 升级时，旧的剩余价值作废，直接支付新套餐的全额
-            displayMessage := statusString . "`n" ; 使用拼接好的 statusString
-                . "(升级将清零现有剩余额度)" ; 简化提示，因为上面已经显示了剩余额度
-                . "`n选择升级到 " . tierSelected . " " . targetMonths . "个月`n"
-                . "您需支付：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
-        }
-        ; 子场景2.2: 新购 / 续费
-        else {
-            local actionText := ""
-            if (currentLevel == targetUserLevel && currentLevel > 0) { ; 续费
-                actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
-            } else { ; 新购
-                actionText := "选择开通 " . tierSelected . " " . targetMonths . "个月"
-            }
-            displayMessage := statusString . "`n" ; 使用拼接好的 statusString
-                . actionText . "`n"
-                . "总计需支付：" . _formatPrice(fullValueForTarget, currencyName, usdToCnyRate)
-        }
+    local newExpiryDateFormatted := SubStr(newVirtualExpiryDate, 1, 4) . "-" . SubStr(newVirtualExpiryDate, 5, 2) . "-" . SubStr(newVirtualExpiryDate, 7, 2)
+    if (currentLevel == 0 || currentRemainingValue <= 0.001) { ; 新购或额度用尽后重新购买
+        actionText := "选择开通 " . tierSelected . " " . targetMonths . "个月"
+    } else if (currentLevel == targetUserLevel) { ; 续费
+        actionText := "选择续费 " . tierSelected . " " . targetMonths . "个月"
+    } else if (currentLevel < targetUserLevel) { ; 升级
+        actionText := "选择升级到 " . tierSelected . " " . targetMonths . "个月"
+    } else { ; 降级 (currentLevel > targetUserLevel)
+        actionText := "选择降级到 " . tierSelected . " " . targetMonths . "个月"
     }
+    displayMessage := statusString . "`n"
+        . actionText
+        . " 需支付：" . _formatPrice(totalPaymentAmount, currencyName, usdToCnyRate) . "`n"
+        . "赞助后：" . FormatOrangeValueWithLocalCurrency(newTotalOrangeValue, unitPrice, currencyName, usdToCnyRate) . "`n"
+        . "预计有效期至：" . newExpiryDateFormatted
+    ; --- 修改结束 ---
     guiPriceText.Text := displayMessage
 }
 ;tag 计算并生成赞助信息 (为V4扁平模型修改)
@@ -2579,61 +2580,45 @@ CalculateSponsorInfo(thisGuiButton, info) {
     }
     targetMonthlyCost := targetLevelInfo.monthlyCost ; 这是 ORANGE/月
     targetUserLevel := targetLevelInfo.userLevel
-    ; 计算新购买的总价值 (以 ORANGE 计)
+    ; 计算新购买的额度 (以 ORANGE 计)
     newPurchaseValue := targetMonthlyCost * targetMonths
     ; 获取用户当前的会员信息 (已计算消耗后的实时状态)
-    currentUserInfo := CheckUserGroup(true) ; 强制更新，确保获取最新状态
+    ; 强制更新，确保获取最新状态，特别是 RemainingValue
+    currentUserInfo := CheckUserGroup(true)
     currentMembershipType := currentUserInfo["MembershipType"]
     currentLevel := currentUserInfo["UserLevel"]
-    ; currentRemainingValue := currentUserInfo["RemainingValue"] ; 此处是已消耗后的剩余价值
+    currentRemainingValue := currentUserInfo["RemainingValue"] ; 这是实时剩余额度
     local finalAccountValue := 0.0
     local finalTier := tierSelected
     local finalLastActiveDate := today ; 默认重置为今天
     local UserStatus := ""
-    ; --- 新增逻辑：获取当前用户在数据库中记录的原始 account_value (总价值) ---
-    local currentOriginalAccountValueFromDB := 0.0
-    if (currentLevel > 0) { ; 只有当用户当前是会员时才需要获取原始总价值
-        try {
-            local groupDataForOriginalValue := FetchAndParseGroupData()
-            local rawHashInfoForCurrent := GetMembershipInfoForHash(Hashed, groupDataForOriginalValue)
-            ; rawHashInfoForCurrent["RemainingValue"] 实际上存储的是数据库中原始的 account_value
-            if (rawHashInfoForCurrent["UserLevel"] > 0) { ; 确保找到的是有效的会员记录
-                currentOriginalAccountValueFromDB := rawHashInfoForCurrent["RemainingValue"]
-            }
-        } catch as e {
-            AddLog("警告: 无法获取当前用户原始 account_value (从数据库): " . e.Message, "MAROON")
-            ; 如果获取失败，为了安全起见，将原始总价值视为0，这样后续计算会将其视为新购。
-        }
+    ; 1. 检查是否为严格降级（用户选择的等级低于当前等级，且当前有有效会员）
+    ; 根据新的策略，降级不再被阻止，而是允许额度叠加
+    if (currentLevel > targetUserLevel && currentRemainingValue > 0.001) {
+        UserStatus := "用户组降级"
+        ; 降级时，将当前剩余额度叠加到新购额度中
+        finalAccountValue := currentRemainingValue + newPurchaseValue
+        finalLastActiveDate := today ; 降级后，套餐生效日期重置为今天
     }
-    ; --- 新增逻辑结束 ---
-    ; 确保当前选择不是降级
-    if (currentLevel > targetUserLevel && targetMonths > 0) {
-        MsgBox("您不能将您的会员组从 " . currentMembershipType . " 降级到 " . tierSelected . "。", "赞助无效", "iconx")
-        return
-    }
-    ; 判断是新购、续费还是升级
-    if (currentLevel == 0 || currentUserInfo["RemainingValue"] <= 0.001) { ; 使用已消耗后的剩余价值判断是否“已过期”
-        ; 情况1: 普通用户新购 或 会员额度已用尽后重新购买
+    ; 2. 新购或额度已用尽后重新购买
+    else if (currentLevel == 0 || currentRemainingValue <= 0.001) {
         UserStatus := "新用户开通"
         finalAccountValue := newPurchaseValue
         finalLastActiveDate := today
-    } else if (currentLevel == targetUserLevel) {
-        ; 情况2: 老用户续费 (相同等级)
+    }
+    ; 3. 老用户续费 (相同等级)
+    else if (currentLevel == targetUserLevel) {
         UserStatus := "老用户续费"
-        ; 续费时，累加当前原始总价值和新购价值
-        finalAccountValue := currentOriginalAccountValueFromDB + newPurchaseValue
-        finalLastActiveDate := currentUserInfo["LastActiveDate"] ; 续费不改变套餐生效日期
-    } else if (currentLevel < targetUserLevel) {
-        ; 情况3: 用户组升级 (新策略：升级时，旧额度不作废，而是累加到新套餐中)
+        ; 续费时，将当前剩余额度叠加到新购额度中
+        finalAccountValue := currentRemainingValue + newPurchaseValue
+        finalLastActiveDate := today ; 续费也重置注册日期
+    }
+    ; 4. 用户组升级 (当前等级低于目标等级)
+    else if (currentLevel < targetUserLevel) {
         UserStatus := "用户组升级"
-        ; 升级时，将当前会员的原始总价值累加到新购价值中
-        finalAccountValue := currentOriginalAccountValueFromDB + newPurchaseValue
+        ; 升级时，将当前剩余额度叠加到新购额度中
+        finalAccountValue := currentRemainingValue + newPurchaseValue
         finalLastActiveDate := today ; 升级后，套餐生效日期重置为今天
-    } else {
-        ; 理论上不会走到这里，因为降级已被前面的 if 阻止
-        UserStatus := "未知操作"
-        finalAccountValue := newPurchaseValue
-        finalLastActiveDate := today
     }
     ; 格式化输出的虚拟到期日 (用于 MsgBox 提示)
     ; 重新计算一个临时的虚拟到期日，用于用户提示
@@ -2653,7 +2638,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
     jsonString .= "  {" . "`n"
     jsonString .= "`"hash`": `"" Hashed "`"," . "`n"
     jsonString .= "`"tier`": `"" finalTier "`"," . "`n"
-    jsonString .= "`"account_value`": `"" finalAccountValue "`"," . "`n"
+    jsonString .= "`"account_value`": `"" Format("{:0.2f}", finalAccountValue) "`"," . "`n"
     jsonString .= "`"registration_date`": `"" finalLastActiveDate "`"" . "`n"
     jsonString .= "},"
     A_Clipboard := jsonString
@@ -2661,7 +2646,7 @@ CalculateSponsorInfo(thisGuiButton, info) {
         . "状态: " . UserStatus . "`n"
         . "您将获得的会员类型: " . finalTier . "`n"
         . "新会员额度: " . Format("{:0.2f}", finalAccountValue) . " ORANGE`n"
-        . "预计有效期至: " . newExpiryDateFormatted . "`n`n"
+        . "赞助后有效期至: " . newExpiryDateFormatted . "`n`n"
         . "注意这里的文本不是你应该复制的内容，剪贴板的才是`n"
         . "QQ群: 584275905`n"
         . "QQ邮箱: 1204244136@qq.com`n"

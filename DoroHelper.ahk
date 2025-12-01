@@ -1492,7 +1492,6 @@ CheckForUpdate_AHK_File(isManualCheck) {
     }
     AddLog("远程文件哈希值: " remoteSha)
     AddLog("本地文件哈希值: " localSha)
-    ; 修改日志和MsgBox说明，以清晰指出是以UTC时间进行比较
     AddLog("远程文件修改时间 (UTC): " (remoteLastModified != "" ? remoteLastModified : "未获取到"))
     AddLog("本地文件修改时间 (UTC): " localLastModifiedUTC)
     ; --- 3. 比较并决定是否更新 ---
@@ -1513,8 +1512,7 @@ CheckForUpdate_AHK_File(isManualCheck) {
                 AddLog("检测到远程 AHK 文件版本 (" . remoteSha . ") 较新，本地版本 (" . localSha . ") 较旧。", "BLUE")
                 shouldDownload := true
             } else {
-                ; 哈希不一致，但本地文件的时间戳更近或相同 (在UTC下)。
-                ; 这通常意味着本地文件被修改过，或者远程的时间戳有问题。
+                ; 哈希不一致，但本地文件的时间戳更近或相同 (在UTC下)。这通常意味着本地文件被修改过，或者远程的时间戳有问题。
                 AddLog("警告: 检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC: " . localLastModifiedUTC . ") 晚于或等于远程 (UTC: " . remoteLastModified . ")。", "Red")
                 if (isManualCheck) {
                     userChoice := MsgBox("检测到 AHK 脚本哈希不匹配，但本地文件修改时间 (UTC) 晚于或等于线上版本。这可能意味着您本地做过更改，或者线上有新更新但时间戳较老`n`n远程哈希 (截短): " . SubStr(remoteSha, 1, 7)
@@ -2425,7 +2423,7 @@ FormatOrangeValueWithLocalCurrency(orangeAmount, unitPrice, currencyName, usdToC
     formatted .= " (折合 " . Format("{:0.2f}", localCurrencyAmount) . " " . currencyName . ")"
     return formatted
 }
-;tag 根据选择更新价格显示 (为V4扁平模型修改)
+;tag 根据选择更新价格显示
 UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo 参数
     global guiTier, guiDuration, guiPriceText
     global g_MembershipLevels, g_PriceMap, LocaleName
@@ -2552,7 +2550,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     ; --- 修改结束 ---
     guiPriceText.Text := displayMessage
 }
-;tag 计算并生成赞助信息 (为V4扁平模型修改)
+;tag 计算并生成赞助信息
 CalculateSponsorInfo(thisGuiButton, info) {
     global guiTier, guiDuration, guiSponsor
     global g_MembershipLevels, g_PriceMap, LocaleName
@@ -3191,7 +3189,7 @@ CheckUserGroup(forceUpdate := false) {
     cacheTimestamp := A_TickCount
     return highestMembership
 }
-;tag 根据输入的哈希值检查用户组 (为V4扁平模型修改)
+;tag 查询用户组
 CheckUserGroupByHash(inputHash) {
     global g_MembershipLevels, g_PriceMap, LocaleName, g_DefaultRegionPriceData
     AddLog("开始检查输入哈希值 '" . inputHash . "' 的用户组信息……", "Blue")

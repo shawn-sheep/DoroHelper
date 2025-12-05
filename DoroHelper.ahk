@@ -6516,7 +6516,7 @@ ClearRedNotice() {
                 UserMove(1380, 462, TrueRatio)
             }
             AddLog("尝试滚动活动栏")
-            Send "{WheelDown 33}"
+            Send "{WheelDown 30}"
             Sleep 500
         }
         while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.141 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.017 * NikkeW . " ", NikkeY + 0.141 * NikkeH + 0.031 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {

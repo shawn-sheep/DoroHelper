@@ -2355,7 +2355,7 @@ MsgSponsor(*) {
     guiDuration := guiSponsor.Add("DropDownList", "x+10 yp Choose1 w80", ["1个月", "3个月", "6个月", "12个月", "0个月"])
     guiSponsor.Tips.SetTip(guiDuration, "月: Month")
     ; 修改价格显示 Text 控件，使其能显示更多信息
-    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h140 Center +0x0100", "计算中……")
+    guiPriceText := guiSponsor.Add("Text", "xm+60 w300 h150 Center +0x0100", "计算中……")
     btn2 := guiSponsor.Add("Button", "xm+135 h30 +0x0100", "  我已赞助，生成信息")
     guiSponsor.Tips.SetTip(btn2, "I have sponsored, generate information")
     ; 确保回调函数正确绑定
@@ -2457,6 +2457,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     currentVirtualExpDate := userGroupInfo["VirtualExpiryDate"]
     currentRegistrationDate := userGroupInfo["LastActiveDate"]
     currentLevel := userGroupInfo["UserLevel"]
+    local historicalOrangeValue := userGroupInfo["HistoricalAccountValue"] ; 新增：获取历史额度
     ; 汇率获取
     local usdToCnyRate := 1.0
     if (currencyName = "USD") {
@@ -2497,7 +2498,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
     }
     ; 构建当前会员状态信息
     local currentStatusLines := []
-    if (currentLevel > 0 && currentRemainingValue > 0.001) {
+    if (currentLevel > 0 && historicalOrangeValue > 0.001) { ; 使用 historicalOrangeValue 来判断是否有历史记录
         currentStatusLines.Push("您当前是 " . currentType)
         ; 格式化注册日期
         local formattedRegistrationDate := "N/A"
@@ -2505,6 +2506,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) { ; <-- 接受 userGroupInfo �
             formattedRegistrationDate := SubStr(currentRegistrationDate, 1, 4) . "-" . SubStr(currentRegistrationDate, 5, 2) . "-" . SubStr(currentRegistrationDate, 7, 2)
         }
         currentStatusLines.Push("当前会员注册时间：" . formattedRegistrationDate) ; 新增此行
+        currentStatusLines.Push("历史额度：" . FormatOrangeValueWithLocalCurrency(historicalOrangeValue, unitPrice, currencyName, usdToCnyRate)) ; 新增此行
         currentStatusLines.Push("剩余额度：" . FormatOrangeValueWithLocalCurrency(currentRemainingValue, unitPrice, currencyName, usdToCnyRate))
         local formattedExpiryDate := SubStr(currentVirtualExpDate, 1, 4) . "-" . SubStr(currentVirtualExpDate, 5, 2) . "-" . SubStr(currentVirtualExpDate, 7, 2)
         currentStatusLines.Push("赞助前有效期至：" . formattedExpiryDate)
@@ -3012,9 +3014,9 @@ GetMembershipInfoForHash(targetHash, groupData) {
 ;tag 根据扁平化数据计算当前会员状态
 ; 参数:
 ;   currentTier: 用户当前在JSON中记录的会员等级 (例如 "金Doro会员")
-;   accountValue: 用户当前在JSON中记录的剩余额度 (ORANGE)
+;   accountValue: 用户当前在JSON中记录的剩余额度 (ORANGE)  <-- This is the historical total
 ;   lastActiveDate: 上次会员状态变更的日期 (YYYYMMDD)
-; 返回 Map: {MembershipType: "...", UserLevel: N, RemainingValue: X.X, VirtualExpiryDate: "YYYYMMDD", LastActiveDate: "YYYYMMDD"}
+; 返回 Map: {MembershipType: "...", UserLevel: N, RemainingValue: X.X, VirtualExpiryDate: "YYYYMMDD", LastActiveDate: "YYYYMMDD", HistoricalAccountValue: X.X}
 CalculateCurrentMembershipStatus(currentTier, accountValue, lastActiveDate) {
     global g_MembershipLevels
     local today := A_YYYY A_MM A_DD
@@ -3068,7 +3070,8 @@ CalculateCurrentMembershipStatus(currentTier, accountValue, lastActiveDate) {
         "UserLevel", finalUserLevel,
         "RemainingValue", finalRemainingValue,
         "VirtualExpiryDate", virtualExpiryDate,
-        "LastActiveDate", lastActiveDate ; 返回原始的 lastActiveDate
+        "LastActiveDate", lastActiveDate, ; 返回原始的 lastActiveDate
+        "HistoricalAccountValue", accountValue ; 新增：返回历史总额度
     )
 }
 ;tag 确定用户组

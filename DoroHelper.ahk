@@ -736,9 +736,9 @@ doroGui.AddGroupBox("x600 y10 w400 h240 Section", "妙妙工具")
 MiaoInfo := doroGui.Add("Text", "xp+70 yp-1 R1 +0x0100", "❔️")
 doroGui.Tips.SetTip(MiaoInfo, "提供一些与日常任务流程无关的额外小功能`nProvides ancillary features that operate outside the scope of the daily task workflow.")
 ; 仓库地址
-btnRepository := doroGui.Add("Button", "xp xs+10 w80 h30", "仓库地址")
-doroGui.Tips.SetTip(btnRepository, "github repository")
-btnRepository.OnEvent("Click", (*) => Run("https://github.com/1204244136/DoroHelper"))
+btnRepository := doroGui.Add("Button", "xp xs+10 w80 h30", "设备信息")
+doroGui.Tips.SetTip(btnRepository, "Device code")
+btnRepository.OnEvent("Click", Devicecode)
 ; Blablalink
 btnBlablalink := doroGui.Add("Button", "x+10 w60 h30", "Blalink")
 btnBlablalink.OnEvent("Click", (*) => Run("https://www.blablalink.com/"))
@@ -3367,6 +3367,17 @@ CopyLog(*) {
     A_Clipboard := LogBox.GetText()
     ; 给出提示
     MsgBox("日志内容已复制到剪贴板，请将其连同录屏发到群里")
+}
+;tag 生成设备信息并复制
+Devicecode(*) {
+    mainBoardSerial := GetMainBoardSerial()
+    cpuSerial := GetCpuSerial()
+    diskSerial := GetDiskSerial()
+    Hashed := HashSHA256(mainBoardSerial . cpuSerial . diskSerial)
+    informatinon := "主板序列号: " mainBoardSerial "`nCPU序列号: " cpuSerial "`n硬盘序列号: " diskSerial "`n设备码: " Hashed
+    A_Clipboard := informatinon
+    MsgBox informatinon
+    MsgBox("设备信息已复制到剪贴板")
 }
 ;endregion 消息辅助函数
 ;region 数据辅助函数

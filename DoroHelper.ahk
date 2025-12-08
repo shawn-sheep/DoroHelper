@@ -6597,7 +6597,7 @@ ClearRedBla() {
     }
     BackToHall()
 }
-;tag 地面玩法提醒
+;tag 1提醒
 CheckUnderGround(*) {
     global finalMessageText
     AddLog("检查地面玩法", "Fuchsia")
@@ -6624,7 +6624,7 @@ CheckUnderGround(*) {
     }
     else AddLog("作战报告未达到上限")
     Confirm
-    Sleep 500
+    Sleep 1000
     GoBack
 }
 ;endregion 任务完成后

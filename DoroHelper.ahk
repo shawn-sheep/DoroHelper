@@ -5,10 +5,14 @@
 #Include <PicLib>
 #Include <GuiCtrlTips>
 #Include <RichEdit>
-;检测管理员身份
-if !A_IsAdmin {
-    MsgBox "请以管理员身份运行DoroHelper！`nPlease run DoroHelper as administrator!"
-    ExitApp
+if not A_IsAdmin {
+    try {
+        ; 尝试以管理员权限重新运行该脚本
+        Run "*RunAs " A_ScriptFullPath
+    } catch {
+        MsgBox("无法获取管理员权限，脚本将退出。请手动以管理员身份运行。`nPlease run DoroHelper as administrator!")
+    }
+    ExitApp ; 关闭当前非管理员实例
 }
 CoordMode "Pixel", "Client"
 CoordMode "Mouse", "Client"

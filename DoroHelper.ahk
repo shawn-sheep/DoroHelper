@@ -6106,29 +6106,59 @@ EventLargeCooperate() {
 ;tag 小游戏
 EventLargeMinigame() {
     AddLog("开始任务：大活动·小游戏", "Fuchsia")
-    if 1 {
-        AddLog("本次小游戏未适配，跳过")
+    if !DirExist("C:\Users\12042\Desktop\Mini-game") {
+        AddLog("不支持小游戏")
         return
     }
-    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.335 * NikkeW . " ", NikkeY + 0.750 * NikkeH . " ", NikkeX + 0.335 * NikkeW + 0.340 * NikkeW . " ", NikkeY + 0.750 * NikkeH + 0.128 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("大活动·小游戏"), , , , , , , TrueRatio, TrueRatio)) {
+    while (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.335 * NikkeW . " ", NikkeY + 0.750 * NikkeH . " ", NikkeX + 0.335 * NikkeW + 0.340 * NikkeW . " ", NikkeY + 0.750 * NikkeH + 0.128 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·小游戏"), , , , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试进入对应活动页")
-        FindText().Click(X - 50 * TrueRatio, Y, "L")
+        FindText().Click(X, Y, "L")
         Send "{]}"
         Sleep 500
     }
-    Send "{]}"
-    loop 5 {
+    loop 3 {
+        Send "{]}"
         Confirm
         Sleep 1000
     }
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.044 * NikkeW . " ", NikkeY + 0.136 * NikkeH . " ", NikkeX + 0.044 * NikkeW + 0.010 * NikkeW . " ", NikkeY + 0.136 * NikkeH + 0.019 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击任务")
-        FindText().Click(X, Y, "L")
+    AddLog("已进入对应活动页")
+    UserClick(1908, 1458, TrueRatio)
+    Sleep 1000
+    UserClick(1898, 1666, TrueRatio)
+    Sleep 1000
+    try {
+        Run "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Anaconda (anaconda3)\Anaconda Prompt.lnk"
+    } catch as e {
+        MsgBox "无法找到 Anaconda 快捷方式，请检查路径是否正确。`n错误详情: " e.Message
+        ExitApp
+    }
+    SetTitleMatchMode 2
+    ; 等待窗口出现，超时时间设置为 10 秒
+    if WinWait("Anaconda Prompt", , 10) {
+        WinActivate ; 激活该窗口，确保命令输入在终端里
+        ; *** 关键点 ***
+        ; Anaconda 启动后需要时间加载 (base) 环境。
+        ; 如果你的电脑启动较慢，可以适当增加下面的数值 (单位: 毫秒)
+        Sleep 3000
+        ; 发送 cd 命令
+        ; 使用 /d 参数是为了确保如果跨盘符（例如从 C 盘到 D 盘）也能成功跳转
+        Send 'cd /d "' "C:\Users\12042\Desktop\Mini-game" '" {Enter}'
+        Sleep 500 ; 短暂等待
+        ; 发送 conda 激活命令
+        Send "conda activate minigame{Enter}"
+        ; 等待环境激活完成 (取决于环境大小，可能需要更长时间)
         Sleep 2000
-        AddLog("点击领取奖励")
-        UserClick(1910, 1894, TrueRatio)
+        ; 发送运行 Python 命令
+        Send "python Main.py{Enter}"
+        Sleep 10000
+        Send "{Esc}"
         Sleep 1000
-        Confirm
+        UserClick(1728, 1316, TrueRatio)
+        Sleep 3000
+        UserClick(1704, 1990, TrueRatio)
+        Sleep 3000
+    } else {
+        MsgBox "超时：未检测到 Anaconda Prompt 窗口启动。"
     }
     while !(ok := FindText(&X := "wait", &Y := 2, NikkeX + 0.003 * NikkeW . " ", NikkeY + 0.007 * NikkeH . " ", NikkeX + 0.003 * NikkeW + 0.089 * NikkeW . " ", NikkeY + 0.007 * NikkeH + 0.054 * NikkeH . " ", 0.29 * PicTolerance, 0.29 * PicTolerance, FindText().PicLib("活动地区的地区"), , 0, , , , , TrueRatio, TrueRatio)) {
         AddLog("尝试返回活动主页面")

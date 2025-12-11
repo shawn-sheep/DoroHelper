@@ -3976,13 +3976,26 @@ BattleSettlement(currentVictory := 0, modes*) {
             BattleSettlement(currentVictory)
         }
     }
+    ;有灰色的下一关卡代表赢了但次数耗尽
+    else if (ok := FindText(&X, &Y, NikkeX + 0.889 * NikkeW . " ", NikkeY + 0.912 * NikkeH . " ", NikkeX + 0.889 * NikkeW + 0.103 * NikkeW . " ", NikkeY + 0.912 * NikkeH + 0.081 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("灰色的下一关卡"), , , , , , , TrueRatio, TrueRatio)) {
+        AddLog("战斗结束！")
+        currentVictory := currentVictory + 1
+        if currentVictory > 1 {
+            AddLog("共胜利" currentVictory "次")
+        }
+        GoBack
+        Sleep 1000
+        Send "{]}"
+        LastVictoryCount := currentVictory
+        return True
+    }
     ;没有编队也没有下一关就点Esc（普通情况或者爬塔次数用完了）
     else {
         AddLog("战斗结束！")
         GoBack
         Sleep 1000
         Send "{]}"
-        LastVictoryCount := currentVictory ; 更新全局变量
+        LastVictoryCount := currentVictory
         return True
     }
 }

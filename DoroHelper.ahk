@@ -146,6 +146,7 @@ global g_settings := Map(
     "OpenBlablalink", 0,                ; 完成后打开Blablalink
     "AutoStartNikke", 0,                ; 使用脚本启动NIKKE
     "Timedstart", 0,                    ; 定时启动
+    "Autostart", 0,                     ; 自动启动
     ;其他
     "AutoFill", 0,                      ; 自动填充加成妮姬
     "CheckAuto", 0,                     ; 开启自动射击和爆裂
@@ -160,6 +161,7 @@ global g_numeric_settings := Map(
     "TestModeValue", "",                ; 调试模式值
     "StartupTime", "",                  ; 定时启动时间
     "StartupPath", "",                  ; 启动路径
+    "StartDelay", "",                   ; 启动延迟
     "SleepTime", 1000,                  ; 默认等待时间
     "InterceptionBossNormal", 1,        ; 普通拦截战BOSS选择
     "InterceptionBoss", 1,              ; 异常拦截战BOSS选择
@@ -435,6 +437,9 @@ g_settingPages["Login"].Push(StartupTimeEdit)
 cbLoopMode := AddCheckboxSetting(doroGui, "LoopMode", "自律模式", "xs+20 R1 +0x0100")
 doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动`nLoopMode:If checked, when DoroHelper completes all selected tasks, NIKKE will automatically exit, and Doro will automatically restart to facilitate timed restarts.")
 g_settingPages["Login"].Push(cbLoopMode)
+SetAutostart := AddCheckboxSetting(doroGui, "Autostart", "自动启动[金Doro]", "xs R1")
+doroGui.Tips.SetTip(SetAutostart, "勾选后，脚本会在启动后经过10秒延迟后自动视为点击DORO！`nThe script will be automatically regarded as a click on DORO after a 10-second delay after startup.")
+g_settingPages["Login"].Push(SetAutostart)
 ;tag 二级商店Shop
 SetShop := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====商店选项====")
 g_settingPages["Shop"].Push(SetShop)
@@ -854,6 +859,15 @@ if g_settings["AutoDeleteOldFile"]
 ;tag 检查更新
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
+;tag 自动启动
+if g_settings["Autostart"] {
+    if g_numeric_settings["UserLevel"] >= 3 {
+        AutoStartDoro()
+    } else {
+        MsgBox("当前用户组不支持自动启动，请点击左上角赞助按钮升级会员组或取消勾选该功能，脚本即将暂停")
+        Pause
+    }
+}
 ;tag 定时启动
 if g_settings["Timedstart"] {
     if g_numeric_settings["UserLevel"] >= 3 {
@@ -1250,6 +1264,11 @@ Initialization() {
         if Result = "Yes"
             Pause
     }
+}
+AutoStartDoro() {
+    AddLog("等待10秒后自动启动DoroHelper……")
+    Sleep 10000
+    ClickOnDoro()
 }
 ;tag 定时启动
 StartDailyTimer() {

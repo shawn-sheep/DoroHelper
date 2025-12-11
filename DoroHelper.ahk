@@ -3485,8 +3485,7 @@ UserPress(sX, sY, k) {
     uX := Round(sX * k) ;计算转换后的坐标
     uY := Round(sY * k)
     CoordMode "Mouse", "Client"
-    Send "{Click " uX " " uY " " 0 "}" ;点击转换后的坐标
-    Send "Click " "Down" "}"
+    Send "{Click " uX " " uY " Down}"
 }
 ;tag 移动
 UserMove(sX, sY, k) {

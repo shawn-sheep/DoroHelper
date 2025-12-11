@@ -19,10 +19,16 @@ CoordMode "Mouse", "Client"
 ;region 设置常量
 try TraySetIcon "doro.ico"
 currentVersion := "v1.9.7"
-;tag 检查脚本哈希
+; 判断拓展名
 SplitPath A_ScriptFullPath, , , &scriptExtension
 scriptExtension := StrLower(scriptExtension)
+; 检查是否为 AHK 脚本
 if (scriptExtension = "ahk") {
+    if RegExMatch(currentVersion, "\.(\d+)$", &match) {
+        patchNumber := match.1
+        newPatchNumber := patchNumber + 1
+        currentVersion := RegExReplace(currentVersion, "\.(\d+)$", "." . newPatchNumber)
+    }
     currentVersion := currentVersion . "-beta"
 }
 usr := "1204244136"

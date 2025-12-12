@@ -3065,7 +3065,8 @@ CheckUserGroup(forceUpdate := false) {
         "UserLevel", 0,
         "RemainingValue", 0.0,
         "VirtualExpiryDate", "19991231",
-        "LastActiveDate", "19991231"
+        "LastActiveDate", "19991231",
+        "HistoricalAccountValue", 0.0
     )
     ; 检查缓存是否有效 (例如，缓存1分钟，或者在forceUpdate时刷新)
     ; 缓存判断逻辑需要更新，因为现在有 RemainingValue 和 VirtualExpiryDate

@@ -4181,15 +4181,20 @@ AdvanceMode(Picture, Picture2?) {
             ; 3.2 尝试进入战斗 (依赖 EnterToBattle 内部设置 BattleActive)
             EnterToBattle
             BattleSettlement(0, "EventStory") ; 显式传递 0 作为 currentVictory 的初始值
+            Sleep 3000
+            loop 3 {
+                Send "{]}"
+                Sleep 500
+            }
             ; 区域变化的提示
             if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.445 * NikkeW . " ", NikkeY + 0.561 * NikkeH . " ", NikkeX + 0.445 * NikkeW + 0.111 * NikkeW . " ", NikkeY + 0.561 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("前往区域的图标"), , , , , , , TrueRatio, TrueRatio)) {
                 FindText().Click(X, Y + 400 * TrueRatio, "L")
+                Sleep 500
             }
             ; 非扫荡关卡未能打满（即第11、12关）
             if (LastVictoryCount != 5 && BattleActive = 1 && QuickBattle != 1) {
                 ; 补丁，防卡剧情
-                Sleep 3000
-                Send "{]}"
+                Sleep 1000
                 AddLog("非扫荡关卡未能打满，切换识图类型")
                 continue
             }

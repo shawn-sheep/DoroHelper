@@ -4030,10 +4030,6 @@ Challenge() {
 BackToHall(AD := False) {
     ; AddLog("返回大厅")
     while true {
-        if !WinActive(nikkeID) {
-            MsgBox ("窗口未聚焦，程序已中止")
-            Pause
-        }
         if (ok := FindText(&X, &Y, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
             if AD = False {
                 break

@@ -3291,13 +3291,13 @@ ShowSetting(pageName) {
 ;tag 活动结束提醒
 CheckEvent(*) {
     MyFileShortHash := SubStr(A_Now, 1, 8)
-    if MyFileShortHash = "20251119" {
-        MsgBox "GODDESS FALL活动将在今天结束，请尽快完成活动！记得捡垃圾、搬空商店！"
-        MsgBox "特殊招募将在今天结束，手头有券的别忘了！"
-        MsgBox "娜由塔的招募将在今天结束，需要抽突破的别忘了！"
+    if MyFileShortHash = "20251217" {
         MsgBox "单人突击将在今天结束，请没凹的尽快凹分！"
     }
     if MyFileShortHash = "20251126" {
+        MsgBox "GODDESS FALL活动将在今天结束，请尽快完成活动！记得捡垃圾、搬空商店！"
+        MsgBox "特殊招募将在今天结束，手头有券的别忘了！"
+        MsgBox "娜由塔的招募将在今天结束，需要抽突破的别忘了！"
         MsgBox "莉贝雷利奥的招募将在今天结束，需要抽突破的别忘了！"
     }
 }

@@ -2522,7 +2522,7 @@ UpdateSponsorPrice(userGroupInfo_param := unset) {
 CalculateSponsorInfo(thisGuiButton, info) {
     global guiTier, guiDuration, guiSponsor
     global g_MembershipLevels, g_PriceMap, LocaleName
-    local today := A_YYYY A_MM A_DD
+    today := A_YYYY A_MM A_DD
     mainBoardSerial := GetMainBoardSerial()
     cpuSerial := GetCpuSerial()
     diskSerial := GetDiskSerial()
@@ -2554,15 +2554,20 @@ CalculateSponsorInfo(thisGuiButton, info) {
     currentRemainingValue := currentUserInfo["RemainingValue"] ; 实时剩余额度
     currentHistoricalValue := currentUserInfo["HistoricalAccountValue"] ; 历史总充值额度
     currentRegistrationDate := currentUserInfo["LastActiveDate"] ; 上次注册/变更日期
-    local finalAccountValue := 0.0
-    local finalTier := tierSelected
-    local finalLastActiveDate := today
-    local UserStatus := ""
+    finalAccountValue := 0.0
+    finalTier := tierSelected
+    finalLastActiveDate := today
+    UserStatus := ""
     ; ========================= 核心逻辑修改区域 =========================
     ; 1. 新用户 或 已过期用户 (额度耗尽)
     ; 逻辑：重置注册日期为今天，重置金额为本次充值金额
     if (currentLevel == 0 || currentRemainingValue <= 0.001) {
-        UserStatus := "新用户/重新开通"
+        ; 修改点：通过历史总额度判断是纯新用户还是重新开通
+        if (currentHistoricalValue <= 0.001) {
+            UserStatus := "新用户"
+        } else {
+            UserStatus := "重新开通"
+        }
         finalAccountValue := newPurchaseValue
         finalLastActiveDate := today
     }
@@ -2589,15 +2594,15 @@ CalculateSponsorInfo(thisGuiButton, info) {
     }
     ; =================================================================
     ; 计算用于显示的预计到期日 (仅用于弹窗提示用户)
-    local tempMonthlyCost := g_MembershipLevels.Get(finalTier).monthlyCost
-    local tempDailyCost := tempMonthlyCost / 30.0
+    tempMonthlyCost := g_MembershipLevels.Get(finalTier).monthlyCost
+    tempDailyCost := tempMonthlyCost / 30.0
     ; 注意：这里的临时计算需要根据情况区分
     ; 如果是续费，应该用 (finalAccountValue / dailyCost) + registrationDate
     ; 如果是变更/新购，应该用 (finalAccountValue / dailyCost) + today
     ; 为了简化显示，我们统一计算“剩余天数”：
     ; 如果是续费：剩余价值 = finalAccountValue - (Today - RegistrationDate)*Cost
     ; 如果是变更/新购：剩余价值 = finalAccountValue
-    local displayRemainingValue := 0.0
+    displayRemainingValue := 0.0
     if (UserStatus == "老用户续费" && finalLastActiveDate != today) {
         daysPassed := DateDiff(today, finalLastActiveDate, "Days")
         consumedValue := daysPassed * tempDailyCost
@@ -2605,14 +2610,14 @@ CalculateSponsorInfo(thisGuiButton, info) {
     } else {
         displayRemainingValue := finalAccountValue
     }
-    local tempVirtualExpiryDate := "19991231"
+    tempVirtualExpiryDate := "19991231"
     if (displayRemainingValue > 0 && tempDailyCost > 0) {
-        local tempDaysLeft := Floor(displayRemainingValue / tempDailyCost)
+        tempDaysLeft := Floor(displayRemainingValue / tempDailyCost)
         tempVirtualExpiryDate := SubStr(DateAdd(A_Now, tempDaysLeft, "Days"), 1, 8)
     } else if (displayRemainingValue > 0 && tempDailyCost == 0) {
         tempVirtualExpiryDate := "99991231"
     }
-    local newExpiryDateFormatted := SubStr(tempVirtualExpiryDate, 1, 4) . "-" . SubStr(tempVirtualExpiryDate, 5, 2) . "-" . SubStr(tempVirtualExpiryDate, 7, 2)
+    newExpiryDateFormatted := SubStr(tempVirtualExpiryDate, 1, 4) . "-" . SubStr(tempVirtualExpiryDate, 5, 2) . "-" . SubStr(tempVirtualExpiryDate, 7, 2)
     ; 生成 JSON 字符串
     jsonString := UserStatus "`n"
     jsonString .= "(请将这段文字替换成您的付款截图，邮件的图片请以附件形式发送)`n"

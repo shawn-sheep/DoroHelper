@@ -3160,7 +3160,6 @@ CheckUserGroup(forceUpdate := false) {
             try TraySetIcon("icon\CopperDoro.ico")
         }
         AddLog("当前用户组：" . g_numeric_settings["UserGroup"] . " (有效期至 " . formattedExpiryDate . ") ", "Green")
-        AddLog("欢迎加入会员qq群759311938", "Green")
         ; 检查会员是否明天到期
         local tomorrowDate := SubStr(DateAdd(A_Now, 1, "Days"), 1, 8) ; 获取明天的日期 (YYYYMMDD)
         if (highestMembership["VirtualExpiryDate"] == tomorrowDate) {

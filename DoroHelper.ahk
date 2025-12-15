@@ -840,7 +840,7 @@ try {
 ;tag 语言提示
 if !(LocaleName = "zh-CN") {
     AddLog("Hover your mouse over to view the English translatio, except for the content of the log")
-    AddLog("For our international users,this will be a much faster and better way to get support. Here's the invite link:https://discord.gg/WtSxX6q6")
+    AddLog("For our international users,this will be a much faster and better way to get support. Here's the invite link:https://discord.gg/f4rAWJVNJj")
 }
 ;tag 检查用户组
 if A_UserName != "12042"

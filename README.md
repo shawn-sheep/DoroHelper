@@ -16,6 +16,8 @@ PC 端日常任务清理助手。一键清理多项日常事务。支持除**国
   <a href="https://mirrorchyan.com/?source=doro-github-release" target="_blank"><img alt="mirrorc" src="https://img.shields.io/badge/Mirror%E9%85%B1-%239af3f6?logo=countingworkspro&logoColor=4f46e5"></a>
 </p>
 
+**[English Readme](README_en.md) | 中文说明**
+
 </div>
 
 ## 我们联合！
@@ -130,7 +132,9 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
 
 ## 反馈和改进
 
-加入[DoroHelper 反馈群](https://qm.qq.com/q/f0Q1yr7vzi)(584275905)
+加入[DoroHelper 反馈群](https://qm.qq.com/q/f0Q1yr7vzi)
+
+加入[Discord](https://discord.gg/f4rAWJVNJj)
 
 ## 支持和鼓励
 
@@ -153,7 +157,7 @@ Doro 只是想让你少被该死的读条、闪光弹和重复劳动折磨。一
   </tr>
 </table>
 
-Currently available platforms：
+以下为支持的平台：
 
 Hanpass|PandaRemit|WireBarley|GmoneyTrans|Debunk|PayForex|koala transfer|Sendly|GME
 

@@ -1187,9 +1187,6 @@ Initialization() {
     if WinExist("ahk_exe " . targetExe) {
         global winID := WinExist("ahk_exe " . targetExe)
         actualWinTitle := WinGetTitle(winID)
-        if WinGetCount("ahk_exe " . targetExe) > 1 {
-            MsgBox("金Doro会员支持多开自动运行")
-        }
         AddLog("找到了进程为 '" . targetExe . "' 的窗口！实际窗口标题是: " . actualWinTitle)
         if actualWinTitle = "胜利女神：新的希望" {
             MsgBox ("不支持国服，自动关闭！")

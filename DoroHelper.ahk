@@ -4558,7 +4558,7 @@ ShopGeneral() {
     Sleep 1000
     ; 定义物品
     PurchaseItems := Map(
-        "免费商品", { Text: FindText().PicLib("红点"), Setting: g_settings["ShopGeneralFree"], Tolerance: 0.2 * PicTolerance },
+        "免费商品", { Text: FindText().PicLib("红点"), Setting: g_settings["ShopGeneralFree"], Tolerance: 0.15 * PicTolerance },
         "芯尘盒", { Text: FindText().PicLib("芯尘盒"), Setting: g_settings["ShopGeneralDust"], Tolerance: 0.2 * PicTolerance },
         "简介个性化礼包", { Text: FindText().PicLib("简介个性化礼包"), Setting: g_settings["ShopGeneralPackage"], Tolerance: 0.2 * PicTolerance }
     )

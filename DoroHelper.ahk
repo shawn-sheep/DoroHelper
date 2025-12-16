@@ -1340,6 +1340,10 @@ CheckForUpdate(isManualCheck) {
     libResourcesNeedsReload := false
     ; ==================== AHK 文件更新检查 (脚本本体更新) =====================
     if (scriptExtension = "ahk") {
+        if (g_numeric_settings.Get("DownloadSource") == "Mirror酱") {
+            MsgBox("Mirror酱不支持AHK版本更新", "提示", "IconI")
+            return
+        }
         AddLog("开始检查 DoroHelper.ahk 本体更新……")
         ahkResult := CheckForUpdate_AHK_File(isManualCheck)
         if (ahkResult.Get("success", false)) {

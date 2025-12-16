@@ -2299,7 +2299,7 @@ MsgSponsor(*) {
     ; 获取当前用户会员信息
     userGroupInfo := CheckUserGroup()
     ; 表格说明
-    LVZH := guiSponsor.Add("ListView", "xm w400 h120", ["功能", "普通", "铜", "银", "金"])
+    LVZH := guiSponsor.Add("ListView", "xm w400 h120", ["功能", "普通", "铜[废弃]", "银[废弃]", "金"])
     LVZH.ModifyCol(1, 90)
     LVZH.ModifyCol(2, 60)
     LVZH.ModifyCol(3, 60)
@@ -2338,7 +2338,7 @@ MsgSponsor(*) {
     ; === 选择区域 ===
     availableTiers := []
     for tierName, levelInfo in g_MembershipLevels {
-        if (tierName != "普通用户") {
+        if (tierName = "金Doro会员") {
             availableTiers.Push(tierName)
         }
     }

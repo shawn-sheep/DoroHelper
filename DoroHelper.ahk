@@ -4301,12 +4301,25 @@ AdvanceMode(Picture, Picture2?) {
 ;tag 通用商店购买处理逻辑
 ProcessPurchaseList(PurchaseItems, Options := Map()) {
     ; Options 参数支持: "CheckCredit" (检查信用点), "CheckMax" (检查MAX按钮)
+    ; 新增支持: "Area" (自定义识图区域，格式为数组 [x1, y1, x2, y2])
+    ; 默认区域
+    sX1 := NikkeX + 0.049 * NikkeW
+    sY1 := NikkeY + 0.479 * NikkeH
+    sX2 := NikkeX + 0.989 * NikkeW
+    sY2 := NikkeY + 0.918 * NikkeH
+    ; 解析 Area 参数 (如果存在且为数组)
+    if Options.Has("Area") and IsObject(Options["Area"]) and Options["Area"].Length >= 4 {
+        sX1 := Options["Area"][1]
+        sY1 := Options["Area"][2]
+        sX2 := Options["Area"][3]
+        sY2 := Options["Area"][4]
+    }
     for Name, item in PurchaseItems {
         if (!item.Setting) {
             continue ; 如果设置未开启，则跳过此物品
         }
-        ; 查找物品
-        if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.049 * NikkeW, NikkeY + 0.479 * NikkeH, NikkeX + 0.049 * NikkeW + 0.940 * NikkeW, NikkeY + 0.479 * NikkeH + 0.439 * NikkeH, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, TrueRatio, TrueRatio)) {
+        ; 查找物品 (使用动态坐标 sX1, sY1, sX2, sY2)
+        if (ok := FindText(&X := "wait", &Y := 1, sX1, sY1, sX2, sY2, item.Tolerance, item.Tolerance, item.Text, , , , , , 1, TrueRatio, TrueRatio)) {
             ; 遍历找到的所有物品 (例如多个手册)
             loop ok.Length {
                 FindText().Click(ok[A_Index].x, ok[A_Index].y, "L")
@@ -4566,9 +4579,14 @@ ShopGeneral() {
         "芯尘盒", { Text: FindText().PicLib("芯尘盒"), Setting: g_settings["ShopGeneralDust"], Tolerance: 0.2 * PicTolerance },
         "简介个性化礼包", { Text: FindText().PicLib("简介个性化礼包"), Setting: g_settings["ShopGeneralPackage"], Tolerance: 0.2 * PicTolerance }
     )
+    ; 定义普通商店的识图区域 (将坐标放入数组中)
+    GeneralShopArea := Map(
+        "CheckCredit", true,
+        "Area", [NikkeX + 0.055 * NikkeW . " ", NikkeY + 0.481 * NikkeH . " ", NikkeX + 0.055 * NikkeW + 0.426 * NikkeW . " ", NikkeY + 0.481 * NikkeH + 0.237 * NikkeH . " "]
+    )
     loop 2 {
-        ; 调用通用处理函数，开启信用点检查
-        ProcessPurchaseList(PurchaseItems, Map("CheckCredit", true))
+        ; 调用通用处理函数，传入区域配置
+        ProcessPurchaseList(PurchaseItems, GeneralShopArea)
         ; 刷新逻辑保持不变
         while (ok := FindText(&X, &Y, NikkeX + 0.173 * NikkeW . " ", NikkeY + 0.423 * NikkeH . " ", NikkeX + 0.173 * NikkeW + 0.034 * NikkeW . " ", NikkeY + 0.423 * NikkeH + 0.050 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("FREE"), , , , , , , TrueRatio, TrueRatio)) {
             AddLog("尝试刷新商店")
@@ -4607,8 +4625,12 @@ ShopArena() {
         "简介个性化礼包", { Text: FindText().PicLib("简介个性化礼包"), Setting: g_settings["ShopArenaPackage"], Tolerance: 0.3 * PicTolerance },
         "公司武器熔炉", { Text: FindText().PicLib("公司武器熔炉"), Setting: g_settings["ShopArenaFurnace"], Tolerance: 0.3 * PicTolerance }
     )
-    ; 调用通用处理函数
-    ProcessPurchaseList(PurchaseItems)
+    ; 定义竞技场商店的识图区域 (将坐标放入数组中)
+    ArenaShopArea := Map(
+        "Area", [NikkeX + 0.054 * NikkeW . " ", NikkeY + 0.481 * NikkeH . " ", NikkeX + 0.054 * NikkeW + 0.511 * NikkeW . " ", NikkeY + 0.481 * NikkeH + 0.238 * NikkeH . " "]
+    )
+    ; 调用通用处理函数，传入区域配置
+    ProcessPurchaseList(PurchaseItems, ArenaShopArea)
 }
 ;tag 废铁商店
 ShopRecycling() {
@@ -4631,8 +4653,13 @@ ShopRecycling() {
         "保养工具箱", { Text: FindText().PicLib("保养工具箱图标"), Setting: g_settings["ShopRecyclingKitBox"], Tolerance: 0.3 * PicTolerance },
         "企业精选武装", { Text: FindText().PicLib("企业精选武装图标"), Setting: g_settings["ShopRecyclingArms"], Tolerance: 0.3 * PicTolerance }
     )
-    ; 调用通用处理函数，开启MAX检查
-    ProcessPurchaseList(PurchaseItems, Map("CheckMax", true))
+    ; 定义废铁商店的识图区域 (将坐标放入数组中)
+    RecyclingShopArea := Map(
+        "CheckMax", true,
+        "Area", [NikkeX + 0.055 * NikkeW . " ", NikkeY + 0.478 * NikkeH . " ", NikkeX + 0.055 * NikkeW + 0.935 * NikkeW . " ", NikkeY + 0.478 * NikkeH + 0.436 * NikkeH . " "]
+    )
+    ; 调用通用处理函数，传入区域配置
+    ProcessPurchaseList(PurchaseItems, RecyclingShopArea)
     if Reopen {
         AddLog("存在限时商品")
         UserMove(384, 1244, TrueRatio)

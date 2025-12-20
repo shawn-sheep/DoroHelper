@@ -5584,15 +5584,17 @@ AwardAdviseAward() {
         AddLog("点击红点")
         FindText().Click(X, Y, "L")
         Sleep 2000
-        while (ok := FindText(&X, &Y, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.400 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.400 * NikkeH + 0.512 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
-            AddLog("播放新的片段")
-            FindText().Click(X, Y, "L")
-            Sleep 3000
-            Send "{]}" ;尝试跳过
-            Sleep 3000
-            Confirm
-            Sleep 1000
-            GoBack
+        while (ok := FindText(&X, &Y, NikkeX + 0.486 * NikkeW . " ", NikkeY + 0.131 * NikkeH . " ", NikkeX + 0.486 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.131 * NikkeH + 0.025 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , , TrueRatio, TrueRatio)) {
+            if (ok := FindText(&X, &Y, NikkeX + 0.617 * NikkeW . " ", NikkeY + 0.400 * NikkeH . " ", NikkeX + 0.617 * NikkeW + 0.026 * NikkeW . " ", NikkeY + 0.400 * NikkeH + 0.512 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("红点"), , , , , , 1, TrueRatio, TrueRatio)) {
+                AddLog("播放新的片段")
+                FindText().Click(X, Y, "L")
+                Sleep 3000
+                Send "{]}" ;尝试跳过
+                Sleep 3000
+                Confirm
+                Sleep 1000
+                GoBack
+            }
             UserMove(1906, 1026, TrueRatio)
             Send "{WheelDown 3}"
             Sleep 1000

@@ -3367,8 +3367,8 @@ ShowSetting(pageName) {
 ;tag 活动结束提醒
 CheckEvent(*) {
     MyFileShortHash := SubStr(A_Now, 1, 8)
-    if MyFileShortHash = "20251217" {
-        MsgBox "单人突击将在今天结束，请没凹的尽快凹分！"
+    if MyFileShortHash = "20251229" {
+        MsgBox "TERMINUS TICKET活动将在今天结束，请尽快完成活动！记得捡垃圾、搬空商店！"
     }
     if MyFileShortHash = "20251126" {
         MsgBox "GODDESS FALL活动将在今天结束，请尽快完成活动！记得捡垃圾、搬空商店！"
@@ -6694,35 +6694,36 @@ ClearRedBla() {
     }
     BackToHall()
 }
-;tag 1提醒
+;tag 提醒
 CheckUnderGround(*) {
     global finalMessageText
-    AddLog("检查地面玩法", "Fuchsia")
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击作战出击")
-        FindText().Click(X, Y + 200 * TrueRatio, "L")
-        Sleep 1000
-    }
-    if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.397 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.397 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.042 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("地面玩法·地面"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("点击地面玩法")
-        FindText().Click(X, Y, "L")
-        Sleep 1000
-    }
-    if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.978 * NikkeW . " ", NikkeY + 0.104 * NikkeH . " ", NikkeX + 0.978 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.104 * NikkeH + 0.035 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("地面玩法·任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
-        Sleep 1000
-        AddLog("点击任务")
-        FindText().Click(X, Y, "L")
-        Sleep 3000
-    }
-    if (ok := FindText(&X, &Y, NikkeX + 0.593 * NikkeW . " ", NikkeY + 0.206 * NikkeH . " ", NikkeX + 0.593 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.206 * NikkeH + 0.019 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("地面玩法·21"), , , , , , , TrueRatio, TrueRatio)) {
-        AddLog("作战报告已达到上限")
-        finalMessageText := finalMessageText . "作战报告已达到上限！`n"
-        Sleep 1000
-    }
-    else AddLog("作战报告未达到上限")
-    Confirm
-    Sleep 1000
-    GoBack
+    AddLog("地面玩法已结束", "Fuchsia")
+    ; AddLog("检查地面玩法", "Fuchsia")
+    ; if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.658 * NikkeW . " ", NikkeY + 0.639 * NikkeH . " ", NikkeX + 0.658 * NikkeW + 0.040 * NikkeW . " ", NikkeY + 0.639 * NikkeH + 0.066 * NikkeH . " ", 0.4 * PicTolerance, 0.4 * PicTolerance, FindText().PicLib("方舟的图标"), , 0, , , , , TrueRatio, TrueRatio)) {
+    ;     AddLog("点击作战出击")
+    ;     FindText().Click(X, Y + 200 * TrueRatio, "L")
+    ;     Sleep 1000
+    ; }
+    ; if (ok := FindText(&X := "wait", &Y := 1, NikkeX + 0.397 * NikkeW . " ", NikkeY + 0.594 * NikkeH . " ", NikkeX + 0.397 * NikkeW + 0.037 * NikkeW . " ", NikkeY + 0.594 * NikkeH + 0.042 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("地面玩法·地面"), , , , , , , TrueRatio, TrueRatio)) {
+    ;     AddLog("点击地面玩法")
+    ;     FindText().Click(X, Y, "L")
+    ;     Sleep 1000
+    ; }
+    ; if (ok := FindText(&X := "wait", &Y := 10, NikkeX + 0.978 * NikkeW . " ", NikkeY + 0.104 * NikkeH . " ", NikkeX + 0.978 * NikkeW + 0.019 * NikkeW . " ", NikkeY + 0.104 * NikkeH + 0.035 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("地面玩法·任务的图标"), , , , , , , TrueRatio, TrueRatio)) {
+    ;     Sleep 1000
+    ;     AddLog("点击任务")
+    ;     FindText().Click(X, Y, "L")
+    ;     Sleep 3000
+    ; }
+    ; if (ok := FindText(&X, &Y, NikkeX + 0.593 * NikkeW . " ", NikkeY + 0.206 * NikkeH . " ", NikkeX + 0.593 * NikkeW + 0.016 * NikkeW . " ", NikkeY + 0.206 * NikkeH + 0.019 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("地面玩法·21"), , , , , , , TrueRatio, TrueRatio)) {
+    ;     AddLog("作战报告已达到上限")
+    ;     finalMessageText := finalMessageText . "作战报告已达到上限！`n"
+    ;     Sleep 1000
+    ; }
+    ; else AddLog("作战报告未达到上限")
+    ; Confirm
+    ; Sleep 1000
+    ; GoBack
 }
 ;endregion 任务完成后
 ;region 妙妙工具

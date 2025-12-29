@@ -2760,12 +2760,18 @@ DownloadUrlContent(url) {
         }
     } catch as e1 {
         AddLog("使用 WinHttp.WinHttpRequest.5.1 失败，尝试备用方案。错误: " . e1.Message . " URL: " . url, "RED")
-        ; ----------------- 2. 尝试使用 MSXML2.XMLHTTP (备用) -----------------
+        ; ----------------- 2. 尝试使用 MSXML2.ServerXMLHTTP (备用) -----------------
         try {
-            AddLog("尝试使用 MSXML2.XMLHTTP 备用方案下载...", "BLUE")
-            xhr := ComObject("MSXML2.XMLHTTP")
-            ; 备用方案使用同步请求 (false) 简化处理
+            AddLog("尝试使用 MSXML2.ServerXMLHTTP 备用方案下载...", "BLUE")
+            xhr := ComObject("MSXML2.ServerXMLHTTP.6.0")
+            ; 备用方案使用同步请求 (false)
             xhr.Open("GET", url, false)
+            ; 参数顺序: 域名解析(5s), 连接(5s), 发送(10s), 接收(30s)
+            xhr.setTimeouts(5000, 5000, 10000, 30000)
+            ; 添加防缓存头，强制获取最新内容
+            xhr.setRequestHeader("Cache-Control", "no-cache")
+            xhr.setRequestHeader("Pragma", "no-cache")
+            xhr.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT")
             xhr.Send()
             if (xhr.Status != 200) {
                 AddLog("备用方案下载 URL 内容失败，HTTP状态码: " . xhr.Status . " URL: " . url, "Red")

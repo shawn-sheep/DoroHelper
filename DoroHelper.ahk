@@ -3164,7 +3164,7 @@ CheckUserGroup(forceUpdate := false) {
             if (cachedUserGroupInfo["UserLevel"] > 0 && cachedUserGroupInfo["VirtualExpiryDate"] == tomorrowDate) {
                 if (!reminderShown) { ; 修改：增加判断
                     MsgBox("您的 " . cachedUserGroupInfo["MembershipType"] . " 会员将于明天到期，请及时续费！", "会员续费提醒", "IconI")
-                    AddLog("会员续费提醒：您的会员将于明天到期。", "Orange")
+                    AddLog("会员续费提醒：您的会员将于明天到期。", "Blue")
                     reminderShown := true ; 修改：设置标志
                 }
             }
@@ -3241,7 +3241,7 @@ CheckUserGroup(forceUpdate := false) {
         if (highestMembership["VirtualExpiryDate"] == tomorrowDate) {
             if (!reminderShown) { ; 修改：增加判断
                 MsgBox("您的 " . highestMembership["MembershipType"] . " 会员将于明天到期，请及时续费！", "会员续费提醒", "IconI")
-                AddLog("会员续费提醒：您的会员将于明天到期。", "Orange")
+                AddLog("会员续费提醒：您的会员将于明天到期。", "Blue")
                 reminderShown := true ; 修改：设置标志
             }
         }

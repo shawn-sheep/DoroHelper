@@ -139,6 +139,7 @@ global g_settings := Map(
     "ClearRedLimit", 0,                 ; 自动突破妮姬
     "ClearRedProfile", 0,               ; 清除个人页红点
     "ClearRedBla", 0,                   ; 清除Bla红点
+    "ClearRedBlaAwards", 0,             ; 自动对话
     ;启动/退出相关
     "CloseAdvertisement", 0,            ; 关闭广告提示
     "CloseHelp", 0,                     ; 关闭帮助提示
@@ -734,6 +735,9 @@ g_settingPages["After"].Push(cbClearRedProfile)
 cbClearRedBla := AddCheckboxSetting(doroGui, "ClearRedBla", "清除blabla红点", "R1 xs+15")
 doroGui.Tips.SetTip(cbClearRedBla, "Clear blabla Red Dot")
 g_settingPages["After"].Push(cbClearRedBla)
+cbClearRedBlaAwards := AddCheckboxSetting(doroGui, "ClearRedBlaAwards", "自动对话", "R1 x+5")
+doroGui.Tips.SetTip(cbClearRedBlaAwards, "Open Resource Cases")
+g_settingPages["After"].Push(cbClearRedBlaAwards)
 cbCheckUnderGround := AddCheckboxSetting(doroGui, "CheckUnderGround", "地面玩法提醒", "R1 xs+15")
 doroGui.Tips.SetTip(cbCheckUnderGround, "在作战报告达到上限时进行提醒`nUnderGround Reminder:remind you when the combat report reaches the limit")
 g_settingPages["After"].Push(cbCheckUnderGround)
@@ -3780,6 +3784,33 @@ CalculateAndShowSpan(ExitReason := "", ExitCode := "") {
 }
 ;endregion 日志辅助函数
 ;region 流程辅助函数
+;tag bla自动对话
+AutoChat() {
+    while (ok := FindText(&X, &Y, NikkeX + 0.366 * NikkeW . " ", NikkeY + 0.091 * NikkeH . " ", NikkeX + 0.366 * NikkeW + 0.012 * NikkeW . " ", NikkeY + 0.091 * NikkeH + 0.020 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("WIFI的图标"), , , , , , , TrueRatio, TrueRatio))
+    or (ok := FindText(&X, &Y, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.753 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.753 * NikkeH + 0.158 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·想法"), , , , , , 3, TrueRatio, TrueRatio)) {
+        if (ok := FindText(&X, &Y, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.210 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.210 * NikkeH + 0.700 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·对话"), , , , , , 3, TrueRatio, TrueRatio)) {
+            AddLog("点击对话")
+            if (Mod(A_Index, 2) = 0) {
+                FindText().Click(X - 20 * TrueRatio, Y - 20 * TrueRatio, "L")
+            }
+            else FindText().Click(X - 20 * TrueRatio, Y + 20 * TrueRatio, "L")
+            sleep 1000
+        }
+        else if (ok := FindText(&X, &Y, NikkeX + 0.571 * NikkeW . " ", NikkeY + 0.753 * NikkeH . " ", NikkeX + 0.571 * NikkeW + 0.065 * NikkeW . " ", NikkeY + 0.753 * NikkeH + 0.158 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·想法"), , , , , , 3, TrueRatio, TrueRatio)) {
+            AddLog("点击想法")
+            FindText().Click(X - 20 * TrueRatio, Y - 20 * TrueRatio, "L")
+            sleep 1000
+        }
+        else {
+            AddLog("点击对话框的右下角")
+            UserClick(2382, 1894, TrueRatio)
+            sleep 1000
+        }
+        if (ok := FindText(&X, &Y, NikkeX + 0.486 * NikkeW . " ", NikkeY + 0.781 * NikkeH . " ", NikkeX + 0.486 * NikkeW + 0.027 * NikkeW . " ", NikkeY + 0.781 * NikkeH + 0.129 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("对话框·END"), , , , , , , TrueRatio, TrueRatio)) {
+            break
+        }
+    }
+}
 ;tag 点左下角的小房子的对应位置的右边（不返回）
 Confirm() {
     UserClick(474, 2028, TrueRatio)
@@ -6688,8 +6719,22 @@ ClearRedBla() {
     while (ok := FindText(&X, &Y, NikkeX + 0.034 * NikkeW . " ", NikkeY + 0.169 * NikkeH . " ", NikkeX + 0.034 * NikkeW + 0.015 * NikkeW . " ", NikkeY + 0.169 * NikkeH + 0.028 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , , TrueRatio, TrueRatio)) {
         FindText().Click(X, Y, "L")
         Sleep 3000
-        UserClick(1554, 464, TrueRatio)
-        Sleep 1000
+        if g_settings["ClearRedBlaAwards"] {
+            while (ok := FindText(&X, &Y, NikkeX + 0.359 * NikkeW . " ", NikkeY + 0.181 * NikkeH . " ", NikkeX + 0.359 * NikkeW + 0.281 * NikkeW . " ", NikkeY + 0.181 * NikkeH + 0.056 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , 5, TrueRatio, TrueRatio)) {
+                FindText().Click(X, Y, "L")
+                Sleep 1000
+                while (ok := FindText(&X, &Y, NikkeX + 0.610 * NikkeW . " ", NikkeY + 0.292 * NikkeH . " ", NikkeX + 0.610 * NikkeW + 0.025 * NikkeW . " ", NikkeY + 0.292 * NikkeH + 0.588 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("红底的N图标"), , , , , , 1, TrueRatio, TrueRatio)) {
+                    FindText().Click(X, Y, "L")
+                    Sleep 1000
+                    AutoChat
+                    Sleep 1000
+                    Confirm
+                    Sleep 1000
+                    Send "{Esc}"
+                    Sleep 1000
+                }
+            }
+        }
         Confirm
         Sleep 1000
     }
@@ -6756,24 +6801,8 @@ StoryMode(*) {
                 AddLog("点击Bla的图标")
                 Sleep 1000
                 FindText().Click(X, Y, "L")
-                Sleep 500
-            }
-            if (ok := FindText(&X, &Y, NikkeX + 0.366 * NikkeW . " ", NikkeY + 0.091 * NikkeH . " ", NikkeX + 0.366 * NikkeW + 0.012 * NikkeW . " ", NikkeY + 0.091 * NikkeH + 0.020 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("WIFI的图标"), , , , , , , TrueRatio, TrueRatio)) {
-                if (ok := FindText(&X, &Y, NikkeX + 0.614 * NikkeW . " ", NikkeY + 0.210 * NikkeH . " ", NikkeX + 0.614 * NikkeW + 0.023 * NikkeW . " ", NikkeY + 0.210 * NikkeH + 0.700 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·对话"), , , , , , 3, TrueRatio, TrueRatio)) {
-                    AddLog("点击对话")
-                    FindText().Click(X - 100 * TrueRatio, Y - 100 * TrueRatio, "L")
-                    sleep 1000
-                }
-                else {
-                    AddLog("点击对话框的右下角")
-                    UserClick(2382, 1894, TrueRatio)
-                    sleep 1000
-                }
-            }
-            if (ok := FindText(&X, &Y, NikkeX + 0.588 * NikkeW . " ", NikkeY + 0.754 * NikkeH . " ", NikkeX + 0.588 * NikkeW + 0.035 * NikkeW . " ", NikkeY + 0.754 * NikkeH + 0.055 * NikkeH . " ", 0.2 * PicTolerance, 0.2 * PicTolerance, FindText().PicLib("对话框·想法"), , , , , , 3, TrueRatio, TrueRatio)) {
-                AddLog("点击想法")
-                FindText().Click(X - 100 * TrueRatio, Y - 100 * TrueRatio, "L")
-                sleep 1000
+                Sleep 1000
+                AutoChat
             }
         }
         if g_settings["StoryModeAutoStar"] {

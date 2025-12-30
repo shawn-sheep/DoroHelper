@@ -4391,6 +4391,13 @@ Login() {
             FindText().Click(X, Y, "L")
             Sleep 1000
         }
+        while (ok := FindText(&X, &Y, NikkeX + 0.485 * NikkeW . " ", NikkeY + 0.740 * NikkeH . " ", NikkeX + 0.485 * NikkeW + 0.032 * NikkeW . " ", NikkeY + 0.740 * NikkeH + 0.029 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("登录·扭蛋"), , , , , , , TrueRatio, TrueRatio)) {
+            AddLog("领取扭蛋" A_Index "次")
+            FindText().Click(X, Y, "L")
+            Sleep 5000
+            FindText().Click(X, Y, "L")
+            Sleep 1000
+        }
         if (ok := FindText(&X, &Y, NikkeX + 0.443 * NikkeW . " ", NikkeY + 0.703 * NikkeH . " ", NikkeX + 0.443 * NikkeW + 0.116 * NikkeW . " ", NikkeY + 0.703 * NikkeH + 0.051 * NikkeH . " ", 0.25 * PicTolerance, 0.25 * PicTolerance, FindText().PicLib("确认的白色勾"), , 0, , , , , TrueRatio, TrueRatio)) {
             AddLog("确认服务器")
             FindText().Click(X + 50 * TrueRatio, Y, "L")

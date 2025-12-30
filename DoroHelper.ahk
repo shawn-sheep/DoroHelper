@@ -4353,7 +4353,7 @@ ProcessPurchaseList(PurchaseItems, Options := Map()) {
                 }
                 ; 点击购买 (带圈白勾)
                 if (FindText(&X := "wait", &Y := 2, NikkeX + 0.506 * NikkeW . " ", NikkeY + 0.786 * NikkeH . " ", NikkeX + 0.506 * NikkeW + 0.088 * NikkeW . " ", NikkeY + 0.786 * NikkeH + 0.146 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("带圈白勾"), , 0, , , , , TrueRatio, TrueRatio)) {
-                    Sleep 3000
+                    Sleep 500
                     AddLog("购买" . Name)
                     FindText().Click(X, Y, "L")
                     Sleep 1000

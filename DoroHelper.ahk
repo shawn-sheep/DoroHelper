@@ -152,7 +152,7 @@ global g_settings := Map(
     "OpenBlablalink", 0,                ; 完成后打开Blablalink
     "AutoStartNikke", 0,                ; 使用脚本启动NIKKE
     "Timedstart", 0,                    ; 定时启动
-    "Autostart", 0,                     ; 自动启动
+    "Autostart", 0,                     ; 自动运行
     ;其他
     "AutoFill", 0,                      ; 自动填充加成妮姬
     "CheckAuto", 0,                     ; 开启自动射击和爆裂
@@ -397,7 +397,7 @@ g_settingPages["Default"].Push(Btn1080)
 ;tag 二级设置Settings
 SetNormalTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====基础设置====")
 g_settingPages["Settings"].Push(SetNormalTitle)
-cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示[铜Doro]", "R1")
+cbCloseAdvertisement := AddCheckboxSetting(doroGui, "CloseAdvertisement", "移除广告提示🎁", "R1")
 doroGui.Tips.SetTip(cbCloseAdvertisement, "Remove ads[Copper Doro]")
 g_settingPages["Settings"].Push(cbCloseAdvertisement)
 cbAutoSwitchLanguage := AddCheckboxSetting(doroGui, "AutoSwitchLanguage", "自动切换语言", "R1")
@@ -419,7 +419,7 @@ g_settingPages["Settings"].Push(CheckAutoText)
 ;tag 二级登录Login
 SetLogin := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====登录====")
 g_settingPages["Login"].Push(SetLogin)
-StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE[金Doro]", "R1")
+StartupText := AddCheckboxSetting(doroGui, "AutoStartNikke", "使用脚本启动NIKKE🎁", "R1")
 doroGui.Tips.SetTip(StartupText, "勾选后，脚本会尝试通过填写的路径启动NIKKE`nLaunch NIKKEwith Script:If checked, the script will attempt to start NIKKE using the specified path")
 g_settingPages["Login"].Push(StartupText)
 StartupPathText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动器路径")
@@ -430,7 +430,7 @@ StartupPathEdit.Value := g_numeric_settings["StartupPath"]
 StartupPathEdit.OnEvent("Change", (Ctrl, Info) => g_numeric_settings["StartupPath"] := Ctrl.Value)
 doroGui.Tips.SetTip(StartupPathEdit, "例如：C:\NIKKE\Launcher\nikke_launcher.exe`nFor example: C:\NIKKE\Launcher\nikke_launcher.exe")
 g_settingPages["Login"].Push(StartupPathEdit)
-SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动[金Doro]", "xs R1")
+SetTimedstart := AddCheckboxSetting(doroGui, "Timedstart", "定时启动🎁", "xs R1")
 doroGui.Tips.SetTip(SetTimedstart, "勾选后，脚本会在指定时间自动视为点击DORO！，让程序保持后台即可`nTimed start[Gold Doro]:If checked, the script will Click DORO! at the specified time. Just keep the program running in the background.")
 g_settingPages["Login"].Push(SetTimedstart)
 StartupTimeText := doroGui.Add("Text", "xs+20 R1 +0x0100", "启动时间")
@@ -444,7 +444,7 @@ g_settingPages["Login"].Push(StartupTimeEdit)
 cbLoopMode := AddCheckboxSetting(doroGui, "LoopMode", "自律模式", "xs+20 R1 +0x0100")
 doroGui.Tips.SetTip(cbLoopMode, "勾选后，当 DoroHelper 完成所有已选任务后，NIKKE将自动退出，同时会自动重启Doro，以便再次定时启动`nLoopMode:If checked, when DoroHelper completes all selected tasks, NIKKE will automatically exit, and Doro will automatically restart to facilitate timed restarts.")
 g_settingPages["Login"].Push(cbLoopMode)
-SetAutostart := AddCheckboxSetting(doroGui, "Autostart", "自动启动[金Doro]", "xs R1")
+SetAutostart := AddCheckboxSetting(doroGui, "Autostart", "自动运行🎁", "xs R1")
 doroGui.Tips.SetTip(SetAutostart, "勾选后，脚本会在启动后经过10秒延迟后自动视为点击DORO！`nThe script will be automatically regarded as a click on DORO after a 10-second delay after startup.")
 g_settingPages["Login"].Push(SetAutostart)
 ;tag 二级商店Shop
@@ -578,7 +578,7 @@ g_settingPages["Interception"].Push(SetInterceptionNormalTitle)
 SetRedCircle := AddCheckboxSetting(doroGui, "InterceptionRedCircle", "自动打红圈", "R1.2")
 doroGui.Tips.SetTip(SetRedCircle, "请务必在设置-战斗-控制中开启「同步游标与准星」|只对克拉肯有效`nAutomatically attack the red circle`nMake sure to turn on 'Sync Cursor and Crosshair' in Settings - Combat - Controls | Only effective for Kraken")
 g_settingPages["Interception"].Push(SetRedCircle)
-SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出[金Doro]", "R1.2")
+SetInterceptionExit7 := AddCheckboxSetting(doroGui, "InterceptionExit7", "满7自动退出🎁", "R1.2")
 doroGui.Tips.SetTip(SetInterceptionExit7, "Exit immediately after the Boss reaches phase 7[Gold Doro]")
 g_settingPages["Interception"].Push(SetInterceptionExit7)
 SetInterceptionScreenshot := AddCheckboxSetting(doroGui, "InterceptionScreenshot", "结果截图", "R1.2")
@@ -602,7 +602,7 @@ g_settingPages["Award"].Push(SetAwardOutpostDispatch)
 SetAwardAdvise := AddCheckboxSetting(doroGui, "AwardAdvise", "咨询妮姬", "R1 xs Section")
 doroGui.Tips.SetTip(SetAwardAdvise, "你可以通过在游戏内将妮姬设置为收藏状态来调整咨询的优先顺序`nNikke Advise:You can adjust the priority of consultation by setting Nikke to the collection status in the game")
 g_settingPages["Award"].Push(SetAwardAdvise)
-SetAwardAdviseAward := AddCheckboxSetting(doroGui, "AwardAdviseAward", "自动领取咨询奖励[金Doro]", "R1 xs+15")
+SetAwardAdviseAward := AddCheckboxSetting(doroGui, "AwardAdviseAward", "自动领取咨询奖励🎁", "R1 xs+15")
 doroGui.Tips.SetTip(SetAwardAdviseAward, "自动观看妮姬升级产生的新花絮并领取奖励`nAdviseAward[Gold Doro]:automatically watch new Episode generated by Nikke's upgrade and receive rewards")
 g_settingPages["Award"].Push(SetAwardAdviseAward)
 SetAwardAppreciation := AddCheckboxSetting(doroGui, "AwardAppreciation", "花絮鉴赏会", "R1 xs+15")
@@ -639,13 +639,13 @@ g_settingPages["Award"].Push(SetAwardFreeRecruit)
 SetEventUniversal := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====通用选项====")
 doroGui.Tips.SetTip(SetEventUniversal, "Universal Options")
 g_settingPages["Event"].Push(SetEventUniversal)
-SetAutoFill := AddCheckboxSetting(doroGui, "AutoFill", "剧情活动自动添加妮姬[金Doro]", "R1")
+SetAutoFill := AddCheckboxSetting(doroGui, "AutoFill", "剧情活动自动添加妮姬🎁", "R1")
 doroGui.Tips.SetTip(SetAutoFill, "Automatically add Nikke for story events[Gold Doro]")
 g_settingPages["Event"].Push(SetAutoFill)
 SetEventTitle := doroGui.Add("Text", "R1 +0x0100", "====活动选项====")
 doroGui.Tips.SetTip(SetEventTitle, "Event Options")
 g_settingPages["Event"].Push(SetEventTitle)
-SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动[银Doro]", "R1")
+SetEventSmall := AddCheckboxSetting(doroGui, "EventSmall", "小活动🎁", "R1")
 doroGui.Tips.SetTip(SetEventSmall, "Small Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventSmall)
 SetEventSmallChallenge := AddCheckboxSetting(doroGui, "EventSmallChallenge", "小活动挑战", "R1 xs+15")
@@ -657,7 +657,7 @@ g_settingPages["Event"].Push(SetEventSmallStory)
 SetEventSmallMission := AddCheckboxSetting(doroGui, "EventSmallMission", "小活动任务", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventSmallMission, "Small Events Mission")
 g_settingPages["Event"].Push(SetEventSmallMission)
-SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动[银Doro](TERMINUS TICKET)", "R1 xs")
+SetEventLarge := AddCheckboxSetting(doroGui, "EventLarge", "大活动🎁", "R1 xs")
 doroGui.Tips.SetTip(SetEventLarge, "Large Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventLarge)
 SetEventLargeSign := AddCheckboxSetting(doroGui, "EventLargeSign", "大活动签到", "R1 xs+15")
@@ -678,7 +678,7 @@ g_settingPages["Event"].Push(SetEventLargeMinigame)
 SetEventLargeDaily := AddCheckboxSetting(doroGui, "EventLargeDaily", "大活动奖励", "R1 xs+15")
 doroGui.Tips.SetTip(SetEventLargeDaily, "Large Events Daily Rewards")
 g_settingPages["Event"].Push(SetEventLargeDaily)
-SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动[银Doro](未开放)", "R1 xs")
+SetEventSpecial := AddCheckboxSetting(doroGui, "EventSpecial", "特殊活动🎁", "R1 xs")
 doroGui.Tips.SetTip(SetEventSpecial, "Special Events[Silver Doro]")
 g_settingPages["Event"].Push(SetEventSpecial)
 SetEventSpecialSign := AddCheckboxSetting(doroGui, "EventSpecialSign", "特殊活动签到", "R1 xs+15")
@@ -702,7 +702,7 @@ g_settingPages["Event"].Push(SetEventSpecialDaily)
 ;tag 二级设置After
 SetAfterTitle := doroGui.Add("Text", "x290 y40 R1 +0x0100 Section", "====任务完成后====")
 g_settingPages["After"].Push(SetAfterTitle)
-cbClearRed := AddCheckboxSetting(doroGui, "ClearRed", "任务完成后[金Doro]", "R1")
+cbClearRed := AddCheckboxSetting(doroGui, "ClearRed", "任务完成后🎁", "R1")
 g_settingPages["After"].Push(cbClearRed)
 cbClearRedRecycling := AddCheckboxSetting(doroGui, "ClearRedRecycling", "升级循环室", "R1 xs+15")
 doroGui.Tips.SetTip(cbClearRedRecycling, "Upgrade Recycle Room")
@@ -772,7 +772,7 @@ doroGui.Tips.SetTip(btnFeedbackDC, "Join the feedback group")
 btnFeedbackDC.OnEvent("Click", (*) => Run("https://discord.gg/f4rAWJVNJj"))
 ; 剧情模式
 TextStoryModeLabel := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "剧情模式")
-doroGui.Tips.SetTip(TextStoryModeLabel, "自动点击对话选项，自动进行下一段剧情，自动启动auto`nAutomatically click dialogue options, automatically proceed to the next segment of the story, automatically start auto")
+doroGui.Tips.SetTip(TextStoryModeLabel, "自动点击对话选项，自动进行下一段剧情，自动auto`nAutomatically click dialogue options, automatically proceed to the next segment of the story, automatically start auto")
 cbStoryModeAutoStar := AddCheckboxSetting(doroGui, "StoryModeAutoStar", "自动收藏", "x+5  R1")
 doroGui.Tips.SetTip(cbStoryModeAutoStar, "Automatically bookmark the current story")
 cbStoryModeAutoChoose := AddCheckboxSetting(doroGui, "StoryModeAutoChoose", "自动抉择", "x+5 R1")
@@ -785,12 +785,12 @@ TestModeEditControl.Value := g_numeric_settings["TestModeValue"]
 cbTestModeInitialization := AddCheckboxSetting(doroGui, "TestModeInitialization", "预初始化", "x+5  R1")
 doroGui.Tips.SetTip(cbTestModeInitialization, "Initialize before executing tasks")
 BtnTestMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", TestMode)
-TextBurstMode := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "爆裂模式[金Doro]")
+TextBurstMode := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "爆裂模式🎁")
 doroGui.Tips.SetTip(TextBurstMode, "启动后，会自动使用爆裂，速度比自带的自动快`nAfter starting, Burst will be used automatically, Fater than the built-in auto.")
 BurstModeEditControl := doroGui.Add("Edit", "x+10 yp w145 h20")
 BurstModeEditControl.Value := g_numeric_settings["BurstModeValue"]
 BtnBurstMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", BurstMode)
-TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式[金Doro]")
+TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式🎁")
 doroGui.Tips.SetTip(TextAutoAdvance, "[beta3]半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关`nMap Advancement:Semi-automatic map advancement. Set the view to the maximum. Start near the monster in the map, sometimes you need to manually find monsters and mechanisms")
 BtnAutoAdvance := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", AutoAdvance)
 BtnBluePill := AddCheckboxSetting(doroGui, "BluePill", "蓝色药丸", "xp R1 xs+10 +0x0100")
@@ -853,10 +853,6 @@ if A_UserName != "12042"
 ; 1. 未勾选关闭广告 (无论用户是谁)
 ; 2. 是普通用户 (无论是否勾选了关闭广告，因为普通用户无法关闭)
 if (!g_settings["CloseAdvertisement"] OR g_numeric_settings["UserLevel"] < 1) {
-    ; 额外判断，如果用户是普通用户且勾选了关闭广告，则弹窗提示
-    if (g_settings["CloseAdvertisement"] and g_numeric_settings["UserLevel"] < 1) {
-        MsgBox("普通用户无法关闭广告，请点击赞助按钮升级会员组")
-    }
     Advertisement
 }
 if !g_settings["CloseHelp"] {
@@ -868,12 +864,12 @@ if g_settings["AutoDeleteOldFile"]
 ;tag 检查更新
 if g_settings["AutoCheckUpdate"]
     CheckForUpdate(false)
-;tag 自动启动
+;tag 自动运行
 if g_settings["Autostart"] {
     if g_numeric_settings["UserLevel"] >= 3 {
         AutoStartDoro()
     } else {
-        MsgBox("当前用户组不支持自动启动，请点击左上角赞助按钮升级会员组或取消勾选该功能，脚本即将暂停")
+        MsgBox("当前用户组不支持自动运行，请点击左上角赞助按钮升级会员组或取消勾选该功能，脚本即将暂停")
         Pause
     }
 }
@@ -1272,7 +1268,7 @@ Initialization() {
     }
 }
 AutoStartDoro() {
-    AddLog("等待10秒后自动启动DoroHelper……")
+    AddLog("等待10秒后自动运行……")
     Sleep 10000
     ClickOnDoro()
 }
@@ -2367,6 +2363,7 @@ MsgSponsor(*) {
         }
         ; 如果点击了“按金额”，取消选中“按时长”
         else if (GuiCtrlObj.Hwnd == radAmount.Hwnd) {
+            MsgBox("你实际应该支付的金额应为下方「订单预览」中的金额")
             radDuration.Value := 0
         }
         ; 获取当前是否为“按时长”模式
@@ -3535,7 +3532,7 @@ ToggleSetting(settingKey, displayText, guiCtrl, *) {
         requiredLevel := 0
         memberType := ""
         ; 检查 displayText 是否包含会员等级信息
-        if InStr(displayText, "[金Doro]") {
+        if InStr(displayText, "🎁") {
             requiredLevel := 3
             memberType := "金Doro会员"
         } else if InStr(displayText, "[银Doro]") {
@@ -5972,10 +5969,6 @@ AwardSoloRaid(stage7 := True) {
 ;region 小活动
 ;tag 入口
 EventSmall() {
-    if g_numeric_settings["UserLevel"] < 2 {
-        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
-        Pause
-    }
     AddLog("开始任务：小活动", "Fuchsia")
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("小活动的图标"), , , , , , , TrueRatio, TrueRatio)) {
@@ -6054,10 +6047,6 @@ EventSmallMission() {
 ;region 大活动
 ;tag 入口
 EventLarge() {
-    if g_numeric_settings["UserLevel"] < 2 {
-        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
-        Pause
-    }
     AddLog("开始任务：大活动", "Fuchsia")
     loop {
         if (ok := FindText(&X, &Y, NikkeX + 0.632 * NikkeW . " ", NikkeY + 0.794 * NikkeH . " ", NikkeX + 0.632 * NikkeW + 0.140 * NikkeW . " ", NikkeY + 0.794 * NikkeH + 0.108 * NikkeH . " ", 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("大活动·TERMINUS TICKET"), , , , , , , TrueRatio, TrueRatio)) {
@@ -6270,18 +6259,10 @@ EventLargeDaily() {
 ;endregion 大活动
 ;region 特殊活动
 EventSpecial() {
-    if g_numeric_settings["UserLevel"] < 2 {
-        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
-        Pause
-    }
 }
 ;endregion 特殊活动
 ;region 任务完成后
 ClearRed() {
-    if g_numeric_settings["UserLevel"] < 3 {
-        MsgBox("当前用户组不支持任务(" A_ThisFunc ")，请点击赞助按钮升级会员组")
-        Pause
-    }
 }
 ;tag 自动升级循环室
 ClearRedRecycling() {

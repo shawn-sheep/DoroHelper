@@ -143,7 +143,7 @@ global g_settings := Map(
     "CloseAdvertisement", 0,            ; 关闭广告提示
     "CloseHelp", 0,                     ; 关闭帮助提示
     "AutoSwitchLanguage", 0,            ; 自动切换语言
-    "AutoCheckUpdate", 0,               ; 自动检查更新
+    "AutoCheckUpdate", 1,               ; 自动检查更新
     "AutoDeleteOldFile", 0,             ; 自动删除旧版本
     "DoroClosing", 0,                   ; 完成后自动关闭Doro
     "LoopMode", 0,                      ; 完成后自动关闭游戏

@@ -4594,6 +4594,7 @@ ShopCash() {
                     Sleep 1000
                     UserClick(208, 608, TrueRatio)
                     Sleep 1000
+                    UserClick(62, 494, TrueRatio)
                 }
             }
         }

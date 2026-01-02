@@ -793,6 +793,7 @@ TextBurstMode := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "爆裂模式🎁")
 doroGui.Tips.SetTip(TextBurstMode, "启动后，会自动使用爆裂，速度比自带的自动快`nAfter starting, Burst will be used automatically, Fater than the built-in auto.")
 BurstModeEditControl := doroGui.Add("Edit", "x+10 yp w145 h20")
 BurstModeEditControl.Value := g_numeric_settings["BurstModeValue"]
+doroGui.Tips.SetTip(BurstModeEditControl, "自定义爆裂顺序`n皇马流程：AAA|AAS|ASA|AAS|AAA|ASS`nCustom burst order")
 BtnBurstMode := doroGui.Add("Button", " x+5 yp-3 w25 h25", "▶️").OnEvent("Click", BurstMode)
 TextAutoAdvance := doroGui.Add("Text", "xp R1 xs+10 +0x0100", "推图模式🎁")
 doroGui.Tips.SetTip(TextAutoAdvance, "[beta3]半自动推图。视野调到最大。在地图中靠近怪的地方启动，有时需要手动找怪和找机关`nMap Advancement:Semi-automatic map advancement. Set the view to the maximum. Start near the monster in the map, sometimes you need to manually find monsters and mechanisms")

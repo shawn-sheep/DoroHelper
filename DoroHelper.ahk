@@ -2300,16 +2300,13 @@ MsgSponsor(*) {
     ; 获取当前用户会员信息
     userGroupInfo := CheckUserGroup()
     ; 表格说明
-    LVZH := guiSponsor.Add("ListView", "xm w400 h120", ["功能", "普通", "铜[废弃]", "银[废弃]", "金"])
+    LVZH := guiSponsor.Add("ListView", "xm w400 h140", ["功能", "普通", "金Doro"])
     LVZH.ModifyCol(1, 90)
     LVZH.ModifyCol(2, 60)
-    LVZH.ModifyCol(3, 60)
-    LVZH.ModifyCol(4, 60)
-    LVZH.ModifyCol(5, 60)
-    LVZH.Add(, "去广告", "", "✅️", "✅️", "✅️")
-    LVZH.Add(, "轮换活动", "", "", "✅️", "✅️")
-    LVZH.Add(, "定时/路径", "", "", "", "✅️")
-    LVZH.Add(, "自动推图", "", "", "", "✅️")
+    LVZH.Add(, "基础功能", "✅️", "✅️")
+    LVZH.Add(, "去广告", "", "✅️")
+    LVZH.Add(, "轮换活动", "", "✅️")
+    LVZH.Add(, "自动推图", "", "✅️")
     ; 支付二维码逻辑 (保持不变)
     if (scriptExtension = "ahk") {
         picUrl1 := "img\weixin.png"
@@ -2368,6 +2365,11 @@ MsgSponsor(*) {
         }
         ; 如果点击了“按金额”，取消选中“按时长”
         else if (GuiCtrlObj.Hwnd == radAmount.Hwnd) {
+            if g_numeric_settings["UserLevel"] < 3 {
+                MsgBox("非金会员无法使用按金额赞助，请选择按时长赞助方式以修改会员。")
+                radAmount.Value := 0
+                return
+            }
             MsgBox("你实际应该支付的金额应为下方「订单预览」中的金额")
             radDuration.Value := 0
         }
@@ -3538,7 +3540,7 @@ ToggleSetting(settingKey, displayText, guiCtrl, *) {
         memberType := ""
         ; 检查 displayText 是否包含会员等级信息
         if InStr(displayText, "🎁") {
-            requiredLevel := 3
+            requiredLevel := 1 ;会员合并
             memberType := "金Doro会员"
         } else if InStr(displayText, "[银Doro]") {
             requiredLevel := 2

@@ -7075,8 +7075,7 @@ AutoAdvance(*) {
         EnterToBattle
         if BattleActive = 1 {
             k := 9
-            modes := ["EventStory"]
-            if BattleSettlement(modes*) = False {
+            if BattleSettlement(0, "EventStory") = False {
                 MsgBox("本日の勝敗結果：`nDoroの敗北")
                 return
             }

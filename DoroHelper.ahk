@@ -7050,7 +7050,7 @@ AutoAdvance(*) {
             }
             Confirm
             if (ok := FindText(&X, &Y, NikkeX, NikkeY, NikkeX + NikkeW, NikkeY + NikkeH, 0.3 * PicTolerance, 0.3 * PicTolerance, FindText().PicLib("推图·红色的圈"), , , , , , , TrueRatio, TrueRatio)) {
-                AddLog("备用方案：找到敌人")
+                AddLog("备用方案：找到红圈")
                 FindText().Click(X, Y, "L")
                 Sleep 500
                 break

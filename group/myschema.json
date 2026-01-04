@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "description": "Doro 会员列表校验",
+  "uniqueItems": true,
+  "items": {
+    "type": "object",
+    "required": ["hash", "tier", "account_value", "registration_date"],
+    "properties": {
+      "hash": {
+        "type": "string",
+        "pattern": "^[a-fA-F0-9]{64}$",
+        "description": "必须是 64 位的 SHA256 哈希值"
+      },
+      "tier": {
+        "type": "string"
+      },
+      "account_value": {
+        "type": "string"
+      },
+      "registration_date": {
+        "type": "string",
+        "pattern": "^[0-9]{8}$",
+        "description": "日期格式应为 YYYYMMDD"
+      }
+    }
+  }
+}
